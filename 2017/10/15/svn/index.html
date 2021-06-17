@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="svn: E200002: line 19: Option expected错误解决这是因为修改svnserve.conf时，打开注释时，配置的前面有空格，应该顶格写。修改后即可。 解决svn Authorization failed错误出现该问题基本都是三个配置文件的问题，下面把这个文件列出来svnserve.conf:[general]anon-access = readauth-access">
+<meta name="keywords" content="svn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="svn">
+<meta property="og:url" content="http://zentia.github.io/2017/10/15/svn/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="svn: E200002: line 19: Option expected错误解决这是因为修改svnserve.conf时，打开注释时，配置的前面有空格，应该顶格写。修改后即可。 解决svn Authorization failed错误出现该问题基本都是三个配置文件的问题，下面把这个文件列出来svnserve.conf:[general]anon-access = readauth-access">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.370Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="svn">
+<meta name="twitter:description" content="svn: E200002: line 19: Option expected错误解决这是因为修改svnserve.conf时，打开注释时，配置的前面有空格，应该顶格写。修改后即可。 解决svn Authorization failed错误出现该问题基本都是三个配置文件的问题，下面把这个文件列出来svnserve.conf:[general]anon-access = readauth-access">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2017/10/15/svn/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>svn | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/15/svn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">svn
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2017/10/15/svn/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/10/15/svn/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="svn-E200002-line-19-Option-expected错误解决"><a href="#svn-E200002-line-19-Option-expected错误解决" class="headerlink" title="svn: E200002: line 19: Option expected错误解决"></a>svn: E200002: line 19: Option expected错误解决</h1><p>这是因为修改svnserve.conf时，打开注释时，配置的前面有空格，应该顶格写。<br>修改后即可。</p>
+<h1 id="解决svn-Authorization-failed错误"><a href="#解决svn-Authorization-failed错误" class="headerlink" title="解决svn Authorization failed错误"></a>解决svn Authorization failed错误</h1><p>出现该问题基本都是三个配置文件的问题，下面把这个文件列出来<br>svnserve.conf:<br>[general]<br>anon-access = read<br>auth-access = write<br>password-db = passwd<br>authz-db = authz<br>passwd:<br>[users]<br>admin=123<br>authz:<br>[groups]<br>[/]<br>admin= rw<br>出现authorization failed异常，一般都是authz文件里，用户组或者用户权限没有配置好，只要设置[/]就可以，代表根目录下所有的资源，如果要限定资源，可以加上 子目录即可。</p>
+<h1 id="checkout"><a href="#checkout" class="headerlink" title="checkout"></a>checkout</h1><p>svn checkout path（path是服务器上的目录）<br>   例如：svn checkout svn://192.168.171.128/zentia/trunk/xxprj/server</p>
+<h1 id="revert"><a href="#revert" class="headerlink" title="revert"></a>revert</h1><pre><code>svn revert [-R] dir
+</code></pre><h1 id="CentOS下svn迁移备份的三种方法"><a href="#CentOS下svn迁移备份的三种方法" class="headerlink" title="CentOS下svn迁移备份的三种方法"></a>CentOS下svn迁移备份的三种方法</h1><p>一般采用三种方式：</p>
+<ol>
+<li>svnadmin dump</li>
+<li>svnadmin hotcopy</li>
+<li>svnsync<br>注意，svn备份不宜采用普通的文件拷贝方式（除非你很懂svn，并且将库暂停），如copy、rsync命令。<br>svnadmin dump是官方推荐的备份方式，优点是比较灵活，可以全量备份也可以增量备份，并提供了版本恢复机制。<br>缺点：如果版本比较大，如版本数增长到数万、数十万，那么dump的过程将非常慢；备份耗时，恢复更耗时；不利于快速进行灾难恢复。<br>个人建议在版本数比较小的情况下使用这种备份方式。<br>svnadmin hotcopy原设计目的估计不是用来备份的，只能进行全量拷贝，不能进行增量备份；<br>优点是：备份过程较快，灾难恢复也很快；如果备份机上已经搭建了svn服务，甚至不需要恢复，只需要进行简单配置即可切换到备份库上工作。<br>缺点是：比较消耗硬盘，需要有较大的硬盘支持。<br>svnsync实际上是<h1 id="CentOS下SVN服务的启动语关闭"><a href="#CentOS下SVN服务的启动语关闭" class="headerlink" title="CentOS下SVN服务的启动语关闭"></a>CentOS下SVN服务的启动语关闭</h1>svnserve -d -r /home/svn<br>/home/svn 为版本的根目录<br>关闭SVN服务：<br>ps aux | grep svn<br>kill -s 9 64434<br>64434为进程ID</li>
+</ol>
+<p>或者 killall svnserve</p>
+<h1 id="linux下SVN中改变执行权限"><a href="#linux下SVN中改变执行权限" class="headerlink" title="linux下SVN中改变执行权限"></a>linux下SVN中改变执行权限</h1><p>本地文件在commit到仓库之前若没有chmod+x权限的话，拿在svn仓库里的文件将会保持当前无可执行属性状态，我们可以做svn命令修改。<br>SVN中，如果我们在linux下提交权限为755文件，就会在svn的属性中存在一个svn:executable。<br>只在本地chmod 644 ，是不能造成修改的。<br>svn propset svn:executable on * （注意，如果包含目录会执行失败）<br>svn commit</p>
+<h1 id="前一个操作被卡住的问题"><a href="#前一个操作被卡住的问题" class="headerlink" title="前一个操作被卡住的问题"></a>前一个操作被卡住的问题</h1><p>去官网下载win32那个包就可以了。<br>sqlite3.exe .svn/wc.db “delete from wc_lock”<br>sqlite3.exe .svn/wc.db “delete from work_queue”<br>/OUT:”F:\zentia\server\bin\vc120debugs\glogger_d.exe” /MANIFEST /NXCOMPAT /PDB:”F:\zentia\server\bin\vc120debugs\glogger_d.pdb” /DYNAMICBASE:NO “WHCMN_d.lib” “WHNET_d.lib” “PNGS_d.lib” “cryptlib_d.lib” “zlib_d.lib” “kernel32.lib” “user32.lib” “gdi32.lib” “winspool.lib” “comdlg32.lib” “advapi32.lib” “shell32.lib” “ole32.lib” “oleaut32.lib” “uuid.lib” “odbc32.lib” “odbccp32.lib” /FIXED /LARGEADDRESSAWARE /IMPLIB:”F:\zentia\server\bin\vc120debugs\glogger_d.lib” /DEBUG /MACHINE:X86 /OPT:NOREF /SAFESEH:NO /INCREMENTAL /PGD:”F:\zentia\server\bin\vc120debugs\glogger_d.pgd” /SUBSYSTEM:CONSOLE”,5.01” /MANIFESTUAC:”level=’asInvoker’ uiAccess=’false’” /ManifestFile:”F:\zentia\server\temp\vc120\glogger2010\debug\glogger_d.exe.intermediate.manifest” /OPT:NOICF /ERRORREPORT:PROMPT /NOLOGO /LIBPATH:”F:\zentia\server\src\svr\glogger\/lib/win32” /LIBPATH:”F:\zentia\server\lib\vc120lib\” /LIBPATH:”F:\zentia\server\3rd\lib\vc120\” /LIBPATH:”F:\zentia\server\3rd\lib” /LIBPATH:”%(AdditionalLibraryDirectories)” /TLBID:1<br>g++ -DLINUX -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_LARGEFILE_SOURCE -Wall -Wno-multichar -g -D_DEBUG -DPG_MEMORY_DISABLE_POOL -march=core2 -m32 -rdynamic -std=c++0x -o ../../bin/debug/svr/GBNMS/GBNMS_d.so ../../temp/debug/svr/GBNMS/GBNMS.s.o_d  /root/work_code/src/lib/libGBNMS_Lib_d.s.a /root/work_code/src/lib/libDIA_d.s.a /root/work_code/src/lib/libPNGS_d.s.a /root/work_code/src/lib/lib    WHNET_d.s.a /root/work_code/src/lib/libWHCMN_d.s.a  /usr/lib64/mysql/libmysqlclient_r.a -lz -lpthread -ldl -lrt -march=prescott -shared  -L/root/work_code/3rd/lib -L/root/work_code/src/lib</p>
+<h1 id="拉分支"><a href="#拉分支" class="headerlink" title="拉分支"></a>拉分支</h1><p>svnserve -d -r /var/svn<br>启动svn服务器，但是客户端还是一直连接不上</p>
+<p>svn info 查看库版本路径</p>
+<p>客户端一直连接不上服务器，最后发现是防火墙的问题，最暴力直接关掉防火墙就好啦。</p>
+<p>post-commit.tmpl<br>它在事务外城后运行，创建一个新的修订版本。大多数人用这个钩子来发送关于提交的描述性邮件，或者作为版本库的备份。版本库传给程序两个参数：到版本库的路径和被创建的新的修订版本号。退出程序时被忽略。</p>
+<p>关闭防火墙<br>重启后生效<br>开启: chkconfig iptables on<br>关闭: chkconfig iptables off<br>即时生效，重启后失效<br>开启：service iptables start<br>关闭：service iptables stop</p>
+<p>查看磁盘空间<br>df -h</p>
+<h2 id="创建版本库"><a href="#创建版本库" class="headerlink" title="创建版本库"></a>创建版本库</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir /var/svn</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入svn目录</span></span><br><span class="line">cd /var/svn  </span><br><span class="line"><span class="meta">#</span><span class="bash"> 用svn管理员创建bigsvr</span></span><br><span class="line">svnadmin create /var/svn/bigsvr</span><br><span class="line"><span class="meta">#</span><span class="bash"> 进入库</span></span><br><span class="line">cd bigsvr</span><br></pre></td></tr></table></figure>
+<p>subversion目录说明<br>db        所有版本控制的数据存放目录<br>hooks    放置hook脚本<br>locks     用户操作的锁文件<br>format    记录当前文件库的版本号<br>conf    配置文件</p>
+<h1 id="Svn命令行总结"><a href="#Svn命令行总结" class="headerlink" title="Svn命令行总结"></a>Svn命令行总结</h1><ol>
+<li><p>上传项目到SVN服务器上</p>
+<p> svn import project_dir(本地项目全路径)</p>
+</li>
+<li><p>下载checkout svn项目到本地</p>
+<p> svn checkout 简写：svn co</p>
+</li>
+<li><p>添加新文件</p>
+<p> svn add file(文件名)<br> svn add *.php(添加当前目录下所有的php文件)</p>
+</li>
+<li><p>提交到版本库</p>
+<p> svn commit -m “LogMessage” [-N] [—no-unlock] PATH(如果选择了保持锁，就使用—no-unlock开关)</p>
+</li>
+<li><p>更新文件</p>
+<p> svn update<br> svn update -r 修正版本 文件名<br> svn update (后面没有目录，默认将当前目录以及子目录下的所有文件都更新到最新版本)<br> svn update -r 200 test.cpp (将版本库中的文件test.cpp还原到修正版本(revision)200)<br> svn update test.php (更新于版本库同步)</p>
+</li>
+<li><p>设置忽略</p>
+<p> svn propset svn:ignore Temp .</p>
+</li>
+<li><p>relocate</p>
+<p> svn switch —relocate svn://18.223.184.177/project/ss/ss/bin/data svn://18.223.184.177/project/ss/ss/bin/data</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/svn/" rel="tag"># svn</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/14/vi/" rel="next" title="Centos7下 vim">
+                <i class="fa fa-chevron-left"></i> Centos7下 vim
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/15/linux/" rel="prev" title="Linux">
+                Linux <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#svn-E200002-line-19-Option-expected错误解决"><span class="nav-number">1.</span> <span class="nav-text">svn: E200002: line 19: Option expected错误解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决svn-Authorization-failed错误"><span class="nav-number">2.</span> <span class="nav-text">解决svn Authorization failed错误</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#checkout"><span class="nav-number">3.</span> <span class="nav-text">checkout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#revert"><span class="nav-number">4.</span> <span class="nav-text">revert</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS下svn迁移备份的三种方法"><span class="nav-number">5.</span> <span class="nav-text">CentOS下svn迁移备份的三种方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS下SVN服务的启动语关闭"><span class="nav-number">6.</span> <span class="nav-text">CentOS下SVN服务的启动语关闭</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux下SVN中改变执行权限"><span class="nav-number">7.</span> <span class="nav-text">linux下SVN中改变执行权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前一个操作被卡住的问题"><span class="nav-number">8.</span> <span class="nav-text">前一个操作被卡住的问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拉分支"><span class="nav-number">9.</span> <span class="nav-text">拉分支</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建版本库"><span class="nav-number">9.1.</span> <span class="nav-text">创建版本库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Svn命令行总结"><span class="nav-number">10.</span> <span class="nav-text">Svn命令行总结</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

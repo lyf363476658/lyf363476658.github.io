@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="接口(Interface)是一种规划，为你定义了一系列的规则和任务，但不去实现它类和结构体可以继承多个接口抽象类表示该类中可能已经有一些的具体定义生成的库在这里： Temp\StagingArea\libs\armeabi-v7a\libil2cpp.so 符号表在这里，需要把扩展名弄成.so，才能被bugly的符号工具转换。 Temp\StagingArea\libs\armeabi-v7a\l">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试">
+<meta property="og:url" content="http://zentia.github.io/2018/04/11/Interface/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="接口(Interface)是一种规划，为你定义了一系列的规则和任务，但不去实现它类和结构体可以继承多个接口抽象类表示该类中可能已经有一些的具体定义生成的库在这里： Temp\StagingArea\libs\armeabi-v7a\libil2cpp.so 符号表在这里，需要把扩展名弄成.so，才能被bugly的符号工具转换。 Temp\StagingArea\libs\armeabi-v7a\l">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.897Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试">
+<meta name="twitter:description" content="接口(Interface)是一种规划，为你定义了一系列的规则和任务，但不去实现它类和结构体可以继承多个接口抽象类表示该类中可能已经有一些的具体定义生成的库在这里： Temp\StagingArea\libs\armeabi-v7a\libil2cpp.so 符号表在这里，需要把扩展名弄成.so，才能被bugly的符号工具转换。 Temp\StagingArea\libs\armeabi-v7a\l">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/04/11/Interface/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>面试 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/11/Interface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">面试
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/04/11/Interface/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/11/Interface/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>接口(Interface)是一种规划，为你定义了一系列的规则和任务，但不去实现它<br>类和结构体可以继承多个接口<br>抽象类表示该类中可能已经有一些的具体定义<br>生成的库在这里：</p>
+<pre><code>Temp\StagingArea\libs\armeabi-v7a\libil2cpp.so
+</code></pre><p>符号表在这里，需要把扩展名弄成.so，才能被bugly的符号工具转换。</p>
+<pre><code>Temp\StagingArea\libs\armeabi-v7a\libil2cpp.so.debug
+</code></pre><p>C++代码生成到这里，最好保存这个目录，以便对应看调用栈：</p>
+<pre><code>Temp\StagingArea\Il2Cpp\il2cppOutput
+</code></pre><h1 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h1><p>会把所有插入其中的数据都当成了object类型来处理。<br>弊端：1、不是类型安全的；2、存在装箱拆箱操作<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Add() <span class="comment">//向数组中添加一个元素</span></span><br><span class="line">Remove() <span class="comment">//删除数组中的一个元素</span></span><br><span class="line">RemoveAt(<span class="keyword">int</span> i);<span class="comment">//</span></span><br><span class="line"><span class="comment">//不是骨骼动画,可以用animator,/</span></span><br><span class="line"><span class="comment">//骨骼动画 animator只能用一个,</span></span><br><span class="line">Reverse()<span class="comment">//反转数组的元素</span></span><br><span class="line">Sort()<span class="comment">//从小到大排序数组的元素</span></span><br><span class="line">Clone()<span class="comment">//复制一个数组</span></span><br><span class="line"><span class="comment">//List</span></span><br><span class="line"><span class="comment">//可通过索引访问</span></span><br></pre></td></tr></table></figure></p>
+<p>在决定使用List还是使用ArrayList 类(两者具有类似的功能)时,记住List类在大多数情况下执行的更好并且是类型安全的,<br>如果对List类型T使用值类型,则需要考虑实现和装箱问题<br>如果对类型T实用值类型,则编译器将特别针对该值类型生成List类的实现,这意味着不必对<br>再提醒一下，模板容器里不要使用枚举。<br>比如Dictionary之类的，枚举会boxing，产生无用的GC<br>就用int替代吧</p>
+<ol>
+<li>请描述游戏动画有哪几种，以及其原理。<br>答:主要有关节动画,单一网络模型动画(关键帧动画),骨骼动画.<br>关节动画把角色分为若干独立部分,一个部分对应一个网络模型,部分的动画连接成一个整体的动画,角色比较灵活Quake2中实用了这种动画.<br>单一网络模型动画由一个完整的网络模型构成,在动画序列的关键帧里记录各个顶点的原位置及其改变量,然后插值运算实现动画效果,角色动画较真实.<br>骨骼动画,广泛应用的动画方式,集成了以上两个方式的优点,骨骼按角色特点组成一定的层次结构,由关节相连,可做相对运动,皮肤作为单一网络蒙在骨骼之外,决定角色的外观,皮肤网络每一个顶点都会收到骨骼的影响,从而实现完美的动画.</li>
+</ol>
+<h1 id="alpha-blend-工作原理"><a href="#alpha-blend-工作原理" class="headerlink" title="alpha blend 工作原理"></a>alpha blend 工作原理</h1><p>alpha blend用于做半透明效果.Color=(源颜色 <em> 源系数)OP(目标颜色 </em> 目标系数);其中OP(混合方式)有加,减,反减,取最小,取最大</p>
+<h2 id="OpenGL-Alpha混合"><a href="#OpenGL-Alpha混合" class="headerlink" title="OpenGL Alpha混合"></a>OpenGL Alpha混合</h2><p>假设一种不透明的东西的颜色是A，另一种透明的东西颜色是B，那么透过B看A，看上去的颜色C就是B和A的混合颜色，可以用以下公式来模拟，设B物体的透明度为alpha（取值为0-1，0为完全透明，1为完全不透明）</p>
+<pre><code>R(C)=alpha*R(B)+(1-alpha)R(A)
+G(C)=alpha*G(B)+(1-alpha)G(A)
+B(C)=alpha*B(B)+(1-alpha)G(A)
+</code></pre><ol>
+<li><p>写光照计算中的diffuse的计算公式<br>答:漫反射光(diffuse)计算公式为:ldiffuse = Dintensity<em>Dcolor</em>N.L;(Dintensity)表示漫反射强度,Dcolor表示漫反射光颜色,N为该点的法向量,L为光源向量<br>其他,3D渲染中,物体表面的光照计算公式为:<br>I = 环境关(lambient) + 漫反射光(ldiffuse) + 镜面高光(lspecular);<br>其中,环境光(ambient)计算公式为:</p>
+<p> lambient = Aintensity*Acolor;(Aintensity)表示环境光强度,Acolor表示环境光颜色</p>
+</li>
+</ol>
+<p>镜面高光(specular)计算公式为:<br>lspecular = Sintensity<em>Scolor</em>(R.V)n;(Sintensity)表示镜面光照强度,Scolor表示镜面光颜色,R为光的反射向量,V为观察者向量</p>
+<ol>
+<li>MipMap是什么？作用？<br>答:在三维计算机图形的贴图渲染中有一个常用的技术成为Mipmapping,为了加快渲染速度和减少图像锯齿,贴图被处理成由一系列被预先计算和优化过的图片组成的文件,这样的贴图被称为mipmap</li>
+<li>用u3d实现2d游戏，有几种方式？<br>答：一种用UI实现(GUI,NGUI…)，一种是采用3d实体对象（plane），绘制在3d对象上，调节摄像机，采用平行投影模式或则固定视角。</li>
+<li>u3d中碰撞器和触发器的区别？<br>答：触发器只是碰撞器身上的一个属性，碰撞器是触发器的载体。</li>
+<li>物体发生碰撞的必要条件<br>答：需要检测碰撞的物体身上存在刚体组件（或被检测物体），也要碰撞器collider</li>
+<li>CharacterController和Rigidbody的区别</li>
+<li>物体发生碰撞时，有几个阶段，分别对应的函数<br>答：排除触发，有3种，OnCollisionEnter(),OnCollisionStay(); OnCollisionExit()</li>
+<li>u3d中，几种施加力的方式，描述出来。<br>答：a)爆炸力（AddExplosionForce(force : float, forcePos : Vector3，radius : float, upwards : float, mode : ForceMode)），应用一个力到刚体来模拟爆炸效果,就是在爆炸力中心坐标position,搜索在radius范围内的刚体，对其释放力作用，超出radius范围的刚体不受力作用，爆炸力将随着刚体的距离线性减弱。<br>b)力AddForce(force : Vector3, mode : ForceMode),主要施力给一个刚，使其移动。<br>c)位置力AddForceAtPosition(force : Vector3, position : Vector3, mode : ForceMode), 在position施加一个力，施力的主体将会受到一个力和力矩。<br>d)相对力AddRelativeForce(force : Vector3, mode : ForceMode),类似于AddForce；</li>
+<li>什么叫做链条关节<br>答:Hinge Joint ,他可以模拟两个物体见</li>
+<li>物体自旋转使用的函数叫什么<br>答：transform.Rotate(eulerAngles : Vector3, relativeTo : Space = Space.self);</li>
+<li>物体绕某点旋转使用函数叫什么<br>答：transform.RotateAround(point : Vector3, axis : Vector3, angles : float)</li>
+<li>u3d提供了一个用于保存读取数据的类，（playerPrefs），请列出保存读取整形数据的函数<br>答：PlayerPrefs.GetInt(key : string, defaultValue : int = 0);</li>
+<li>unity3d提供了几种光源，分别是什么<br>答：平行光,点光源，聚光灯，环境光</li>
+<li>unity3d从唤醒到销毁有一段生命周期，请列出系统自己调用的几个重要方法。<br>答：void Awake(),void Start(), void Update(), void FixedUpdate(),void LateUpdate(), void OnGUI() ，void Reset(), OnDisable(), void OnDestroy()</li>
+<li>物理更新一般在哪个系统函数里？<br>答：void FixedUpdate()</li>
+<li>移动相机动作在哪个函数里，为什么在这个函数里。<br>答：void LateUpdate(),因为这个函数是在Update执行完毕才执行的，不然的话就有可能出现摄像机里面什么都看到的情况。</li>
+<li>当游戏中需要频繁创建一个物体对象时，我们需要怎么做来节省内存。<br>Unity里有两种动态加载机制:一个是Resources.Load,另外一个通过AssetBundle,其实两者区别不大,Resources.Load就是从一个缺省打进程序包里的AssetBundle里加载资源,而一般AssetBundle文件需要你自己创建,运行时动态加载<br>AssetBundle运行时加载<br>AssetBundle.Unload(flase)是释放AssetBundle文件</li>
+<li>一个场景放置多个camera并同时处于活动状态，会发生什么<br>23.简述prefab的用处和环境<br>24.如何销毁一个UnityEngine.Object以及其子类<br>25.为什么u3d会出现组件上数据丢失的情况<br>26.u3d下如何安全的在不同工程迁移asset数据<br>DrawCall优化<br>一 Mesh Renderer<br>二 Skinned Mesh Renderer<br>三 合并要求对比<br>四 总结<br>五 场景制作建议<br>DrawCall优化合并,即DrawCall Batching.通过减少Draw call数和对显卡性能的消耗来提高性能<br>一 Mesh Renderer<br>分为Dynamic Batching 和 Static Batching<br>Dynamic Batching<br>不需要任何操作,只要共享材质(即使是不同的Mesh模型也可以)<br>Unity中的内存种类实际上Unity游戏使用的内存一共有三种:程序代码,托管堆(Managed Heap)以及本机堆(Native Heap)<br>程序代码包括了所有的Unity引擎,使用的库,以及你所写的所有的游戏代码,在编译后,得到的运行文件将会被加载到设备中执行,并占用一定内存.<br>这部分内存实际上是没有办法去”管理的”</li>
+</ol>
+<p>法线贴图<br>一: 法线贴图的原理<br>光照效果很大程度上是由垂直于物体表面的法线决定的,因为法线影响反射光的方向,均匀垂直的法线是镜面贴图但是有时候我们会给一个平面使用砖墙贴图,砖墙应该是凹凸不平的,而如果让砖墙使用该平面的法线的话,画面就很假,<br>而如果按真实砖墙去做模型的话,即做高精度模型,一方面制作麻烦,另一方面运行时对性能的损耗很大.<br>法线贴图就是来解决这个问题的.法线贴图就是把法线信息存储在一张图里.使用发现贴图时,通常顶点数和三角形面数只有高精度模型的十分之一不到.<br>二: 法线贴图的实现<br>将材质贴图对应的法线绘制在一张贴图上,将贴图对应点的单位法线向量信息float3(x,y,z)存储在途中对应的颜色里<br>压缩法线贴图的好处:<br>压缩后的法线贴图,大小只有原来的1/4左右,故可以使用更大或者更多的贴图来提升画面品质.<br>Unity3D的法线贴图<br>Unity3D使用的压缩法线贴图是DXT5nm格式的,有A和G两个通道,对于法线(x,y,z) A对应x,G对应y<br>对压缩法线贴图的采样依然是如下函数</p>
+<pre><code>float4 packedNormal = tex2D(_NormalMap, IN.uv_MainTex);
+</code></pre><p>packedNormal.w对应A通道,既法线的x<br>packedNormal.y对应G通道,既法线的y<br>Unity3D热更新全书-加载(一)从AssetBundle说起<br>我们试全面分析一下Unity3D提供的资源加载机制</p>
+<ol>
+<li>Resourecs//内嵌资源,使用方法Resources.Load,可以加载任意种类的资源,不能动态修改</li>
+<li>StreamingAssets//随包资源,使用方法IO或WWW.Load,WWW.Load可以加载任意种类资源,IO仅限bytes和text</li>
+<li>WWW从网络下载并加载</li>
+<li>WWW从网络加载AssetBundle<br>一和二显然不具有热更新的效果,这里就不做讨论<br>3 4都是从网络加载的,他们有什么区别呢<br>首先说3,这是没有缓冲的,我们显然不想让用户重复的浪费流量,不可取<br>然后是4,assetbundle提供了一个版本号来做缓冲对比,可以比较好的起到更新的目标<br>assetbundle原来就是Unity3D为我们准备的方案,难怪每本书都会大篇介绍AssetBundle,后文简称AB<br>每本书都告诉你,AB很强大,AB帮你解决了跨平台问题,帮你解决了依赖关系.<br>首先AB的确很好很强大,他能收纳Unity自己的所有资源种类,贴图,材质,shader预设<br>然后可以每平台支持,这就是第一个陷进,注意是每平台都支持,不是多平台支持<br>每个平台都要单独导出,而每个平台到底差了些什么呢?nothing<br>而最大的质量差异,源自贴图<br>有些平台贴图不压缩,有些平台贴图要压缩,而且根据不通的平台特性,套用不通的压缩算法,先压过再存到包里<br>这就是AB帮你干的最主要的事情<br>听起来很贴心呢,等等,你是不是忘了一个特定的命题,这个命题叫做UI<br>压缩的图片会有质量损失,UI贴图我们通常是不压缩的<br>然后UI还会触及到AB的另一个问题<br>以NGUI为例,NGUI的资源关系比较复杂,有贴图-&gt;图集-&gt;布局<br>不同的布局经常交叉应用贴图<br>如果用AB想把每个界面分开打包,给用户最小的资源更新量,这个任务可以用来灾难来形容<br>最终热更新推送给用户的东西是以文件为单位的,而AB在小粒度文件并且之间有较为复杂的应用关系这种需求的下的使用是一场灾难<br>AB对每个平台的差异编译不是可选的,而是强制的,假如你有web,ios,android,三个平台,无论如何你都要导出三次<br>没了AssetBundle,我们怎么办<br>把碎片文件下载回来,并且组装<br>对于UI这个情景,是完全可行的,把布局和图集保存为文本形式,把文本和贴图下载回来,然后组装<br>对于其他场景片段,在有动画和贴图需要压缩的情况下,AB依然是唯一的选择<br>unity没有提供在运行时压缩压缩贴图的手段,动画也不容易存储,只能运行时压缩DXT,只有pc和wp8支持<br>对于各种各样的资源加载回特别凌乱么,不会<br>其实本质上可以统一成bytes的处理<br>texture可以从bytes加载<br>字符串可以从bytes加载<br>AB可以从bytes加载<br>自定义二进制存储,本身就是bytes<br>Unity3D热更新全书-加载(二)如何在不用AssetBundle的前提下动态加载预设<br>Unity3D的主要构成大家都知道,首先是场景图,场景图上的节点构成一棵树<br>每个节点对应一个GameObject对象<br>然后每个GameObject有若干个组件<br>有一些组件会与资源产生关系,比如MeshRenderer会关联材质,材质回关联shader和贴图<br>场景图的一部分回保存为一个预设,prefab<br>有时候我们会需要预设去复用,而预设的加载似乎只能通过AB去打包,其实不然,这里我们有一个开源的库就可以解决这个问题<br>为什么不使用AB,可以见上一篇,加载(一),不使用AB一份资源全平台同意,也没有痛苦的打包时间,资源依赖也很容易处置</li>
+</ol>
+<p>物理更新一般在FixedUpdate里,每固定帧绘制时执行一次,和update不同的是FixedUpdate是渲染帧执行,如果你的渲染效率低下的时候FixedUpdate调用次数就会跟着下降,FixedUpdate比较适用于物理引擎的计算,因为是跟每帧渲染有关,Update就比较适合做控制.<br>移动相机动作在LateUpdate函数,当所有Update结束才调用,比较适合用于命令脚本的执行,<br>当游戏中需要频繁创建一个物体对象时,做一个pool,游戏开始时预先实例化足够的数量,用的时候取,不用的时候回收.</p>
+<ol>
+<li>什么是渲染管道?<br>渲染管道中有很多步骤,都要将几何体从一个坐标系中变换到另一个坐标系中.<br>本地坐标-&gt;视图坐标-&gt;背面裁剪-&gt;光照-&gt;裁剪-&gt;投影-&gt;视图变换-&gt;光栅化<br>优化内存:</li>
+<li>自带压缩类库</li>
+<li>将暂时不用的以后还需要实用的物体隐藏起来而不是直接Destroy掉</li>
+<li>释放AssetBundle占用的资源</li>
+<li>降低模型的片面数,降低模型的骨骼数量,降低贴图的大小</li>
+<li>使用光照贴图,使用多层次细节(LOD),使用着色器(Shader),使用预设(Prefab)<br>资源加载:</li>
+<li>Resources.Load();</li>
+<li>AssetBundle<br>localPosition:自身位置,相对于父级的变换位置,Position:在世界坐标transform的位置<br>静态构造函数不允许访问修饰符,也不接受任何参数<br>碰撞器(Collider)有碰撞效果,IsTrigger=false,可以调用OnCollisionEnter/Stay/Exit函数<br>触发器(Trigger)没有碰撞效果,IsTrigger=true,可以调用OnTriggerEnter/Stay/Exit函数</li>
+<li>物体发生碰撞的必要条件?<br>必须带有collider碰撞起和rigibody刚体属性或者人物控制器其实人物控制器就包含了前两者,另外一个也要带有Collider,Collider分类:网格碰撞器,盒子碰撞器,胶囊碰撞器,球型碰撞器,地形碰撞器</li>
+<li>CharacterController和Rigidbody的区别?<br>Rigidbody具有完全真是物理的特性,而CharacterController可以说是受限的Rigidbody,具有一定的物理效果但不是完全真实的.<br>4.物体发生碰撞时,几种施加力的方式,描述出来?<br>rigidbody.AddForce/AddForceAtPosition,都是rigidbody的成员函数</li>
+<li>物体发生碰撞时,有几个阶段,分别对应的函数<br>三个阶段,OnCollsionEnter/Stay/Exit函数</li>
+<li>Unity3d提供了几种光源,分别是什么<br>共4中,DirectrionaLight,PointLight,SpotLight,AreaLight(用于烘培)</li>
+<li>使用Unity3d实现2d游戏,有几种方式?<br>(1).使用本身GUI<br>(2).把相机的Projection(投影)值调位Orthographic(正交投影),不考虑z轴;<br>(3).使用2d插件,如:2DTollKit<br>9.下列代码在运行中回产生几个临时对象?<br>string a = new string(“abc”);<br>a = (a.ToUpper() + “123”).SubString(0, 2);<br>答:其实在C#第一行是会出错的(Java中倒是可行),应该这样初始化<br>string b = new string(new char[]{‘a’, ‘b’, ‘c’}}</li>
+<li>请简述关键字Sealed用在类声明和函数声明时的作用<br>答:类声明时可防止其他类继承此类,在方法中声明则可防止派生类重写此方法</li>
+<li>简述四元数的作用,四元数对欧拉角的优点?<br>答:四元数用于表示旋转<br>相对于欧拉角的优点:<br>(1).能进行增量旋转<br>(2).避免方向锁<br>(3)给定方位的表达方式有两种,互为负(欧拉角有无数种表达方式)<br>12.如何安全的在不用工程间安全的迁移asset数据,三种方法<br>答<br>(1).将Assets目录和Library目录一起迁移<br>(2)导出包<br>(3)用unity自带的assert server功能<br>13.当一个细小的高速物体碰撞另一个较大的物体时,会出现什么情况?如何避免?<br>穿透(碰撞检测失败)<br>14.MipMap是什么?作用?<br>在三维计算机图形的贴图渲染中有一个常用的技术被成为Mipmapping,为了加快渲染速度和减少图像锯齿,贴图被处理成为</li>
+</ol>
+<h1 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h1><p>实现原理：在运行时根据程序集和其中的类型得到元数据<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line">Assembly.Load(<span class="string">"程序集"</span>);<span class="comment">//加载一个程序集，返回类型是一个Assembly</span></span><br><span class="line"><span class="keyword">foreach</span>(Type type <span class="keyword">in</span> assembly.GetType())</span><br><span class="line">&#123;</span><br><span class="line">    stromh t = type.name;</span><br><span class="line">&#125;</span><br><span class="line">Type type = assembly.GetType(<span class="string">"程序集.类名"</span>); <span class="comment">//获取当前类的类型</span></span><br><span class="line"><span class="keyword">var</span> activator = System.Activator.CreateInstance(type); <span class="comment">// 创建此类型实例</span></span><br><span class="line">MethodInfo mInfo = type.GetMethod(<span class="string">"方法名"</span>);<span class="comment">//获取当前方法</span></span><br><span class="line">mInfo.Invok(<span class="literal">null</span>, 方法参数);</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/10/unity-nature-review/" rel="next" title="unity-nature-review">
+                <i class="fa fa-chevron-left"></i> unity-nature-review
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/11/23-Design-Patterns/" rel="prev" title="23种设计模式">
+                23种设计模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ArrayList"><span class="nav-number">1.</span> <span class="nav-text">ArrayList</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#alpha-blend-工作原理"><span class="nav-number">2.</span> <span class="nav-text">alpha blend 工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OpenGL-Alpha混合"><span class="nav-number">2.1.</span> <span class="nav-text">OpenGL Alpha混合</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反射"><span class="nav-number">3.</span> <span class="nav-text">反射</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

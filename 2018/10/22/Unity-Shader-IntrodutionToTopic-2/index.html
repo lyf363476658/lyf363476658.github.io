@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="透明效果透明是游戏中经常要使用的一种效果。在实时渲染中要实现透明效果，通常会在渲染模型时控制它的透明通道（Alpha Channel）。当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值之外，它还有透明度。当透明度为1时，表示该像素是完全不透明的，而当其为0时，则表示该像素完全不会显示。在Unity中，我们通常使用两种方法来实现透明效果：第一种是使用透明度测试（Alpha T">
+<meta name="keywords" content="Shader">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shader第三部分">
+<meta property="og:url" content="http://zentia.github.io/2018/10/22/Unity-Shader-IntrodutionToTopic-2/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="透明效果透明是游戏中经常要使用的一种效果。在实时渲染中要实现透明效果，通常会在渲染模型时控制它的透明通道（Alpha Channel）。当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值之外，它还有透明度。当透明度为1时，表示该像素是完全不透明的，而当其为0时，则表示该像素完全不会显示。在Unity中，我们通常使用两种方法来实现透明效果：第一种是使用透明度测试（Alpha T">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.049Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity Shader第三部分">
+<meta name="twitter:description" content="透明效果透明是游戏中经常要使用的一种效果。在实时渲染中要实现透明效果，通常会在渲染模型时控制它的透明通道（Alpha Channel）。当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值之外，它还有透明度。当透明度为1时，表示该像素是完全不透明的，而当其为0时，则表示该像素完全不会显示。在Unity中，我们通常使用两种方法来实现透明效果：第一种是使用透明度测试（Alpha T">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/10/22/Unity-Shader-IntrodutionToTopic-2/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity Shader第三部分 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/10/22/Unity-Shader-IntrodutionToTopic-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity Shader第三部分
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Unity-Shader/" itemprop="url" rel="index"><span itemprop="name">Unity Shader</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/10/22/Unity-Shader-IntrodutionToTopic-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/22/Unity-Shader-IntrodutionToTopic-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="透明效果"><a href="#透明效果" class="headerlink" title="透明效果"></a>透明效果</h1><p>透明是游戏中经常要使用的一种效果。在实时渲染中要实现透明效果，通常会在渲染模型时控制它的<strong>透明通道（Alpha Channel）</strong>。当开启透明混合后，当一个物体被渲染到屏幕上时，每个片元除了颜色值和深度值之外，它还有透明度。当透明度为1时，表示该像素是完全不透明的，而当其为0时，则表示该像素完全不会显示。<br>在Unity中，我们通常使用两种方法来实现透明效果：第一种是使用<strong>透明度测试（Alpha Test）</strong>，这种效果其实无法得到真正的半透明效果；另一种是<strong>透明度混合（Alpha Blending）</strong>。<br>在之前的学习中，我们从没有强调过渲染顺序的问题。也就是说，当场景中包含很多模型时，我们并没有考虑是先渲染A，在渲染B，最后在渲染C，还是按照其他的顺序来渲染。事实上，对于不透明（opaque）物体，不考虑它们的渲染顺序也能得到正确的排序效果，这是由于强大的深度缓冲（depth buffer，也被称为z-buffer）的存在。在实时渲染中，深度缓冲是用于解决可见性（visibility）问题的，它可以决定哪个物体的哪些部分会被渲染在前面，而哪些部分会被其他物体遮挡。它的基本思想是：根据深度缓冲中的值来判断该片元距离摄像机的距离，当渲染一个片元时，需要把它的深度值和已经存在于深度缓冲中的值进行比较（如果开启了深度测试），如果它的值距离摄像机更远，那么说明这个片元不应该被渲染到屏幕上（有物体遮挡住了它）；否则，这个片元应该覆盖掉此时颜色缓冲中的像素值，并把它的深度值更新到深度缓冲中（如果开启了深度写入）。</p>
+<h2 id="透明度混合"><a href="#透明度混合" class="headerlink" title="透明度混合"></a>透明度混合</h2><p>透明度混合的实现要比透明度测试复杂一些，这是因为我们在处理透明度测试时，实际上跟对待普通的不透明物体几乎是一样的，只是在片元着色器中增加了对透明度判断并裁剪片元的代码。而想要实现透明度混合就没这么简单了。我们回顾之前提到的透明度混合的原理。<br><strong>透明度混合：</strong>这种方法可以得到真正的半透明效果。它会使用当前片元的透明度作为混合因子，与已经存储在颜色缓冲区种的颜色进行混合，得到新的颜色。但是，<font color="red"><strong>透明度混合需要关闭深度写入</strong></font>，这使得我们要非常小心物体的渲染顺序。<br>为了进行混合，我们需要使用Unity提供的混合命令Blend。Blend是Unity提供的设置混合模式的命令。想要实现半透明的效果就需要把当前自身的颜色和已经存在于颜色缓冲区种的颜色值进行混合，混合时使用的函数就是由该指令决定的。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>语义</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blend Off</td>
+<td>关闭混合</td>
+</tr>
+<tr>
+<td>Blend SrcFactor DstFactor</td>
+<td>开启混合，并设置混合因子。源颜色（该片元产生的颜色）会乘以SrcFactor，而目标颜色（已经存在于颜色缓存的颜色）会乘以DstFactor，然后把两者相加后在存入颜色缓冲中</td>
+</tr>
+<tr>
+<td>Blend SrcFactor DstFactor, SrcFactorA DstFractorA</td>
+<td>和上面一样，只是使用不同的因子来混合透明通道</td>
+</tr>
+<tr>
+<td>BlendOp BlendOperation</td>
+<td>并非是把源颜色和目标颜色简单相加后混合，而是使用BlendOperation对它们进行其他操作</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>我们介绍第二种语义，即Blend SrcFactor DstFactor来进行混合。需要注意的是，这个命令在设置混合因子的同时也开启了混合模式。这是因为，只有开启了混合之后，设置片元的透明通道才有意义，而Unity在我们使用Blend命令的时候就自动帮我们打开了。很多初学者抱怨为什么自己的模型没有任何透明效果，这往往是因为他们没有在Pass中使用Blend命令，一方面是没有设置混合因子，更重要的是没有打开混合模式。我们会把源颜色的混合因子SrcFactor设为SrcAlpha，而目标颜色的混合因子DstFactor设为OneMinusSrcAlpha。这意味着，经过混合后新的颜色是：</p>
+<p>$DstColor_{new} = SrcAlpha<em>SrcColor+(1-SrcAlpha)</em>DstColor_{old}$</p>
+<h3 id="开启深度写入的半透明效果"><a href="#开启深度写入的半透明效果" class="headerlink" title="开启深度写入的半透明效果"></a>开启深度写入的半透明效果</h3><h3 id="ShaderLab的混合命令"><a href="#ShaderLab的混合命令" class="headerlink" title="ShaderLab的混合命令"></a>ShaderLab的混合命令</h3><h4 id="混合等式和参数"><a href="#混合等式和参数" class="headerlink" title="混合等式和参数"></a>混合等式和参数</h4><h4 id="混合操作"><a href="#混合操作" class="headerlink" title="混合操作"></a>混合操作</h4><h4 id="常见和混合类型"><a href="#常见和混合类型" class="headerlink" title="常见和混合类型"></a>常见和混合类型</h4><h3 id="双面渲染的透明效果"><a href="#双面渲染的透明效果" class="headerlink" title="双面渲染的透明效果"></a>双面渲染的透明效果</h3><h4 id="透明度测试的双面渲染"><a href="#透明度测试的双面渲染" class="headerlink" title="透明度测试的双面渲染"></a>透明度测试的双面渲染</h4><h4 id="透明度混合的双面渲染"><a href="#透明度混合的双面渲染" class="headerlink" title="透明度混合的双面渲染"></a>透明度混合的双面渲染</h4><h2 id="渲染路径Rendering-Path"><a href="#渲染路径Rendering-Path" class="headerlink" title="渲染路径Rendering Path"></a>渲染路径Rendering Path</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>LightMode</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Always</td>
+<td>不管使用哪种渲染路径，该Pass总是会被渲染，但不会计算任何光照</td>
+</tr>
+<tr>
+<td>ForwardBase</td>
+<td>用于前向渲染。该Pass会计算环境光、最重要的平行光、逐顶点/SH光源和Lightmaps</td>
+</tr>
+<tr>
+<td>ForwardAdd</td>
+<td>用于前向渲染。该Pass会计算额外的逐像素光源，每个Pass对应一个光源</td>
+</tr>
+<tr>
+<td>Deferred</td>
+<td>用于延迟渲染。该Pass会渲染G缓冲（G-buffer）</td>
+</tr>
+<tr>
+<td>ShadowCaster</td>
+<td>把物体的深度信息渲染到阴影映射纹理（shadowmap）或一张深度纹理中</td>
+</tr>
+<tr>
+<td>PrepassBase</td>
+<td>用于遗留的延迟渲染。该Pass会渲染法线和高光反射的指数部分</td>
+</tr>
+<tr>
+<td>PrepassFinal</td>
+<td>用于遗留的延迟渲染。该Pass通过合并纹理、光照和自发光来渲染得到最后的颜色</td>
+</tr>
+<tr>
+<td>Vertex、VertexLMRGBM和VertexLX</td>
+<td>用于遗留的顶点照明渲染</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Unity在处理多光源的情况时为我们提供了三种模式；修改的地方在Edit-&gt;Project Settings—Player—Other Settings—Redering Path</p>
+<ul>
+<li>顶点光Vertex Lit</li>
+<li>方向性Forward(默认)</li>
+<li>延迟照明 Deferred Lighting</li>
+</ul>
+<p>shader默认使用Forward</p>
+<h4 id="前向渲染路径"><a href="#前向渲染路径" class="headerlink" title="前向渲染路径"></a>前向渲染路径</h4><p>每进行一次完整的前向渲染，需要渲染该对象的渲染图元，并计算两个缓冲区的信息：一个是颜色缓冲区，一个是深度缓冲区。利用深度缓冲区来决定一个片元是否可见，如果可见就更新颜色缓冲区的的颜色值。我们可以用下面的伪代码来描述前向渲染路径的大致过程：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Pass </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (each primitive in <span class="keyword">this</span> model) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (failed in depth test)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 如果没有通过深度测试，说明该片元是不可见的</span></span><br><span class="line">            discard;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 如果该片元可见</span></span><br><span class="line">            <span class="comment">// 就进行光照计算</span></span><br><span class="line">            float4 color = Shading(materialInfo, pos, normal, lightDir, viewDir);</span><br><span class="line">            <span class="comment">// 更新帧缓冲</span></span><br><span class="line">            writeFrameBuffer(fragment, color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于每个逐像素光源，我们都需要进行上面一次完整的渲染流程。如果一个物体在多个逐像素光源的影响区域内，那么该物体就需要执行多个Pass，每个Pass计算一个逐像素光源的光照结果，然后在帧缓冲中把这些光照结果混合起来得到最终的颜色值。假设，场景中有N个物体，每个物体物体受M个光源的影响，那么要渲染整个场景一共需要N*M个Pass。可以看出，如果有大量逐像素光照，那么需要执行的Pass数目也会很大。因此，渲染引擎通常会限制每个物体的逐像素光照的数目。</p>
+<h5 id="Unity中的前向渲染"><a href="#Unity中的前向渲染" class="headerlink" title="Unity中的前向渲染"></a>Unity中的前向渲染</h5><p>事实上，一个Pass不仅仅可以用来计算逐像素光照，它也可以用来计算逐顶点等其他光照。这取决于光照计算所处流水线阶段以及计算时使用的数学模型。当渲染一个物体时，Unity会计算哪些光源照亮了它，以及这些光源照亮该物体的方式。<br>在Unity中，前向渲染路径有3种处理光照（即照亮物体）的方式：逐顶点处理、逐像素处理，球谐函数（Spherical Harmonics, SH）处理。</p>
+<h4 id="顶点照明渲染路径"><a href="#顶点照明渲染路径" class="headerlink" title="顶点照明渲染路径"></a>顶点照明渲染路径</h4><h4 id="延迟渲染路径"><a href="#延迟渲染路径" class="headerlink" title="延迟渲染路径"></a>延迟渲染路径</h4><p>这是一种可以按照你的需求在场景中使用任意数目的光源的方法，而且这个方法还能同时保证性能仍然保持在一个合理的范围。它也不限制阴影的数量，如果场景中的对象实在光照范围之内的话，也不会增加额外的渲染批次（如果对象投影阴影的话则是例外）。</p>
+<p>在游戏中的实时光照，一般有三种常用的方法</p>
+<ol>
+<li>一遍渲染多个光源：所有光源都在一个着色器中进行。但一个着色器指令数量有限，所以这个技术只适用于光源数量较少的情况。</li>
+<li>多遍渲染多光源</li>
+<li>延迟渲染</li>
+</ol>
+<h3 id="广告牌"><a href="#广告牌" class="headerlink" title="广告牌"></a>广告牌</h3><p>广告牌技术的本质就是构建旋转矩阵，而我们知道一个变换矩阵需要3个基向量。广告牌技术使用的基向量通常就是<strong>表面法线（normal）、指向上的方向（up）以及指向右的方向（right）</strong>。除此之外，我们还需要指定一个<strong>锚点（anchor location）</strong>，这个锚点在旋转过程中是固定不变的，以此来确定多边形在空间中的位置。<br>广告牌技术的难点在于，如何根据需求构建3个相互正交的基向量。计算过程通常是，<br>CPU写法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public Vector3 Normal;</span><br><span class="line">Quaternion direction;</span><br><span class="line">void Start () &#123;</span><br><span class="line">    direction = Quaternion.FromToRotation(new Vector3(0, 0, 1), Normal);</span><br><span class="line">&#125;</span><br><span class="line">void Update () &#123;</span><br><span class="line">    transform.rotation = Camera.main.transform.rotation * direction;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="屏幕后处理效果"><a href="#屏幕后处理效果" class="headerlink" title="屏幕后处理效果"></a>屏幕后处理效果</h2><h3 id="建立一个基本的屏幕后处理脚本系统"><a href="#建立一个基本的屏幕后处理脚本系统" class="headerlink" title="建立一个基本的屏幕后处理脚本系统"></a>建立一个基本的屏幕后处理脚本系统</h3><pre><code>MonoBehaviour.OnRenderImage(RenderTexture src, RenderTexture dest);
+</code></pre><p>当在脚本中声明该函数后，Unity会把当前渲染得到的图像存储在第一个参数对应的源渲染纹理中，把第二参数对应的渲染纹理显示到屏幕上。</p>
+<pre><code>public static void Blit(Texture src, RenderTexture dest);
+public static void Blit(Texture src, RenderTextrue dest, Material mat, int pass = -1);
+public static void Blit(Texture src, Material mat, int pass = -1);
+</code></pre><p>参数pass的默认值胃-1，表示将会依次调用Shader内的所有Pass。否则，只会调用给定索引的Pass。</p>
+<h2 id="使用深度和法线纹理"><a href="#使用深度和法线纹理" class="headerlink" title="使用深度和法线纹理"></a>使用深度和法线纹理</h2><h3 id="消融"><a href="#消融" class="headerlink" title="消融"></a>消融</h3><p>噪声纹理+透明度测试，我们使用对噪声纹理采样的结果和某个控制消融程度的阀值比较，如果小于阀值，就使用clip函数把它对应的像素裁减掉。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Test&quot;</span><br><span class="line">&#123;</span><br><span class="line">    Properties</span><br><span class="line">    &#123;</span><br><span class="line">        _BurnAmount(&quot;Burn Amount&quot;, Range(0.0, 1.0)) = 0.0 // 控制消融程度，0为正常，1完全消融</span><br><span class="line">        _LineWith(&quot;Burn Line Width&quot;, Range(0.0, 0.2)) = 0.1 // 模拟烧焦效果的线宽，值越大，火焰边缘的蔓延范围越宽</span><br><span class="line">        _MainText (&quot;Base (RGB)&quot;, 2D) = &quot;white&quot; &#123;&#125; // 漫反射纹理</span><br><span class="line">        _BumpMap (&quot;Normal Map&quot;, 2D) = &quot;bump&quot; &#123;&#125; // 法线纹理</span><br><span class="line">        _BurnFirstColor(&quot;Burn First Color&quot;, Color) = (1,0,0,1) // 火焰边缘颜色</span><br><span class="line">        _BurnSecondColor(&quot;Burn Second Color&quot;, Color) = (1,0,0,1) // 火焰边缘颜色</span><br><span class="line">        _BurnMap(&quot;Burn Map&quot;, 2D) = &quot;white&quot; &#123;&#125; // 消融纹理</span><br><span class="line">    &#125;   </span><br><span class="line">    SubShader &#123;</span><br><span class="line">        Pass &#123;</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            #pragma vertex vert</span><br><span class="line">            #pragma vertex frag</span><br><span class="line"></span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;   </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="水波效果"><a href="#水波效果" class="headerlink" title="水波效果"></a>水波效果</h3><p>在模拟实时水面的过程中，往往也会使用噪声纹理。此时，噪声纹理通常会用作一个高度图，以不断修改水面的法线方向。为了模拟水不断流动的效果，我们会使用和时间相关的变量来对噪声纹理进行采样，当得到法线信息后，在进行正常的反射+折射计算，得到最后的水面波动效果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SubShader &#123;</span><br><span class="line">    Tags &#123;&quot;Queue&quot;=&quot;Transparent&quot; &quot;RenderType&quot;=&quot;Opaque&quot;&#125;</span><br><span class="line">    GrabPass &#123;&quot;_RefractionTex&quot;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先把SubShader的标签中渲染队列设置成Transparent，并把后面的RenderType设置为Opaque。把Queue设置成Transparent可以确保该物体渲染时，其他所有不透明的物体都已经被渲染到屏幕上了，否则就可能无法正确得到“透过水面看到的图像”。而设置RenderType则是为了在使用着色器替换（Shader Replacement）时，该物体可以在需要时被正确渲染。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Shader/" rel="tag"># Shader</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/21/Unity-Shader-IntroductionToTopic1/" rel="next" title="Unity Shader第二部分">
+                <i class="fa fa-chevron-left"></i> Unity Shader第二部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/23/PowerVR-Performance-Recommendations/" rel="prev" title="PowerVR Performance Recommendations">
+                PowerVR Performance Recommendations <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#透明效果"><span class="nav-number">1.</span> <span class="nav-text">透明效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#透明度混合"><span class="nav-number">1.1.</span> <span class="nav-text">透明度混合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开启深度写入的半透明效果"><span class="nav-number">1.1.1.</span> <span class="nav-text">开启深度写入的半透明效果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShaderLab的混合命令"><span class="nav-number">1.1.2.</span> <span class="nav-text">ShaderLab的混合命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#混合等式和参数"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">混合等式和参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混合操作"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">混合操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见和混合类型"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">常见和混合类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双面渲染的透明效果"><span class="nav-number">1.1.3.</span> <span class="nav-text">双面渲染的透明效果</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#透明度测试的双面渲染"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">透明度测试的双面渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#透明度混合的双面渲染"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">透明度混合的双面渲染</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染路径Rendering-Path"><span class="nav-number">1.2.</span> <span class="nav-text">渲染路径Rendering Path</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#前向渲染路径"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">前向渲染路径</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Unity中的前向渲染"><span class="nav-number">1.2.0.1.1.</span> <span class="nav-text">Unity中的前向渲染</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顶点照明渲染路径"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">顶点照明渲染路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#延迟渲染路径"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">延迟渲染路径</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#广告牌"><span class="nav-number">1.2.1.</span> <span class="nav-text">广告牌</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#屏幕后处理效果"><span class="nav-number">1.3.</span> <span class="nav-text">屏幕后处理效果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建立一个基本的屏幕后处理脚本系统"><span class="nav-number">1.3.1.</span> <span class="nav-text">建立一个基本的屏幕后处理脚本系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用深度和法线纹理"><span class="nav-number">1.4.</span> <span class="nav-text">使用深度和法线纹理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消融"><span class="nav-number">1.4.1.</span> <span class="nav-text">消融</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#水波效果"><span class="nav-number">1.4.2.</span> <span class="nav-text">水波效果</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

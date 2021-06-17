@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Entitas - The Entity Component System Framework for C# and UnityEntitas is a super fast Entity Component System Framework (ECS)">
+<meta name="keywords" content="Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity ECS Readme">
+<meta property="og:url" content="http://zentia.github.io/2018/04/17/Unity-ECS-README/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="Entitas - The Entity Component System Framework for C# and UnityEntitas is a super fast Entity Component System Framework (ECS)">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img.shields.io/badge/chat-on%20gitter-brightgreen.svg">
+<meta property="og:image" content="https://img.shields.io/badge/twitter-follow%20%40s__schmid-blue.svg">
+<meta property="og:image" content="https://img.shields.io/badge/twitter-follow%20%40entitas__csharp-blue.svg">
+<meta property="og:image" content="https://travis-ci.org/sschmid/Entitas-CSharp.svg?branch=master">
+<meta property="og:image" content="https://img.shields.io/github/release/sschmid/Entitas-CSharp.svg">
+<meta property="og:image" content="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas-Shmup-Part-1.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas-Shmup-Part-2.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/UniteEurope2015-Video.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/UniteEurope2016-Video.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas.Unity-MenuItems.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas.Unity.VisualDebugging-Entity.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas.Unity.VisualDebugging-DebugSystems.png">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.029Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity ECS Readme">
+<meta name="twitter:description" content="Entitas - The Entity Component System Framework for C# and UnityEntitas is a super fast Entity Component System Framework (ECS)">
+<meta name="twitter:image" content="https://img.shields.io/badge/chat-on%20gitter-brightgreen.svg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/04/17/Unity-ECS-README/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity ECS Readme | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/17/Unity-ECS-README/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity ECS Readme
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/04/17/Unity-ECS-README/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/17/Unity-ECS-README/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p align="center">
+    <a href="https://gitter.im/sschmid/Entitas-CSharp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/badge/chat-on%20gitter-brightgreen.svg" alt="Join the chat at https://gitter.im/sschmid/Entitas-CSharp"></a>
+    <a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fgithub.com%2Fsschmid%2FEntitas-CSharp&screen_name=s_schmid&tw_p=followbutton" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/badge/twitter-follow%20%40s__schmid-blue.svg" alt="Twitter Follow Me"></a>
+    <a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fgithub.com%2Fsschmid%2FEntitas-CSharp&screen_name=entitas_csharp&tw_p=followbutton" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/badge/twitter-follow%20%40entitas__csharp-blue.svg" alt="Twitter Follow Me"></a>
+    <a href="https://travis-ci.org/sschmid/Entitas-CSharp" target="_blank" rel="noopener">
+        <img src="https://travis-ci.org/sschmid/Entitas-CSharp.svg?branch=master" alt="Build Status"></a>
+    <a href="https://github.com/sschmid/Entitas-CSharp/releases" target="_blank" rel="noopener">
+        <img src="https://img.shields.io/github/release/sschmid/Entitas-CSharp.svg" alt="Latest release"></a>
+</p>
+
+<h1 id="Entitas-The-Entity-Component-System-Framework-for-C-and-Unity"><a href="#Entitas-The-Entity-Component-System-Framework-for-C-and-Unity" class="headerlink" title="Entitas - The Entity Component System Framework for C# and Unity"></a>Entitas - The Entity Component System Framework for C# and Unity</h1><p>Entitas is a super fast Entity Component System Framework (ECS) specifically made for C# and Unity. Internal caching and blazing fast component access makes it second to none. Several design decisions have been made to work optimal in a garbage collected environment and to go easy on the garbage collector. Entitas comes with an optional code generator which radically reduces the amount of code you have to write and <a href="https://cleancoders.com" title="Clean Coders" target="_blank" rel="noopener">makes your code read like well written prose.</a></p>
+<hr>
+<h3 id="»-Download"><a href="#»-Download" class="headerlink" title="» Download"></a><strong><a href="#download-entitas">» Download</a></strong></h3><h3 id="»-Documentation"><a href="#»-Documentation" class="headerlink" title="» Documentation"></a><strong><a href="http://sschmid.github.io/Entitas-CSharp/" title="Entitas Documentation" target="_blank" rel="noopener">» Documentation</a></strong></h3><h3 id="»-Ask-a-question"><a href="#»-Ask-a-question" class="headerlink" title="» Ask a question"></a><strong><a href="https://github.com/sschmid/Entitas-CSharp/issues/new" title="New issue" target="_blank" rel="noopener">» Ask a question</a></strong></h3><h3 id="»-Wiki-and-example-projects"><a href="#»-Wiki-and-example-projects" class="headerlink" title="» Wiki and example projects"></a><strong><a href="https://github.com/sschmid/Entitas-CSharp/wiki" title="Entitas Wiki" target="_blank" rel="noopener">» Wiki and example projects</a></strong></h3><h3 id="»-madeWithEntitas"><a href="#»-madeWithEntitas" class="headerlink" title="» #madeWithEntitas"></a><strong><a href="https://github.com/sschmid/Entitas-CSharp/wiki/Made-With-Entitas" title="Wiki - #madeWithEntitas" target="_blank" rel="noopener">» #madeWithEntitas</a></strong></h3><hr>
+<h1 id="Video-Tutorials-amp-Unity-Unite-Talks"><a href="#Video-Tutorials-amp-Unity-Unite-Talks" class="headerlink" title="Video Tutorials &amp; Unity Unite Talks"></a>Video Tutorials &amp; Unity Unite Talks</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Entitas ECS Unity Tutorial</th>
+<th style="text-align:center">Entitas ECS Unity Tutorial</th>
+<th style="text-align:center">Entity system architecture with Unity</th>
+<th style="text-align:center">ECS architecture with Unity by example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="https://www.youtube.com/watch?v=L-18XRTarOM" title="Video: Entitas - Shmup - Part 1" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas-Shmup-Part-1.jpg" alt="Shmup1" title="Video: Entitas - Shmup - Part 1"></a></td>
+<td style="text-align:center"><a href="https://www.youtube.com/watch?v=DZpvUnj2dGI" title="Video: Entitas - Shmup - Part 2" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas-Shmup-Part-2.jpg" alt="Shmup2" title="Video: Entitas - Shmup - Part 2"></a></td>
+<td style="text-align:center"><a href="https://www.youtube.com/watch?v=Re5kGtxTW6E" title="Video: Watch the Entitas Talk at Unite Europe 2015" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/UniteEurope2015-Video.png" alt="Unite 15" title="Video: Watch the Entitas Talk at Unite Europe 2015"></a></td>
+<td style="text-align:center"><a href="https://www.youtube.com/watch?v=Phx7IJ3XUzg" title="Video: Watch the Entitas Talk at Unite Europe 2016" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/UniteEurope2016-Video.png" alt="Unite 16" title="Video: Watch the Entitas Talk at Unite Europe 2016"></a></td>
+</tr>
+<tr>
+<td style="text-align:center">Setup &amp; Basics</td>
+<td style="text-align:center">Git &amp; Unit Tests</td>
+<td style="text-align:center"><a href="http://www.slideshare.net/sschmid/uniteeurope-2015" title="SlideShare: Unite Europe 2015" target="_blank" rel="noopener">» Open the slides on SlideShare: Unite Europe 2015</a></td>
+<td style="text-align:center"><a href="http://www.slideshare.net/sschmid/uniteeurope-2016" title="SlideShare: Unite Europe 2016" target="_blank" rel="noopener">» Open the slides on SlideShare: Unite Europe 2016</a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="First-glimpse"><a href="#First-glimpse" class="headerlink" title="First glimpse"></a>First glimpse</h1><p>The optional <a href="https://github.com/sschmid/Entitas-CSharp/wiki/Code-Generator" title="Wiki - Code Generator" target="_blank" rel="noopener">code generator</a> lets you write code that is super fast, safe and literally screams its intent.</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> GameEntity <span class="title">CreateRedGem</span>(<span class="params"><span class="keyword">this</span> GameContext context, Vector3 position</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> entity = context.CreateEntity();</span><br><span class="line">    entity.isGameBoardElement = <span class="literal">true</span>;</span><br><span class="line">    entity.isMovable = <span class="literal">true</span>;</span><br><span class="line">    entity.AddPosition(position);</span><br><span class="line">    entity.AddAsset(<span class="string">"RedGem"</span>);</span><br><span class="line">    entity.isInteractive = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">return</span> entity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> entities = context.GetEntities(Matcher&lt;GameEntity&gt;.AllOf(GameMatcher.Position, GameMatcher.Velocity));</span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">var</span> e <span class="keyword">in</span> entities) &#123;</span><br><span class="line">    <span class="keyword">var</span> pos = e.position;</span><br><span class="line">    <span class="keyword">var</span> vel = e.velocity;</span><br><span class="line">    e.ReplacePosition(pos.<span class="keyword">value</span> + vel.<span class="keyword">value</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>Entitas is fast, light and gets rid of unnecessary complexity. There are less than a handful classes you have to know to rocket start your game or application:</p>
+<ul>
+<li>Entity</li>
+<li>Context</li>
+<li>Group</li>
+<li>Entity Collector</li>
+</ul>
+<p><a href="https://github.com/sschmid/Entitas-CSharp/wiki/Overview" title="Wiki - Overview" target="_blank" rel="noopener">Read more…</a></p>
+<h1 id="Code-Generator"><a href="#Code-Generator" class="headerlink" title="Code Generator"></a>Code Generator</h1><p>The Code Generator generates classes and methods for you, so you can focus on getting the job done. It radically reduces the amount of code you have to write and improves readability by a huge magnitude. It makes your code less error-prone while ensuring best performance. I strongly recommend using it!</p>
+<p><a href="https://github.com/sschmid/Entitas-CSharp/wiki/Code-Generator" title="Wiki - Code Generator" target="_blank" rel="noopener">Read more…</a></p>
+<h1 id="Unity-integration"><a href="#Unity-integration" class="headerlink" title="Unity integration"></a>Unity integration</h1><p>The optional Unity module integrates Entitas nicely into Unity and provides powerful editor extensions to inspect and debug contexts, groups, entities, components and systems.</p>
+<p><a href="https://github.com/sschmid/Entitas-CSharp/wiki/Unity-integration" title="Wiki - Unity Integration" target="_blank" rel="noopener">Read more…</a></p>
+<p align="center">
+    <img src="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas.Unity-MenuItems.png" alt="Entitas.Unity MenuItems" height="200"><br>
+    <img src="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas.Unity.VisualDebugging-Entity.png" alt="Entitas.Unity.VisualDebugging Entity" width="400">
+    <img src="https://raw.githubusercontent.com/sschmid/Entitas-CSharp/master/Readme/Images/Entitas.Unity.VisualDebugging-DebugSystems.png" alt="Entitas.Unity.VisualDebugging Systems" width="400">
+</p>
+
+
+<h1 id="Entitas-deep-dive"><a href="#Entitas-deep-dive" class="headerlink" title="Entitas deep dive"></a>Entitas deep dive</h1><p><a href="https://github.com/sschmid/Entitas-CSharp/wiki" title="Entitas Wiki" target="_blank" rel="noopener">Read the wiki</a> or checkout the <a href="https://github.com/sschmid/Entitas-CSharp/wiki/Example-projects" title="Wiki - Example Projects" target="_blank" rel="noopener">example projects</a> to see Entitas in action. These example projects illustrate how systems, groups, collectors and entities all play together seamlessly.</p>
+<h1 id="Download-Entitas"><a href="#Download-Entitas" class="headerlink" title="Download Entitas"></a>Download Entitas</h1><p>Each release is published with zip files containing all source files you need.</p>
+<p><a href="https://github.com/sschmid/Entitas-CSharp/releases" title="Releases" target="_blank" rel="noopener">Show releases</a></p>
+<h1 id="Thanks-to"><a href="#Thanks-to" class="headerlink" title="Thanks to"></a>Thanks to</h1><p>Big shout out to <a href="https://github.com/mzaks" title="@mzaks" target="_blank" rel="noopener">@mzaks</a>, <a href="https://github.com/cloudjubei" title="@cloudjubei" target="_blank" rel="noopener">@cloudjubei</a> and <a href="https://github.com/devboy" title="@devboy" target="_blank" rel="noopener">@devboy</a> for endless hours of discussion and helping making Entitas awesome!</p>
+<h1 id="Maintainer-s"><a href="#Maintainer-s" class="headerlink" title="Maintainer(s)"></a>Maintainer(s)</h1><ul>
+<li><a href="https://github.com/sschmid" title="@sschmid" target="_blank" rel="noopener">@sschmid</a> | <a href="https://twitter.com/s_schmid" title="s_schmid on Twitter" target="_blank" rel="noopener">@s_schmid</a> | <a href="https://twitter.com/entitas_csharp" title="entitas_csharp on Twitter" target="_blank" rel="noopener">@entitas_csharp</a></li>
+</ul>
+<h1 id="Different-language"><a href="#Different-language" class="headerlink" title="Different language?"></a>Different language?</h1><p>Entitas is available in</p>
+<ul>
+<li><a href="https://github.com/sschmid/Entitas-CSharp" target="_blank" rel="noopener">C#</a></li>
+<li><a href="https://github.com/mzaks/Entitas-Swift" target="_blank" rel="noopener">Swift</a></li>
+<li><a href="https://github.com/JuDelCo/Entitas-Cpp" target="_blank" rel="noopener">C++</a></li>
+<li><a href="https://github.com/wooga/entitas" target="_blank" rel="noopener">Objective-C</a></li>
+<li><a href="https://github.com/Rubentxu/entitas-java" target="_blank" rel="noopener">Java</a></li>
+<li><a href="https://github.com/Aenyhm/entitas-python" target="_blank" rel="noopener">Python</a></li>
+<li><a href="https://github.com/darkoverlordofdata/entitas-scala" target="_blank" rel="noopener">Scala</a></li>
+<li><a href="https://github.com/wooga/go-entitas" target="_blank" rel="noopener">Go</a></li>
+<li><a href="https://github.com/darkoverlordofdata/entitas-fsharp" target="_blank" rel="noopener">F#</a></li>
+<li><a href="https://github.com/darkoverlordofdata/entitas-ts" target="_blank" rel="noopener">TypeScript</a></li>
+<li><a href="https://github.com/darkoverlordofdata/entitas-kotlin" target="_blank" rel="noopener">Kotlin</a></li>
+<li><a href="https://github.com/mhaemmerle/entitas-haskell" target="_blank" rel="noopener">Haskell</a></li>
+<li><a href="https://github.com/mhaemmerle/entitas_erl" target="_blank" rel="noopener">Erlang</a></li>
+<li><a href="https://github.com/mhaemmerle/entitas-clj" target="_blank" rel="noopener">Clojure</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/16/Unity-Coroutine/" rel="next" title="Unity ECS">
+                <i class="fa fa-chevron-left"></i> Unity ECS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/17/C-0/" rel="prev" title="减少装箱(Boxing)和拆箱(UnBoxing)操作">
+                减少装箱(Boxing)和拆箱(UnBoxing)操作 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Entitas-The-Entity-Component-System-Framework-for-C-and-Unity"><span class="nav-number">1.</span> <span class="nav-text">Entitas - The Entity Component System Framework for C# and Unity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#»-Download"><span class="nav-number">1.0.1.</span> <span class="nav-text">» Download</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#»-Documentation"><span class="nav-number">1.0.2.</span> <span class="nav-text">» Documentation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#»-Ask-a-question"><span class="nav-number">1.0.3.</span> <span class="nav-text">» Ask a question</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#»-Wiki-and-example-projects"><span class="nav-number">1.0.4.</span> <span class="nav-text">» Wiki and example projects</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#»-madeWithEntitas"><span class="nav-number">1.0.5.</span> <span class="nav-text">» #madeWithEntitas</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#Video-Tutorials-amp-Unity-Unite-Talks"><span class="nav-number">2.</span> <span class="nav-text">Video Tutorials &amp; Unity Unite Talks</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#First-glimpse"><span class="nav-number">3.</span> <span class="nav-text">First glimpse</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview"><span class="nav-number">4.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Code-Generator"><span class="nav-number">5.</span> <span class="nav-text">Code Generator</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Unity-integration"><span class="nav-number">6.</span> <span class="nav-text">Unity integration</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Entitas-deep-dive"><span class="nav-number">7.</span> <span class="nav-text">Entitas deep dive</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Download-Entitas"><span class="nav-number">8.</span> <span class="nav-text">Download Entitas</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Thanks-to"><span class="nav-number">9.</span> <span class="nav-text">Thanks to</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Maintainer-s"><span class="nav-number">10.</span> <span class="nav-text">Maintainer(s)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Different-language"><span class="nav-number">11.</span> <span class="nav-text">Different language?</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

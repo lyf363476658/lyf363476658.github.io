@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="git仓库：https://github.com/zentia/TrueSync优点：  支持回滚 支持UDP 完整的解决方案  缺点：  lockstep模式，目前不太需要 不适合扩展ECS模型 代码整体性能应该不是最优，不过可以调整 封装的比较完整，但是要适配到项目中，可能会对项目改的东西比较多。 反射和Lambda使用的情况比较多  1234567public enum Connection">
+<meta name="keywords" content="Network">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Photon-TrueSync">
+<meta property="og:url" content="http://zentia.github.io/2019/04/24/Photon-TrueSync/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="git仓库：https://github.com/zentia/TrueSync优点：  支持回滚 支持UDP 完整的解决方案  缺点：  lockstep模式，目前不太需要 不适合扩展ECS模型 代码整体性能应该不是最优，不过可以调整 封装的比较完整，但是要适配到项目中，可能会对项目改的东西比较多。 反射和Lambda使用的情况比较多  1234567public enum Connection">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://zentia.github.io/2019/04/24/Photon-TrueSync/1.jpg">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.980Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Photon-TrueSync">
+<meta name="twitter:description" content="git仓库：https://github.com/zentia/TrueSync优点：  支持回滚 支持UDP 完整的解决方案  缺点：  lockstep模式，目前不太需要 不适合扩展ECS模型 代码整体性能应该不是最优，不过可以调整 封装的比较完整，但是要适配到项目中，可能会对项目改的东西比较多。 反射和Lambda使用的情况比较多  1234567public enum Connection">
+<meta name="twitter:image" content="http://zentia.github.io/2019/04/24/Photon-TrueSync/1.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/24/Photon-TrueSync/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Photon-TrueSync | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/24/Photon-TrueSync/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Photon-TrueSync
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/24/Photon-TrueSync/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/24/Photon-TrueSync/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>git仓库：<a href="https://github.com/zentia/TrueSync" target="_blank" rel="noopener">https://github.com/zentia/TrueSync</a><br>优点：</p>
+<ol>
+<li>支持回滚</li>
+<li>支持UDP</li>
+<li>完整的解决方案</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>lockstep模式，目前不太需要</li>
+<li>不适合扩展ECS模型</li>
+<li>代码整体性能应该不是最优，不过可以调整</li>
+<li>封装的比较完整，但是要适配到项目中，可能会对项目改的东西比较多。</li>
+<li>反射和Lambda使用的情况比较多</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ConnectionProtocol : <span class="keyword">byte</span></span><br><span class="line">&#123;</span><br><span class="line">    Udp = <span class="number">0</span>,</span><br><span class="line">    Tcp = <span class="number">1</span>,</span><br><span class="line">    WebSocket = <span class="number">4</span>,</span><br><span class="line">    WebSocketSecure = <span class="number">5</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>貌似都支持，但是我们不需要这么多。或者说我们PVP部分和大厅部分都走一套。目前不考虑大厅的设计。</p>
+<h2 id="TrueSyncConfig"><a href="#TrueSyncConfig" class="headerlink" title="TrueSyncConfig"></a>TrueSyncConfig</h2><p>帧同步配置</p>
+<h2 id="TrueSyncManager"><a href="#TrueSyncManager" class="headerlink" title="TrueSyncManager"></a>TrueSyncManager</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br></pre></td><td class="code"><pre><span class="line">管理、驱动帧同步 </span><br><span class="line"></span><br><span class="line"><span class="comment">//同步全局配置</span></span><br><span class="line"><span class="keyword">static</span> TrueSyncConfig TrueSyncGlobalConfig;</span><br><span class="line"><span class="comment">// 配置</span></span><br><span class="line"><span class="keyword">static</span> TrueSyncConfig Config;</span><br><span class="line">TrueSyncConfig ActiveConfig;</span><br><span class="line"><span class="comment">// 锁帧</span></span><br><span class="line"><span class="keyword">private</span> AbstractLockstep lockstep;</span><br><span class="line"><span class="comment">// 协程调度</span></span><br><span class="line">CoroutineScheduler scheduler;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 玩家预设列表</span></span><br><span class="line">GameObject[] playerPrefabs;</span><br><span class="line"><span class="comment">// </span></span><br><span class="line"> <span class="keyword">private</span> Dictionary&lt;<span class="keyword">int</span>, List&lt;GameObject&gt;&gt; gameOjectsSafeMap = <span class="keyword">new</span> Dictionary&lt;<span class="keyword">int</span>, List&lt;GameObject&gt;&gt;();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 非哪个玩家拥有的行为，叫做普通行为</span></span><br><span class="line">List&lt;TrueSyncManagedBehaviour&gt; generalBehaviours = <span class="keyword">new</span> List&lt;TrueSyncManagedBehaviour&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对应玩家所拥有的行为</span></span><br><span class="line">Dictionary&lt;<span class="keyword">byte</span>, List&lt;TrueSyncManagedBehaviour&gt;&gt; behaviorsByPlayer;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一个临时缓存池，用在后面注册行为的时候占存。在帧更新的时候OnStepUpdate调用CheckQueuedBehaviours。分配玩家拥有者和调OnSyncedStart。然后就清理该列表</span></span><br><span class="line">List&lt;TrueSyncManagedBehaviour&gt; queuedBehaviours = <span class="keyword">new</span> List&lt;TrueSyncManagedBehaviour&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 保存了所有行为的字典</span></span><br><span class="line">Dictionary&lt;ITrueSyncBehaviour, TrueSyncManagedBehaviour&gt; mapBehaviorToManagedBehavior = <span class="keyword">new</span> Dictionary&lt;ITrueSyncBehaviour, TrueSyncManagedBehaviour&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 时间</span></span><br><span class="line">FP time = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">static</span> FP Time;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 帧时间</span></span><br><span class="line"><span class="keyword">static</span> FP DeltaTime;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 帧</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> Ticks;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> LastSafeTick;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重力</span></span><br><span class="line"><span class="keyword">static</span> TSVector Gravity;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 玩家列表</span></span><br><span class="line"><span class="keyword">static</span> List&lt;TSPlayerInfo&gt; Players；</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地玩家</span></span><br><span class="line"><span class="keyword">static</span> TSPlayerInfo LocalPlayer；</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动状态, 在Update决定什么时候运行lockstep.RunSimulation(true);</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">enum</span> StartState &#123; BEHAVIOR_INITIALIZED, FIRST_UPDATE, STARTED &#125;;</span><br><span class="line"><span class="keyword">private</span> StartState startState;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TrueSyncConfig currentConfig = ActiveConfig;</span><br><span class="line">    lockedTimeStep = currentConfig.lockedTimeStep;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化状态跟踪</span></span><br><span class="line">    StateTracker.Init(currentConfig.rollbackWindow);</span><br><span class="line">    <span class="comment">// 初始化随机数</span></span><br><span class="line">    TSRandom.Init();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 初始化物理管理器</span></span><br><span class="line">    <span class="keyword">if</span> (currentConfig.physics2DEnabled || currentConfig.physics3DEnabled) &#123;</span><br><span class="line">        PhysicsManager.New(currentConfig);</span><br><span class="line">        PhysicsManager.instance.LockedTimeStep = lockedTimeStep;</span><br><span class="line">        PhysicsManager.instance.Init();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 跟踪 时间</span></span><br><span class="line">    StateTracker.AddTracking(<span class="keyword">this</span>, <span class="string">"time"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>) 做了什么?</span></span><br><span class="line"><span class="function">设置instance</span> = <span class="keyword">this</span>;</span><br><span class="line">设置Application.runInBackground = <span class="literal">true</span>;</span><br><span class="line">初始化通信PhotonTrueSyncCommunicator </span><br><span class="line">创建lockstep</span><br><span class="line">检测是否是录像模式, 如果是就加载录像</span><br><span class="line">如果配置了显示TrueSyncStats，那就初始化</span><br><span class="line">创建协程调度 scheduler = <span class="keyword">new</span> CoroutineScheduler(lockstep);</span><br><span class="line">非录像模式下 初始化帧的玩家列表</span><br><span class="line">初始化场景中现有的帧同步行为 TrueSyncBehaviour</span><br><span class="line">实例化玩家预设playerPrefabs和同步其行为的拥有者 initBehaviors</span><br><span class="line">初始化行为拥有者，并分配给对于玩家。没有继承TrueSyncBehaviour的就继续放到普通行为列表。initGeneralBehaviors</span><br><span class="line">添加物理对象移除监听 PhysicsManager.instance.OnRemoveBody(OnRemovedRigidBody);</span><br><span class="line">设置启动状态 startState = StartState.BEHAVIOR_INITIALIZED;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建ITrueSyncBehaviour的TrueSyncManagedBehaviour，是对ITrueSyncBehaviour的一层包装</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> TrueSyncManagedBehaviour <span class="title">NewManagedBehavior</span>(<span class="params">ITrueSyncBehaviour trueSyncBehavior</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 初始化玩家预设和他们的同步行为。行为设置拥有者，并其添加到对应玩家的行为字典里behaviorsByPlayer</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initBehaviors</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 对行为列表分配拥有者， 在Start(), CheckQueuedBehaviours()里调用</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initGeneralBehaviors</span>(<span class="params">IEnumerable&lt;TrueSyncManagedBehaviour&gt; behaviours, <span class="keyword">bool</span> realOwnerId</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 将注册行为占存列表列queuedBehaviours的行为调initGeneralBehaviors分配拥有者。调SetGameInfo和OnSyncedStart两个方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CheckQueuedBehaviours</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 只做一件事，检测启动状态，如果是第一次启动就调lockstep.RunSimulation(true);</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 在帧同步调暂停后 恢复继续运行。instance.lockstep.RunSimulation(false);</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RunSimulation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 暂停游戏 调instance.lockstep.PauseSimulation();</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">PauseSimulation</span>(<span class="params"></span>) </span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 结束游戏 调instance.lockstep.EndSimulation();</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">EndSimulation</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 更新一次协程， 主要是物理里调用了。默认的协程更新在 帧更新里OnStepUpdate</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">UpdateCoroutines</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 添加一个协程</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SyncedStartCoroutine</span>(<span class="params">IEnumerator coroutine</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 实例化一个预设</span></span></span><br><span class="line"><span class="function"><span class="comment">// 先势力化一个GameObject</span></span></span><br><span class="line"><span class="function"><span class="comment">// 非录像模式将该对象添加到帧记录里。AddGameObjectOnSafeMap(go);</span></span></span><br><span class="line"><span class="function"><span class="comment">// 将该对象的帧行为添加到queuedBehaviours，等待帧更新的时候分配拥有者和调度初始化方法</span></span></span><br><span class="line"><span class="function"><span class="comment">// 调该对象上组件的初始化方法（ICollider注册到物理管理器里PhysicsManager, TSTransform, TSTransform2D）。InitializeGameObject</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> GameObject <span class="title">SyncedInstantiate</span>(<span class="params">GameObject prefab</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> GameObject <span class="title">SyncedInstantiate</span>(<span class="params">GameObject prefab, TSVector position, TSQuaternion rotation</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> GameObject <span class="title">SyncedInstantiate</span>(<span class="params">GameObject prefab, TSVector2 position, TSQuaternion rotation</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 将势力化的GameObject添加到当前的帧+1列表里</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">AddGameObjectOnSafeMap</span>(<span class="params">GameObject go</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 在帧更新OnStepUpdate的时候掉, 清理销毁掉当前 Ticks + 1里的GameObject。猜测估计是帧回滚的时候把预处理的对象销毁</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CheckGameObjectsSafeMap</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 调该对象上组件的初始化方法（ICollider注册到物理管理器里PhysicsManager, TSTransform, TSTransform2D）</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">InitializeGameObject</span>(<span class="params">GameObject go, TSVector position, TSQuaternion rotation</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 销毁GameObject</span></span></span><br><span class="line"><span class="function"><span class="comment">// 第一步调SyncedDisableBehaviour, 停止更新该对象上的ITrueSyncBehaviour</span></span></span><br><span class="line"><span class="function"><span class="comment">// 第二步调 TSCollider和TSCollider2D 调 DestroyTSRigidBody</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SyncedDestroy</span>(<span class="params">GameObject gameObject</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 将GameObject的ITrueSyncBehaviour的disabled设置为true, 停止对他调帧更新方法 OnSyncedInput，OnSyncUpdate。</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SyncedDisableBehaviour</span>(<span class="params">GameObject gameObject</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 设置 tsColliderGO.gameObject.SetActive(false);</span></span></span><br><span class="line"><span class="function"><span class="comment">// 将物理对象从lockstep销毁 instance.lockstep.Destroy(body);</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DestroyTSRigidBody</span>(<span class="params">GameObject tsColliderGO, IBody body</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 注册ITrueSyncBehaviour, 将他添加到queuedBehaviours。在下次CheckQueuedBehaviours的时候，也就是在下次帧更新的时候OnStepUpdate，对他分配拥有者，调SetGameInfo和OnSyncedStart两个方法</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RegisterITrueSyncBehaviour</span>(<span class="params">ITrueSyncBehaviour trueSyncBehaviour</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 注册游戏是否继续的委托。 调委托会返回一个bool值。 true游戏可以继续运行。lockstep里会调该方法检测是否可以继续CheckGameIsReady（）</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RegisterIsReadyChecker</span>(<span class="params">TrueSyncIsReady IsReadyChecker</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 移除玩家</span></span></span><br><span class="line"><span class="function"><span class="comment">// 第一步将该玩家的 行为全部禁止帧更新behaviorsByPlayer[(byte)playerId],disabled = true;</span></span></span><br><span class="line"><span class="function"><span class="comment">// 第二步将这些行为的GameObject上拥有TSCollider、TSCollider2D的物理全部掉DestroyTSRigidBody</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RemovePlayer</span>(<span class="params"><span class="keyword">int</span> playerId</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 检测帧更新时间，时间到就调instance.scheduler.UpdateAllCoroutines();和lockstep.Update();</span></span></span><br><span class="line"><span class="function"><span class="comment">// lockedTimeStep，帧同步一帧的时间</span></span></span><br><span class="line"><span class="function"><span class="comment">// JitterTimeFactor, 为了避免浮动点数比较造成误差。if (tsDeltaTime &gt;= (lockedTimeStep - JitterTimeFactor))</span></span></span><br><span class="line"><span class="function"><span class="comment">// tsDeltaTime, 用的时间还是用Unity的 tsDeltaTime += UnityEngine.Time.deltaTime;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FixedUpdate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 里面创建一个输入数据结构 return new InputData();  是在lockstep创建的时候传这个方法给他</span></span></span><br><span class="line"><span class="function">InputDataBase <span class="title">ProvideInputData</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 这个方法会调本地玩家所有帧行为的OnSyncedInput方法</span></span></span><br><span class="line"><span class="function"><span class="comment">// 这这个方法生命周期内 TrueSyncInput.CurrentInputData = playerInputData</span></span></span><br><span class="line"><span class="function"><span class="comment">// 是在lockstep创建的时候传这个方法给他</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GetLocalData</span>(<span class="params">InputDataBase playerInputData</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 帧更新</span></span></span><br><span class="line"><span class="function"><span class="comment">// 添加当前时间 time += lockedTimeStep;</span></span></span><br><span class="line"><span class="function"><span class="comment">// 非录像模式， 检测GameObject CheckGameObjectsSafeMap();</span></span></span><br><span class="line"><span class="function"><span class="comment">// 遍历generalBehaviours普通行为列表，调行为的OnPreSyncedUpdate()。还会调协程更新instance.scheduler.UpdateAllCoroutines();</span></span></span><br><span class="line"><span class="function"><span class="comment">// 遍历allInputData,和对应玩家的行为列表behaviorsByPlayer。 调行为的OnPreSyncedUpdate()。还会调协程更新instance.scheduler.UpdateAllCoroutines();</span></span></span><br><span class="line"><span class="function"><span class="comment">// 遍历generalBehaviours普通行为列表，调行为的OnSyncedUpdate()。还会调协程更新instance.scheduler.UpdateAllCoroutines();</span></span></span><br><span class="line"><span class="function"><span class="comment">// 遍历allInputData,和对应玩家的行为列表behaviorsByPlayer。 调行为的OnSyncedUpdate()。还会调协程更新instance.scheduler.UpdateAllCoroutines();</span></span></span><br><span class="line"><span class="function"><span class="comment">// 检测占存行为列表CheckQueuedBehaviours（）。给他们分配拥有者和调同步开始方法</span></span></span><br><span class="line"><span class="function"><span class="comment">// 是在lockstep创建的时候传这个方法给他</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnStepUpdate</span>(<span class="params">List&lt;InputDataBase&gt; allInputData</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 玩家离线消息处理</span></span></span><br><span class="line"><span class="function"><span class="comment">// 调TrueSyncManagedBehaviour.OnPlayerDisconnection(generalBehaviours, behaviorsByPlayer, playerId);</span></span></span><br><span class="line"><span class="function"><span class="comment">// 是在lockstep创建的时候传这个方法给他</span></span></span><br><span class="line"><span class="function"> <span class="keyword">void</span> <span class="title">OnPlayerDisconnection</span>(<span class="params"><span class="keyword">byte</span> playerId</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 游戏开始消息处理</span></span></span><br><span class="line"><span class="function"><span class="comment">// 是在lockstep创建的时候传这个方法给他</span></span></span><br><span class="line"><span class="function">        <span class="keyword">void</span> <span class="title">OnGameStarted</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">            TrueSyncManagedBehaviour.OnGameStarted(generalBehaviours, behaviorsByPlayer);</span><br><span class="line">            instance.scheduler.UpdateAllCoroutines();</span><br><span class="line"></span><br><span class="line">            CheckQueuedBehaviours();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 游戏暂停消息处理</span></span><br><span class="line"><span class="comment">// 是在lockstep创建的时候传这个方法给他</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">OnGamePaused</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">            TrueSyncManagedBehaviour.OnGamePaused(generalBehaviours, behaviorsByPlayer);</span><br><span class="line">            instance.scheduler.UpdateAllCoroutines();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 游戏继续消息处理</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">OnGameUnPaused</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">            TrueSyncManagedBehaviour.OnGameUnPaused(generalBehaviours, behaviorsByPlayer);</span><br><span class="line">            instance.scheduler.UpdateAllCoroutines();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 游戏结束消息处理</span></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">OnGameEnded</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">            TrueSyncManagedBehaviour.OnGameEnded(generalBehaviours, behaviorsByPlayer);</span><br><span class="line">            instance.scheduler.UpdateAllCoroutines();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 移除物理对象事件处理</span></span><br><span class="line"><span class="comment">// 会移除该对象的GameObject上所有同步行为 调RemoveFromTSMBList</span></span><br><span class="line"><span class="comment">// PhysicsManager.instance.OnRemoveBody(OnRemovedRigidBody); 在这里注册</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnRemovedRigidBody</span>(<span class="params">IBody body</span>) </span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 从tsmbList列表中，移除behaviours</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">RemoveFromTSMBList</span>(<span class="params">List&lt;TrueSyncManagedBehaviour&gt; tsmbList, List&lt;TrueSyncBehaviour&gt; behaviours</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 清理</span></span></span><br><span class="line"><span class="function"><span class="comment">// 清理对象池 ResourcePool.CleanUpAll();</span></span></span><br><span class="line"><span class="function"><span class="comment">// 清理状态跟踪 StateTracker.CleanUp();</span></span></span><br><span class="line"><span class="function"><span class="comment">// 去除实例变量引用 instance = null;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CleanUp</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// Unity的消息。退出应用</span></span></span><br><span class="line"><span class="function">        <span class="keyword">void</span> <span class="title">OnApplicationQuit</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">            EndSimulation();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>支持lockstep模式，但是目前我们是不会用到这个的。并且不是可配置的，改造起来可能会比较麻烦一些。</p>
+<h2 id="ICommunicator"><a href="#ICommunicator" class="headerlink" title="ICommunicator"></a>ICommunicator</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">ICommunicator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//  通信器，在TrueSync管理器中创建</span></span><br><span class="line">    <span class="comment">// 往返时间</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">RoundTripTime</span>(<span class="params"></span>)</span>;</span><br><span class="line">    <span class="comment">// 操作时间</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OpRaiseEvent</span>(<span class="params"><span class="keyword">byte</span> eventCode, <span class="keyword">object</span> message, <span class="keyword">bool</span> reliable, <span class="keyword">int</span>[] toPlayers</span>)</span>;</span><br><span class="line">    <span class="comment">// 添加监听</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">AddEventListener</span>(<span class="params">OnEventReceived onEventReceived</span>)</span>;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="PhotonTrueSyncCommunicator"><a href="#PhotonTrueSyncCommunicator" class="headerlink" title="PhotonTrueSyncCommunicator"></a>PhotonTrueSyncCommunicator</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">帧同步 通信器， 实现ICommunicator接口</span><br><span class="line"><span class="comment">// 往返时间</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">RoundTripTime</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 操作时间</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OpRaiseEvent</span>(<span class="params"><span class="keyword">byte</span> eventCode, <span class="keyword">object</span> message, <span class="keyword">bool</span> reliable, <span class="keyword">int</span>[] toPlayers</span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加监听</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">AddEventListener</span>(<span class="params">OnEventReceived onEventReceived</span>)</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="OnEventReceived"><a href="#OnEventReceived" class="headerlink" title="OnEventReceived"></a>OnEventReceived</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">代理事件， 接收消息</span><br><span class="line"></span><br><span class="line"><span class="comment">// byte eventCode 消息编号</span></span><br><span class="line"><span class="comment">// object content 消息内容</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnEventDataReceived</span>(<span class="params"><span class="keyword">byte</span> eventCode, <span class="keyword">object</span> content</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (eventCode == <span class="number">0xc7</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] data = content <span class="keyword">as</span> <span class="keyword">byte</span>[];</span><br><span class="line">        SyncedData[] dataArray = SyncedData.Decode(data);</span><br><span class="line">        <span class="keyword">if</span> (dataArray.Length &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            TSPlayer player = <span class="keyword">this</span>.players[dataArray[<span class="number">0</span>].inputData.ownerID];</span><br><span class="line">            <span class="keyword">if</span> (!player.dropped)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">this</span>.OnSyncedDataReceived(player, dataArray);</span><br><span class="line">                <span class="keyword">if</span> ((dataArray[<span class="number">0</span>].dropPlayer &amp;&amp; (player.ID != localPlayer.ID)) &amp;&amp; !<span class="keyword">this</span>.players[dataArray[<span class="number">0</span>].dropFromPlayerId].dropped)</span><br><span class="line">                &#123;</span><br><span class="line">                    player.dropCount++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (eventCode == <span class="number">0xc6</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] infoBytes = content <span class="keyword">as</span> <span class="keyword">byte</span>[];</span><br><span class="line">        OnChecksumReceived(SyncedInfo.Decode(infoBytes));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (eventCode == <span class="number">0xc5</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] buffer3 = content <span class="keyword">as</span> <span class="keyword">byte</span>[];</span><br><span class="line">        <span class="keyword">if</span> (buffer3.Length &gt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (buffer3[<span class="number">0</span>] == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">this</span>.Pause();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (buffer3[<span class="number">0</span>] == <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">this</span>.Run();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (buffer3[<span class="number">0</span>] == <span class="number">3</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">this</span>.End();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (eventCode == <span class="number">0xc4</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">byte</span>[] buffer4 = content <span class="keyword">as</span> <span class="keyword">byte</span>[];</span><br><span class="line">        SyncedInfo info = SyncedInfo.Decode(buffer4);</span><br><span class="line">        players[info.playerId].sentSyncedStart = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接口的实现有一次GC，并未实测</p>
+<h2 id="TrueSyncBehaviour"><a href="#TrueSyncBehaviour" class="headerlink" title="TrueSyncBehaviour"></a>TrueSyncBehaviour</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">帧同步行为，继承自 MonoBehaviour, 实现接口 ITrueSyncBehaviourGamePlay, ITrueSyncBehaviourCallbacks</span><br><span class="line"></span><br><span class="line"><span class="comment">// 该行为的拥有者玩家</span></span><br><span class="line"><span class="keyword">public</span> TSPlayerInfo owner;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 本地玩家，相当于快捷访问本地玩家，此处会被序列化，放到项目中应该要去掉</span></span><br><span class="line"><span class="keyword">public</span> TSPlayerInfo localOwner;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 快捷访问</span></span><br><span class="line">TSTransform tsTransform</span><br><span class="line">TSTransform2D tsTransform2D</span><br><span class="line">TSRigidBody tsRigidBody</span><br><span class="line">TSRigidBody2D tsRigidBody2D</span><br><span class="line">TSCollider tsCollider</span><br><span class="line">TSCollider2D tsCollider2D</span><br><span class="line"></span><br><span class="line"><span class="comment">// 基本上就是上面这些属性，实现的接口都是空的没有写业务逻辑，在Mono上层封装了一层，基于多组件的方式，不利于ECS扩展</span></span><br></pre></td></tr></table></figure>
+<h2 id="TrueSyncManagedBehaviour"><a href="#TrueSyncManagedBehaviour" class="headerlink" title="TrueSyncManagedBehaviour"></a>TrueSyncManagedBehaviour</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">帧同步行为管理器，实现接口 ITrueSyncBehaviourGamePlay, ITrueSyncBehaviour, ITrueSyncBehaviourCallbacks</span><br><span class="line">主要是包装了TrueSyncBehaviour/ITrueSyncBehaviour, 实现的接口方法直接掉TrueSyncBehaviour的放方法，TrueSyncBehaviour的OnSyncedStartLocalPlayer 方法该行为是本地用户时才调</span><br><span class="line"></span><br><span class="line"><span class="comment">// 有一个属性, true是，不会参与帧更新</span></span><br><span class="line">    [<span class="meta">AddTracking</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> disabled;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">后面就是一些全局静态方法，用管理处理列表的事件</span><br><span class="line">管理主要是管理这个的。</span><br></pre></td></tr></table></figure>
+<h2 id="CoroutineScheduler"><a href="#CoroutineScheduler" class="headerlink" title="CoroutineScheduler"></a>CoroutineScheduler</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">协程调用</span><br><span class="line">在TrueSyncManager.SyncedStartCoroutine 调 StartCoroutine(IEnumerator coroutine) 启动一个协程</span><br><span class="line">在TrueSyncManager驱动UpdateAllCorutines()</span><br><span class="line">内部协程使用链表来维护，但是链表操作会有GC，比如Remove的时候直接舍弃了，并没有使用池处理</span><br></pre></td></tr></table></figure>
+<h2 id="ITrueSyncBehaviour"><a href="#ITrueSyncBehaviour" class="headerlink" title="ITrueSyncBehaviour"></a>ITrueSyncBehaviour</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">接口 帧同步行为</span><br><span class="line">就只有一个方法</span><br><span class="line"><span class="comment">// 设置游戏信息 (本地玩家， 玩家数量)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SetGameInfo</span>(<span class="params">TSPlayerInfo localOwner, <span class="keyword">int</span> numberOfPlayers</span>)</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="ITrueSyncBehaviourGamePlay"><a href="#ITrueSyncBehaviourGamePlay" class="headerlink" title="ITrueSyncBehaviourGamePlay"></a>ITrueSyncBehaviourGamePlay</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">接口 玩家操作帧同步行为, 继承自ITrueSyncBehaviour，Mono上层的封装接口</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同步 玩家输入操作</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnSyncedInput</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同步 读取玩家操作</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnSyncedUpdate</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnPreSyncedUpdate</span>(<span class="params"></span>)</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="ITrueSyncBehaviourCallbacks"><a href="#ITrueSyncBehaviourCallbacks" class="headerlink" title="ITrueSyncBehaviourCallbacks"></a>ITrueSyncBehaviourCallbacks</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">接口 回调同步行为, 继承自ITrueSyncBehaviour</span><br><span class="line">TrueSyncBehaviour实现：表示在连接到游戏的每台机器上模拟的每个玩家的行为。</span><br><span class="line"><span class="comment">// 开始</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnSyncedStart</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 开始 -- 只调本地玩家的</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnSyncedStartLocalPlayer</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 游戏暂停</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnGamePaused</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 游戏继续</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnGameUnPaused</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 游戏结束的时候调用</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnGameEnded</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 有玩家离线时调用</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnPlayerDisconnection</span>(<span class="params"><span class="keyword">int</span> playerId</span>)</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="TSRandom"><a href="#TSRandom" class="headerlink" title="TSRandom"></a>TSRandom</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">随机数</span><br><span class="line">http:<span class="comment">//www.codeproject.com/Articles/164087/Random-Number-Generation</span></span><br><span class="line">https:<span class="comment">//github.com/ihaiucom/learn.PhotonTrueSync/blob/master/PhotonGame/Assets/TrueSync/Engine/Math/TSRandom.cs</span></span><br><span class="line"></span><br><span class="line">原理是，传一个因素进去，然后里面生成N数量的数组。每个数有一个公式计算来生成。所以传相同的因素生成的结果是一样的。</span><br><span class="line">获取随机数的时候根据当前索引mti依次读取数组里面的数。当mti大于N时，内部重新生成默认因素是<span class="number">5489U</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://www.codeproject.com/Articles/164087/Random-Number-Generation" target="_blank" rel="noopener">Random-Number-Generation</a><br><a href="https://github.com/ihaiucom/learn.PhotonTrueSync/blob/master/PhotonGame/Assets/TrueSync/Engine/Math/TSRandom.cs" target="_blank" rel="noopener">TrueSync/Engine/Math/TSRandom.cs</a></p>
+<h2 id="StateTracker-TrackedInfo"><a href="#StateTracker-TrackedInfo" class="headerlink" title="StateTracker.TrackedInfo"></a>StateTracker.TrackedInfo</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">状态跟踪信息， 用来保存对象引用，和对象的成员属性信息MemberInfo</span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">TrackedInfo</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">object</span> relatedObj;   <span class="comment">// 保存对象</span></span><br><span class="line">    <span class="keyword">public</span> MemberInfo propInfo; <span class="comment">// 对象的成员属性信息</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2019/04/24/Photon-TrueSync/1.jpg">
+<p>效率略低</p>
+<h2 id="StateTracker-State"><a href="#StateTracker-State" class="headerlink" title="StateTracker.State"></a>StateTracker.State</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 状态跟踪信息， 持有TrackedInfo跟踪信息</span></span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">class</span> <span class="title">State</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">private</span> StateTracker.TrackedInfo trackedInfo;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">object</span> <span class="keyword">value</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetInfo</span>(<span class="params">StateTracker.TrackedInfo trackedInfo</span>)</span></span><br><span class="line"><span class="function"></span>  &#123;</span><br><span class="line">    <span class="keyword">this</span>.trackedInfo = trackedInfo;</span><br><span class="line">    <span class="keyword">this</span>.SaveValue();</span><br><span class="line">  &#125;</span><br><span class="line">    <span class="comment">// 保存值到value变量</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SaveValue</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>  &#123;</span><br><span class="line">    <span class="keyword">object</span> obj = <span class="keyword">this</span>.trackedInfo.propInfo.GetValue(<span class="keyword">this</span>.trackedInfo.relatedObj);</span><br><span class="line">    <span class="keyword">if</span> (obj != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> (obj.GetType().IsArray)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">value</span> = (<span class="keyword">object</span>) Array.CreateInstance(obj.GetType().GetElementType(), ((Array) obj).Length);</span><br><span class="line">        Array.Copy((Array) obj, (Array) <span class="keyword">this</span>.<span class="keyword">value</span>, ((Array) obj).Length);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">this</span>.<span class="keyword">value</span> = obj;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">this</span>.<span class="keyword">value</span> = (<span class="keyword">object</span>) <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">    <span class="comment">// 将保存的值用反射赋值给对象</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RestoreValue</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.trackedInfo.relatedObj == <span class="literal">null</span>)</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="keyword">value</span> <span class="keyword">is</span> Array)</span><br><span class="line">    &#123;</span><br><span class="line">      Array instance = Array.CreateInstance(<span class="keyword">this</span>.<span class="keyword">value</span>.GetType().GetElementType(), ((Array) <span class="keyword">this</span>.<span class="keyword">value</span>).Length);</span><br><span class="line">      Array.Copy((Array) <span class="keyword">this</span>.<span class="keyword">value</span>, instance, ((Array) <span class="keyword">this</span>.<span class="keyword">value</span>).Length);</span><br><span class="line">      <span class="keyword">this</span>.trackedInfo.propInfo.SetValue(<span class="keyword">this</span>.trackedInfo.relatedObj, (<span class="keyword">object</span>) instance);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">this</span>.trackedInfo.propInfo.SetValue(<span class="keyword">this</span>.trackedInfo.relatedObj, <span class="keyword">this</span>.<span class="keyword">value</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="StateTracker"><a href="#StateTracker" class="headerlink" title="StateTracker"></a>StateTracker</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 状态跟踪</span></span><br><span class="line"><span class="comment">// TSRandom 用到</span></span><br><span class="line">StateTracker.AddTracking(r, <span class="string">"mt"</span>); <span class="comment">// 字符串拼接</span></span><br><span class="line">StateTracker.AddTracking(r, <span class="string">"mti"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//TrueSyncManager 用到</span></span><br><span class="line">StateTracker.AddTracking(<span class="keyword">this</span>, <span class="string">"time"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//TSTransform 用到 配合 [AddTracking] Attribute 使用, StateTracker.AddTracking(object obj)通过反射获取obj的成员变量</span></span><br><span class="line">StateTracker.AddTracking(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// TrueSyncManagedBehaviour 用到</span></span><br><span class="line">StateTracker.AddTracking(<span class="keyword">this</span>);</span><br><span class="line">StateTracker.AddTracking(trueSyncBehavior);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个是核心了， 里面保存了 rollbackWindow 数量的列表，AddTracking的时候回把StateTracker.State 添加到所有列表里</span></span><br><span class="line"><span class="comment">// SaveState 的时候就保存GenericBufferWindow当前列表的, 保存完后就GenericBufferWindow的索引移动下一个</span></span><br><span class="line"><span class="comment">// RestoreState 从GenericBufferWindow当前的列表把值恢复</span></span><br><span class="line">StateTracker.instance.states = <span class="keyword">new</span> GenericBufferWindow&lt;List&lt;StateTracker.State&gt;&gt;(rollbackWindow);</span><br></pre></td></tr></table></figure>
+<h2 id="GenericBufferWindow"><a href="#GenericBufferWindow" class="headerlink" title="GenericBufferWindow"></a>GenericBufferWindow</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通用缓存窗口，和list相比多了一个前驱，需要自己调用Resize(会有GC消耗)，是一个泛型数据结构</span></span><br><span class="line"><span class="comment">// StateTracker 用到</span></span><br><span class="line">StateTracker.instance.states = <span class="keyword">new</span> GenericBufferWindow&lt;List&lt;StateTracker.State&gt;&gt;(rollbackWindow);</span><br><span class="line"><span class="comment">// CompoundStats 用到</span></span><br><span class="line"><span class="keyword">this</span>.bufferStats = <span class="keyword">new</span> GenericBufferWindow&lt;Stats&gt;(<span class="number">10</span>);</span><br><span class="line"><span class="comment">// AbstractLockstep 用到  </span></span><br><span class="line"><span class="keyword">this</span>.bufferSyncedInfo = <span class="keyword">new</span> GenericBufferWindow&lt;SyncedInfo&gt;(<span class="number">3</span>);</span><br><span class="line"><span class="comment">// 构造方法： 会创建一个T[size] 的数组buffer，并且实例化T</span></span><br></pre></td></tr></table></figure>
+<h2 id="ResourcePool-对象池"><a href="#ResourcePool-对象池" class="headerlink" title="ResourcePool 对象池"></a>ResourcePool 对象池</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ResourcePool 内部使用Stack实现</span></span><br><span class="line"><span class="comment">//是一个抽象对象池,他有一个静态对象池列表。他管理所有对象池的清理CleanUpAll();</span></span><br><span class="line"></span><br><span class="line">ResourcePool&lt;T&gt; 是ResourcePool派生类。里面有一个对象栈存储空闲的对象。</span><br><span class="line"></span><br><span class="line"><span class="comment">// 还回对象</span></span><br><span class="line">GiveBack(T obj)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取对象, 如果T是ResourcePoolItem的派生类就会调对象的CleanUp()方法</span></span><br><span class="line"><span class="function">T <span class="title">GetNew</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 实例化对象</span></span></span><br><span class="line"><span class="function">T <span class="title">NewInstance</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">ResourcePoolItem 是对象池对象接口，实现该接口的对象在获取对象时会调<span class="title">CleanUp</span>(<span class="params"></span>)方法</span></span><br><span class="line"><span class="function">【使用】</span></span><br><span class="line"><span class="function"><span class="keyword">internal</span> class ResourcePoolListSyncedData : ResourcePool&lt;List&lt;SyncedData&gt;&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">internal</span> class ResourcePoolStateTrackerState : ResourcePool&lt;StateTracker.State&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">internal</span> class ResourcePoolSyncedData : ResourcePool&lt;SyncedData&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="SerializableDictionary"><a href="#SerializableDictionary" class="headerlink" title="SerializableDictionary"></a>SerializableDictionary</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class SerializableDictionary&lt;TKey, TValue&gt; : Dictionary&lt;TKey, TValue&gt;, ISerializationCallbackReceiver</span><br><span class="line"></span><br><span class="line">其实就是一个Dictionary, 然后实现了Unity的接口ISerializationCallbackReceiver。OnBeforeSerialize、OnAfterDeserialize</span><br><span class="line"></span><br><span class="line">派生类</span><br><span class="line">public class SerializableDictionaryByteByte : SerializableDictionary&lt;byte, byte&gt;</span><br><span class="line">public class SerializableDictionaryByteByteArray : SerializableDictionary&lt;byte, byte[]&gt;</span><br><span class="line">public class SerializableDictionaryByteInt : SerializableDictionary&lt;byte, int&gt;</span><br><span class="line">public class SerializableDictionaryBytePlayer : SerializableDictionary&lt;byte, TSPlayer&gt;</span><br><span class="line">public class SerializableDictionaryByteString : SerializableDictionary&lt;byte, string&gt;</span><br><span class="line">public class SerializableDictionaryIntSyncedData : SerializableDictionary&lt;int, SyncedData&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="InputData"><a href="#InputData" class="headerlink" title="InputData"></a>InputData</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">拥有各个基本类型序列化字典</span><br><span class="line"></span><br><span class="line">序列化和解析都是对这些解绑类型字典</span><br><span class="line">每个值的序列化:key, valueType, <span class="keyword">value</span></span><br><span class="line">数组的: key, valueType, length, <span class="keyword">value</span>[]</span><br><span class="line">字符串的用<span class="keyword">char</span>[] 也就是数组</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">然后有各个类型的AddXX和GetXX</span><br></pre></td></tr></table></figure>
+<h2 id="SyncedInfo"><a href="#SyncedInfo" class="headerlink" title="SyncedInfo"></a>SyncedInfo</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">同步信息，保存了<span class="number">3</span>个属性</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 玩家ID</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">byte</span> playerId;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 帧</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> tick;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 校验码</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> checksum;</span><br><span class="line"></span><br><span class="line"><span class="number">2</span> 个方法</span><br><span class="line"></span><br><span class="line"><span class="comment">// 序列化</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] <span class="title">Encode</span>(<span class="params">SyncedInfo info</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 解析</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> SyncedInfo <span class="title">Decode</span>(<span class="params"><span class="keyword">byte</span>[] infoBytes</span>)</span></span><br></pre></td></tr></table></figure>
+<h2 id="SyncedData"><a href="#SyncedData" class="headerlink" title="SyncedData"></a>SyncedData</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 同步数据</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 主要就序列化下面两个方法的数据</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetEncodedHeader</span>(<span class="params">List bytes</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 帧</span></span><br><span class="line">    Utils.GetBytes(<span class="keyword">this</span>.tick, bytes);</span><br><span class="line">    <span class="comment">// 拥有者玩家ID</span></span><br><span class="line">    bytes.Add(<span class="keyword">this</span>.inputData.ownerID);</span><br><span class="line">    <span class="comment">// 从哪个玩家掉线</span></span><br><span class="line">    bytes.Add(<span class="keyword">this</span>.dropFromPlayerId);</span><br><span class="line">    <span class="comment">// 是否掉线</span></span><br><span class="line">    bytes.Add(<span class="keyword">this</span>.dropPlayer ? <span class="number">1</span> : <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">GetEncodedActions</span>(<span class="params">List bytes</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.inputData.Serialize(bytes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="TSPlayerInfo"><a href="#TSPlayerInfo" class="headerlink" title="TSPlayerInfo"></a>TSPlayerInfo</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//玩家信息,保存2个属性</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 玩家ID</span></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">byte</span> id;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 玩家名称</span></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line"><span class="keyword">internal</span> <span class="keyword">string</span> name;</span><br></pre></td></tr></table></figure>
+<h2 id="TSPlayer"><a href="#TSPlayer" class="headerlink" title="TSPlayer"></a>TSPlayer</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 玩家</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 玩家信息</span></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line"><span class="keyword">public</span> TSPlayerInfo playerInfo;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 掉线次数</span></span><br><span class="line">[<span class="meta">NonSerialized</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> dropCount;</span><br><span class="line"></span><br><span class="line"><span class="comment">//是否掉线</span></span><br><span class="line">[<span class="meta">NonSerialized</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">bool</span> dropped;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 开始发送同步数据</span></span><br><span class="line">[<span class="meta">NonSerialized</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">bool</span> sentSyncedStart;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 保存玩家整个战斗的操作同步数据, 他是一个字典SerializableDictionary&lt;int, SyncedData&gt;</span></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line"><span class="keyword">internal</span> SerializableDictionaryIntSyncedData controls;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最后一次 同步操作数据的帧, AddData(SyncedData data)</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> lastTick;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">internal</span> <span class="title">TSPlayer</span>(<span class="params"><span class="keyword">byte</span> id, <span class="keyword">string</span> name</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 创建玩家信息</span></span><br><span class="line">    playerInfo = <span class="keyword">new</span> TSPlayerInfo(id, name);</span><br><span class="line">    dropCount = <span class="number">0</span>;</span><br><span class="line">    dropped = <span class="literal">false</span>;</span><br><span class="line">    <span class="comment">// 创建玩家操作字典存储器</span></span><br><span class="line">    controls = <span class="keyword">new</span> SerializableDictionaryIntSyncedData();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取某帧是否有真实同步操作数据</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">IsDataReady</span>(<span class="params"><span class="keyword">int</span> tick</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> controls.ContainsKey(tick) &amp;&amp; !controls[tick].fake;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取某帧是否有模拟同步操作数据, 客户端先行，是客户端预测的操作, 回滚添加的。</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">IsDataDirty</span>(<span class="params"><span class="keyword">int</span> tick</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">bool</span> flag = <span class="keyword">this</span>.controls.ContainsKey(tick);</span><br><span class="line">    <span class="keyword">return</span> flag &amp;&amp; <span class="keyword">this</span>.controls[tick].dirty;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取该帧的同步操作数据</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> SyncedData <span class="title">GetData</span>(<span class="params"><span class="keyword">int</span> tick</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!controls.ContainsKey(tick))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果不存在，就查找上一帧是否存在</span></span><br><span class="line">        SyncedData data = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (controls.ContainsKey(tick - <span class="number">1</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 如果存在上一帧，就克隆上一帧的同步数据</span></span><br><span class="line">            data = controls[tick - <span class="number">1</span>].clone();</span><br><span class="line">            data.tick = tick;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 否则就新建一个同步数据</span></span><br><span class="line">            data = <span class="keyword">new</span> SyncedData(ID, tick);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 设置为伪造的</span></span><br><span class="line">        data.fake = <span class="literal">true</span>;</span><br><span class="line">        <span class="comment">// 保存到帧字典</span></span><br><span class="line">        <span class="keyword">this</span>.controls[tick] = data;</span><br><span class="line">        <span class="keyword">return</span> data;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果存在该,就返回该帧数据</span></span><br><span class="line">    <span class="keyword">return</span> controls[tick];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加存在帧同步数据</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddData</span>(<span class="params">SyncedData data</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> tick = data.tick;</span><br><span class="line">  <span class="keyword">bool</span> flag = <span class="keyword">this</span>.controls.ContainsKey(tick);</span><br><span class="line">  <span class="keyword">if</span> (flag)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// 如果已经存在，就还给对象池</span></span><br><span class="line">    SyncedData.pool.GiveBack(data);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// 否则 添加到存储里</span></span><br><span class="line">    <span class="keyword">this</span>.controls[tick] = data;</span><br><span class="line">    <span class="comment">// 设置最后存储的帧</span></span><br><span class="line">    <span class="keyword">this</span>.lastTick = tick;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">ReplayRecord</span><br><span class="line"></span><br><span class="line">录像</span><br><span class="line"></span><br><span class="line">负责记录游戏是所有玩家的SynceData</span><br><span class="line"></span><br><span class="line">序列化: 各个玩家的所有操作</span><br><span class="line">AbstractLockstep.SimulationState</span><br><span class="line"></span><br><span class="line">帧同步模拟器状态</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">enum</span> SimulationState</span><br><span class="line">&#123;</span><br><span class="line"> <span class="comment">// 没启动</span></span><br><span class="line">  NOT_STARTED,</span><br><span class="line">  <span class="comment">// 等待玩家</span></span><br><span class="line">  WAITING_PLAYERS,</span><br><span class="line">  <span class="comment">// 运行中</span></span><br><span class="line">  RUNNING,</span><br><span class="line">  <span class="comment">// 暂停</span></span><br><span class="line">  PAUSED,</span><br><span class="line">  <span class="comment">// 结束</span></span><br><span class="line">  ENDED</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">AbstractLockstep</span><br><span class="line"></span><br><span class="line">帧同步抽象基类</span><br><span class="line"></span><br><span class="line"><span class="comment">// 玩家初始容量</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">int</span> INITIAL_PLAYERS_CAPACITY = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同步游戏开始编码</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">byte</span> SYNCED_GAME_START_CODE = <span class="number">196</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟器编码 (0 暂停, 1 第一次启动, 3 End)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">byte</span> SIMULATION_CODE = <span class="number">197</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 验证码编码</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">byte</span> CHECKSUM_CODE = <span class="number">198</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送编码</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">byte</span> SEND_CODE = <span class="number">199</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟器时间--暂停</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">byte</span> SIMULATION_EVENT_PAUSE = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟器时间--运行</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">byte</span> SIMULATION_EVENT_RUN = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟器时间--结束</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">byte</span> SIMULATION_EVENT_END = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 游戏结束前 最大等待所有玩家输入的帧</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">int</span> MAX_PANIC_BEFORE_END_GAME = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同步信息 缓存窗口</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">int</span> SYNCED_INFO_BUFFER_WINDOW = <span class="number">3</span>;</span><br><span class="line"><span class="comment">// 添加玩家</span></span><br><span class="line"><span class="comment">// internal Dictionary&lt;byte, TSPlayer&gt; players;</span></span><br><span class="line"><span class="comment">// internal List activePlayers;</span></span><br><span class="line"><span class="comment">// this.localPlayer = tSPlayer;</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddPlayer</span>(<span class="params"><span class="keyword">byte</span> playerId, <span class="keyword">string</span> playerName, <span class="keyword">bool</span> isLocal</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 更新在线的其他玩家ID列表</span></span></span><br><span class="line"><span class="function"><span class="keyword">internal</span> <span class="keyword">void</span> <span class="title">UpdateActivePlayers</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 运行模拟器</span></span></span><br><span class="line"><span class="function"><span class="comment">// TrueSyncStats的Update里检测调 lockstep.RunSimulation(true);</span></span></span><br><span class="line"><span class="function"><span class="comment">// CheckGameStart() 里调 RunSimulation(false);</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">RunSimulation</span>(<span class="params"><span class="keyword">bool</span> firstRun</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 更新设置simulationState模拟器状态, 和调对应的回调(OnGameStarted, OnGameUnPaused)</span></span></span><br><span class="line"><span class="function"><span class="comment">// RunSimulation() 里调</span></span></span><br><span class="line"><span class="function"><span class="comment">// private void OnEventDataReceived(byte eventCode, object content) 里调</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Run</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 发送操作</span></span></span><br><span class="line"><span class="function"><span class="comment">// 调通信器 this.communicator.OpRaiseEvent(eventCode, message, reliable, toPlayers);</span></span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">RaiseEvent</span>(<span class="params"><span class="keyword">byte</span> eventCode, <span class="keyword">object</span> message</span>)</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">RaiseEvent</span>(<span class="params"><span class="keyword">byte</span> eventCode, <span class="keyword">object</span> message, <span class="keyword">bool</span> reliable, <span class="keyword">int</span>[] toPlayers</span>)</span></span><br></pre></td></tr></table></figure>
+<h2 id="ThreadManager"><a href="#ThreadManager" class="headerlink" title="ThreadManager"></a>ThreadManager</h2><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Threading;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">EventSource</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ThreadManager</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> ThreadManager instance;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">volatile</span> List&lt;Action&lt;<span class="keyword">object</span>&gt;&gt; tasks = <span class="keyword">new</span> List&lt;Action&lt;<span class="keyword">object</span>&gt;&gt;();</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">volatile</span> List&lt;<span class="keyword">object</span>&gt; parameters = <span class="keyword">new</span> List&lt;<span class="keyword">object</span>&gt;();</span><br><span class="line">        <span class="keyword">private</span> ManualResetEvent waitHandleA;</span><br><span class="line">        <span class="keyword">private</span> ManualResetEvent waitHandleB;</span><br><span class="line">        <span class="keyword">private</span> ManualResetEvent currentWaitHandle;</span><br><span class="line">        <span class="keyword">private</span> Thread[] threads;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> currentTaskIndex;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> waitingThreadCount;</span><br><span class="line">        <span class="keyword">internal</span> <span class="keyword">int</span> threadCount;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> ThreadCount</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">set</span> &#123; threadCount = <span class="keyword">value</span>; &#125;</span><br><span class="line">            <span class="keyword">get</span> &#123; <span class="keyword">return</span> threadCount; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> ThreadManager Instance</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> ThreadManager();</span><br><span class="line">                    instance.Initialize();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> instance;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">ThreadManager</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 下面这种写法感觉没有切换时间的概念呀，该进程内部不会发送切换时间片呀</span></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Initialize</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            threadCount = Environment.ProcessorCount;</span><br><span class="line">            threads = <span class="keyword">new</span> Thread[threadCount];</span><br><span class="line">            waitHandleA = <span class="keyword">new</span> ManualResetEvent(<span class="literal">false</span>);</span><br><span class="line">            waitHandleB = <span class="keyword">new</span> ManualResetEvent(<span class="literal">false</span>);</span><br><span class="line">            currentWaitHandle = waitHandleA;</span><br><span class="line">            <span class="keyword">var</span> initWaitHandle = <span class="keyword">new</span> AutoResetEvent(<span class="literal">false</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> index = <span class="number">1</span>; index &lt; threads.Length; index++)</span><br><span class="line">            &#123;</span><br><span class="line">                threads[index] = <span class="keyword">new</span> Thread(() =&gt;</span><br><span class="line">                &#123;</span><br><span class="line">                    initWaitHandle.Set();</span><br><span class="line">                    ThreadProc();</span><br><span class="line">                &#125;)</span><br><span class="line">                &#123;</span><br><span class="line">                    IsBackground = <span class="literal">true</span></span><br><span class="line">                &#125;;</span><br><span class="line">                threads[index].Start();</span><br><span class="line">                initWaitHandle.WaitOne();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Execute</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            currentTaskIndex = <span class="number">0</span>;</span><br><span class="line">            waitingThreadCount = <span class="number">0</span>;</span><br><span class="line">            currentWaitHandle.Set();</span><br><span class="line">            PumpTasks();</span><br><span class="line">            <span class="keyword">while</span> (waitingThreadCount &lt; threads.Length - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Thread.Sleep(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            currentWaitHandle.Reset();</span><br><span class="line">            currentWaitHandle = currentWaitHandle == waitHandleA ? waitHandleB : waitHandleA;</span><br><span class="line">            tasks.Clear();</span><br><span class="line">            parameters.Clear();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">AddTask</span>(<span class="params">Action&lt;<span class="keyword">object</span>&gt; task, <span class="keyword">object</span> param</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            tasks.Add(task);</span><br><span class="line">            parameters.Add(param);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ThreadProc</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Interlocked.Increment(<span class="keyword">ref</span> waitingThreadCount);</span><br><span class="line">                waitHandleA.WaitOne();</span><br><span class="line">                PumpTasks();</span><br><span class="line">                Interlocked.Increment(<span class="keyword">ref</span> waitingThreadCount);</span><br><span class="line">                waitHandleB.WaitOne();</span><br><span class="line">                PumpTasks();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">PumpTasks</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> count = tasks.Count;</span><br><span class="line">            <span class="keyword">while</span> (currentTaskIndex &lt; count)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> curTaskIndex = currentTaskIndex;</span><br><span class="line">                <span class="keyword">if</span> (curTaskIndex == Interlocked.CompareExchange(<span class="keyword">ref</span> currentTaskIndex, curTaskIndex + <span class="number">1</span>, curTaskIndex) &amp;&amp; currentTaskIndex &lt; count)</span><br><span class="line">                    tasks[currentTaskIndex](parameters[currentTaskIndex]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Network/" rel="tag"># Network</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/24/protobuf-net-no-gc/" rel="next" title="Unity3D游戏GC优化总结---protobuf-net无GC版本优化实践">
+                <i class="fa fa-chevron-left"></i> Unity3D游戏GC优化总结---protobuf-net无GC版本优化实践
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/25/alphatest/" rel="prev" title="移动平台的AlphaTest效率问题">
+                移动平台的AlphaTest效率问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TrueSyncConfig"><span class="nav-number">1.</span> <span class="nav-text">TrueSyncConfig</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TrueSyncManager"><span class="nav-number">2.</span> <span class="nav-text">TrueSyncManager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICommunicator"><span class="nav-number">3.</span> <span class="nav-text">ICommunicator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PhotonTrueSyncCommunicator"><span class="nav-number">4.</span> <span class="nav-text">PhotonTrueSyncCommunicator</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OnEventReceived"><span class="nav-number">5.</span> <span class="nav-text">OnEventReceived</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TrueSyncBehaviour"><span class="nav-number">6.</span> <span class="nav-text">TrueSyncBehaviour</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TrueSyncManagedBehaviour"><span class="nav-number">7.</span> <span class="nav-text">TrueSyncManagedBehaviour</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CoroutineScheduler"><span class="nav-number">8.</span> <span class="nav-text">CoroutineScheduler</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ITrueSyncBehaviour"><span class="nav-number">9.</span> <span class="nav-text">ITrueSyncBehaviour</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ITrueSyncBehaviourGamePlay"><span class="nav-number">10.</span> <span class="nav-text">ITrueSyncBehaviourGamePlay</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ITrueSyncBehaviourCallbacks"><span class="nav-number">11.</span> <span class="nav-text">ITrueSyncBehaviourCallbacks</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TSRandom"><span class="nav-number">12.</span> <span class="nav-text">TSRandom</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StateTracker-TrackedInfo"><span class="nav-number">13.</span> <span class="nav-text">StateTracker.TrackedInfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StateTracker-State"><span class="nav-number">14.</span> <span class="nav-text">StateTracker.State</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StateTracker"><span class="nav-number">15.</span> <span class="nav-text">StateTracker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GenericBufferWindow"><span class="nav-number">16.</span> <span class="nav-text">GenericBufferWindow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ResourcePool-对象池"><span class="nav-number">17.</span> <span class="nav-text">ResourcePool 对象池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SerializableDictionary"><span class="nav-number">18.</span> <span class="nav-text">SerializableDictionary</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#InputData"><span class="nav-number">19.</span> <span class="nav-text">InputData</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SyncedInfo"><span class="nav-number">20.</span> <span class="nav-text">SyncedInfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SyncedData"><span class="nav-number">21.</span> <span class="nav-text">SyncedData</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TSPlayerInfo"><span class="nav-number">22.</span> <span class="nav-text">TSPlayerInfo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TSPlayer"><span class="nav-number">23.</span> <span class="nav-text">TSPlayer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ThreadManager"><span class="nav-number">24.</span> <span class="nav-text">ThreadManager</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

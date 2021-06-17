@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="像素光 Pixel LightUnity中将平行光称作为像素光，第一个像素光是基础平行光，以LightMode=ForwardBase标签修饰，每多一个像素光都以LightMode=ForwardAdd标签修饰。并不是所有的光源在运行时都会反射到物体上，而是根据Project的Quality中设置的像素光数量来渲染的。默认的像素光的数量应该是2，我们有更多的平行光照在物体上，就需要在Edit-&amp;g">
+<meta name="keywords" content="Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shader第一部分">
+<meta property="og:url" content="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="像素光 Pixel LightUnity中将平行光称作为像素光，第一个像素光是基础平行光，以LightMode=ForwardBase标签修饰，每多一个像素光都以LightMode=ForwardAdd标签修饰。并不是所有的光源在运行时都会反射到物体上，而是根据Project的Quality中设置的像素光数量来渲染的。默认的像素光的数量应该是2，我们有更多的平行光照在物体上，就需要在Edit-&amp;g">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/shader.webp">
+<meta property="og:image" content="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/3.jpg">
+<meta property="og:image" content="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/4.jpg">
+<meta property="og:image" content="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/5.jpg">
+<meta property="og:image" content="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/1.jpg">
+<meta property="og:image" content="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/2.jpg">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.037Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity Shader第一部分">
+<meta name="twitter:description" content="像素光 Pixel LightUnity中将平行光称作为像素光，第一个像素光是基础平行光，以LightMode=ForwardBase标签修饰，每多一个像素光都以LightMode=ForwardAdd标签修饰。并不是所有的光源在运行时都会反射到物体上，而是根据Project的Quality中设置的像素光数量来渲染的。默认的像素光的数量应该是2，我们有更多的平行光照在物体上，就需要在Edit-&amp;g">
+<meta name="twitter:image" content="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/shader.webp">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity Shader第一部分 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/10/20/Unity-Shader-IntroductionToTopic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity Shader第一部分
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Unity-Shader/" itemprop="url" rel="index"><span itemprop="name">Unity Shader</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/10/20/Unity-Shader-IntroductionToTopic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/20/Unity-Shader-IntroductionToTopic/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="像素光-Pixel-Light"><a href="#像素光-Pixel-Light" class="headerlink" title="像素光 Pixel Light"></a>像素光 Pixel Light</h2><p>Unity中将平行光称作为像素光，第一个像素光是基础平行光，以LightMode=ForwardBase标签修饰，每多一个像素光都以LightMode=ForwardAdd标签修饰。<br>并不是所有的光源在运行时都会反射到物体上，而是根据Project的Quality中设置的像素光数量来渲染的。<br>默认的像素光的数量应该是2，我们有更多的平行光照在物体上，就需要在Edit-&gt;Project Setting-&gt;Quality中去调节像素光的数量Pixel Light Count<br>当场景中的实际像素光数量超过这个设定值的时候，Unity只会渲染最重要的光。</p>
+<h2 id="关于像素光的叠加原理"><a href="#关于像素光的叠加原理" class="headerlink" title="关于像素光的叠加原理"></a>关于像素光的叠加原理</h2><p>片段着色器是要将mesh组件传递的信息最终计算为颜色(或者深度)存储在帧缓存(Frame Buffer)中。<br>每个Pass之间输出的颜色通过一定的公式进行混合。<br>在这里我们简单使用一比一的模式进行颜色混合，即混合指令为：<br><code>Blend One One</code><br>第二个Pass的代码同样的也直接复制第一个Pass即可，相应的将Tags标签中LightMode=ForwardBase修改为LightMode=ForwordAdd。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Custom/Multi-Light Diffuse&quot; &#123;</span><br><span class="line">    Properties &#123;</span><br><span class="line">        // 材料颜色默认为黑色，</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="渲染流水线"><a href="#渲染流水线" class="headerlink" title="渲染流水线"></a>渲染流水线</h1><p>渲染流水线的工作任务在于由一个三维场景触发、生成（或者说渲染）一张二维图像。换句话说，计算机需要从一系列的顶点数据、纹理等信息出发，把这些信息最终转换成一张人眼可以看到的图像。而这个工作通常是由CPU和GPU共同完成的。<br>《Render-Time Rendering, Third Edition》将一个渲染流程分成3个阶段：<strong>应用阶段(Application Stage)、几何阶段(Geometry Stage)、光栅化阶段(Rasterizer Stage)</strong>。<br><img src="/2018/10/20/Unity-Shader-IntroductionToTopic/shader.webp" title="渲染流水线"></p>
+<h4 id="应用阶段（CPU处理）"><a href="#应用阶段（CPU处理）" class="headerlink" title="应用阶段（CPU处理）"></a>应用阶段（CPU处理）</h4><p>这一阶段是由开发者主导的，在这一阶段中开发都有3个主要的任务：<br>首先，需要准备好场景数据（摄像机位置，视锥体，模型和光源等）<br>接着，还需要做粗粒度的剔除工作<br>最后，需要设置好每个模型的渲染状态（使用的材质，使用的纹理，使用的Shader等）<br>这一阶段最重要的输出是渲染所需的几何信息，即渲染图元，渲染图元可以是点，线，三角面等。</p>
+<h4 id="几何阶段（GPU处理）"><a href="#几何阶段（GPU处理）" class="headerlink" title="几何阶段（GPU处理）"></a>几何阶段（GPU处理）</h4><p>几何阶段主要用于处理所有和我们绘制的几何相关的事情。几何阶段负责和每个渲染图元打交道，进行逐顶点，逐多边形的操作。这个阶段可以进一步分成更小的流水线阶段。<br>几何阶段的一个重要任务就是把顶点坐标变换到屏幕空间中，再交给光栅器进行处理。<br>总结：输入的渲染图元-&gt;屏幕空间的二维顶点坐标、每个顶点对应深度、着色等信息</p>
+<h3 id="光栅化阶段（GPU处理）"><a href="#光栅化阶段（GPU处理）" class="headerlink" title="光栅化阶段（GPU处理）"></a>光栅化阶段（GPU处理）</h3><p>将会使用上一个阶段传递的数据来产生屏幕上的像素，并渲染出最终的图像。主要任务是决定每个渲染图元中的那些像素应该被绘制在屏幕上。<br><strong>顶点着色器（Vertex Shader）</strong>是完全可编程的，它通常用于实现顶点的空间变换、顶点着色等功能。<strong>曲面细分着色器（Tessellation Shader）</strong>是一个可选的着色器，<strong>几何着色器（Geometry Shader）</strong>同样是一个可选的着色器，它可以被用于执行逐图元（Per-Pimitive）的着色操作，或者被用于产生更多的图元。下一个流水线是<strong>裁剪（Clipping）</strong>，这一阶段的目的是将那些不在摄像机视野内的顶点裁剪掉，并剔除某些三角图元的面片。这个阶段是可配置的。例如，我们可以使用自定义的裁剪平面来配置裁剪区域，也可以通过指令控制裁剪三角图元的正面还是背面。几何概念阶段的最后一个流水线阶段是<strong>屏幕映射（Screen Mapping）</strong>。这一阶段是不可配置和编程的，它负责把每个图元的坐标转换到屏幕坐标系中。<br>光栅化概念阶段中的<strong>三角形设置（Triangle Setup）</strong>和<strong>三角形遍历（Triangle Traversal）</strong>阶段也都是固定函数（Fixed-Function）的阶段。接下来的<strong>片元着色器（Fragment Shader）</strong>，则是完全可编程的，它用于实现逐片元（Per-Fragment）的着色操作。最后，<strong>逐片元操作（Per-Fragment Operations）</strong>阶段负责执行很多重要的操作，例如修改颜色、深度缓冲、进行混合等，它不是可编程，但具有很高的可配置型。<br>Unity内置的DiffuseShader,也就是说我们创建一个Material出来时默认的Shader也是多光源的，所以这篇文章完成的Shader与默认的diffuse shader基本效果一致。</p>
+<h2 id="2-2-CPU与GPU之间的通信"><a href="#2-2-CPU与GPU之间的通信" class="headerlink" title="2.2 CPU与GPU之间的通信"></a>2.2 CPU与GPU之间的通信</h2><p>渲染流水线的起点是CPU，即应用阶段。应用阶段可以分为下面3个阶段：</p>
+<ul>
+<li>把数据加载到显存中</li>
+<li>设置渲染状态</li>
+<li>调用Draw Call</li>
+</ul>
+<h3 id="2-2-1-把数据加载到显存中"><a href="#2-2-1-把数据加载到显存中" class="headerlink" title="2.2.1 把数据加载到显存中"></a>2.2.1 把数据加载到显存中</h3><p>基本步骤就是纹理、网格等数据从硬盘加载到系统内存在加载到显存中。数据记载到显存后系统内存中的数据就可以被移除了，但是对于一些数据来说CPU需要访问他们，例如用于碰撞检测用的网格数据，这些数据则会被保留。</p>
+<h3 id="2-2-3-设置渲染状态"><a href="#2-2-3-设置渲染状态" class="headerlink" title="2.2.3 设置渲染状态"></a>2.2.3 设置渲染状态</h3><p>渲染状态指的是场景中的网格是如何被渲染的，例如使用哪个Vertex Shader或者哪个Fragment Shader、光源属性、材质等。</p>
+<h3 id="2-2-3-调用Draw-Call"><a href="#2-2-3-调用Draw-Call" class="headerlink" title="2.2.3 调用Draw Call"></a>2.2.3 调用Draw Call</h3><p>Draw Call指的是一个命令，发起方为CPU，接收方为GPU。当给定了一个Draw Call时，GPU会根据渲染状态（例如材质、纹理、着色器等）和所有输入的顶点数据来进行计算，最终输出成屏幕上显示的那些漂亮的像素。而这个计算过程，就是我们下一节要讲的GPU流水线。</p>
+<h2 id="2-3-GPU流水线"><a href="#2-3-GPU流水线" class="headerlink" title="2.3 GPU流水线"></a>2.3 GPU流水线</h2><p>当GPU从CPU那里得到渲染命令后，就会进行一系列流水线操作，最终把图元渲染到屏幕上。</p>
+<h3 id="2-3-1-概述"><a href="#2-3-1-概述" class="headerlink" title="2.3.1 概述"></a>2.3.1 概述</h3><p>在上一节中，我们解释了在应用阶段，CPU是如何和GPU通信，并通过调用Draw Call来命令GPU进行渲染。GPU渲染的过程就是GPU流水线。</p>
+<p>对于概念阶段的后两个阶段，即几何阶段和光栅化阶段，开发者无法拥有绝对的控制权，其实现的载体是GPU。GPU通过实现流水线化，大大加快了渲染速度。虽然我们无法完全控制这两个阶段的实现细节，但GPU向开发者开放了很多控制权。在这一节中，我们将具体了解GPU是如何实现这两个概念阶段的。</p>
+<p>几何阶段和光栅化阶段可以分为若干更小的流水线阶段，这些流水线阶段由GPU来实现，每个阶段GPU提供了不同的可配置性或可编程性。</p>
+<h3 id="从应用程序阶段模型数据给顶点着色器时支持的语义"><a href="#从应用程序阶段模型数据给顶点着色器时支持的语义" class="headerlink" title="从应用程序阶段模型数据给顶点着色器时支持的语义"></a>从应用程序阶段模型数据给顶点着色器时支持的语义</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">语义</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">POSITION</td>
+<td style="text-align:left">模型空间的顶点位置，通常是float4类型</td>
+</tr>
+<tr>
+<td style="text-align:left">NORMAL</td>
+<td style="text-align:left">顶点法线，通常是float3类型</td>
+</tr>
+<tr>
+<td style="text-align:left">TANGENT</td>
+<td style="text-align:left">顶点切线，通常是float4类型</td>
+</tr>
+<tr>
+<td style="text-align:left">TEXCOORDn,如TEXCOORD0、TEXCOORD1</td>
+<td style="text-align:left">该顶点的纹理坐标，TEXCOORD0表示第一组纹理坐标，依次类推，通常是float2或float4类型</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>其中TEXCOORDn中的数目是和Shader Model有关的，例如一般在Shader Model 2(即Unity默认编译到的Shader Model版本)和Shader Model 3中，n等于8，而在Shader Model 4 和Shader Model 5中，n等于16.通常情况下，一个模型的纹理坐标数组一般不超过2，即我们往往只只用TEXCOORD0和TEXCOORD1。在Unity内置的数据结构体appdata_full中，它最多使用了6个坐标纹理。</p>
+<h3 id="从顶点着色器传递数据给片元着色器时的语义"><a href="#从顶点着色器传递数据给片元着色器时的语义" class="headerlink" title="从顶点着色器传递数据给片元着色器时的语义"></a>从顶点着色器传递数据给片元着色器时的语义</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">语义</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">SV_POSITION</td>
+<td style="text-align:left">裁剪空间中的顶点坐标，结构体中必须包含一个用该语义修饰的变量。等同于Direct9中的POSITION，但最好使用SV_POSITION</td>
+</tr>
+<tr>
+<td style="text-align:left">COLOR0</td>
+<td style="text-align:left">通常用于输出第一组顶点颜色，但不是必须的</td>
+</tr>
+<tr>
+<td style="text-align:left">COLOR1</td>
+<td style="text-align:left">通常用于输出第二组顶点颜色，但不是必须的</td>
+</tr>
+<tr>
+<td style="text-align:left">TEXCOORD0~TEXCOORD7</td>
+<td style="text-align:left">通常用于输出纹理坐标，但不是必须的</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>上面的语义中，除了SV_POSITION是有特别含意外，其他语义对变量的含义没有明确要求，也就是说，我们可以存储任意值到这些描述变量中。</p>
+<h3 id="片元着色器输出时Unity支持的常用语义"><a href="#片元着色器输出时Unity支持的常用语义" class="headerlink" title="片元着色器输出时Unity支持的常用语义"></a>片元着色器输出时Unity支持的常用语义</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">语义</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="点和矢量的区别"><a href="#点和矢量的区别" class="headerlink" title="点和矢量的区别"></a>点和矢量的区别</h4><p>点是一个没有大小之分的空间中的位置，而矢量是一个有模和方向但是没有位置的量。</p>
+<h4 id="齐次坐标"><a href="#齐次坐标" class="headerlink" title="齐次坐标"></a>齐次坐标</h4><p>对于一个点，从三维坐标转换成齐次坐标是把w分量设为1，而对于方向矢量来说，需要把w分量设为0。</p>
+<h4 id="平移矩阵"><a href="#平移矩阵" class="headerlink" title="平移矩阵"></a>平移矩阵</h4><p>我们可以使用矩阵乘法来表示对一个点进行平移变换：</p>
+<p>$\begin{bmatrix}<br>{1}&amp;{0}&amp;{0}&amp;{t_{x}}\\<br>{0}&amp;{1}&amp;{0}&amp;{t_{y}}\\<br>{0}&amp;{0}&amp;{1}&amp;{t_{z}}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix}<br>\begin{bmatrix}<br>{x}\\<br>{y}\\<br>{z}\\<br>{1}\\<br>\end{bmatrix} =<br>\begin{bmatrix}<br>{x+t_{x}}\\<br>{y+t_{y}}\\<br>{z+t_{z}}\\<br>{1}\\<br>\end{bmatrix}$</p>
+<p>从结果来看我们可以很容易看出为什么这个矩阵有平移的效果：点的x、y、z分量分别增加了一个位置偏移。在3D中的可视化效果是，把点$(x,y,z)$在空间中平移了$(t_{x},t_{y},t_{z})$。<br>如果我们对一个方向矢量进行平移变换，结果如下：</p>
+<p>$\begin{bmatrix}<br>{1}&amp;{0}&amp;{0}&amp;{t_{x}}\\<br>{0}&amp;{1}&amp;{0}&amp;{t_{y}}\\<br>{0}&amp;{0}&amp;{1}&amp;{t_{z}}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix}<br>\begin{bmatrix}<br>{x}\\<br>{y}\\<br>{z}\\<br>{0}\\<br>\end{bmatrix} =<br>\begin{bmatrix}<br>{x}\\<br>{y}\\<br>{z}\\<br>{0}\\<br>\end{bmatrix}$<br>可以发现，平移变换不会对方向矢量产生任何影响。因为矢量没有位置属性，也就是说它可以位于空间中的任意一点，因此对位置的改变不应该对四维矢量产生影响。</p>
+<h4 id="缩放矩阵"><a href="#缩放矩阵" class="headerlink" title="缩放矩阵"></a>缩放矩阵</h4><p>我们可以对一个模型沿空间的x轴、y轴和z轴进行缩放。</p>
+<p>$\begin{bmatrix}<br>{k_{x}}&amp;{0}&amp;{0}&amp;{0}\\<br>{0}&amp;{k_{y}}&amp;{0}&amp;{0}\\<br>{0}&amp;{0}&amp;{k_{z}}&amp;{0}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix}<br>\begin{bmatrix}<br>{x}\\<br>{y}\\<br>{z}\\<br>{1}\\<br>\end{bmatrix} =<br>\begin{bmatrix}<br>{k_{x}x}\\<br>{k_{y}y}\\<br>{k_{z}z}\\<br>{1}\\<br>\end{bmatrix}$</p>
+<p>如果缩放系数$k_{x}=k_{y}=k_{z}$，我们把这样的缩放称为统一缩放（uniform scale），否则称为非同一缩放（nonuniform scale）。从外观看，统一缩放是扩大整个模型，而非同一缩放会拉伸或挤压模型。更重要的是，统一缩放不会改变角度和比例信息。</p>
+<h4 id="复合变换"><a href="#复合变换" class="headerlink" title="复合变换"></a>复合变换</h4><p>在绝大多数情况下，我们约定变换的顺序就是先缩放，再旋转，最后平移。<br>变换矩阵如下：(注意，矩阵是从右往左算的)<br>$<br>M_{translation}M_{rotation}M_{scale} =<br>\begin{bmatrix}<br>{1}&amp;{0}&amp;{0}&amp;{t_{x}}\\<br>{0}&amp;{1}&amp;{0}&amp;{t_{y}}\\<br>{0}&amp;{0}&amp;{1}&amp;{t_{z}}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix}<br>$<br>当我们直接给出$(\theta_{x}, \theta_{y}, \theta_{z})$这样的旋转角度时，需要定义一个旋转顺序。在Unity中，这个旋转顺序是zxy。</p>
+<h3 id="顶点的坐标空间变化"><a href="#顶点的坐标空间变化" class="headerlink" title="顶点的坐标空间变化"></a>顶点的坐标空间变化</h3><p>在渲染流水线中，一个顶点要经过多个坐标空间的变换才能最终被画在屏幕上。一个顶点最开始是在模型空间中定义的，最后它将会变换到屏幕空间中，得到真正的屏幕像素坐标。</p>
+<h4 id="模型空间"><a href="#模型空间" class="headerlink" title="模型空间"></a>模型空间</h4><p><strong>模型空间（model space）</strong>，是和某个模型或者说是对象有关的。有时模型空间也被称为<strong>对象空间（object space）</strong>或<strong>局部空间（local space）</strong>。每个模型都有自己独立的坐标空间，当它移动或旋转的时候，模型空间也会跟着它移动和旋转。<br>顶点变换的第一步，就是将顶点坐标从模型空间变换到世界空间中。这个变换通常叫做模型变换（model transform）。</p>
+<h4 id="世界空间"><a href="#世界空间" class="headerlink" title="世界空间"></a>世界空间</h4><p>顶点变换的第一步，就是将顶点坐标从模型空间变换到世界空间中。这个变换通常叫做<strong>模型变换（model transform）</strong>。<br>变换矩阵如下：<br>$M_{model} = \begin{bmatrix}<br>{1}&amp;{0}&amp;{0}&amp;{t_{x}}\\<br>{0}&amp;{1}&amp;{0}&amp;{t_{y}}\\<br>{0}&amp;{0}&amp;{1}&amp;{t_{z}}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix}<br>\begin{bmatrix}<br>{cos\theta}&amp;{0}&amp;{sin\theta}&amp;{0}\\<br>{0}&amp;{1}&amp;{0}&amp;{0}\\<br>{-sin\theta}&amp;{0}&amp;{cos\theta}&amp;{0}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix}<br>\begin{bmatrix}<br>{k_{x}}&amp;{0}&amp;{0}&amp;{0}\\<br>{0}&amp;{k_{y}}&amp;{0}&amp;{0}\\<br>{0}&amp;{0}&amp;{k_{z}}&amp;{0}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix} =<br>\begin{bmatrix}<br>{k_{x}cos\theta}&amp;{0}&amp;{k_{z}sin\theta}&amp;{t_{x}}\\<br>{0}&amp;{k_{y}}&amp;{0}&amp;{t_{y}}\\<br>{-k_{x}sin\theta}&amp;{0}&amp;{k_{z}cos\theta}&amp;{-t_{z}}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix}$<br>注意：上述变换顺序是不能互换的，即先进行缩放，在进行旋转，最后是平移。<br>因为每个Transform的平移旋转缩放都是不一样的，所以他们的矩阵也是不一样的。</p>
+<h4 id="观察空间"><a href="#观察空间" class="headerlink" title="观察空间"></a>观察空间</h4><p>观察空间（view space）也被称为摄像机空间（camera space）。顶点变换的第二步，就是将顶点坐标从世界空间变换到观察空间中。这个变换叫做观察变换（view transform）。</p>
+<h4 id="裁剪空间"><a href="#裁剪空间" class="headerlink" title="裁剪空间"></a>裁剪空间</h4><p>裁剪空间（clip space，也称齐次裁剪空间），这个用于变换的矩阵叫做裁剪矩阵（clip matrix），也称为投影矩阵（projection matrix）。<br>裁剪空间的目标是能够方便地对渲染图元进行裁剪：完全位于这块空间内部的图元将会被保留，完全位于这块空间外部的图元将会被剔除，而与这块空间边界相交的图元就会被裁剪。这块空间是由视锥体来决定的。<br>视锥体指的是空间中的一块区域，这块区域决定了摄像机可以看到的空间。视锥体由六个平面包围而成，这些平面也被称为<strong>裁剪平面（clip planes）</strong>。视锥体有两种类型，一种是<strong>正交投影（orthographic projection）</strong>，一种是<strong>透视投影（perspective projection）</strong>。<br>在视锥体的6块裁剪平面中，有两块裁剪平面比较特殊，它们分别被称为<strong>近裁剪平面（near clip plane）</strong>和<strong>远裁剪平面（far clip plane）</strong>。它们决定了摄像机可以看到的深度范围。</p>
+<h5 id="透视投影"><a href="#透视投影" class="headerlink" title="透视投影"></a>透视投影</h5><p>视锥体的意义在于定了场景中的一块三维空间。所有位于这块空间内的物体将会被渲染，否则就会被剔除或裁剪。这块区域是由6个裁剪平面组成，在Unity中，它们由Camera组件中的参数和Game视图中横纵比共同决定<br><img src="/2018/10/20/Unity-Shader-IntroductionToTopic/3.jpg"><br>Camera组件的Field of View（简称FOV）属性来改变视锥体竖直方向的张开角度，而Clipping Planes中的Near和Far参数可以控制视锥体的近裁剪面和远裁剪面距离相机的远近。<br>这样，我们可以求出视锥体近裁剪面和远裁剪面的高度</p>
+<p>$nearClipPlaneHeight = 2 \cdot Near \cdot tan {FOV \over 2}$</p>
+<p>$farClipPlaneHeight = 2 \cdot Far \cdot tan {FOV \over 2}$</p>
+<p>透视投影的横向信息，可以通过相机的横纵比得到。在Unity中，一个摄像机的横纵比由Game视图的横纵比和Viewport Rect中的W和H属性共同决定（实际上，Unity允许我们在脚本里通过Camera.aspect进行更改）。假设，当前相机的横纵比为Aspect，则：</p>
+<p>$Aspect = {nearClipPlaneWidth \over nerClipPlaneHeight}$</p>
+<p>$Aspect = {farClipPlaneWidth \over farClipPlaneHeight}$    </p>
+<p>现在，我们可以根据已知的Near、Far、FOV和Aspect的值来确定透视投影的投影矩阵。如下：</p>
+<p>$<br>M_{frustum} = \begin{bmatrix}<br>{cot{FOV \over 2} \over Aspect}&amp;{0}&amp;{0}&amp;{0}\\<br>{0}&amp;{cot{FOV \over 2}}&amp;{0}&amp;{0}\\<br>{0}&amp;{0}&amp;{-{Far+Near \over Far-Near}}&amp;{-{2 \cdot Far \cdot Near \over Far-Near}}\\<br>{0}&amp;{0}&amp;{-1}&amp;{0}\\<br>\end{bmatrix}<br>$<br>这里针对的是观察空间是右手坐标系，使用列矩阵在矩阵右侧相乘的，且变换后z分量范围在[-w,w]之间的情况。<br>而一个顶点和上述投影矩阵相乘后，可以由观察空间变换到裁剪空间中，结果如下<br>$<br>P_{clip} = M_{frustum}P_{view} =<br>\begin{bmatrix}<br>{cot{FOV \over 2} \over Aspect}&amp;{0}&amp;{0}&amp;{0}\\<br>{0}&amp;{cot{FOV \over 2}}&amp;{0}&amp;{0}\\<br>{0}&amp;{0}&amp;{-{Far+Near \over Far-Near}}&amp;{-{2 \cdot Far \cdot Near \over Far-Near}}\\<br>{0}&amp;{0}&amp;{-1}&amp;{0}\\<br>\end{bmatrix}<br>\begin{bmatrix}<br>{x}\\{y}\\{z}\\{1}\\<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>{x{cot{FOV \over 2} \over Aspect}}\\{y{cot{FOV \over 2}}}\\{-z{Far+Near \over Far-Near}-{2 \cdot Near \cdot Far \over Far-Near}}\\{-z}\\<br>\end{bmatrix}<br>$<br>从这个结果来看，这个投影矩阵本质就是对x、y和z分量进行了不同程度的缩放（z分量还有一个平移），缩放的目的是为了方便裁剪。此时顶点的w分量不再是1，而是原先z分量的取反结果。<br>现在，我们就可以按如下不等式来判断一个变换后的顶点是否位于视锥体内。如果一个顶点在视锥体内，那么它变换后的坐标必须满足：<br>$-w \le x \le w$<br>$-w \le y \le w$<br>$-w \le z \le w$<br>任何不满足上述条件的图元都需要被剔除或者裁剪。下图显示了经过上述投影矩阵后，视锥体的变化。<br><img src="/2018/10/20/Unity-Shader-IntroductionToTopic/4.jpg" title="在透视投影中，投影矩阵对顶点进行了缩放。"><br>从上图还可以注意到，裁剪矩阵会改变空间的旋向行；空间从右手坐标系变换到了左手坐标系。这意味着，离摄像机越远，z值将越大。</p>
+<h5 id="正交投影"><a href="#正交投影" class="headerlink" title="正交投影"></a>正交投影</h5><img src="/2018/10/20/Unity-Shader-IntroductionToTopic/5.jpg" title="正交相机的参数对正交投影视锥体的影响">
+<p>正交投影的6个裁剪面和透视投影类似，在Unity中，它们也是由Camera组件中的参数和Game视图的横纵比共同决定。<br>正交投影的视锥体是一个长方体，因此计算上相比透视投影来说更加简单。由图可以看出，我们可以通过Camera组件的Size属性来改变视锥体竖直方向上高度的一般，而Clipping Planes中的Near和Far参数可以控制视锥体的近裁剪面和远裁剪面距离相机的远近。这样，可以求出视锥体近裁剪面和远裁剪面的高度，也就是：<br>$newClipPlaneHeight=2 \cdot Size$<br>$farClipPlaneHeight=nearClipPlaneHeight$</p>
+<p>现在我们还缺乏横向的信息。同样，我们可以通过摄像机的横纵比得到。假设，当前摄像机的横纵比为Aspect，那么：<br>$nearClipPlaneWidth=Aspect \cdot nearClipPlaneHeight$<br>$farClipPlaneWidth=nearClipPlaneWidth$<br>现在，我们可以根据已知的Near、Far、Size和Aspect的值来确定正交投影的裁剪矩阵。如下：<br>$M_{prtho} =<br>\begin{bmatrix}<br>{1 \over Aspect \cdot Size}&amp;{0}&amp;{0}&amp;{0}\\<br>{0}&amp;{1 \over Size}&amp;{0}&amp;{0}\\<br>{0}&amp;{0}&amp;{-{2 \over Far-Near}}&amp;{-{Far+Near} \over {Far-Near}}\\<br>{0}&amp;{0}&amp;{0}&amp;{1}\\<br>\end{bmatrix}$</p>
+<h4 id="屏幕空间"><a href="#屏幕空间" class="headerlink" title="屏幕空间"></a>屏幕空间</h4><p>经过投影矩阵的变换后，我们可以进行裁剪操作。当完成了所有的裁剪工作后，就需要进行真正的投影了，也就是说，我们需要把视锥体投影到<strong>屏幕空间（screen space）</strong>中。经过这一步变换，我们会得到真正的像素位置，而不是虚拟的三维坐标。<br>屏幕空间是一个二维空间，因此，我们必须把顶点从裁剪空间投影到屏幕空间中，来生成对应的2D坐标。这个过程可理解成有两个步骤。<br>首先，我们需要进行标准<strong>齐次除法（homogeneous division）</strong>，也被称为<strong>透视除法（perspective division）</strong>。虽然这个步骤听起来很陌生，但是它实际上非常简单，就是用齐次坐标系的w分量去除以x、y、z分量。在OpenGL中，我们把这一步得到的坐标叫做<strong>归一化的设备坐标（Normalized Device Coordinates，NDC）</strong>。经过这一步，我们可以把坐标从齐次裁剪坐标空间转换到NDC中。经过透视投影变换后的裁剪空间，经过齐次除法会变换到一个立方体内。按照OpenGL的传统，这个立方体的x、y、z分量的范围都是[-1,1]。但在DirectX这样的API中，z分量的范围会是[0,1]。而Unity选择了OpenGL这样的齐次裁剪空间。</p>
+<img src="/2018/10/20/Unity-Shader-IntroductionToTopic/1.jpg" class="7.jpg% 经过齐次除法后，透视投影的裁剪空间会变换到一个立方体} #### 总结 顶点着色器的最基本的任务就是把顶点坐标从模型空间转换到裁剪空间中。 {% asset_img" title="渲染流水线中顶点的空间变化过程"> 
+<img src="/2018/10/20/Unity-Shader-IntroductionToTopic/2.jpg" title="Unity中各个坐标空间的旋向性">
+<h3 id="一个最简单的顶点-片元着色器"><a href="#一个最简单的顶点-片元着色器" class="headerlink" title="一个最简单的顶点/片元着色器"></a>一个最简单的顶点/片元着色器</h3><h4 id="顶点-片元着色器的基本结构"><a href="#顶点-片元着色器的基本结构" class="headerlink" title="顶点/片元着色器的基本结构"></a>顶点/片元着色器的基本结构</h4><p>Unity Shader的基本结构包含了Shader、Properties、SubShader、Fallback等语义块。顶点/片元着色器的结构与之大体类似，它的结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;MyShaderName&quot; &#123;</span><br><span class="line">    Properties &#123;</span><br><span class="line">        // 属性</span><br><span class="line">    &#125;</span><br><span class="line">    SubShader &#123;</span><br><span class="line">        // 针对显卡A的SubShader</span><br><span class="line">        Pass &#123;</span><br><span class="line">            // 设置渲染状态和标签</span><br><span class="line"></span><br><span class="line">            // 开始CG代码片段</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            // 该片段的编译指令，例如:</span><br><span class="line">            #pragma vertex vert</span><br><span class="line">            #pragma fragment frag</span><br><span class="line"></span><br><span class="line">            // CG代码写在这里</span><br><span class="line"></span><br><span class="line">            ENDCG</span><br><span class="line"></span><br><span class="line">            // 其他设置</span><br><span class="line">        &#125;</span><br><span class="line">        // 其他需要的Pass</span><br><span class="line">    &#125;</span><br><span class="line">    SubShader &#123;</span><br><span class="line">        // 针对显卡B的SubShader</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // 上述SubShader都失败后用于回调的Unity Shader</span><br><span class="line">    Fallback &quot;VertexLit&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，最重要的部分是Pass语义块，我们绝大部分的代码都是写在这个语义块里面的。下面我们就来创建一个最简单的顶点/片元着色器。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Shader/Simple&quot; &#123;</span><br><span class="line">    SubShader &#123;</span><br><span class="line">        Pass &#123;</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            #pragma vertex vert</span><br><span class="line">            #pragma fragment frag</span><br><span class="line"></span><br><span class="line">            float4 vert(float4 v : POSITION) : SV_POSITION &#123;</span><br><span class="line">                return UnityObjectToClipPos(v);</span><br><span class="line">            &#125;</span><br><span class="line">            fixed4 frag() : SV_Target&#123;</span><br><span class="line">                return fixed4(1.0, 1.0, 1.0, 1.0);</span><br><span class="line">            &#125;</span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Shader/Simple1&quot;&#123;</span><br><span class="line">    SubShader&#123;</span><br><span class="line">        Pass&#123;</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            #pragma vertex vert</span><br><span class="line">            #pargma fragment frag</span><br><span class="line">            // 使用一个结构体来定义顶点着色器的输入</span><br><span class="line">            struct a2v &#123;</span><br><span class="line">                // POSITION语义告诉Unity，用模型空间的顶点坐标填充vertex变量</span><br><span class="line">                float4 vertex : POSITION;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="模型数据从哪里来"><a href="#模型数据从哪里来" class="headerlink" title="模型数据从哪里来"></a>模型数据从哪里来</h4><h4 id="顶点着色器和片元着色器之间如何通信"><a href="#顶点着色器和片元着色器之间如何通信" class="headerlink" title="顶点着色器和片元着色器之间如何通信"></a>顶点着色器和片元着色器之间如何通信</h4><h4 id="如何使用属性"><a href="#如何使用属性" class="headerlink" title="如何使用属性"></a>如何使用属性</h4><h3 id="Unity提供的内置文件和变量"><a href="#Unity提供的内置文件和变量" class="headerlink" title="Unity提供的内置文件和变量"></a>Unity提供的内置文件和变量</h3><h4 id="内置的包含文件"><a href="#内置的包含文件" class="headerlink" title="内置的包含文件"></a>内置的包含文件</h4><h4 id="内置的变量"><a href="#内置的变量" class="headerlink" title="内置的变量"></a>内置的变量</h4><h3 id="Unity提供的CG-HLSL语义"><a href="#Unity提供的CG-HLSL语义" class="headerlink" title="Unity提供的CG/HLSL语义"></a>Unity提供的CG/HLSL语义</h3><h3 id="Unity支持的语义"><a href="#Unity支持的语义" class="headerlink" title="Unity支持的语义"></a>Unity支持的语义</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>语义</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POSITION</td>
+<td>模型空间的顶点位置，通常是float4类型</td>
+</tr>
+<tr>
+<td>NORMAL</td>
+<td>顶点法线，通常是float3类型</td>
+</tr>
+<tr>
+<td>TANGENT</td>
+<td>顶点切线，通常是float4类型</td>
+</tr>
+<tr>
+<td>$TEXCOORD_{n}$，如TEXCOORD0、TEXCOORD1</td>
+<td>该顶点的纹理坐标，TEXCOORD0表示第一组纹理坐标，依此类推。通常是float2或float4类型</td>
+</tr>
+<tr>
+<td>COLOR</td>
+<td>顶点颜色，通常是fixed4或float4类型</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="如何定义复杂的变量类型"><a href="#如何定义复杂的变量类型" class="headerlink" title="如何定义复杂的变量类型"></a>如何定义复杂的变量类型</h4><h4 id="使用假彩色图形"><a href="#使用假彩色图形" class="headerlink" title="使用假彩色图形"></a>使用假彩色图形</h4><h4 id="float、half还是fixed"><a href="#float、half还是fixed" class="headerlink" title="float、half还是fixed"></a>float、half还是fixed</h4><p>在本书中，我们使用CG/HLSL来编写Unity Shader中的代码。而在CG/HLSL中，有3中精度的数值类型：float、half和fixed。这些精度将决定计算结果的数值范围。表5.8给出了这3中精度在通常情况下的数值范围。</p>
+<p>CG/HLSL中3种精度的数值类型</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">精度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:left">最高精度的浮点值。通常使用32位来存储</td>
+</tr>
+<tr>
+<td style="text-align:left">half</td>
+<td style="text-align:left">中等精度的浮点值。通常用16位来存储，精度范围是-60000~+60000</td>
+</tr>
+<tr>
+<td style="text-align:left">fixed</td>
+<td style="text-align:left">最低精度的浮点值。通常使用11位来存储，精度方位是-2.0~+2.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/15/Unity-Shader-Manual/" rel="next" title="Unity Shader Manual">
+                <i class="fa fa-chevron-left"></i> Unity Shader Manual
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/21/Unity-Shader-IntroductionToTopic1/" rel="prev" title="Unity Shader第二部分">
+                Unity Shader第二部分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#像素光-Pixel-Light"><span class="nav-number">1.</span> <span class="nav-text">像素光 Pixel Light</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于像素光的叠加原理"><span class="nav-number">2.</span> <span class="nav-text">关于像素光的叠加原理</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#渲染流水线"><span class="nav-number"></span> <span class="nav-text">渲染流水线</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#应用阶段（CPU处理）"><span class="nav-number">0.0.1.</span> <span class="nav-text">应用阶段（CPU处理）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#几何阶段（GPU处理）"><span class="nav-number">0.0.2.</span> <span class="nav-text">几何阶段（GPU处理）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#光栅化阶段（GPU处理）"><span class="nav-number">0.1.</span> <span class="nav-text">光栅化阶段（GPU处理）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-CPU与GPU之间的通信"><span class="nav-number">1.</span> <span class="nav-text">2.2 CPU与GPU之间的通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-把数据加载到显存中"><span class="nav-number">1.1.</span> <span class="nav-text">2.2.1 把数据加载到显存中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-设置渲染状态"><span class="nav-number">1.2.</span> <span class="nav-text">2.2.3 设置渲染状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-调用Draw-Call"><span class="nav-number">1.3.</span> <span class="nav-text">2.2.3 调用Draw Call</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-GPU流水线"><span class="nav-number">2.</span> <span class="nav-text">2.3 GPU流水线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1-概述"><span class="nav-number">2.1.</span> <span class="nav-text">2.3.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从应用程序阶段模型数据给顶点着色器时支持的语义"><span class="nav-number">2.2.</span> <span class="nav-text">从应用程序阶段模型数据给顶点着色器时支持的语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从顶点着色器传递数据给片元着色器时的语义"><span class="nav-number">2.3.</span> <span class="nav-text">从顶点着色器传递数据给片元着色器时的语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#片元着色器输出时Unity支持的常用语义"><span class="nav-number">2.4.</span> <span class="nav-text">片元着色器输出时Unity支持的常用语义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#点和矢量的区别"><span class="nav-number">2.4.1.</span> <span class="nav-text">点和矢量的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#齐次坐标"><span class="nav-number">2.4.2.</span> <span class="nav-text">齐次坐标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#平移矩阵"><span class="nav-number">2.4.3.</span> <span class="nav-text">平移矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缩放矩阵"><span class="nav-number">2.4.4.</span> <span class="nav-text">缩放矩阵</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#复合变换"><span class="nav-number">2.4.5.</span> <span class="nav-text">复合变换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顶点的坐标空间变化"><span class="nav-number">2.5.</span> <span class="nav-text">顶点的坐标空间变化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型空间"><span class="nav-number">2.5.1.</span> <span class="nav-text">模型空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#世界空间"><span class="nav-number">2.5.2.</span> <span class="nav-text">世界空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#观察空间"><span class="nav-number">2.5.3.</span> <span class="nav-text">观察空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#裁剪空间"><span class="nav-number">2.5.4.</span> <span class="nav-text">裁剪空间</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#透视投影"><span class="nav-number">2.5.4.1.</span> <span class="nav-text">透视投影</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#正交投影"><span class="nav-number">2.5.4.2.</span> <span class="nav-text">正交投影</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#屏幕空间"><span class="nav-number">2.5.5.</span> <span class="nav-text">屏幕空间</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个最简单的顶点-片元着色器"><span class="nav-number">2.6.</span> <span class="nav-text">一个最简单的顶点/片元着色器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#顶点-片元着色器的基本结构"><span class="nav-number">2.6.1.</span> <span class="nav-text">顶点/片元着色器的基本结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模型数据从哪里来"><span class="nav-number">2.6.2.</span> <span class="nav-text">模型数据从哪里来</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顶点着色器和片元着色器之间如何通信"><span class="nav-number">2.6.3.</span> <span class="nav-text">顶点着色器和片元着色器之间如何通信</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何使用属性"><span class="nav-number">2.6.4.</span> <span class="nav-text">如何使用属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity提供的内置文件和变量"><span class="nav-number">2.7.</span> <span class="nav-text">Unity提供的内置文件和变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内置的包含文件"><span class="nav-number">2.7.1.</span> <span class="nav-text">内置的包含文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内置的变量"><span class="nav-number">2.7.2.</span> <span class="nav-text">内置的变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity提供的CG-HLSL语义"><span class="nav-number">2.8.</span> <span class="nav-text">Unity提供的CG/HLSL语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unity支持的语义"><span class="nav-number">2.9.</span> <span class="nav-text">Unity支持的语义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何定义复杂的变量类型"><span class="nav-number">2.9.1.</span> <span class="nav-text">如何定义复杂的变量类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用假彩色图形"><span class="nav-number">2.9.2.</span> <span class="nav-text">使用假彩色图形</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#float、half还是fixed"><span class="nav-number">2.9.3.</span> <span class="nav-text">float、half还是fixed</span></a></li></ol></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="修改mysql密码12345mysql -uroot -puse mysql;UPDATE user SET password=password(&amp;quot;123456&amp;quot;) WHERE user=&amp;apos;root&amp;apos;; flush privileges;exit; 1SHOW DATABASES; 首先CentOS7 已经不支持mysql，因为收费了你懂得，所以内部集成了m">
+<meta name="keywords" content="Mysql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mysql">
+<meta property="og:url" content="http://zentia.github.io/2017/10/14/mysql/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="修改mysql密码12345mysql -uroot -puse mysql;UPDATE user SET password=password(&amp;quot;123456&amp;quot;) WHERE user=&amp;apos;root&amp;apos;; flush privileges;exit; 1SHOW DATABASES; 首先CentOS7 已经不支持mysql，因为收费了你懂得，所以内部集成了m">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mysql">
+<meta name="twitter:description" content="修改mysql密码12345mysql -uroot -puse mysql;UPDATE user SET password=password(&amp;quot;123456&amp;quot;) WHERE user=&amp;apos;root&amp;apos;; flush privileges;exit; 1SHOW DATABASES; 首先CentOS7 已经不支持mysql，因为收费了你懂得，所以内部集成了m">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2017/10/14/mysql/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Mysql | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/14/mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Mysql
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2017/10/14/mysql/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/10/14/mysql/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="修改mysql密码"><a href="#修改mysql密码" class="headerlink" title="修改mysql密码"></a>修改mysql密码</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br><span class="line">use mysql;</span><br><span class="line">UPDATE user SET password=password(&quot;123456&quot;) WHERE user=&apos;root&apos;; </span><br><span class="line">flush privileges;</span><br><span class="line">exit;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW DATABASES;</span><br></pre></td></tr></table></figure>
+<p>首先CentOS7 已经不支持mysql，因为收费了你懂得，所以内部集成了mariadb，而安装mysql的话会和mariadb的文件冲突，所以需要先卸载掉mariadb，以下为卸载mariadb，安装mysql的步骤。</p>
+<h1 id="列出所有被安装的rpm-package"><a href="#列出所有被安装的rpm-package" class="headerlink" title="列出所有被安装的rpm package"></a>列出所有被安装的rpm package</h1><p>rpm -qa | grep mariadb</p>
+<h1 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h1><p>rpm -e mariadb-libs-5.5.37-1.el7_0.x86_64<br>错误：依赖检测失败：<br>libmysqlclient.so.18()(64bit) 被 (已安裝) postfix-2:2.10.1-6.el7.x86_64 需要<br>libmysqlclient.so.18(libmysqlclient_18)(64bit) 被 (已安裝) postfix-2:2.10.1-6.el7.x86_64 需要</p>
+<h1 id="强制卸载，因为没有—nodeps"><a href="#强制卸载，因为没有—nodeps" class="headerlink" title="强制卸载，因为没有—nodeps"></a>强制卸载，因为没有—nodeps</h1><p>rpm -e —nodeps mariadb-libs-5.5.37-1.el7_0.x86_64</p>
+<h1 id="安装mysql依赖"><a href="#安装mysql依赖" class="headerlink" title="安装mysql依赖"></a>安装mysql依赖</h1><p>yum install vim libaio net-tools</p>
+<p>其他情况：</p>
+<p>1、centos下yum暂时没有mysql-server直接安装包；<br>MariaDB是MySQL社区开发的分支，也是一个增强型的替代品;</p>
+<p>2、安装MariaDB（目前还是先不要安装了）<br>yum -y install mariadb-server mariadb mariadb-devel<br>systemctl start mariadb<br>systemctl enable mariadb<br>mysql_secure_installation<br>firewall-cmd —permanent —add-service mysql<br>systemctl restart firewalld.service<br>iptables -L -n|grep 3306</p>
+<p>CentOS7的yum源中默认好像是没有mysql的。为了解决这个问题，我们要先下载mysql的repo源。</p>
+<ol>
+<li>下载mysql的repo源</li>
+</ol>
+<p>$ wget <a href="http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm" target="_blank" rel="noopener">http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm</a></p>
+<ol>
+<li>安装mysql-community-release-el7-5.noarch.rpm包</li>
+</ol>
+<p>$ sudo rpm -ivh mysql-community-release-el7-5.noarch.rpm</p>
+<p>安装这个包后，会获得两个mysql的yum repo源：/etc/yum.repos.d/mysql-community.repo，/etc/yum.repos.d/mysql-community-source.repo。</p>
+<ol>
+<li>安装mysql</li>
+</ol>
+<p>$ sudo yum install mysql-server<br>根据步骤安装就可以了，不过安装完成后，没有密码，需要重置密码。</p>
+<ol>
+<li><p>重置密码<br>重置密码前，首先要登录<br>$ mysql -u root<br>登录时有可能报这样的错：ERROR 2002 (HY000): Can‘t connect to local MySQL server through socket ‘/var/lib/mysql/mysql.sock‘ (2)，原因是/var/lib/mysql的访问权限问题。下面的命令把/var/lib/mysql的拥有者改为当前用户：<br>$ sudo chown -R openscanner:openscanner /var/lib/mysql<br>然后，重启服务：<br>$ service mysqld restart</p>
+</li>
+<li><p>开放3306端口<br>$ sudo vim /etc/sysconfig/iptables<br>添加以下内容：<br>-A INPUT -p tcp -m state —state NEW -m tcp —dport 3306 -j ACCEPT<br>保存后重启防火墙：<br>$ sudo service iptables restart<br>这样从其它客户机也可以连接上mysql服务了。<br>MYSQL启动后报：ERROR! The server quit without updating PID file错误的问题解决<br>MYSQL日志：Can’t find file: ‘./mysql/plugin.frm’ (errno: 13 - Permission denied)</p>
+</li>
+<li><p>权限不够：chown -R mysql:mysql /home/mysql/data”  chmod -R 755 /home/mysql/data</p>
+</li>
+<li>centos7的selinux问题：打开/etc/selinux/config，把SELINUX=enforcing改为SELINUX=disabled后存盘退出重启机器。<br>查看存储过程的创建代码<br>show create procedure proc_name;</li>
+</ol>
+<h1 id="ERROR-1728-HY000-Cannot-load-from-mysql-proc-The-table-is-probably-corrupted"><a href="#ERROR-1728-HY000-Cannot-load-from-mysql-proc-The-table-is-probably-corrupted" class="headerlink" title="ERROR 1728 (HY000): Cannot load from mysql.proc. The table is probably corrupted"></a>ERROR 1728 (HY000): Cannot load from mysql.proc. The table is probably corrupted</h1><p>【错误过程】：MySQL从5.1升级至5.5后在调用存储过程时报出“Cannot load from mysql.proc. The table is probably corrupted。”<br>【造成原因】：MySQL升级完成后未对相关数据库执行升级.<br>【解决办法】：在命令行中执行mysql_upgrade -uroot -p 即可~</p>
+<h1 id="查看Mysql端口"><a href="#查看Mysql端口" class="headerlink" title="查看Mysql端口"></a>查看Mysql端口</h1><pre><code>show global variables like &#39;port&#39;;
+</code></pre><h1 id="字符集"><a href="#字符集" class="headerlink" title="字符集"></a>字符集</h1><h2 id="系统变量"><a href="#系统变量" class="headerlink" title="系统变量"></a>系统变量</h2><ul>
+<li>character_set_server          默认的内部操作字符集</li>
+<li>character_set_client          客户端来源数据使用的字符集</li>
+<li>character_set_connection      连接层字符集</li>
+<li>character_set_results         查询结果字符集</li>
+<li>character_set_database        当前选中数据库的默认字符集</li>
+<li>character_set_system          系统元数据（字段名等）字符集</li>
+</ul>
+<h2 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h2><pre><code>show variables like &#39;character_set_database&#39;;
+show variables like &#39;%character%&#39;;
+show variables like &#39;collation%&#39;;
+</code></pre><h2 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h2><h3 id="临时修改"><a href="#临时修改" class="headerlink" title="临时修改"></a>临时修改</h3><pre><code>alter database xxx CHARACTER SET gb2312; // 修改库的字符集
+SET character_set_client = utf8;
+</code></pre><h3 id="永久修改"><a href="#永久修改" class="headerlink" title="永久修改"></a>永久修改</h3><p>修改my.cnf 位置在/etc/my.cnf<br>在[mysqld]上面加下面两句话</p>
+<pre><code>[client]
+default-character-set=utf8
+</code></pre><p>在[mysqld]最下面加入下面几句话</p>
+<pre><code>default-storage-engine=INNODB
+character-set-server=utf8
+collation-server=utf8_general_ci
+</code></pre><p>然后保存</p>
+<p>重启Mysql</p>
+<pre><code>service mysqld restart
+</code></pre><h2 id="查看MYSQL所支持的字符集"><a href="#查看MYSQL所支持的字符集" class="headerlink" title="查看MYSQL所支持的字符集"></a>查看MYSQL所支持的字符集</h2><pre><code>show charset;
+</code></pre><h2 id="查看库的字符集"><a href="#查看库的字符集" class="headerlink" title="查看库的字符集"></a>查看库的字符集</h2><pre><code>show create database db_xxsy_game_1004\G;
+</code></pre><h2 id="查看表的字符集"><a href="#查看表的字符集" class="headerlink" title="查看表的字符集"></a>查看表的字符集</h2><pre><code>show table status from db_xxsy_game_1004 like &#39;common_accounts&#39;;
+</code></pre><h1 id="CentOS7-开放3306端口访问"><a href="#CentOS7-开放3306端口访问" class="headerlink" title="CentOS7 开放3306端口访问"></a>CentOS7 开放3306端口访问</h1><p>CentOS 7.0默认使用的是firewall作为防火墙，这里改为iptables防火墙。<br>1、关闭firewall：<br>systemctl stop firewalld.service<br>systemctl disable firewalld.service<br>systemctl mask firewalld.service</p>
+<p>2、安装iptables防火墙<br>yum install iptables-services -y</p>
+<p>3.启动设置防火墙</p>
+<pre><code># systemctl enable iptables
+# systemctl start iptables
+</code></pre><p>4.查看防火墙状态</p>
+<p>systemctl status iptables</p>
+<p>5编辑防火墙，增加端口<br>vi /etc/sysconfig/iptables #编辑防火墙配置文件<br>-A INPUT -m state —state NEW -m tcp -p tcp —dport 22 -j ACCEPT<br>-A INPUT -m state —state NEW -m tcp -p tcp —dport 80 -j ACCEPT<br>-A INPUT -m state —state NEW -m tcp -p tcp —dport 3306 -j ACCEPT<br>:wq! #保存退出</p>
+<p>3.重启配置，重启系统<br>systemctl restart iptables.service #重启防火墙使配置生效<br>systemctl enable iptables.service #设置防火墙开机启动</p>
+<h1 id="Host-‘192-168-171-128’-is-not-allowed-to-connect-to-this-MySQL-server"><a href="#Host-‘192-168-171-128’-is-not-allowed-to-connect-to-this-MySQL-server" class="headerlink" title="Host ‘192.168.171.128’ is not allowed to connect to this MySQL server"></a>Host ‘192.168.171.128’ is not allowed to connect to this MySQL server</h1><h1 id="ERROR-1044-42000-Access-denied-for-user-‘’-’localhost’-to-database-‘mysql’"><a href="#ERROR-1044-42000-Access-denied-for-user-‘’-’localhost’-to-database-‘mysql’" class="headerlink" title="ERROR 1044 (42000):Access denied for user ‘’@’localhost’ to database ‘mysql’"></a>ERROR 1044 (42000):Access denied for user ‘’@’localhost’ to database ‘mysql’</h1><p>在mysql数据库的user表里，存在用户名为空的账户即为匿名账户，导致登陆的时候虽然用的时root，但实际时匿名登陆的。<br>解决办法：</p>
+<ol>
+<li>关闭mysql<br>service mysqld stop</li>
+<li>屏蔽权限<br>mysqld_safe —skip-grant-table</li>
+<li>新开一个终端<br>mysql -u root mysql<br>delete from user where user=’’;<br>flush privileges;</li>
+</ol>
+<h1 id="mysql-h-no-found-file-or-directory"><a href="#mysql-h-no-found-file-or-directory" class="headerlink" title="mysql.h no found file or directory"></a>mysql.h no found file or directory</h1><p>yum install mysql-devel</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">数据类型</th>
+<th style="text-align:left">解释</th>
+<th style="text-align:left">存储范围</th>
+<th style="text-align:left">字节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">TINYINT</td>
+<td style="text-align:left">有符号值:-128到127<br>unsigned : [0 255]</td>
+<td style="text-align:left">1</td>
+</tr>
+<tr>
+<td style="text-align:left">SMALLINT</td>
+<td style="text-align:left">signed[-32768,32767]<br>unsigned [0,65535]</td>
+<td style="text-align:left">2</td>
+</tr>
+<tr>
+<td style="text-align:left">BINARY</td>
+<td style="text-align:left">用来表示二进制数据</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">VARBINARY</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>大小写忽略</p>
+<h3 id="CHAR和VARCHAR类型"><a href="#CHAR和VARCHAR类型" class="headerlink" title="CHAR和VARCHAR类型"></a>CHAR和VARCHAR类型</h3><p>都用来存储字符串<br>VARCHAR 可以存储可变长度的字符串<br>CHAR    存储定长字符串<br>定义如下<br>CHAR(M)或者VARCHAR(M)<br>M指的是字符串的最大长度<br>比如<br>插入值’ab’<br>CHAR(4) 需要4个字节<br>VARCHAR(4) 需要3个字节<br>当数据为CHAR(M)类型时，不管插入值的长度是多少，所占用的存储空间都是M个字节。<br>当为VARCHAR(M)类型时，所占用的字节数为实际长度加1。</p>
+<h3 id="BINARY和VARBINARY类型"><a href="#BINARY和VARBINARY类型" class="headerlink" title="BINARY和VARBINARY类型"></a>BINARY和VARBINARY类型</h3><p>类似于CHAR和VARCHAR<br>用来表示二进制数据<br>定义如下<br>BINARY(M)或者VARBINARY(M)<br>M指的是二进制数据的最大字节长度<br>注意<br>BINARY类型的长度是固定的，如果数据的长度不足最大长度，在后面用”\0”补齐。<br>比如，数据类型为BINARY(3)，当插入a时，实际存储的时”a\0\0”</p>
+<h1 id="Centos7安装Mysql"><a href="#Centos7安装Mysql" class="headerlink" title="Centos7安装Mysql"></a>Centos7安装Mysql</h1><pre><code>yum install mysql
+yum install mysql-devel
+yum install mariadb-server mariadb
+systemctl start mariadb
+</code></pre>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/13/git-server/" rel="next" title="Git 服务器搭建">
+                <i class="fa fa-chevron-left"></i> Git 服务器搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/14/vi/" rel="prev" title="Centos7下 vim">
+                Centos7下 vim <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#修改mysql密码"><span class="nav-number">1.</span> <span class="nav-text">修改mysql密码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#列出所有被安装的rpm-package"><span class="nav-number">2.</span> <span class="nav-text">列出所有被安装的rpm package</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#卸载"><span class="nav-number">3.</span> <span class="nav-text">卸载</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#强制卸载，因为没有—nodeps"><span class="nav-number">4.</span> <span class="nav-text">强制卸载，因为没有—nodeps</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装mysql依赖"><span class="nav-number">5.</span> <span class="nav-text">安装mysql依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ERROR-1728-HY000-Cannot-load-from-mysql-proc-The-table-is-probably-corrupted"><span class="nav-number">6.</span> <span class="nav-text">ERROR 1728 (HY000): Cannot load from mysql.proc. The table is probably corrupted</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看Mysql端口"><span class="nav-number">7.</span> <span class="nav-text">查看Mysql端口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#字符集"><span class="nav-number">8.</span> <span class="nav-text">字符集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统变量"><span class="nav-number">8.1.</span> <span class="nav-text">系统变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看"><span class="nav-number">8.2.</span> <span class="nav-text">查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改"><span class="nav-number">8.3.</span> <span class="nav-text">修改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#临时修改"><span class="nav-number">8.3.1.</span> <span class="nav-text">临时修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#永久修改"><span class="nav-number">8.3.2.</span> <span class="nav-text">永久修改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看MYSQL所支持的字符集"><span class="nav-number">8.4.</span> <span class="nav-text">查看MYSQL所支持的字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看库的字符集"><span class="nav-number">8.5.</span> <span class="nav-text">查看库的字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看表的字符集"><span class="nav-number">8.6.</span> <span class="nav-text">查看表的字符集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS7-开放3306端口访问"><span class="nav-number">9.</span> <span class="nav-text">CentOS7 开放3306端口访问</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Host-‘192-168-171-128’-is-not-allowed-to-connect-to-this-MySQL-server"><span class="nav-number">10.</span> <span class="nav-text">Host ‘192.168.171.128’ is not allowed to connect to this MySQL server</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ERROR-1044-42000-Access-denied-for-user-‘’-’localhost’-to-database-‘mysql’"><span class="nav-number">11.</span> <span class="nav-text">ERROR 1044 (42000):Access denied for user ‘’@’localhost’ to database ‘mysql’</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql-h-no-found-file-or-directory"><span class="nav-number">12.</span> <span class="nav-text">mysql.h no found file or directory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CHAR和VARCHAR类型"><span class="nav-number">12.0.1.</span> <span class="nav-text">CHAR和VARCHAR类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BINARY和VARBINARY类型"><span class="nav-number">12.0.2.</span> <span class="nav-text">BINARY和VARBINARY类型</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos7安装Mysql"><span class="nav-number">13.</span> <span class="nav-text">Centos7安装Mysql</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

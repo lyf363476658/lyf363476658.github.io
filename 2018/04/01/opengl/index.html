@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="基本概念与读者以前听说的可能不同，OpenGL（对其它3D应用程序接口来说也是如此）3D图形编程并不都是关于着色器的。不管是使用C、C++、C#、JavaScript等编程语言的哪一种，客户端都必须完成相当多的工作，来管理这些着色器，以及向它们馈送（feed）几何图形、变换矩阵和其他各种数据。本书的第一部分是真正的数据——3D图形编程教程，从基本原则开始讲述，当然这些都是基于实时3D图形渲染的行业">
+<meta name="keywords" content="OpenGL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenGL">
+<meta property="og:url" content="http://zentia.github.io/2018/04/01/opengl/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="基本概念与读者以前听说的可能不同，OpenGL（对其它3D应用程序接口来说也是如此）3D图形编程并不都是关于着色器的。不管是使用C、C++、C#、JavaScript等编程语言的哪一种，客户端都必须完成相当多的工作，来管理这些着色器，以及向它们馈送（feed）几何图形、变换矩阵和其他各种数据。本书的第一部分是真正的数据——3D图形编程教程，从基本原则开始讲述，当然这些都是基于实时3D图形渲染的行业">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://zentia.github.io/2018/04/01/opengl/1.jpg">
+<meta property="og:image" content="http://zentia.github.io/2018/04/01/opengl/2.jpg">
+<meta property="og:image" content="http://zentia.github.io/2018/04/01/opengl/3.jpg">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.247Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenGL">
+<meta name="twitter:description" content="基本概念与读者以前听说的可能不同，OpenGL（对其它3D应用程序接口来说也是如此）3D图形编程并不都是关于着色器的。不管是使用C、C++、C#、JavaScript等编程语言的哪一种，客户端都必须完成相当多的工作，来管理这些着色器，以及向它们馈送（feed）几何图形、变换矩阵和其他各种数据。本书的第一部分是真正的数据——3D图形编程教程，从基本原则开始讲述，当然这些都是基于实时3D图形渲染的行业">
+<meta name="twitter:image" content="http://zentia.github.io/2018/04/01/opengl/1.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/04/01/opengl/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>OpenGL | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/01/opengl/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">OpenGL
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/04/01/opengl/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/01/opengl/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><p>与读者以前听说的可能不同，OpenGL（对其它3D应用程序接口来说也是如此）3D图形编程并不都是关于着色器的。不管是使用C、C++、C#、JavaScript等编程语言的哪一种，客户端都必须完成相当多的工作，来管理这些着色器，以及向它们馈送（feed）几何图形、变换矩阵和其他各种数据。<br>本书的第一部分是真正的数据——3D图形编程教程，从基本原则开始讲述，当然这些都是基于实时3D图形渲染的行业标准OpenGL的。<br>着色器编程非常令人兴奋，但是作者并不打算将本书写成一本着色器编程数据。实际上，如果没有如何管理场景，设置视点、模型和变换矩阵，以及载入纹理等知识，那么即使懂得如何编写优秀的着色器也难有所成……我想读者一定明白我的意思。<br>为了帮助读者上手，本书提供了一个小型的“存储着色器”库，它们能够完成大多数常规任务。读者甚至可能会发现，对于简单3D渲染来说，这些着色器已经能够满足所有需要了。但是，随着知识的增长，读者可能并不会满足于此。在进入第二部分之前，还未读者准备GLSL“快速开始”，因此读者无需等到完成掌握OpenGL应用程序接口就能开始创造性了。</p>
+<h2 id="3D图形技术和术语"><a href="#3D图形技术和术语" class="headerlink" title="3D图形技术和术语"></a>3D图形技术和术语</h2><p>本书的每一章都包含一个或多个实例程序用来演示这一章锁讨论的编程技术。尽管本章有意避免了关于编程细节的讨论，但扔提供了一个示例程序向读者演示最低程度上需要熟悉的技术和术语，以帮助读者充分利用本书。本章的示例程序叫做BLOCK，读者可以从随书提供的示例程序集中的“Chapter 1”文件夹中找到它。<br>将数学和图形数据转换到3D空间图像的操作叫做渲染（Rendering）。当这个术语作为动词使用时，指的是计算机创建三维图像时所经历的过程。它也作为名词使用，指的仅仅是最终的图像作品。</p>
+<h3 id="光栅化（Rasterization）"><a href="#光栅化（Rasterization）" class="headerlink" title="光栅化（Rasterization）"></a>光栅化（Rasterization）</h3><p>实际绘制或填充每个定点之间的像素形成线段就叫做光栅化（Rasterization）。我们可以通过隐藏表面消除（Hidden Surface Removal）来进一步澄清3D设计意图。<br>视口：把绘图坐标映射到窗口坐标<br>裁剪区域的高度和宽度很少正好与窗口的宽度和高度（以像素为单位）相匹配。因此，坐标系统必须从逻辑笛卡尔坐标映射到物理屏幕像素坐标。这个映射是通过一种叫做视口（ViewPort）的设置来指定的。视口就是窗口内部用于绘制裁剪区域的客户区域。视口简单地把裁剪区域映射到窗口的一个区域。通常，视口被定义为整个窗口，但这并非严格必须的。例如，我们可能只希望在窗口的下半部分进行绘图。在用GPA抓帧的时候会发现，如果更改屏幕分辨率，就是只绘制到了视口或者窗口的一部分。<br><img src="/2018/04/01/opengl/1.jpg"><br>与此形成对照的是，图1.20所示显示了一个与裁剪区域相匹配的视口。我们所看到的的这个窗口仍然是300*200像素。但是，现在可视区域将占据窗口的左下部分。<br>我们可以使用视口来缩小或放大窗口中的图像，也可以通过把视口设置为大于窗口的用户区域，从而只显示裁剪区域的一部分。<br><img src="/2018/04/01/opengl/2.jpg"><br>顶点——空间中的一个位置</p>
+<h1 id="核心模式和立即渲染模式"><a href="#核心模式和立即渲染模式" class="headerlink" title="核心模式和立即渲染模式"></a>核心模式和立即渲染模式</h1><p>早期的OpenGL使用<strong>立即渲染模式</strong>（Immediate mode，也就是<strong>固定渲染管线</strong>），立即渲染模式容易使用和理解，但是效率太低。因此从OpenGL3.2开始，规范文档开始废弃立即渲染模式，推出核心模式(Core-profile)，这个模式完全移除了旧的特性。</p>
+<h1 id="状态机"><a href="#状态机" class="headerlink" title="状态机"></a>状态机</h1><p>OpenGL自身是一个巨大的状态机(State Machine)：一系列的变脸描述OpenGL此刻应当如何运行。绘制3D图形是一项复杂的任务。在接下来的章节，我们讨论许多OpenGL函数。对于一个特定的几何图形，有许多因素可能会影响它的绘制。对象是不是与背景混合？要不要进行正面或背面剔除？当前限制的是什么纹理？这样的问题数不胜数。</p>
+<p>我们把这类变量的集合成为管线的状态。状态机是一个抽象的模型，表示一组状态变量的集合。每个状态变量可以有各种不同的值，或者只能可以打开或关闭等。当我们在OpenGL中进行绘图时，如果每次都要指定所有这些变量显示有点不切实际。反之，OpenGL使用了一种状态模型（或称状态机）来追踪所有的OpenGL状态变量。当一个状态值被设置之后，它就一直保持这个状态，直到其他函数对它进行修改为止。许多状态只能简单的打开或关闭。例如，深度测试（参见第3章）就是要么打开、要么关闭。打开深度测试的几何绘图将会被检查以确保在进行渲染之前总会在任何位于它后面的对象前方。在深度测试关闭后进行的几何图形绘制（例如2D覆盖）则会在不进行深度比较的情况下进行绘制。</p>
+<p>为了打开这些类型的状态变量，可以使用下面这个OpenGL函数。<br><code>void glEnable(GLenum capability);</code><br>我们可以使用下面这个对应的函数，把这些变量的状态设置为关闭。<br><code>void glDisable(GLenum capability);</code><br>以深度测试为例，可以使用下面这个函数调用深度测试。<br><code>glEnable(GL_DEPTH_TEST);</code><br>也可以使用下面这个函数调用关闭深度测试。<br><code>glDisable(GL_DEPTH_TEST);</code><br>如果希望对一个状态变量进行测试，以判断它是否已被打开，OpenGL还提供了一种方便的机制。<br><code>Glboolean glIsEnabled(GLenum capability);</code><br>但是，并不是所有的状态变量都只是简单地打开或关闭。许多OpenGL函数专门用于设置变量的值，此后这些变量一直保持被设置时的值，直到再次被修改。我们在任何时候都可以查询这些变量的值。OpenGL提供了一组查询函数，可以查询布尔型、整型、单精度浮点型和双精度浮点型变量的值。这4个函数的原型如下所示：</p>
+<h1 id="颜色缓冲区"><a href="#颜色缓冲区" class="headerlink" title="颜色缓冲区"></a>颜色缓冲区</h1><p>颜色缓冲区（COLOR_BUFFER）就是帧缓冲区（FRAME_BUFFER），你需要渲染的场景最终每一个像素都要写入该缓冲区，然后由它渲染到屏幕上显示。</p>
+<h1 id="深度缓冲区"><a href="#深度缓冲区" class="headerlink" title="深度缓冲区"></a>深度缓冲区</h1><p>深度缓冲区（DEPTH_BUFFER）与帧缓冲区对应，用于记录上面每个像素的深度值，通过深度缓冲区，我们就可以进行深度测试，从而确定像素的遮挡关系，保证渲染正确。</p>
+<h1 id="模版缓冲区"><a href="#模版缓冲区" class="headerlink" title="模版缓冲区"></a>模版缓冲区</h1><p>模版缓冲区（STENCIL_BUFFER）与深度缓冲大小相同，通过设置模版缓冲每个像素的值，我们可以指定在渲染的时候只渲染某些像素，从而可以达到一些特殊的效果。</p>
+<h1 id="Texture-Wrapping"><a href="#Texture-Wrapping" class="headerlink" title="Texture Wrapping"></a>Texture Wrapping</h1><p>通常，纹理坐标的范围在(0,0)到(1,1)之间，但是假如我们制定的坐标在这之外呢？<br>OpenGL会如何做出反应？默认情况下，OpenGL会重复绘制纹理图，不过，OpenGL也提供了更多的选择方案：</p>
+<ul>
+<li>GL_REPEAT：默认方案，重复纹理图片</li>
+<li>GL_MIRRORED_REPEAT：类似于默认方法，不过每次重复的时候进行镜像重复。</li>
+<li>GL_CLAMP_TP_EDGE：将坐标限制在0到1之间。超出的坐标会重复绘制边缘的像素，变成一种扩展边缘的图案。</li>
+<li>GL_CLAMP_TO_BORDER：超出的坐标将会被绘制成用户指定的边界颜色</li>
+</ul>
+<h2 id="Mip贴图"><a href="#Mip贴图" class="headerlink" title="Mip贴图"></a>Mip贴图</h2><p>Mip贴图是一种功能强大的纹理技巧，它不仅可以提高渲染性能，而且可以改善场景的显示质量。它使用标准纹理贴图处理两个常见的问题，从而实现上述目标。第一个问题是一种称为闪烁（Scintillation，即锯齿假影）的效果。当屏幕上被渲染物体的表面与它所应用的纹理图像相比显得非常小时，就会出现这种效果。闪烁可以被看成是某种类型的闪光，当纹理 图像的采样区域的移动幅度与它在屏幕上的大小相比显得不成比例时，就会发生这种现象。当照相机或物体处于运动状态时，我们很容易看到闪烁的负面效果。</p>
+<p>第二个问题更多地和性能有关，但它的原因和闪烁相同。也就是说，问题的根源在与它必须加载大量的纹理内存并对它们进行过滤处理，但屏幕上实际显示的只是很少的一部分片段。纹理越大，这个问题造成的性能影响也就越为明显。</p>
+<p>Mip贴图纹理由一系列图像组成，每个图像大小在每个轴的方向上都缩小一半，或者说是原来图像像素总数的四分之一。图5.11所示显示了这些场景。MipMap并不一样是正方形的，但每个图像的大小都依次减半，知道最后一个图像的大小是1 x 1的纹理单元位置。当其中一个纬度的大小到达1时，接下来的减半处理就只发生在其他纬度上了。使用一组正方形（即各个纬度的大小相等）的MipMap所要求的的内存比不使用MipMap要多出三分之一。<br><img src="/2018/04/01/opengl/3.jpg"><br>MipMap是通过glTexImage函数加载的。现在轮到level参数发挥它的作用了，因为它指定了图像数据用于哪个Mip层。第一层是0，接着是1、2，然后依次类推。如果MipMap未被使用，那么就只有第0层会被加载。在默认情况下，为了使用MipMap，所有的Mip层都必须加载。但是我们可以用GL_TEXTURE_BASE_LEVEL和GL_TEXTURE_MAX_LEVEL纹理参数特别设置需要使用的基层和最大层。例如，如果想指定只加载从第0层至第4层，可以像下面这样调用glTexParameteri函数两次。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_BASE_LEVEL,<span class="number">0</span>);</span><br><span class="line">glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAX_LEVEL,<span class="number">4</span>);</span><br></pre></td></tr></table></figure></p>
+<p>尽管GL_TEXTURE_BASE_LEVEL和GL_TEXTURE_MAX_LEVEL控制哪些Mip层被加载，但我们仍然可以使用GL_TEXTURE_MIN_LOD和GL_TEXTURE_MAX_LOD参数限制已加载的Mip层的使用范围。</p>
+<h2 id="MipMap过滤"><a href="#MipMap过滤" class="headerlink" title="MipMap过滤"></a>MipMap过滤</h2><p>MipMap在两个基本的纹理过滤模式GL_NEAREST和GL_LINEAR尚添加了一个新的变化，这是通过向Mip贴图过滤提供了4中不同变化实现的。表5.5列出了这些变化。<br>表5.5 经过MipMap的纹理过滤</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>常量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GL_NEAREST</td>
+<td>在Mip基层上执行最邻近过滤</td>
+</tr>
+<tr>
+<td>GL_LINER</td>
+<td>在Mip基层上执行线性过滤</td>
+</tr>
+<tr>
+<td>GL_NEAREST_MIPMAP_NEAREST</td>
+<td>选择最邻近Mip层，并执行最邻近过滤</td>
+</tr>
+<tr>
+<td>GL_NEAREST_MIPMAP_LINER</td>
+<td>在Mip层之间执行线性插补，并执行最邻近过滤</td>
+</tr>
+<tr>
+<td>GL_LINEAR_MIPMAP_LINEAR</td>
+<td>在Mip层之间执行线性插补，并执行线性过滤，又称三线性Mip贴图</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>仅仅使用glTexImage函数加载Mip层并不能启用Mip贴图功能。如果纹理过滤设置为GL_LINER或GL_NEAREST，那么就只有纹理贴图基层会被使用，其他所有加载的Mip层都将被忽略。我们必须制定其中一个Mip贴图过滤器，这样才能使用所有已加载的Mip层。这个常量具有GL_FILTER_MIPMAP_SELECTOR的形式，其中FILTER制定了被选择的Mip层将要使用的纹理过滤器，SELECTOR则制定了如何选择Mip层。例如，GL_NEAREST选择最接近匹配的Mip层。<br>应该选择哪种过滤器取决于具体的应用以及希望实现的性能要求。例如，GL_NEAREST_MIPMAP_NEAREST具有非常好的性能，并且闪烁现象也非常弱，但最邻近过滤在视觉效果上尝尝难以令人满意。GL_LINEAR_MIPMAP_NEAREST常常用于对游戏进行加载，因为它适用了更高质量的线性过滤器。但是，它需要在不同大小的可用Mip层之间进行快速选择（最邻近过滤）。</p>
+<h2 id="各向异性过滤"><a href="#各向异性过滤" class="headerlink" title="各向异性过滤"></a>各向异性过滤</h2><p>各向异性纹理过滤（Anisotropic texture filtering）并不是OpenGL核心规范的一部分，但它是一种得到广泛支持的扩展，可以极大地提高纹理过滤操作的质量。我们在本章前面内容中讲述了纹理贴图，并学习了两种最基本的纹理过滤：最邻近过滤（GL_NEAREST）和线性过滤（GL_LINEAR）。当一个纹理贴图被过滤时，OpenGL使用纹理坐标来判断一个特定的几何片段将落在纹理贴图的什么地方。然后，紧邻这个位置的纹理单元使用GL_NEAREST或GL_LINEAR过滤操作进行采样。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>常量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GL_RGB</td>
+<td>按照红、绿、蓝顺序排列的颜色</td>
+</tr>
+<tr>
+<td>GL_RGBA</td>
+<td>按照红、绿、Alpha顺序排列的颜色</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/29/Red-Black-Tree/" rel="next" title="数据结构与算法">
+                <i class="fa fa-chevron-left"></i> 数据结构与算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/02/xxsy-skill/" rel="prev" title="PJ04">
+                PJ04 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3D图形技术和术语"><span class="nav-number">1.1.</span> <span class="nav-text">3D图形技术和术语</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#光栅化（Rasterization）"><span class="nav-number">1.1.1.</span> <span class="nav-text">光栅化（Rasterization）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#核心模式和立即渲染模式"><span class="nav-number">2.</span> <span class="nav-text">核心模式和立即渲染模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#状态机"><span class="nav-number">3.</span> <span class="nav-text">状态机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#颜色缓冲区"><span class="nav-number">4.</span> <span class="nav-text">颜色缓冲区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深度缓冲区"><span class="nav-number">5.</span> <span class="nav-text">深度缓冲区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模版缓冲区"><span class="nav-number">6.</span> <span class="nav-text">模版缓冲区</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Texture-Wrapping"><span class="nav-number">7.</span> <span class="nav-text">Texture Wrapping</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mip贴图"><span class="nav-number">7.1.</span> <span class="nav-text">Mip贴图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MipMap过滤"><span class="nav-number">7.2.</span> <span class="nav-text">MipMap过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各向异性过滤"><span class="nav-number">7.3.</span> <span class="nav-text">各向异性过滤</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

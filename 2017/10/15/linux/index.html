@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="例子：将目录A重命名为B mv A B 例子：将/a目录移动到/b下，并重命名为c mv /a /b/c  yum install wget yum install gcc yum install gcc-c++ wget http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.6.tar.gz tar -zxvf  ./configure -prefix=/us">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux">
+<meta property="og:url" content="http://zentia.github.io/2017/10/15/linux/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="例子：将目录A重命名为B mv A B 例子：将/a目录移动到/b下，并重命名为c mv /a /b/c  yum install wget yum install gcc yum install gcc-c++ wget http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.6.tar.gz tar -zxvf  ./configure -prefix=/us">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.206Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux">
+<meta name="twitter:description" content="例子：将目录A重命名为B mv A B 例子：将/a目录移动到/b下，并重命名为c mv /a /b/c  yum install wget yum install gcc yum install gcc-c++ wget http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.6.tar.gz tar -zxvf  ./configure -prefix=/us">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2017/10/15/linux/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Linux | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/15/linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Linux
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2017/10/15/linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/10/15/linux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>例子：将目录A重命名为B</p>
+<p>mv A B</p>
+<p>例子：将/a目录移动到/b下，并重命名为c</p>
+<p>mv /a /b/c</p>
+<ol>
+<li>yum install wget</li>
+<li>yum install gcc</li>
+<li>yum install gcc-c++</li>
+<li>wget <a href="http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.6.tar.gz" target="_blank" rel="noopener">http://ftp.gnu.org/pub/gnu/ncurses/ncurses-5.6.tar.gz</a></li>
+<li>tar -zxvf </li>
+<li>./configure -prefix=/usr/local -with-shared-without-debug</li>
+<li>make &gt; t.log</li>
+<li>make install</li>
+</ol>
+<ul>
+<li>no termcap library found<br>wget <a href="http://ftp.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz</a><br>tar -zxvf termcap-1.3.1.tar.gz<br>cd termcap<br>./configure —help<br>set t.log<br>vim t.log<br>/MACHTYPE<br>=x86_64-redhat-linux-gnu<br>yum install gdb (这尼玛坑爹呀)</li>
+</ul>
+<h1 id="du查看某个文件或目录占空间大小"><a href="#du查看某个文件或目录占空间大小" class="headerlink" title="du查看某个文件或目录占空间大小"></a>du查看某个文件或目录占空间大小</h1><pre><code>du -ah
+du -sh
+</code></pre><h1 id="linux下修改-bash-profile立即生效的方法"><a href="#linux下修改-bash-profile立即生效的方法" class="headerlink" title="linux下修改.bash_profile立即生效的方法"></a>linux下修改.bash_profile立即生效的方法</h1><ol>
+<li>source .bash_profile</li>
+<li>exec bash —login</li>
+</ol>
+<h1 id="linux中文乱码"><a href="#linux中文乱码" class="headerlink" title="linux中文乱码"></a>linux中文乱码</h1><p>查看当前系统默认的字符集<br>locale<br>安装中文包<br>yum -y groupinstall chinese-support</p>
+<p>生效<br>export LANG=”zh_CN.UTF-8”<br>重新载入<br>. /etc/profile</p>
+<h1 id="解决中文乱码"><a href="#解决中文乱码" class="headerlink" title="解决中文乱码"></a>解决中文乱码</h1><p>export LC_ALL=”zh_CN.utf8”</p>
+<h1 id="Linux中安装gcc-g-yum方式"><a href="#Linux中安装gcc-g-yum方式" class="headerlink" title="Linux中安装gcc g++ yum方式"></a>Linux中安装gcc g++ yum方式</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc</span><br><span class="line">yum -y install gcc-c++</span><br><span class="line">yum intall make</span><br></pre></td></tr></table></figure>
+<h1 id="Linux注销用户"><a href="#Linux注销用户" class="headerlink" title="Linux注销用户"></a>Linux注销用户</h1><p>who 列出登陆的用户列表<br> who<br>root@localhost:~/work_code/src/svr&gt; who<br>root     pts/0        2017-10-20 06:33 (192.168.171.1)<br>root@localhost:~/work_code/src/svr&gt; pkill -kill -t pts/0</p>
+<h1 id="cannot-find-lgcc-s"><a href="#cannot-find-lgcc-s" class="headerlink" title="cannot find -lgcc_s"></a>cannot find -lgcc_s</h1><p>在64位Centos7上编译32位C程序，因为是编译32位的目标程序，所以使用gcc编译的时候需要加上-m32选项，但是编译的话会报错，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@localhost:~/work_code&gt; gcc -g -m32 -o hello hello.c</span><br><span class="line">/usr/bin/ld: skipping incompatible /usr/lib/gcc/x86_64-redhat-linux/4.8.5/libgcc_s.so when searching for -lgcc_s</span><br><span class="line">/usr/bin/ld: cannot find -lgcc_s</span><br><span class="line">collect2: 错误：ld 返回 1</span><br></pre></td></tr></table></figure></p>
+<p>getconf LONG_BIT #查看自己版本是32位还是64位<br>32位的库<br>yum install glibc-devel.i686<br>yum install libstdc++-devel.i686</p>
+<h1 id="kill-2-和-kill-9的区别"><a href="#kill-2-和-kill-9的区别" class="headerlink" title="kill -2 和 kill -9的区别"></a>kill -2 和 kill -9的区别</h1><p>-2类似Ctrl + C 是程序在结束之前，能够保存相关数据，然后在退出。<br>-9直接强制结束程序。</p>
+<h1 id="硬链接-hard-link-和软链接-符号链接，fsoft-link或symbolic-link"><a href="#硬链接-hard-link-和软链接-符号链接，fsoft-link或symbolic-link" class="headerlink" title="硬链接(hard link)和软链接(符号链接，fsoft link或symbolic link)"></a>硬链接(hard link)和软链接(符号链接，fsoft link或symbolic link)</h1><p>我们知道文件都有文件名和数据，在Linux上被分成两个部分：用户数据(user data)和元数据(metadata)。用户数据，即文件数据块(data block)，数据块时记录文件真实内容的地方；而元数据则是文件的附加属性，如文件大小、创建时间、所有者等信息。在Linux中，元数据中的inode号(inode是文件元数据的一部分但其并不包含文件名，inode号即索引节点号)才是文件的唯一标识而非文件名。文件名仅是为了方便人们的记忆和使用，系统或程序通过inode号寻找正确的文件数据块。<br>若一个inode号对应多个文件名，则称这些文件为硬链接。换言之，硬链接就是同一个文件使用了多个别名。硬链接可由命令link或ln创建。<br>    link oldfile newfile<br>    ln oldfile newfile<br>由于硬链接有着相同inode号仅文件名不同的文件，因此硬链接存在以下几点特性：</p>
+<ul>
+<li>文件有相同的inode及data block；</li>
+<li>只能对已存在的文件进行创建；</li>
+<li>不能交叉文件系统进行硬链接的创建；</li>
+<li>不能对目录进行创建，只可对文件创建；</li>
+<li>删除一个硬链接文件并不影响其它有相同inode号的文件。<br>软连接与硬链接不同，若文件用户数据块存放的内容是另一文件的路径名的指向，则该文件就是软连接。软链接就是普通文件，只是数据块内容有点特殊。软链接有着自己的inode号以及用户数据块<br>usage: ln -s 源文件 目标文件</li>
+</ul>
+<h1 id="ssh登录方法"><a href="#ssh登录方法" class="headerlink" title="ssh登录方法"></a>ssh登录方法</h1><pre><code>ssh -l username ip
+</code></pre><h1 id="永久性获取ROOT权限"><a href="#永久性获取ROOT权限" class="headerlink" title="永久性获取ROOT权限"></a>永久性获取ROOT权限</h1><pre><code>sudo passwd
+su
+</code></pre><h1 id="64位linux机器上编译32位openssl库"><a href="#64位linux机器上编译32位openssl库" class="headerlink" title="64位linux机器上编译32位openssl库"></a>64位linux机器上编译32位openssl库</h1><pre><code>setarch i386 ./config -m32
+wget http://zlib.net/zlib-1.2.11.tar.gz
+tar -zxvf zlib-1.2.111.tar.gz
+cd zlib-1.2.11
+./configure --prefix=/usr/local
+make &amp;&amp; make install
+find ./ -name &quot;*.o&quot; -exec rm {} \;
+make: ***[install_docs] Error 1
+vim /usr/bin/pod2man 注释69行#
+</code></pre><p>i386 几乎所有的X86平台<br>i686 只是i386的一个子集</p>
+<h1 id="Linux内存管理"><a href="#Linux内存管理" class="headerlink" title="Linux内存管理"></a>Linux内存管理</h1><p>&lt;% img asset_img Linux1.webp %&gt;<br>在linux中，每一个进程都被抽象为task_struct结构体中，成为进程描述符，存储着进程各方面的信息；例如打开的文件，信号以及内存等等；然后task_struct中的一个属性mm_struct管理着进程的所有虚拟内存，成为内存描述符。在mm_struct结构体中，存储着进程各个内存段的开始以及结尾，如上图所示；进程使用的物理内存，即常驻内存RSS页数，这个内存使用的虚拟地址空间VSZ页数，还有进程虚拟内存区域集合和页表。<br>从上图可以看出，进程有代码段Text segment,数据段（已初始化的全局，静态变量），BSS段（未初始化的全局，静态变量），堆，内存映射区以及栈；<br>每一块虚拟内存区（VMA）都是由一块连续的虚拟地址组成，这些地址从不覆盖。一个vm_area_struct实例描述了一块内存区域，包括这块内存区域开始以及结尾地址；flags标志决定了这块内存的访问权限和行为；vm_file决定这块内存是由哪个文件映射的，如果没有文件映射，则这块内存为匿名的(anonymous)。上图中提到的每个内存段，都对应一个vm_area_struct结构。如下图所示<br>&lt;% asset_img Linux2.webp %&gt;<br>上图即为/bin/gonzo进程的内存布局。程序的二进制文件映射到代码段和数据段，代码段为只读只执行，不可更改；全局以及静态的未初始化的变量映射到BSS段，为匿名映射，堆和栈也是匿名映射，因为没有相对应的文件映射；内存映射区可以映射共享库，映射文件以及匿名映射，所以这块内存段可以使文件映射也可以是匿名映射。而且不同的文件，映射到不同的vm_area_struct区。<br>这些vm_area_struct集合存储在mm_struct中的一个单向链表和红黑树中；当输出/proc/pid/maps文件时，只需要遍历这个链表即可。红黑树主要是为了快速定位到某一个内存块，红黑树的跟存储在mm_rb域。<br>线性地址需要通过页表才能转换为物理地址。每个进程的内存描述符也保存了这个进程页表指针pgd,每一块虚拟内存页都和页表的某一项对应。<br>虚拟内存是不存储任何数据的，它只是将地址空间映射到物理内存。物理内存有内核伙伴系统分配，如果一块物理内存没有被映射，就可以被伙伴系统分配给虚拟内存。刚分配的物理内存可能是匿名的，存储进程数据，也可能是缓存，存储文件或块设备的数据。一块虚拟内存vm_area_struct块是由连续的虚拟内存也组成的，而这些虚拟内存块映射的物理内存却不一定连续，如下图所示：<br>&lt;% asset_img Linux3.webp  %&gt;</p>
+<h1 id="挂载"><a href="#挂载" class="headerlink" title="挂载"></a>挂载</h1><p><code>mount -t cifs -o username=administrator,passwd=,uid=&quot;1000&quot;,gid=&quot;1000&quot;,vers=2.0 //192.168.0.102/workspace /home/develop</code></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/15/svn/" rel="next" title="svn">
+                <i class="fa fa-chevron-left"></i> svn
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/15/gdb/" rel="prev" title="gdb">
+                gdb <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#du查看某个文件或目录占空间大小"><span class="nav-number">1.</span> <span class="nav-text">du查看某个文件或目录占空间大小</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux下修改-bash-profile立即生效的方法"><span class="nav-number">2.</span> <span class="nav-text">linux下修改.bash_profile立即生效的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#linux中文乱码"><span class="nav-number">3.</span> <span class="nav-text">linux中文乱码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决中文乱码"><span class="nav-number">4.</span> <span class="nav-text">解决中文乱码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux中安装gcc-g-yum方式"><span class="nav-number">5.</span> <span class="nav-text">Linux中安装gcc g++ yum方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux注销用户"><span class="nav-number">6.</span> <span class="nav-text">Linux注销用户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cannot-find-lgcc-s"><span class="nav-number">7.</span> <span class="nav-text">cannot find -lgcc_s</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#kill-2-和-kill-9的区别"><span class="nav-number">8.</span> <span class="nav-text">kill -2 和 kill -9的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#硬链接-hard-link-和软链接-符号链接，fsoft-link或symbolic-link"><span class="nav-number">9.</span> <span class="nav-text">硬链接(hard link)和软链接(符号链接，fsoft link或symbolic link)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ssh登录方法"><span class="nav-number">10.</span> <span class="nav-text">ssh登录方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#永久性获取ROOT权限"><span class="nav-number">11.</span> <span class="nav-text">永久性获取ROOT权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#64位linux机器上编译32位openssl库"><span class="nav-number">12.</span> <span class="nav-text">64位linux机器上编译32位openssl库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux内存管理"><span class="nav-number">13.</span> <span class="nav-text">Linux内存管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#挂载"><span class="nav-number">14.</span> <span class="nav-text">挂载</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

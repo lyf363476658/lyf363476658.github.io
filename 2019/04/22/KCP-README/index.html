@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="README in English  简介KCP是一个快速可靠协议，能以比 TCP浪费10%-20%的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。纯算法实现，并不负责底层协议（如UDP）的收发，需要使用者自己定义下层数据包的发送方式，以 callback的方式提供给 KCP。 连时钟都需要外部传递进来，内部不会有任何一次系统调用。 整个协议只有 ikcp.h">
+<meta name="keywords" content="Server">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KCP - A Fast and Reliable ARQ Protocol">
+<meta property="og:url" content="http://zentia.github.io/2019/04/22/KCP-README/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="README in English  简介KCP是一个快速可靠协议，能以比 TCP浪费10%-20%的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。纯算法实现，并不负责底层协议（如UDP）的收发，需要使用者自己定义下层数据包的发送方式，以 callback的方式提供给 KCP。 连时钟都需要外部传递进来，内部不会有任何一次系统调用。 整个协议只有 ikcp.h">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://skywind3000.github.io/word/images/kcp.svg">
+<meta property="og:image" content="https://api.travis-ci.org/skywind3000/kcp.svg?branch=master">
+<meta property="og:image" content="https://opencollective.com/kcp/backers/badge.svg">
+<meta property="og:image" content="https://opencollective.com/kcp/sponsors/badge.svg">
+<meta property="og:image" content="https://raw.githubusercontent.com/skywind3000/kcp/master/donation.png">
+<meta property="og:image" content="https://opencollective.com/kcp/contributors.svg?width=890&button=false">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.901Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="KCP - A Fast and Reliable ARQ Protocol">
+<meta name="twitter:description" content="README in English  简介KCP是一个快速可靠协议，能以比 TCP浪费10%-20%的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。纯算法实现，并不负责底层协议（如UDP）的收发，需要使用者自己定义下层数据包的发送方式，以 callback的方式提供给 KCP。 连时钟都需要外部传递进来，内部不会有任何一次系统调用。 整个协议只有 ikcp.h">
+<meta name="twitter:image" content="http://skywind3000.github.io/word/images/kcp.svg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/22/KCP-README/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>KCP - A Fast and Reliable ARQ Protocol | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/22/KCP-README/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">KCP - A Fast and Reliable ARQ Protocol
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/22/KCP-README/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/22/KCP-README/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://github.com/skywind3000/kcp" target="_blank" rel="noopener"><img src="http://skywind3000.github.io/word/images/kcp.svg" alt="Powered"></a> <a href="https://travis-ci.org/skywind3000/kcp" target="_blank" rel="noopener"><img src="https://api.travis-ci.org/skywind3000/kcp.svg?branch=master" alt="Build Status"></a><br><a href="#backers"><img src="https://opencollective.com/kcp/backers/badge.svg" alt="Backers on Open Collective"></a><br> <a href="#sponsors"><img src="https://opencollective.com/kcp/sponsors/badge.svg" alt="Sponsors on Open Collective"></a> </p>
+<p><a href="https://github.com/skywind3000/kcp/blob/master/README.en.md" target="_blank" rel="noopener">README in English</a> </p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>KCP是一个快速可靠协议，能以比 TCP浪费10%-20%的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。纯算法实现，并不负责底层协议（如UDP）的收发，需要使用者自己定义下层数据包的发送方式，以 callback的方式提供给 KCP。 连时钟都需要外部传递进来，内部不会有任何一次系统调用。</p>
+<p>整个协议只有 ikcp.h, ikcp.c两个源文件，可以方便的集成到用户自己的协议栈中。也许你实现了一个P2P，或者某个基于 UDP的协议，而缺乏一套完善的ARQ可靠协议实现，那么简单的拷贝这两个文件到现有项目中，稍微编写两行代码，即可使用。</p>
+<h1 id="技术特性"><a href="#技术特性" class="headerlink" title="技术特性"></a>技术特性</h1><p>TCP是为流量设计的（每秒内可以传输多少KB的数据），讲究的是充分利用带宽。而 KCP是为流速设计的（单个数据包从一端发送到一端需要多少时间），以10%-20%带宽浪费的代价换取了比 TCP快30%-40%的传输速度。TCP信道是一条流速很慢，但每秒流量很大的大运河，而KCP是水流湍急的小激流。KCP有正常模式和快速模式两种，通过以下策略达到提高流速的结果：</p>
+<h4 id="RTO翻倍vs不翻倍："><a href="#RTO翻倍vs不翻倍：" class="headerlink" title="RTO翻倍vs不翻倍："></a>RTO翻倍vs不翻倍：</h4><p>   TCP超时计算是RTOx2，这样连续丢三次包就变成RTOx8了，十分恐怖，而KCP启动快速模式后不x2，只是x1.5（实验证明1.5这个值相对比较好），提高了传输速度。</p>
+<h4 id="选择性重传-vs-全部重传："><a href="#选择性重传-vs-全部重传：" class="headerlink" title="选择性重传 vs 全部重传："></a>选择性重传 vs 全部重传：</h4><p>   TCP丢包时会全部重传从丢的那个包开始以后的数据，KCP是选择性重传，只重传真正丢失的数据包。</p>
+<h4 id="快速重传："><a href="#快速重传：" class="headerlink" title="快速重传："></a>快速重传：</h4><p>   发送端发送了1,2,3,4,5几个包，然后收到远端的ACK: 1, 3, 4, 5，当收到ACK3时，KCP知道2被跳过1次，收到ACK4时，知道2被跳过了2次，此时可以认为2号丢失，不用等超时，直接重传2号包，大大改善了丢包时的传输速度。</p>
+<h4 id="延迟ACK-vs-非延迟ACK："><a href="#延迟ACK-vs-非延迟ACK：" class="headerlink" title="延迟ACK vs 非延迟ACK："></a>延迟ACK vs 非延迟ACK：</h4><p>   TCP为了充分利用带宽，延迟发送ACK（NODELAY都没用），这样超时计算会算出较大 RTT时间，延长了丢包时的判断过程。KCP的ACK是否延迟发送可以调节。</p>
+<h4 id="UNA-vs-ACK-UNA："><a href="#UNA-vs-ACK-UNA：" class="headerlink" title="UNA vs ACK+UNA："></a>UNA vs ACK+UNA：</h4><p>   ARQ模型响应有两种，UNA（此编号前所有包已收到，如TCP）和ACK（该编号包已收到），光用UNA将导致全部重传，光用ACK则丢失成本太高，以往协议都是二选其一，而 KCP协议中，除去单独的 ACK包外，所有包都有UNA信息。</p>
+<h4 id="非退让流控："><a href="#非退让流控：" class="headerlink" title="非退让流控："></a>非退让流控：</h4><p>   KCP正常模式同TCP一样使用公平退让法则，即发送窗口大小由：发送缓存大小、接收端剩余接收缓存大小、丢包退让及慢启动这四要素决定。但传送及时性要求很高的小数据时，可选择通过配置跳过后两步，仅用前两项来控制发送频率。以牺牲部分公平性及带宽利用率之代价，换取了开着BT都能流畅传输的效果。</p>
+<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><ol>
+<li><p>创建 KCP对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化 kcp对象，conv为一个表示会话编号的整数，和tcp的 conv一样，通信双</span></span><br><span class="line"><span class="comment">// 方需保证 conv相同，相互的数据包才能够被认可，user是一个给回调函数的指针</span></span><br><span class="line">ikcpcb *kcp = ikcp_create(conv, user);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置回调函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// KCP的下层协议输出函数，KCP需要发送数据时会调用它</span></span><br><span class="line"><span class="comment">// buf/len 表示缓存和长度</span></span><br><span class="line"><span class="comment">// user指针为 kcp对象创建时传入的值，用于区别多个 KCP对象</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">udp_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">int</span> len, ikcpcb *kcp, <span class="keyword">void</span> *user)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ....</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 设置回调函数</span></span><br><span class="line">kcp-&gt;output = udp_output;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>循环调用 update：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以一定频率调用 ikcp_update来更新 kcp状态，并且传入当前时钟（毫秒单位）</span></span><br><span class="line"><span class="comment">// 如 10ms调用一次，或用 ikcp_check确定下次调用 update的时间不必每次调用</span></span><br><span class="line">ikcp_update(kcp, millisec);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输入一个下层数据包：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 收到一个下层数据包（比如UDP包）时需要调用：</span></span><br><span class="line">ikcp_input(kcp, received_udp_packet, received_udp_size);</span><br></pre></td></tr></table></figure>
+<p>处理了下层协议的输出/输入后 KCP协议就可以正常工作了，使用 ikcp_send 来向<br>远端发送数据。而另一端使用 ikcp_recv(kcp, ptr, size)来接收数据。</p>
+</li>
+</ol>
+<h1 id="协议配置"><a href="#协议配置" class="headerlink" title="协议配置"></a>协议配置</h1><p>协议默认模式是一个标准的 ARQ，需要通过配置打开各项加速开关：</p>
+<ol>
+<li><p>工作模式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ikcp_nodelay</span><span class="params">(ikcpcb *kcp, <span class="keyword">int</span> nodelay, <span class="keyword">int</span> interval, <span class="keyword">int</span> resend, <span class="keyword">int</span> nc)</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>nodelay ：是否启用 nodelay模式，0不启用；1启用。</li>
+<li>interval ：协议内部工作的 interval，单位毫秒，比如 10ms或者 20ms</li>
+<li>resend ：快速重传模式，默认0关闭，可以设置2（2次ACK跨越将会直接重传）</li>
+<li>nc ：是否关闭流控，默认是0代表不关闭，1代表关闭。</li>
+<li>普通模式： ikcp_nodelay(kcp, 0, 40, 0, 0);</li>
+<li>极速模式： ikcp_nodelay(kcp, 1, 10, 2, 1);</li>
+</ul>
+</li>
+<li><p>最大窗口：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ikcp_wndsize</span><span class="params">(ikcpcb *kcp, <span class="keyword">int</span> sndwnd, <span class="keyword">int</span> rcvwnd)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>该调用将会设置协议的最大发送窗口和最大接收窗口大小，默认为32. 这个可以理解为 TCP的 SND_BUF 和 RCV_BUF，只不过单位不一样 SND/RCV_BUF 单位是字节，这个单位是包。</p>
+</li>
+<li><p>最大传输单元：</p>
+<p>纯算法协议并不负责探测 MTU，默认 mtu是1400字节，可以使用ikcp_setmtu来设置该值。该值将会影响数据包归并及分片时候的最大传输单元。</p>
+</li>
+<li><p>最小RTO：</p>
+<p>不管是 TCP还是 KCP计算 RTO时都有最小 RTO的限制，即便计算出来RTO为40ms，由于默认的 RTO是100ms，协议只有在100ms后才能检测到丢包，快速模式下为30ms，可以手动更改该值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kcp-&gt;rx_minrto = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="文档索引"><a href="#文档索引" class="headerlink" title="文档索引"></a>文档索引</h1><p>协议的使用和配置都是很简单的，大部分情况看完上面的内容基本可以使用了。如果你需要进一步进行精细的控制，比如改变 KCP的内存分配器，或者你需要更有效的大规模调度 KCP链接（比如 3500个以上），或者如何更好的同 TCP结合，那么可以继续延伸阅读：</p>
+<ul>
+<li><a href="https://github.com/skywind3000/kcp/wiki" target="_blank" rel="noopener">Wiki Home</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/KCP-Best-Practice" target="_blank" rel="noopener">KCP 最佳实践</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/Cooperate-With-Tcp-Server" target="_blank" rel="noopener">同现有TCP服务器集成</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/Network-Encryption" target="_blank" rel="noopener">传输数据加密</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/Flow-Control-for-Users" target="_blank" rel="noopener">应用层流量控制</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/KCP-Benchmark" target="_blank" rel="noopener">性能评测</a></li>
+</ul>
+<h1 id="开源案例"><a href="#开源案例" class="headerlink" title="开源案例"></a>开源案例</h1><ul>
+<li><a href="https://github.com/xtaci/kcptun" target="_blank" rel="noopener">kcptun</a>: 基于 kcp-go做的高速远程端口转发(隧道) ，配合ssh -D，可以比 shadowsocks 更流畅的看在线视频。</li>
+<li><a href="https://github.com/vzex/dog-tunnel" target="_blank" rel="noopener">dog-tunnel</a>: GO开发的网络隧道，使用 KCP极大的改进了传输速度，并移植了一份 GO版本 KCP</li>
+<li><a href="https://www.v2ray.com" target="_blank" rel="noopener">v2ray</a>：著名代理软件，Shadowsocks 代替者，1.17后集成了 kcp协议，使用UDP传输，无数据包特征。</li>
+<li><a href="https://github.com/libinzhangyuan/asio_kcp" target="_blank" rel="noopener">asio-kcp</a>: 使用 KCP的完整 UDP网络库，完整实现了基于 UDP的链接状态管理，会话控制，KCP协议调度等</li>
+<li><a href="https://github.com/hkspirt/kcp-java" target="_blank" rel="noopener">kcp-java</a>：Java版本 KCP协议实现。</li>
+<li><a href="https://github.com/szhnet/kcp-netty" target="_blank" rel="noopener">kcp-netty</a>：kcp的Java语言实现，基于netty。</li>
+<li><a href="https://github.com/xtaci/kcp-go" target="_blank" rel="noopener">kcp-go</a>: 高安全性的kcp的 GO语言实现，包含 UDP会话管理的简单实现，可以作为后续开发的基础库。 </li>
+<li><a href="https://github.com/limpo1989/kcp-csharp" target="_blank" rel="noopener">kcp-csharp</a>: kcp的 csharp移植，同时包含一份回话管理，可以连接上面kcp-go的服务端。</li>
+<li><a href="https://github.com/KumoKyaku/KCP" target="_blank" rel="noopener">kcp-csharp</a>: 新版本 Kcp的 csharp移植。线程安全，运行时无alloc，对gc无压力。</li>
+<li><a href="https://github.com/en/kcp-rs" target="_blank" rel="noopener">kcp-rs</a>: KCP的 rust移植</li>
+<li><a href="https://github.com/Matrix-Zhang/kcp" target="_blank" rel="noopener">kcp-rust</a>：新版本 KCP的 rust 移植</li>
+<li><a href="https://github.com/Matrix-Zhang/tokio_kcp" target="_blank" rel="noopener">tokio-kcp</a>：rust tokio 的 kcp 集成</li>
+<li><a href="https://github.com/linxiaolong/lua-kcp" target="_blank" rel="noopener">lua-kcp</a>: KCP的 Lua扩展，用于 Lua服务器</li>
+<li><a href="https://github.com/leenjewel/node-kcp" target="_blank" rel="noopener">node-kcp</a>: node-js 的 KCP 接口  </li>
+<li><a href="https://github.com/oyyd/nysocks" target="_blank" rel="noopener">nysocks</a>: 基于libuv实现的<a href="https://nodejs.org/api/addons.html" target="_blank" rel="noopener">node-addon</a>，提供nodejs版本的代理服务，客户端接入支持SOCKS5和ss两种协议</li>
+<li><a href="https://github.com/shadowsocks/shadowsocks-android" target="_blank" rel="noopener">shadowsocks-android</a>: Shadowsocks for android 集成了 kcptun 使用 kcp协议加速 shadowsocks，效果不错</li>
+<li><a href="https://github.com/elisaday/kcpuv" target="_blank" rel="noopener">kcpuv</a>: 使用 libuv开发的kcpuv库，目前还在 Demo阶段</li>
+<li><a href="https://getlantern.org/" target="_blank" rel="noopener">Lantern</a>：更好的 VPN，Github 50000 星，使用 kcpgo 加速</li>
+<li><a href="https://github.com/smallnest/rpcx" target="_blank" rel="noopener">rpcx</a> ：RPC 框架，1000+ 星，使用 kcpgo 加速 RPC</li>
+<li><a href="https://github.com/liudf0716/xkcptun" target="_blank" rel="noopener">xkcptun</a>: c语言实现的kcptun，主要用于<a href="https://github.com/openwrt/openwrt" target="_blank" rel="noopener">OpenWrt</a>, <a href="https://github.com/lede-project/source" target="_blank" rel="noopener">LEDE</a>开发的路由器项目上</li>
+<li><a href="https://github.com/egametang/ET" target="_blank" rel="noopener">et-frame</a>: C#前后端框架(前端unity3d)，统一用C#开发游戏，实现了前后端kcp协议</li>
+</ul>
+<h1 id="商业案例"><a href="#商业案例" class="headerlink" title="商业案例"></a>商业案例</h1><ul>
+<li><a href="https://www.taptap.com/app/50664" target="_blank" rel="noopener">明日帝国</a>：Game K17 的 《明日帝国》 （Google Play），使用 KCP 加速游戏消息，让全球玩家流畅联网</li>
+<li><a href="https://www.taptap.com/app/27242" target="_blank" rel="noopener">仙灵大作战</a>：4399 的 MOBA游戏，使用 KCP 优化游戏同步</li>
+<li><a href="http://cc.163.com/" target="_blank" rel="noopener">CC</a>：网易 CC 使用 kcp 加速视频推流，有效提高流畅性</li>
+<li><a href="http://bobo.163.com/" target="_blank" rel="noopener">BOBO</a>：网易 BOBO 使用 kcp 加速主播推流</li>
+<li><a href="http://www.yfcloud.com/" target="_blank" rel="noopener">云帆加速</a>：使用 KCP 加速文件传输和视频推流，优化了台湾主播推流的流畅度</li>
+</ul>
+<p>欢迎告知更多案例</p>
+<h1 id="协议比较"><a href="#协议比较" class="headerlink" title="协议比较"></a>协议比较</h1><p>如果网络永远不卡，那 KCP/TCP 表现类似，但是网络本身就是不可靠的，丢包和抖动无法避免（否则还要各种可靠协议干嘛）。在内网这种几乎理想的环境里直接比较，大家都差不多，但是放到公网上，放到3G/4G网络情况下，或者使用内网丢包模拟，差距就很明显了。公网在高峰期有平均接近10%的丢包，wifi/3g/4g下更糟糕，这些都会让传输变卡。</p>
+<p>感谢 <a href="https://github.com/libinzhangyuan/asio_kcp" target="_blank" rel="noopener">asio-kcp</a> 的作者 <a href="https://github.com/libinzhangyuan" target="_blank" rel="noopener">zhangyuan</a> 对 KCP 与 enet, udt做过的一次横向评测，结论如下：</p>
+<ul>
+<li>ASIO-KCP <strong>has good performace in wifi and phone network(3G, 4G)</strong>.</li>
+<li>The kcp is the <strong>first choice for realtime pvp game</strong>.</li>
+<li>The lag is less than 1 second when network lag happen. <strong>3 times better than enet</strong> when lag happen.</li>
+<li>The enet is a good choice if your game allow 2 second lag.</li>
+<li><strong>UDT is a bad idea</strong>. It always sink into badly situation of more than serval seconds lag. And the recovery is not expected.</li>
+<li>enet has the problem of lack of doc. And it has lots of functions that you may intrest.</li>
+<li>kcp’s doc is chinese. Good thing is the function detail which is writen in code is english. And you can use asio_kcp which is a good wrap.</li>
+<li>The kcp is a simple thing. You will write more code if you want more feature.</li>
+<li>UDT has a perfect doc. UDT may has more bug than others as I feeling.</li>
+</ul>
+<p>具体见：<a href="https://github.com/libinzhangyuan/reliable_udp_bench_mark" target="_blank" rel="noopener">横向比较</a> 和 <a href="https://github.com/skywind3000/kcp/wiki/KCP-Benchmark" target="_blank" rel="noopener">评测数据</a>，为犹豫选择的人提供了更多指引。</p>
+<h1 id="欢迎捐赠"><a href="#欢迎捐赠" class="headerlink" title="欢迎捐赠"></a>欢迎捐赠</h1><p><img src="https://raw.githubusercontent.com/skywind3000/kcp/master/donation.png" alt="欢迎使用支付宝对该项目进行捐赠"></p>
+<p>欢迎使用支付宝手扫描上面的二维码，对该项目进行捐赠。捐赠款项将用于持续优化 KCP协议以及完善文档。</p>
+<p>感谢：明明、星仔、进、帆、颁钊、斌铨、晓丹、余争、虎、晟敢、徐玮、王川、赵刚强、胡知锋、万新朝、何新超、刘旸、侯宪辉、吴佩仪、华斌、如涛、胡坚。。。（早先的名单实在不好意思没记录下来）等同学的捐助与支持。</p>
+<p>欢迎关注</p>
+<p>KCP交流群：364933586（QQ群号），KCP集成，调优，网络传输以及相关技术讨论<br>Gitter 群：<a href="https://gitter.im/skywind3000/KCP" target="_blank" rel="noopener">https://gitter.im/skywind3000/KCP</a></p>
+<p>blog: <a href="http://www.skywind.me" target="_blank" rel="noopener">http://www.skywind.me</a></p>
+<p>zhihu: <a href="https://www.zhihu.com/people/skywind3000" target="_blank" rel="noopener">https://www.zhihu.com/people/skywind3000</a></p>
+<h2 id="Contributors"><a href="#Contributors" class="headerlink" title="Contributors"></a>Contributors</h2><p>This project exists thanks to all the people who contribute.<br><a href="https://github.com/skywind3000/kcp/graphs/contributors" target="_blank" rel="noopener"><img src="https://opencollective.com/kcp/contributors.svg?width=890&button=false"></a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Server/" rel="tag"># Server</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/22/frame-sync/" rel="next" title="帧锁定同步(frame lock sync)按帧同步（frame sync）状态同步(state sync)">
+                <i class="fa fa-chevron-left"></i> 帧锁定同步(frame lock sync)按帧同步（frame sync）状态同步(state sync)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/22/KCP-CSharp-README/" rel="prev" title="KCP C#版">
+                KCP C#版 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#技术特性"><span class="nav-number">2.</span> <span class="nav-text">技术特性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RTO翻倍vs不翻倍："><span class="nav-number">2.0.0.1.</span> <span class="nav-text">RTO翻倍vs不翻倍：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择性重传-vs-全部重传："><span class="nav-number">2.0.0.2.</span> <span class="nav-text">选择性重传 vs 全部重传：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快速重传："><span class="nav-number">2.0.0.3.</span> <span class="nav-text">快速重传：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#延迟ACK-vs-非延迟ACK："><span class="nav-number">2.0.0.4.</span> <span class="nav-text">延迟ACK vs 非延迟ACK：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UNA-vs-ACK-UNA："><span class="nav-number">2.0.0.5.</span> <span class="nav-text">UNA vs ACK+UNA：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非退让流控："><span class="nav-number">2.0.0.6.</span> <span class="nav-text">非退让流控：</span></a></li></ol></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#基本使用"><span class="nav-number">3.</span> <span class="nav-text">基本使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#协议配置"><span class="nav-number">4.</span> <span class="nav-text">协议配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文档索引"><span class="nav-number">5.</span> <span class="nav-text">文档索引</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开源案例"><span class="nav-number">6.</span> <span class="nav-text">开源案例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#商业案例"><span class="nav-number">7.</span> <span class="nav-text">商业案例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#协议比较"><span class="nav-number">8.</span> <span class="nav-text">协议比较</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#欢迎捐赠"><span class="nav-number">9.</span> <span class="nav-text">欢迎捐赠</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Contributors"><span class="nav-number">9.1.</span> <span class="nav-text">Contributors</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

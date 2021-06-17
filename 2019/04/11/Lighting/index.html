@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="灯光的组成在Direct3D灯光模型中，灯光是通过灯光资源的三个成员之一来照射的，即有三种灯光。  环境光（Ambient Light）——这种类型的灯光将被其他所有表面反射且被用在照亮整个场景。例如，物体的各部分都被照亮，对于一个角度，甚至穿过不在光源直接照射的地方他们都能被照亮。环境光的使用是粗略的，便宜的，它模仿反射光。 漫反射（Diffuse Reflection）——这种灯光按照特殊方向">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第五章 灯光(Lighting)">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/Lighting/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="灯光的组成在Direct3D灯光模型中，灯光是通过灯光资源的三个成员之一来照射的，即有三种灯光。  环境光（Ambient Light）——这种类型的灯光将被其他所有表面反射且被用在照亮整个场景。例如，物体的各部分都被照亮，对于一个角度，甚至穿过不在光源直接照射的地方他们都能被照亮。环境光的使用是粗略的，便宜的，它模仿反射光。 漫反射（Diffuse Reflection）——这种灯光按照特殊方向">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.908Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第五章 灯光(Lighting)">
+<meta name="twitter:description" content="灯光的组成在Direct3D灯光模型中，灯光是通过灯光资源的三个成员之一来照射的，即有三种灯光。  环境光（Ambient Light）——这种类型的灯光将被其他所有表面反射且被用在照亮整个场景。例如，物体的各部分都被照亮，对于一个角度，甚至穿过不在光源直接照射的地方他们都能被照亮。环境光的使用是粗略的，便宜的，它模仿反射光。 漫反射（Diffuse Reflection）——这种灯光按照特殊方向">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/Lighting/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>第五章 灯光(Lighting) | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Lighting/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">第五章 灯光(Lighting)
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/Lighting/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Lighting/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="灯光的组成"><a href="#灯光的组成" class="headerlink" title="灯光的组成"></a>灯光的组成</h1><p>在Direct3D灯光模型中，灯光是通过灯光资源的三个成员之一来照射的，即有三种灯光。</p>
+<ul>
+<li>环境光（Ambient Light）——这种类型的灯光将被其他所有表面反射且被用在照亮整个场景。例如，物体的各部分都被照亮，对于一个角度，甚至穿过不在光源直接照射的地方他们都能被照亮。环境光的使用是粗略的，便宜的，它模仿反射光。</li>
+<li>漫反射（Diffuse Reflection）——这种灯光按照特殊方向传播。当它照射到一个表面，它将在所有方向上均匀的反射。因为漫射光在所有方向上都均匀的反射，被反射的光线将到达眼睛而与观察点无关，因此我们不必为观察者考虑。因而，漫射光仅仅需要考虑灯光方向和表面的姿态。这种灯光将成为你的资源中照射的普通灯光。</li>
+<li>镜面反射（Specular Reflection）——这种灯光按照特殊方向传播。当它照射到一个表面时，它严格地按照一个方向反射。这将产生一个明亮的光泽，它能在某角度被看见。因为这种灯光在一个方向反射。明显的观察点，必须考虑灯光的方向和表面姿态，且必须按照镜面灯光等式来考虑。镜面灯光被用在物体上产生高光的地方，这种光泽只有在灯光照射在磨光的表面上才会产生。<br>　　镜面光比其他灯光类型要求更多的计算；因此，Direct3D提供了一个开关选择。实际上，它默认是被关闭的；要使用镜面光你必须设置D3DRS_SPECULARENABLE渲染状态。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Device-&gt;SetRenderState(D3DRS_SPECULARENABLE, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>每一种灯光都是通过D3DCOLORVALUE结构或者描述灯光颜色的D3DXCOLOR来描绘的。这里有几个灯光颜色的例子：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXCOLOR <span class="title">redAmbient</span><span class="params">(<span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXCOLOR <span class="title">blueDiffuse</span><span class="params">(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXCOLOR <span class="title">whiteSpecular</span><span class="params">(<span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>注意：在D3DXCOLOR类中的alpha值用在描述灯光颜色时是被忽略的。</p>
+<h2 id="材质"><a href="#材质" class="headerlink" title="材质"></a>材质</h2><p>在现实世界中我们看到的物体颜色将由物体反射回来的灯光颜色来决定。比如，一个红色的球是红色的，因为它吸收所有的灯光颜色除了红色光。红色光是被球反射回来进入我们眼睛的，因此我们看到的球是红色的。Direct3D通过我们定义的物体材质来模拟这些所有的现象。材质允许我们定义表面反射灯光的百分比。在代码中通过D3DMATERIAL9结构描述一个材质。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">D3DMATERIAL9</span> &#123;</span></span><br><span class="line">    D3DCOLORVALUE Diffuse, Ambient, Specular, Emissive;</span><br><span class="line">    <span class="keyword">float</span> Power;</span><br><span class="line">&#125; D3DMATERIAL9;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Diffuse——指定此表面反射的漫射光数量。</li>
+<li>Ambient——指定此表面反射的环境光数量。</li>
+<li>Specular——指定此表面反射的镜面光数量</li>
+<li>Emissive——这个是被用来给表面添加颜色，它使得物体看起来就象是它自己发出的光一样。</li>
+<li>Power——指定锐利的镜面高光；它的值是高光的锐利值。<br>　　举例，想得到一个红色的球。我们将定义球的材质来只反射红光吸收其他颜色的所有光：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">D3DMATERIAL9 red;</span><br><span class="line">::ZeroMemory(&amp;red, <span class="keyword">sizeof</span>(red));</span><br><span class="line">red.Diffuse = D3DXCOLOR(<span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>); <span class="comment">// red</span></span><br><span class="line">red.Ambient = D3DXCOLOR(<span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>); <span class="comment">// red</span></span><br><span class="line">red.Specular = D3DXCOLOR(<span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>); <span class="comment">// red</span></span><br><span class="line">red.Emissive = D3DXCOLOR(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>); <span class="comment">// no emission</span></span><br><span class="line">red.Power = <span class="number">5.0f</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>　　这里我们设置绿色和蓝色的值为0，这表明材质反射0%此颜色的光。我们设置红色为1，表示材质反射100%的红光。注意，我们能够控制每种灯光反射的颜色（环境、漫射和镜面光）。<br>　　同样假如我们定义一个只发出蓝色光的光源，对球的光照将失败因为蓝色光将被全部吸收而没有红光被反射。当物体吸收了所有光以后，物体看起来就为黑色。同样的，当物体反射100%的红、绿和蓝光，物体就将呈现为白色。<br>　　因为手工填充一个材质结构将是乏味的工作，我们添加下列有用的函数和全局材质常数到d3dUtility.h/cpp文件中：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">D3DMATERIAL9 d3d::InitMtrl(D3DXCOLOR a, D3DXCOLOR d,</span><br><span class="line">D3DXCOLOR s, D3DXCOLOR e, <span class="keyword">float</span> p)</span><br><span class="line">&#123;</span><br><span class="line">    D3DMATERIAL9 mtrl;</span><br><span class="line">    mtrl.Ambient = a;</span><br><span class="line">    mtrl.Diffuse = d;</span><br><span class="line">    mtrl.Specular = s;</span><br><span class="line">    mtrl.Emissive = e;</span><br><span class="line">    mtrl.Power = p;</span><br><span class="line">    <span class="keyword">return</span> mtrl;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> d3d</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">D3DMATERIAL9 <span class="title">InitMtrl</span><span class="params">(D3DXCOLOR a, D3DXCOLOR d, D3DXCOLOR s, D3DXCOLOR e, <span class="keyword">float</span> p)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> D3DMATERIAL9 WHITE_MTRL = InitMtrl(WHITE, WHITE, WHITE, BLACK, <span class="number">8.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> D3DMATERIAL9 RED_MTRL = InitMtrl(RED, RED, RED, BLACK, <span class="number">8.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> D3DMATERIAL9 GREEN_MTRL = InitMtrl(GREEN, GREEN, GREEN, BLACK, <span class="number">8.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> D3DMATERIAL9 BLUE_MTRL = InitMtrl(BLUE, BLUE, BLUE, BLACK, <span class="number">8.0f</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> D3DMATERIAL9 YELLOW_MTRL = InitMtrl(YELLOW, YELLOW, YELLOW, BLACK, <span class="number">8.0f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>顶点结构没有材质属性；一个通用的材质必须被设置。设置它我们使用IDirect3DDevice9::SetMaterial(CONST D3DMATERIAL9 * pMaterial)方法。<br>假设我们想渲染几个不同材质的物体；我们将按照如下的写法去做：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">D3DMATERIAL9 blueMaterial, redMaterial;</span><br><span class="line"><span class="comment">// set up material structures</span></span><br><span class="line"></span><br><span class="line">Device-&gt;SetMaterial(&amp;blueMaterial);</span><br><span class="line">drawSphere(); <span class="comment">// blue sphere</span></span><br><span class="line"></span><br><span class="line">Device-&gt;SetMaterial(&amp;redMaterial);</span><br><span class="line">drawSphere(); <span class="comment">// red sphere</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="顶点法线"><a href="#顶点法线" class="headerlink" title="顶点法线"></a>顶点法线</h1><pre><code>面法线（face normal）是描述多边形表面方向的一个向量（如图5.1）。
+</code></pre><p>图5.1<br>　　顶点法线（Vertex normals）也是基于同样的概念，但是我们与其指定每个多边形的法线，还不如为每个顶点指定（如图5.2）。<br>　　<br>　　图5.2<br>　　Direct3D需要知道顶点法线以便它能够确定灯光照射到物体表面的角度，并且一旦计算了每个顶点的灯光，Direct3D需要知道每个顶点的表面方向。注意顶点法线不一定和面法线相同。球体/环形物就是很好的实物例子，它们的顶点法线和三角形法线是不相同的（如图5.3）。<br>　　<br>　　图5.3<br>为了描述顶点的顶点法线，我们必须更新原来的顶点结构<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Vertex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">float</span> _x, _y, _z;</span><br><span class="line">    <span class="keyword">float</span> _nx, _ny, _nz;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> DWORD FVF;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> DWORD Vertex::FVF = D3DFVF_XYZ | D3DFVF_NORMAL;</span><br></pre></td></tr></table></figure></p>
+<p>注意，我们已经将上一章中使用的颜色成分去除了。这是因为我们将使用灯光来计算顶点的颜色。<br>　　作为一个简单的物体比如立方体和球体，我们能够通过观察看见顶点法线。对于更多复杂的网格，我们需要一个更多的机械方法。假设一个由p0,p1,p2构成的三角形，我们需要计算每个顶点的法线n0,n1,n2。<br>　　简单的步骤，我们列举它是为了找到由三个点构成的三角形的面法线，同时使用面法线作为顶点法线。首先计算三角形上的两个向量：<br>　　<br>　　那么面法线是：<br>　　<br>　　每个顶点的法线和面法线是相等的：<br>　　<br>　　下面是一个C函数，它通过三角形的三个顶点计算三角形的面法线。注意这个函数的三个顶点是按照顺时针方向指定的。假如不是这样，那么法线方向将是相反的。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ComputeNormal</span><span class="params">(D3DXVECTOR3* p0,</span></span></span><br><span class="line"><span class="function"><span class="params">                D3DXVECTOR3* p1,</span></span></span><br><span class="line"><span class="function"><span class="params">                D3DXVECTOR3* p2,</span></span></span><br><span class="line"><span class="function"><span class="params">                D3DXVECTOR3* out)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    D3DXVECTOR3 u = *p1 - *p0;</span><br><span class="line">    D3DXVECTOR3 v = *p2 - *p0;</span><br><span class="line">    D3DXVec3Cross(out, &amp;u, &amp;v);</span><br><span class="line">    D3DXVec3Normalize(out, out);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>当用三角形近似表示曲面时，使用面法线作为顶点法线不能表现一个平滑的结果。一个更好的方法是找到顶点法线的平均法线。为了找到顶点v的顶点法线vn，我们找到网格模型中所有三角形的面法线记为顶点v。vn是通过计算他们的平均面法线得到的。这里有一个例子，假设有3个三角形它们的面法线分别是n0，n1，n2，指定为顶点v。那么vn的平均法线就是：<br>　　<br>通过改变“舞台”，把顶点法线变为non-normal,这是有可能的。因此这样最好是安全的且在通过D3DRS_NORMALIZENORMALS设置渲染状态来改变“舞台”后，Direct3D从新规格化所有法线。<br>Device-&gt;SetRenderState(D3DRS_NORMALIZENORMALS, true);<br>5.4光源<br>　　Direct3D支持三种类型的光源。</p>
+<ul>
+<li>点光源——这种光源在世界坐标中有一个位置且向所有方向上都照射光线。</li>
+</ul>
+<p>图5.4</p>
+<ul>
+<li>方向光源——这种光源没有位置但是向指定方向发出平行光线。</li>
+</ul>
+<p>图5.5</p>
+<ul>
+<li>聚光灯——这种类型的光源和手电筒的光类似；它有位置并且发出的光在指定方向上按照圆锥形照射。这个圆锥形有两个角度，θ和φ。角度θ描述内圆锥，φ描述外圆锥。</li>
+</ul>
+<p>图5.6<br>　　在代码中一个灯光资源是通过D3DLIGHT9结构来表现的。<br>typedef struct _D3DLIGHT9 {<br>    D3DLIGHTTYPE Type;<br>    D3DCOLORVALUE Diffuse;<br>    D3DCOLORVALUE Specular;<br>    D3DCOLORVALUE Ambient;<br>    D3DVECTOR Position;<br>    D3DVECTOR Direction;<br>    float Range;<br>    float Falloff;<br>    float Attenuation0;<br>    float Attenuation1;<br>    float Attenuation2;<br>    float Theta;<br>    float Phi;<br>} D3DLIGHT9;</p>
+<ul>
+<li>Type——定义灯光类型，我们能够使用下面三种类型之一：D3DLIGHT_POINT, D3DLIGHT_SPOT, D3DLIGHT_DIRECTIONAL</li>
+<li>Diffuse——此光源发出的漫射光颜色。</li>
+<li>Specular——此光源发出的镜面光颜色。</li>
+<li>Ambient——此光源发出的环境光颜色。</li>
+<li>Position——用一个向量来描述的光源世界坐标位置。这个值对于灯光的方向是无意义的。</li>
+<li>Direction——用一个向量来描述的光源世界坐标照射方向。这个值不能用在点光源上。</li>
+<li>Range——灯光能够传播的最大范围。这个值不能比大。且不能用于方向光源。</li>
+<li>Falloff——这个值只能用在聚光灯上。它定义灯光在从内圆锥到外圆锥之间的强度衰减。它的值通常设置为1.0f。</li>
+<li><p>Attenuation0, Attenuation1, Attenuation2——这些衰减变量被用来定义灯光强度的传播距离衰减。它们只被用于点光源和聚光灯上。Attenuation0定义恒定衰减，Attenuation1定义线性衰减，Attenuation2定义二次衰减。适当的使用这个公式，D是代表到光源的距离，A0,A1,A2与Attenuation0，1，2相匹配。</p>
+</li>
+<li><p>Theta——只用于聚光灯；指定内圆锥的角度，单位是弧度。</p>
+</li>
+<li><p>Phi——只用于聚光灯；指定外圆锥的角度，单位是弧度。<br>　　就象初始化D3DMATERIAL9结构一样，初始化D3DLIGHT9结构是一件单调乏味的工作。我们添加下面的函数到d3dUtility.h/cpp文件中用于初始化简单灯光。<br>namespace d3d<br>{<br>  … …<br>  D3DLIGHT9 InitDirectionalLight(D3DXVECTOR3<em> direction, D3DXCOLOR</em> color);</p>
+<p>  D3DLIGHT9 InitPointLight(D3DXVECTOR3<em> position, D3DXCOLOR</em> color);</p>
+<p>  D3DLIGHT9 InitSpotLight(D3DXVECTOR3<em> position, D3DXVECTOR3</em> direction, D3DXCOLOR<em> color);<br>}<br>　　使用这些函数是非常简单的。我们现在只是演示怎样使用InitDirectionalLight。其他的也很类似：<br>D3DLIGHT9 d3d::InitDirectionalLight(D3DXVECTOR3</em> direction, D3DXCOLOR<em> color)<br>{<br>  D3DLIGHT9 light;<br>  ::ZeroMemory(&amp;light, sizeof(light));<br>  light.Type = D3DLIGHT_DIRECTIONAL;<br>  light.Ambient = </em>color <em> 0.4f;<br>  light.Diffuse = </em>color;<br>  light.Specular = <em>color </em> 0.6f;<br>  light.Direction = *direction;<br>  return light;<br>}<br>　　然后创建一个方向光源，它沿着x轴正方向照射白色灯光。我们按照下面的方法来做：<br>D3DXVECTOR3 dir(1.0f, 0.0f, 0.0f);<br>D3DXCOLOR c = d3d::WHITE;<br>D3DLIGHT9 dirLight = d3d::InitDirectionalLight(&amp;dir, &amp;c);<br>　　在把D3DLIGHT9初始化好以后，我们需要用Direct3D内在支持的灯光来注册。就象这样做：<br>Device-&gt;SetLight(<br>  0, // element in the light list to set, range is 0-maxlights<br>  &amp;light);// address of the D3DLIGHT9 structure to set<br>　　一旦灯光注册了，我们就能使用下面的列举的例子来开或关灯光了：<br>Device-&gt;LightEnable(<br>  0, // the element in the light list to enable/disable<br>  true); // true = enable, false = disable<br>5.5实例程序：灯光<br>  这一章的例子是创建如图5.7所显示的场景。它示范了怎样指定顶点法线，怎样创建材质，以及怎样创建和使用一个方向灯光。注意在这个示例程序中我们不会使用在文件d3dUtility.h/cpp中的材质和灯光函数。因为我们想展示怎样手动来做这些设置。</p>
+</li>
+</ul>
+<p>图5.7<br>    给场景增加灯光的步骤是：<br>1、 允许使用灯光。<br>2、 为每个物体创建材质并且在渲染相应物体前应将材质附予物体。<br>3、 创建一个或多个光源，设置它们，把它们设为可用。<br>4、 将其他附加光源设为可用，比如镜面高光。<br>　　首先我们初始化一个全局顶点缓存用他来存储“金字塔”的顶点：<br>IDirect3DVertexBuffer9* Pyramid = 0;<br>　　Setup函数包含本章的所有代码，因此我们忽略其他函数。它执行刚才讨论的步骤来给场景加入灯光。Setup方法首先允许使用灯光，当然这不是必须的因为默认设置就是允许使用灯光的。<br>bool Setup()<br>{<br>    Device-&gt;SetRenderState(D3DRS_LIGHTING, true);<br>　　下一步，我们创建顶点缓存，锁定，并且把“金字塔”的三角形顶点放入其中。顶点法线是利用5.3节中的运算法则预先计算好的。注意三角形共享顶点，但它们的法线不能共享；因此对这个物体使用索引列表并不是最有利的。例如，所有三角形都共享顶点（0,1,0）；然而，对每个三角形，它们的顶点法线是不相同的。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Device-&gt;CreateVertexBuffer(</span><br><span class="line">            <span class="number">12</span> * <span class="keyword">sizeof</span>(Vertex),</span><br><span class="line">            D3DUSAGE_WRITEONLY,</span><br><span class="line">            Vertex::FVF,</span><br><span class="line">            D3DPOOL_MANAGED,</span><br><span class="line">            &amp;Pyramid,</span><br><span class="line">            <span class="number">0</span>);</span><br><span class="line"><span class="comment">// fill the vertex buffer with pyramid data</span></span><br><span class="line">Vertex* v;</span><br><span class="line">Pyramid-&gt;Lock(<span class="number">0</span>, <span class="number">0</span>, (<span class="keyword">void</span>**)&amp;v, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// front face</span></span><br><span class="line">v[<span class="number">0</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.707f</span>, <span class="number">-0.707f</span>);</span><br><span class="line">v[<span class="number">1</span>] = Vertex( <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.707f</span>, <span class="number">-0.707f</span>);</span><br><span class="line">v[<span class="number">2</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.707f</span>, <span class="number">-0.707f</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// left face</span></span><br><span class="line">v[<span class="number">3</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">-0.707f</span>, <span class="number">0.707f</span>, <span class="number">0.0f</span>);</span><br><span class="line">v[<span class="number">4</span>] = Vertex( <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">-0.707f</span>, <span class="number">0.707f</span>, <span class="number">0.0f</span>);</span><br><span class="line">v[<span class="number">5</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">-0.707f</span>, <span class="number">0.707f</span>, <span class="number">0.0f</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// right face</span></span><br><span class="line">v[<span class="number">6</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.707f</span>, <span class="number">0.707f</span>, <span class="number">0.0f</span>);</span><br><span class="line">v[<span class="number">7</span>] = Vertex( <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.707f</span>, <span class="number">0.707f</span>, <span class="number">0.0f</span>);</span><br><span class="line">v[<span class="number">8</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.707f</span>, <span class="number">0.707f</span>, <span class="number">0.0f</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// back face</span></span><br><span class="line">v[<span class="number">9</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.707f</span>, <span class="number">0.707f</span>);</span><br><span class="line">v[<span class="number">10</span>] = Vertex( <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.707f</span>, <span class="number">0.707f</span>);</span><br><span class="line">v[<span class="number">11</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.707f</span>, <span class="number">0.707f</span>);</span><br><span class="line"></span><br><span class="line">Pyramid-&gt;Unlock();</span><br></pre></td></tr></table></figure></p>
+<p>　　为物体产生了顶点数据以后，我们描述利用灯光表现各自材质的物体间是怎样相互影响的。在这个例子中，“金字塔”反射出白光，自身不发光，且会产生一些高光。<br>D3DMATERIAL9 mtrl;<br>mtrl.Ambient = d3d::WHITE;<br>mtrl.Diffuse = d3d::WHITE;<br>mtrl.Specular = d3d::WHITE;<br>mtrl.Emissive = d3d::BLACK;<br>mtrl.Power = 5.0f;<br>Device-&gt;SetMaterial(&amp;mtrl);<br>　　接着，我们创建一个方向光并将其设为可用。方向光是沿着x轴的正方向照射的。灯光照射最强的白色漫射光（dir.Diffuse = WHITE），较弱的白色镜面光（dir.Specular = WHITE <em> 0.3f）以及一个中等强度的白色环境光（dir.Ambient = WHITE </em>0.6f）。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">D3DLIGHT9 dir;</span><br><span class="line">::ZeroMemory(&amp;dir, <span class="keyword">sizeof</span>(dir));</span><br><span class="line">dir.Type = D3DLIGHT_DIRECTIONAL;</span><br><span class="line">dir.Diffuse = d3d::WHITE;</span><br><span class="line">dir.Specular = d3d::WHITE * <span class="number">0.3f</span>;</span><br><span class="line">dir.Ambient = d3d::WHITE * <span class="number">0.6f</span>;</span><br><span class="line">dir.Direction = D3DXVECTOR3(<span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">Device-&gt;SetLight(<span class="number">0</span>, &amp;dir);</span><br><span class="line">Device-&gt;LightEnable(<span class="number">0</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="comment">//最后，我们设置状态使法线从新规格化且把镜面高光设置为可用。</span></span><br><span class="line">Device-&gt;SetRenderState(D3DRS_NORMALIZENORMALS, <span class="literal">true</span>);</span><br><span class="line">Device-&gt;SetRenderState(D3DRS_SPECULARENABLE, <span class="literal">true</span>);</span><br><span class="line"><span class="comment">// ... code to set up the view matrix and projection matrix</span></span><br><span class="line"><span class="comment">// omitted</span></span><br><span class="line"><span class="keyword">return</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></p>
+<p>5.6附加实例<br>　　这一章中还有三个附加的例子。它们使用D3DXCreate<em>函数来创建组成场景的3D物体。D3DXCreate</em>函数创建的顶点数据是D3DFVF_XYZ | D3DFVF_NORMAL格式。在增加的函数中为我们的网格模型的每个顶点计算了顶点法线。这些实例演示了怎样使用方向光，点光源，以及聚光灯。图5.8显示的是方向光实例中的一个场景图。<br>　　<br>　　图5.8</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/color/" rel="next" title="色彩(Color)">
+                <i class="fa fa-chevron-left"></i> 色彩(Color)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/Texturing/" rel="prev" title="第六章 纹理(Texturing)">
+                第六章 纹理(Texturing) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#灯光的组成"><span class="nav-number">1.</span> <span class="nav-text">灯光的组成</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#材质"><span class="nav-number">1.1.</span> <span class="nav-text">材质</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#顶点法线"><span class="nav-number">2.</span> <span class="nav-text">顶点法线</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

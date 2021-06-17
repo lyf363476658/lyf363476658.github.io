@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="概念先来介绍下 spine 中的一些术语和概念 Bone 骨骼spine 是骨骼编辑器,所以骨骼是基础。每个骨骼都会有旋转，缩放，位移的属性。然后骨骼可以有子节点，最终形成了一个树型结构。可以对应2dx 里面的 node Slot 插槽骨骼上的一个挂载点。不是所有的骨骼上都能放置东西的，因为很多骨骼其实只参与计算，真正重要的骨骼，也就是需要挂载其他东西的骨骼上必须放置插槽。slot 只是用来标记特">
+<meta name="keywords" content="Spine">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Spine 源码解析">
+<meta property="og:url" content="http://zentia.github.io/2019/04/28/spine/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="概念先来介绍下 spine 中的一些术语和概念 Bone 骨骼spine 是骨骼编辑器,所以骨骼是基础。每个骨骼都会有旋转，缩放，位移的属性。然后骨骼可以有子节点，最终形成了一个树型结构。可以对应2dx 里面的 node Slot 插槽骨骼上的一个挂载点。不是所有的骨骼上都能放置东西的，因为很多骨骼其实只参与计算，真正重要的骨骼，也就是需要挂载其他东西的骨骼上必须放置插槽。slot 只是用来标记特">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://zentia.github.io/2019/04/28/spine/2.jpg">
+<meta property="og:image" content="http://zentia.github.io/2019/04/28/spine/1.jpg">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.364Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity Spine 源码解析">
+<meta name="twitter:description" content="概念先来介绍下 spine 中的一些术语和概念 Bone 骨骼spine 是骨骼编辑器,所以骨骼是基础。每个骨骼都会有旋转，缩放，位移的属性。然后骨骼可以有子节点，最终形成了一个树型结构。可以对应2dx 里面的 node Slot 插槽骨骼上的一个挂载点。不是所有的骨骼上都能放置东西的，因为很多骨骼其实只参与计算，真正重要的骨骼，也就是需要挂载其他东西的骨骼上必须放置插槽。slot 只是用来标记特">
+<meta name="twitter:image" content="http://zentia.github.io/2019/04/28/spine/2.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/28/spine/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity Spine 源码解析 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/28/spine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity Spine 源码解析
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Spine/" itemprop="url" rel="index"><span itemprop="name">Spine</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/28/spine/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/28/spine/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>先来介绍下 spine 中的一些术语和概念</p>
+<h2 id="Bone-骨骼"><a href="#Bone-骨骼" class="headerlink" title="Bone 骨骼"></a>Bone 骨骼</h2><p>spine 是骨骼编辑器,所以骨骼是基础。每个骨骼都会有旋转，缩放，位移的属性。然后骨骼可以有子节点，最终形成了一个树型结构。可以对应2dx 里面的 node</p>
+<h2 id="Slot-插槽"><a href="#Slot-插槽" class="headerlink" title="Slot 插槽"></a>Slot 插槽</h2><p>骨骼上的一个挂载点。不是所有的骨骼上都能放置东西的，因为很多骨骼其实只参与计算，真正重要的骨骼，也就是需要挂载其他东西的骨骼上必须放置插槽。slot 只是用来标记特殊的骨骼位置，本身只有一个颜色属性，也可以说，重要的骨骼节点可以称为 slot。</p>
+<h2 id="Attachment-附件"><a href="#Attachment-附件" class="headerlink" title="Attachment 附件"></a>Attachment 附件</h2><p>挂在插槽上的内容，可以是图片，也可以是判定区域，只要是你能想到的东西，都可以当成附件。</p>
+<h2 id="Draw-order-描画顺序"><a href="#Draw-order-描画顺序" class="headerlink" title="Draw order 描画顺序"></a>Draw order 描画顺序</h2><p>骨架上插槽的一个顺序列表。用来控制描画的先后顺序。</p>
+<h2 id="Animation-动画"><a href="#Animation-动画" class="headerlink" title="Animation 动画"></a>Animation 动画</h2><p>基于时间轴的一个骨骼状态列表。</p>
+<h2 id="Skin-皮肤"><a href="#Skin-皮肤" class="headerlink" title="Skin 皮肤"></a>Skin 皮肤</h2><p>一套附件的集合，类似于换装。</p>
+<h2 id="Bounding-Box-边界框"><a href="#Bounding-Box-边界框" class="headerlink" title="Bounding Box 边界框"></a>Bounding Box 边界框</h2><p>用来指定骨骼上的边界的多边形的区域。</p>
+<h2 id="atlas-图集"><a href="#atlas-图集" class="headerlink" title="atlas 图集"></a>atlas 图集</h2><p>贴图集合，小图片合并在一起，就成了图集。</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>上面大致介绍了一些基本概念，然后我们从实现角度上来说下为啥这么设计。<br>首先，假设我们需要一个骨骼系统。于是，我们就设计了一个树状的骨架，每个节点就是（Bone）。<br>很简单啊，再想下，骨骼上要放图片啥的，于是我们就要能访问到特定的骨骼，遍历太傻了，好吧，我们给这些骨骼加个名字，这样就能访问到具体 骨骼了，那这些名字就叫 slot。<br>好吧，可能有些人觉得，slot 和 bone 本质上一样，为啥需要分开呢，没必要的。我只能说事情其实并不简单，来想下，我们已经有了一个完美的骨架，图片也在应该在的骨骼上了。那我们该如何显示图片么？遍历么，从根结点开始，一直到最下层的节点，不管你用啥排序，这个顺序是固定的，但是现实总是很残酷，很多时候，我们需要不停调整图片描画的顺序，也就是调整树的节点排序，啊，好麻烦。那怎么办，我们指定下骨骼描画的顺序吧（Draw order），这些特定的骨骼也就是 slot。<br>你看，这下完美了，也就是 bone 用来计算位置，slot 用来控制描画。<br>完美的骨骼系统，一定要有碰撞区域（bounding box），这和图片差不多,一个用于显示,一个用于边界判断,好吧,那就抽象成一个概念叫（p_w_upload），于是，slot 上就可以附加不同的 p_w_upload 了。<br>终于可以换附件了，但是一个一个换好累。于是，我们把一组附件合在一起，组成了 skin。这下简单了，一换 skin，整个世界就变样了。<br>啊，做着做着，就发现图片太多了，要优化啊。怎么办，简单，把小图片合在一起，每个图片对应了一个大图里面的一个区域，这就是 atlas。<br>Spine-Unity使用Unity的MeshRenderer和MeshFiter组建，还有材质资源进行渲染。<br>SkeletonRenderer类（SkeletonAnimation和SkeletonAnimator均继承与它），在它的LateUpdate中构建Mesh。生成顶点，颜色，三角形索引和UV然后把这些放入Mesh中。以下讲解主要说明如何构建Mesh。<br>Spine一般使用alpha混合的方式来渲染模型，在一个网格中，它根据网格中三角形的顺序去渲染物体，然后绘制一个东西在另一个东西上面。该顺序是在Spine中控制槽的绘制顺序来决定的。<br>为了让大家更好的理解本文，先讲述涉及到的一些数据结构：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public class ExposedList&lt;T&gt;: IEnumerable&lt;T&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Clear</span> (<span class="params"><span class="keyword">bool</span> clearArray = <span class="literal">true</span></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (clearArray)</span><br><span class="line">            Array.Clear(Items, <span class="number">0</span>, Items.Length);</span><br><span class="line"></span><br><span class="line">        Count = <span class="number">0</span>;</span><br><span class="line">        version++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>暴露的链表，原理和List是一样的，但是扩展了一些方法，比如Clear(bool clearArray = true)，List只能Clear()，尝试在多找一些对比，但是代码中大部分是foreach,add,clear由于时间有限，暂时不对其进入深入了解。</p>
+<h1 id="TransformMode"><a href="#TransformMode" class="headerlink" title="TransformMode"></a>TransformMode</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 转换模式</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> TransformMode &#123;</span><br><span class="line">    <span class="comment">//0000 0 Flip Scale Rotation</span></span><br><span class="line">    Normal = <span class="number">0</span>, <span class="comment">// 0000 正常，平移，旋转，缩放</span></span><br><span class="line">    OnlyTranslation = <span class="number">7</span>, <span class="comment">// 0111 只平移</span></span><br><span class="line">    NoRotationOrReflection = <span class="number">1</span>, <span class="comment">// 0001 不旋转或映像</span></span><br><span class="line">    NoScale = <span class="number">2</span>, <span class="comment">// 0010 不缩放</span></span><br><span class="line">    NoScaleOrReflection = <span class="number">6</span>, <span class="comment">// 0110 不缩放或映像</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="BoneData"><a href="#BoneData" class="headerlink" title="BoneData"></a>BoneData</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">BoneData</span> &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">int</span> index; <span class="comment">// 骨骼索引，第几根骨骼</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">string</span> name;<span class="comment">// 骨骼名，具有唯一性</span></span><br><span class="line">    <span class="keyword">internal</span> BoneData parent;<span class="comment">//父亲骨骼</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> length; <span class="comment">// 骨骼长度，不太理解</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> x, y, rotation, scaleX = <span class="number">1</span>, scaleY = <span class="number">1</span>, shearX, shearY;<span class="comment">// 位移，旋转，缩放，裁剪</span></span><br><span class="line">    <span class="keyword">internal</span> TransformMode transformMode = TransformMode.Normal;<span class="comment">//变换模式</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="BlendMode"><a href="#BlendMode" class="headerlink" title="BlendMode"></a>BlendMode</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 混合模式</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> BlendMode &#123;</span><br><span class="line">    Normal, </span><br><span class="line">    Additive,<span class="comment">// 加法 </span></span><br><span class="line">    Multiply, <span class="comment">// 乘法</span></span><br><span class="line">    Screen <span class="comment">// 屏幕</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="SlotData"><a href="#SlotData" class="headerlink" title="SlotData"></a>SlotData</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 槽数据</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">SlotData</span> &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">string</span> name;</span><br><span class="line">    <span class="keyword">internal</span> BoneData boneData;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> r = <span class="number">1</span>, g = <span class="number">1</span>, b = <span class="number">1</span>, a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> r2 = <span class="number">0</span>, g2 = <span class="number">0</span>, b2 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">bool</span> hasSecondColor = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">string</span> attachmentName; <span class="comment">// 附件名</span></span><br><span class="line">    <span class="keyword">internal</span> BlendMode blendMode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="IKContraintData"><a href="#IKContraintData" class="headerlink" title="IKContraintData"></a>IKContraintData</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IK约束(动力学)</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">IkConstraintData</span> &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">string</span> name;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">int</span> order;</span><br><span class="line">    <span class="keyword">internal</span> List&lt;BoneData&gt; bones = <span class="keyword">new</span> List&lt;BoneData&gt;();</span><br><span class="line">    <span class="keyword">internal</span> BoneData target;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">int</span> bendDirection = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> mix = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="TransformConstraintData"><a href="#TransformConstraintData" class="headerlink" title="TransformConstraintData"></a>TransformConstraintData</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 变换约束数据</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">TransformConstraintData</span> &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">string</span> name;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">int</span> order; <span class="comment">// 命令</span></span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;BoneData&gt; bones = <span class="keyword">new</span> ExposedList&lt;BoneData&gt;();</span><br><span class="line">    <span class="keyword">internal</span> BoneData target;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> rotateMix, translateMix, scaleMix, shearMix;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> offsetRotation, offsetX, offsetY, offsetScaleX, offsetScaleY, offsetShearY;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">bool</span> relative, local;<span class="comment">//坐标系</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="PathConstraintData"><a href="#PathConstraintData" class="headerlink" title="PathConstraintData"></a>PathConstraintData</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 路径约束</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">PathConstraintData</span> &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">string</span> name;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">int</span> order;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;BoneData&gt; bones = <span class="keyword">new</span> ExposedList&lt;BoneData&gt;();</span><br><span class="line">    <span class="keyword">internal</span> SlotData target;</span><br><span class="line">    <span class="keyword">internal</span> PositionMode positionMode;</span><br><span class="line">    <span class="keyword">internal</span> SpacingMode spacingMode;</span><br><span class="line">    <span class="keyword">internal</span> RotateMode rotateMode;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> offsetRotation;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> position, spacing, rotateMix, translateMix;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="SkeletonData"><a href="#SkeletonData" class="headerlink" title="SkeletonData"></a>SkeletonData</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 骨架数据</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">SkeletonData</span> &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">string</span> name;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;BoneData&gt; bones = <span class="keyword">new</span> ExposedList&lt;BoneData&gt;(); <span class="comment">// Ordered parents first</span></span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;SlotData&gt; slots = <span class="keyword">new</span> ExposedList&lt;SlotData&gt;(); <span class="comment">// S装配绘制顺序</span></span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;Skin&gt; skins = <span class="keyword">new</span> ExposedList&lt;Skin&gt;(); <span class="comment">// 附件集合</span></span><br><span class="line">    <span class="keyword">internal</span> Skin defaultSkin;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;EventData&gt; events = <span class="keyword">new</span> ExposedList&lt;EventData&gt;();</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;Animation&gt; animations = <span class="keyword">new</span> ExposedList&lt;Animation&gt;(); <span class="comment">// 动画列表</span></span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;IkConstraintData&gt; ikConstraints = <span class="keyword">new</span> ExposedList&lt;IkConstraintData&gt;();</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;TransformConstraintData&gt; transformConstraints = <span class="keyword">new</span> ExposedList&lt;TransformConstraintData&gt;();</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;PathConstraintData&gt; pathConstraints = <span class="keyword">new</span> ExposedList&lt;PathConstraintData&gt;();</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> width, height;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">string</span> version, hash;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Skeleton-骨架"><a href="#Skeleton-骨架" class="headerlink" title="Skeleton(骨架)"></a>Skeleton(骨架)</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 骨架，总感觉数据有冗余，在看看吧</span></span><br><span class="line"><span class="keyword">class</span> <span class="title">Skeleton</span> &#123;</span><br><span class="line">    <span class="keyword">internal</span> SkeletonData data;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;Bone&gt; bones;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;Slot&gt; slots;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;Slot&gt; drawOrder; <span class="comment">// 画的命令槽</span></span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;IkConstraint&gt; ikConstraints;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;TransformConstraint&gt; transformConstraints;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;PathConstraint&gt; pathConstraints;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;IUpdatable&gt; updateCache = <span class="keyword">new</span> ExposedList&lt;IUpdatable&gt;();</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;Bone&gt; updateCacheReset = <span class="keyword">new</span> ExposedList&lt;Bone&gt;();</span><br><span class="line">    <span class="keyword">internal</span> Skin skin;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> r = <span class="number">1</span>, g = <span class="number">1</span>, b = <span class="number">1</span>, a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> time;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">bool</span> flipX, flipY;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> x, y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Bone-骨头"><a href="#Bone-骨头" class="headerlink" title="Bone(骨头)"></a>Bone(骨头)</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Bone</span> : <span class="title">IUpdatable</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">bool</span> yDown;</span><br><span class="line">    <span class="keyword">internal</span> BoneData data;</span><br><span class="line">    <span class="keyword">internal</span> Skeleton skeleton;</span><br><span class="line">    <span class="keyword">internal</span> Bone parent;</span><br><span class="line">    <span class="keyword">internal</span> ExposedList&lt;Bone&gt; children = <span class="keyword">new</span> ExposedList&lt;Bone&gt;();</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> x, y, rotation, scaleX, scaleY, shearX, shearY;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> ax, ay, arotation, ascaleX, ascaleY, ashearX, ashearY;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">bool</span> appliedValid;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> a, b, worldX; <span class="comment">// 权重，坐标</span></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> c, d, worldY;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">bool</span> sorted;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="SubmeshInstruction"><a href="#SubmeshInstruction" class="headerlink" title="SubmeshInstruction"></a>SubmeshInstruction</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 子网格约束</span></span><br><span class="line"><span class="keyword">struct</span> SubmeshInstruction &#123;</span><br><span class="line">    <span class="keyword">public</span> Skeleton skeleton;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> startSlot;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> endSlot;</span><br><span class="line">    <span class="keyword">public</span> Material material;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> forceSeparate; <span class="comment">// 强制分离</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> preActiveClippingSlotSource;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> SPINE_TRIANGLECHECK</span></span><br><span class="line">    <span class="comment">// 缓存的值，因为它们是在生成指令的过程中确定的，</span></span><br><span class="line">    <span class="comment">// but could otherwise be pulled from accessing attachments, checking materials and counting tris and verts.</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> rawTriangleCount;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> rawVertexCount;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> rawFirstVertexIndex;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> hasClipping;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span>The number of slots in this SubmeshInstruction's range. Not necessarily the number of attachments.<span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> SlotCount &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> endSlot - startSlot; &#125; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="RegionAttachment-显示纹理区域的附件"><a href="#RegionAttachment-显示纹理区域的附件" class="headerlink" title="RegionAttachment(显示纹理区域的附件)"></a>RegionAttachment(显示纹理区域的附件)</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">RegionAttachment</span> : <span class="title">Attachment</span>, <span class="title">IHasRendererObject</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> BLX = <span class="number">0</span>; <span class="comment">// bottom left x</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> BLY = <span class="number">1</span>; <span class="comment">// bottom left y</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> ULX = <span class="number">2</span>; <span class="comment">// upper left x</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> ULY = <span class="number">3</span>; <span class="comment">// upper left y</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> URX = <span class="number">4</span>; <span class="comment">// upper right x</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> URY = <span class="number">5</span>; <span class="comment">// upper right y</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> BRX = <span class="number">6</span>; <span class="comment">// bottom right x</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> <span class="keyword">int</span> BRY = <span class="number">7</span>; <span class="comment">// bottom right y</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> x, y, rotation, scaleX = <span class="number">1</span>, scaleY = <span class="number">1</span>, width, height;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> regionOffsetX, regionOffsetY, regionWidth, regionHeight, regionOriginalWidth, regionOriginalHeight;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span>[] offset = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">8</span>], uvs = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">8</span>];</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> r = <span class="number">1</span>, g = <span class="number">1</span>, b = <span class="number">1</span>, a = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="MeshAttachment-使用网格显示纹理区域的附件"><a href="#MeshAttachment-使用网格显示纹理区域的附件" class="headerlink" title="MeshAttachment(使用网格显示纹理区域的附件)"></a>MeshAttachment(使用网格显示纹理区域的附件)</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">MeshAttachment</span> : <span class="title">VertexAttachment</span>, <span class="title">IHasRendererObject</span> &#123;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> regionOffsetX, regionOffsetY, regionWidth, regionHeight, regionOriginalWidth, regionOriginalHeight;</span><br><span class="line">    <span class="keyword">private</span> MeshAttachment parentMesh;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span>[] uvs, regionUVs;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">int</span>[] triangles;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">float</span> r = <span class="number">1</span>, g = <span class="number">1</span>, b = <span class="number">1</span>, a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">int</span> hulllength;</span><br><span class="line">    <span class="keyword">internal</span> <span class="keyword">bool</span> inheritDeform;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="BuildMeshWithArrays-构建顶点等数据，渲染帧中只负责渲染"><a href="#BuildMeshWithArrays-构建顶点等数据，渲染帧中只负责渲染" class="headerlink" title="BuildMeshWithArrays(构建顶点等数据，渲染帧中只负责渲染)"></a>BuildMeshWithArrays(构建顶点等数据，渲染帧中只负责渲染)</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当不涉及剪切时，使用这种更快的方法。</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">BuildMeshWithArrays</span>(<span class="params">SkeletonRendererInstruction instruction, <span class="keyword">bool</span> updateTriangles</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> settings = <span class="keyword">this</span>.settings;</span><br><span class="line">    <span class="keyword">int</span> totalVertexCount = instruction.rawVertexCount;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 扩容</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (totalVertexCount &gt; vertexBuffer.Items.Length) &#123; <span class="comment">// Manual ExposedList.Resize()</span></span><br><span class="line">            Array.Resize(<span class="keyword">ref</span> vertexBuffer.Items, totalVertexCount);</span><br><span class="line">            Array.Resize(<span class="keyword">ref</span> uvBuffer.Items, totalVertexCount);</span><br><span class="line">            Array.Resize(<span class="keyword">ref</span> colorBuffer.Items, totalVertexCount);</span><br><span class="line">        &#125;</span><br><span class="line">        vertexBuffer.Count = uvBuffer.Count = colorBuffer.Count = totalVertexCount;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Populate Verts</span></span><br><span class="line">    Color32 color = <span class="keyword">default</span>(Color32);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> vertexIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">var</span> tempVerts = <span class="keyword">this</span>.tempVerts;</span><br><span class="line">    Vector3 bmin = <span class="keyword">this</span>.meshBoundsMin;</span><br><span class="line">    Vector3 bmax = <span class="keyword">this</span>.meshBoundsMax;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> vbi = vertexBuffer.Items;</span><br><span class="line">    <span class="keyword">var</span> ubi = uvBuffer.Items;</span><br><span class="line">    <span class="keyword">var</span> cbi = colorBuffer.Items;</span><br><span class="line">    <span class="keyword">int</span> lastSlotIndex = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// drawOrder[endSlot] is excluded</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> si = <span class="number">0</span>, n = instruction.submeshInstructions.Count; si &lt; n; si++) &#123;</span><br><span class="line">        <span class="keyword">var</span> submesh = instruction.submeshInstructions.Items[si]; <span class="comment">// 通过骨骼的[startSlot,endSlot)来渲染网格</span></span><br><span class="line">        <span class="keyword">var</span> skeleton = submesh.skeleton; <span class="comment">// 骨骼</span></span><br><span class="line">        <span class="keyword">var</span> skeletonDrawOrderItems = skeleton.drawOrder.Items; <span class="comment">// 骨骼命令槽</span></span><br><span class="line">        <span class="keyword">float</span> a = skeleton.a * <span class="number">255</span>, r = skeleton.r, g = skeleton.g, b = skeleton.b;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> endSlot = submesh.endSlot;</span><br><span class="line">        <span class="keyword">int</span> startSlot = submesh.startSlot;</span><br><span class="line">        lastSlotIndex = endSlot;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (settings.tintBlack) &#123; <span class="comment">// 是不是浅黑色效果，增加两倍顶点来实现的</span></span><br><span class="line">            Vector2 rg, b2;</span><br><span class="line">            <span class="keyword">int</span> vi = vertexIndex;</span><br><span class="line">            b2.y = <span class="number">1f</span>;</span><br><span class="line">            &#123; </span><br><span class="line">                <span class="keyword">if</span> (uv2 == <span class="literal">null</span>) &#123;</span><br><span class="line">                    uv2 = <span class="keyword">new</span> ExposedList&lt;Vector2&gt;();</span><br><span class="line">                    uv3 = <span class="keyword">new</span> ExposedList&lt;Vector2&gt;();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (totalVertexCount &gt; uv2.Items.Length) &#123; <span class="comment">// Manual ExposedList.Resize()</span></span><br><span class="line">                    Array.Resize(<span class="keyword">ref</span> uv2.Items, totalVertexCount);</span><br><span class="line">                    Array.Resize(<span class="keyword">ref</span> uv3.Items, totalVertexCount);</span><br><span class="line">                &#125;</span><br><span class="line">                uv2.Count = uv3.Count = totalVertexCount;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> uv2i = uv2.Items;</span><br><span class="line">            <span class="keyword">var</span> uv3i = uv3.Items;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> slotIndex = startSlot; slotIndex &lt; endSlot; slotIndex++) &#123;</span><br><span class="line">                <span class="keyword">var</span> slot = skeletonDrawOrderItems[slotIndex];</span><br><span class="line">                <span class="keyword">var</span> attachment = slot.attachment;</span><br><span class="line"></span><br><span class="line">                rg.x = slot.r2; <span class="comment">//r</span></span><br><span class="line">                rg.y = slot.g2; <span class="comment">//g</span></span><br><span class="line">                b2.x = slot.b2; <span class="comment">//b</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> regionAttachment = attachment <span class="keyword">as</span> RegionAttachment;</span><br><span class="line">                <span class="keyword">if</span> (regionAttachment != <span class="literal">null</span>) &#123;</span><br><span class="line">                    uv2i[vi] = rg; uv2i[vi + <span class="number">1</span>] = rg; uv2i[vi + <span class="number">2</span>] = rg; uv2i[vi + <span class="number">3</span>] = rg;</span><br><span class="line">                    uv3i[vi] = b2; uv3i[vi + <span class="number">1</span>] = b2; uv3i[vi + <span class="number">2</span>] = b2; uv3i[vi + <span class="number">3</span>] = b2;</span><br><span class="line">                    vi += <span class="number">4</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">                    <span class="keyword">var</span> meshAttachment = attachment <span class="keyword">as</span> MeshAttachment;</span><br><span class="line">                    <span class="keyword">if</span> (meshAttachment != <span class="literal">null</span>) &#123;</span><br><span class="line">                        <span class="keyword">int</span> meshVertexCount = meshAttachment.worldVerticesLength;</span><br><span class="line">                        <span class="keyword">for</span> (<span class="keyword">int</span> iii = <span class="number">0</span>; iii &lt; meshVertexCount; iii += <span class="number">2</span>) &#123;</span><br><span class="line">                            uv2i[vi] = rg;</span><br><span class="line">                            uv3i[vi] = b2;</span><br><span class="line">                            vi++;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> slotIndex = startSlot; slotIndex &lt; endSlot; slotIndex++) &#123;</span><br><span class="line">            <span class="keyword">var</span> slot = skeletonDrawOrderItems[slotIndex];</span><br><span class="line">            <span class="keyword">var</span> attachment = slot.attachment;</span><br><span class="line">            <span class="keyword">float</span> z = slotIndex * settings.zSpacing;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> regionAttachment = attachment <span class="keyword">as</span> RegionAttachment;</span><br><span class="line">            <span class="keyword">if</span> (regionAttachment != <span class="literal">null</span>) &#123;</span><br><span class="line">                regionAttachment.ComputeWorldVertices(slot.bone, tempVerts, <span class="number">0</span>); <span class="comment">// 根据权重上一位置，计算当前顶点</span></span><br><span class="line">                <span class="keyword">float</span> x1 = tempVerts[RegionAttachment.BLX], y1 = tempVerts[RegionAttachment.BLY];</span><br><span class="line">                <span class="keyword">float</span> x2 = tempVerts[RegionAttachment.ULX], y2 = tempVerts[RegionAttachment.ULY];</span><br><span class="line">                <span class="keyword">float</span> x3 = tempVerts[RegionAttachment.URX], y3 = tempVerts[RegionAttachment.URY];</span><br><span class="line">                <span class="keyword">float</span> x4 = tempVerts[RegionAttachment.BRX], y4 = tempVerts[RegionAttachment.BRY];</span><br><span class="line">                vbi[vertexIndex].x = x1; vbi[vertexIndex].y = y1; vbi[vertexIndex].z = z;</span><br><span class="line">                vbi[vertexIndex + <span class="number">1</span>].x = x4; vbi[vertexIndex + <span class="number">1</span>].y = y4; vbi[vertexIndex + <span class="number">1</span>].z = z;</span><br><span class="line">                vbi[vertexIndex + <span class="number">2</span>].x = x2; vbi[vertexIndex + <span class="number">2</span>].y = y2; vbi[vertexIndex + <span class="number">2</span>].z = z;</span><br><span class="line">                vbi[vertexIndex + <span class="number">3</span>].x = x3; vbi[vertexIndex + <span class="number">3</span>].y = y3;   vbi[vertexIndex + <span class="number">3</span>].z = z;</span><br><span class="line">                <span class="comment">// 混合颜色</span></span><br><span class="line">                <span class="keyword">if</span> (settings.pmaVertexColors) &#123;</span><br><span class="line">                    color.a = (<span class="keyword">byte</span>)(a * slot.a * regionAttachment.a);</span><br><span class="line">                    color.r = (<span class="keyword">byte</span>)(r * slot.r * regionAttachment.r * color.a);</span><br><span class="line">                    color.g = (<span class="keyword">byte</span>)(g * slot.g * regionAttachment.g * color.a);</span><br><span class="line">                    color.b = (<span class="keyword">byte</span>)(b * slot.b * regionAttachment.b * color.a);</span><br><span class="line">                    <span class="keyword">if</span> (slot.data.blendMode == BlendMode.Additive) color.a = <span class="number">0</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    color.a = (<span class="keyword">byte</span>)(a * slot.a * regionAttachment.a);</span><br><span class="line">                    color.r = (<span class="keyword">byte</span>)(r * slot.r * regionAttachment.r * <span class="number">255</span>);</span><br><span class="line">                    color.g = (<span class="keyword">byte</span>)(g * slot.g * regionAttachment.g * <span class="number">255</span>);</span><br><span class="line">                    color.b = (<span class="keyword">byte</span>)(b * slot.b * regionAttachment.b * <span class="number">255</span>);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                cbi[vertexIndex] = color; cbi[vertexIndex + <span class="number">1</span>] = color; cbi[vertexIndex + <span class="number">2</span>] = color; cbi[vertexIndex + <span class="number">3</span>] = color;</span><br><span class="line">                <span class="comment">// 阈值</span></span><br><span class="line">                <span class="keyword">float</span>[] regionUVs = regionAttachment.uvs;</span><br><span class="line">                ubi[vertexIndex].x = regionUVs[RegionAttachment.BLX]; ubi[vertexIndex].y = regionUVs[RegionAttachment.BLY];</span><br><span class="line">                ubi[vertexIndex + <span class="number">1</span>].x = regionUVs[RegionAttachment.BRX]; ubi[vertexIndex + <span class="number">1</span>].y = regionUVs[RegionAttachment.BRY];</span><br><span class="line">                ubi[vertexIndex + <span class="number">2</span>].x = regionUVs[RegionAttachment.ULX]; ubi[vertexIndex + <span class="number">2</span>].y = regionUVs[RegionAttachment.ULY];</span><br><span class="line">                ubi[vertexIndex + <span class="number">3</span>].x = regionUVs[RegionAttachment.URX]; ubi[vertexIndex + <span class="number">3</span>].y = regionUVs[RegionAttachment.URY];</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (x1 &lt; bmin.x) bmin.x = x1; <span class="comment">// 潜在的第一个附件边界初始化。初始最小值不应阻止初始最大值。下面的Y也是一样。</span></span><br><span class="line">                <span class="keyword">if</span> (x1 &gt; bmax.x) bmax.x = x1;</span><br><span class="line">                <span class="keyword">if</span> (x2 &lt; bmin.x) bmin.x = x2;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (x2 &gt; bmax.x) bmax.x = x2;</span><br><span class="line">                <span class="keyword">if</span> (x3 &lt; bmin.x) bmin.x = x3;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (x3 &gt; bmax.x) bmax.x = x3;</span><br><span class="line">                <span class="keyword">if</span> (x4 &lt; bmin.x) bmin.x = x4;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (x4 &gt; bmax.x) bmax.x = x4;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (y1 &lt; bmin.y) bmin.y = y1;</span><br><span class="line">                <span class="keyword">if</span> (y1 &gt; bmax.y) bmax.y = y1;</span><br><span class="line">                <span class="keyword">if</span> (y2 &lt; bmin.y) bmin.y = y2;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (y2 &gt; bmax.y) bmax.y = y2;</span><br><span class="line">                <span class="keyword">if</span> (y3 &lt; bmin.y) bmin.y = y3;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (y3 &gt; bmax.y) bmax.y = y3;</span><br><span class="line">                <span class="keyword">if</span> (y4 &lt; bmin.y) bmin.y = y4;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (y4 &gt; bmax.y) bmax.y = y4;</span><br><span class="line"></span><br><span class="line">                vertexIndex += <span class="number">4</span>;</span><br><span class="line">            &#125; </span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">var</span> meshAttachment = attachment <span class="keyword">as</span> MeshAttachment;</span><br><span class="line">                <span class="keyword">if</span> (meshAttachment != <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">int</span> meshVertexCount = meshAttachment.worldVerticesLength;</span><br><span class="line">                    <span class="keyword">if</span> (tempVerts.Length &lt; meshVertexCount) <span class="keyword">this</span>.tempVerts = tempVerts = <span class="keyword">new</span> <span class="keyword">float</span>[meshVertexCount];</span><br><span class="line">                    meshAttachment.ComputeWorldVertices(slot, tempVerts);</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">if</span> (settings.pmaVertexColors) &#123;</span><br><span class="line">                        color.a = (<span class="keyword">byte</span>)(a * slot.a * meshAttachment.a);</span><br><span class="line">                        color.r = (<span class="keyword">byte</span>)(r * slot.r * meshAttachment.r * color.a);</span><br><span class="line">                        color.g = (<span class="keyword">byte</span>)(g * slot.g * meshAttachment.g * color.a);</span><br><span class="line">                        color.b = (<span class="keyword">byte</span>)(b * slot.b * meshAttachment.b * color.a);</span><br><span class="line">                        <span class="keyword">if</span> (slot.data.blendMode == BlendMode.Additive) color.a = <span class="number">0</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        color.a = (<span class="keyword">byte</span>)(a * slot.a * meshAttachment.a);</span><br><span class="line">                        color.r = (<span class="keyword">byte</span>)(r * slot.r * meshAttachment.r * <span class="number">255</span>);</span><br><span class="line">                        color.g = (<span class="keyword">byte</span>)(g * slot.g * meshAttachment.g * <span class="number">255</span>);</span><br><span class="line">                        color.b = (<span class="keyword">byte</span>)(b * slot.b * meshAttachment.b * <span class="number">255</span>);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">float</span>[] attachmentUVs = meshAttachment.uvs;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 潜在的第一个附件边界初始化。参见区域连接逻辑中的条件。</span></span><br><span class="line">                    <span class="keyword">if</span> (vertexIndex == <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="comment">// 初始最小值不应阻止初始最大值。</span></span><br><span class="line">                        <span class="comment">// vi == vertexIndex does not always mean the bounds are fresh. It could be a submesh. Do not nuke old values by omitting the check.</span></span><br><span class="line">                        <span class="comment">// Should know that this is the first attachment in the submesh. slotIndex == startSlot could be an empty slot.</span></span><br><span class="line">                        <span class="keyword">float</span> fx = tempVerts[<span class="number">0</span>], fy = tempVerts[<span class="number">1</span>];</span><br><span class="line">                        <span class="keyword">if</span> (fx &lt; bmin.x) bmin.x = fx;</span><br><span class="line">                        <span class="keyword">if</span> (fx &gt; bmax.x) bmax.x = fx;</span><br><span class="line">                        <span class="keyword">if</span> (fy &lt; bmin.y) bmin.y = fy;</span><br><span class="line">                        <span class="keyword">if</span> (fy &gt; bmax.y) bmax.y = fy;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> iii = <span class="number">0</span>; iii &lt; meshVertexCount; iii += <span class="number">2</span>) &#123;</span><br><span class="line">                        <span class="keyword">float</span> x = tempVerts[iii], y = tempVerts[iii + <span class="number">1</span>];</span><br><span class="line">                        vbi[vertexIndex].x = x; vbi[vertexIndex].y = y; vbi[vertexIndex].z = z;</span><br><span class="line">                        cbi[vertexIndex] = color; ubi[vertexIndex].x = attachmentUVs[iii]; ubi[vertexIndex].y = attachmentUVs[iii + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">if</span> (x &lt; bmin.x) bmin.x = x;</span><br><span class="line">                        <span class="keyword">else</span> <span class="keyword">if</span> (x &gt; bmax.x) bmax.x = x;</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">if</span> (y &lt; bmin.y) bmin.y = y;</span><br><span class="line">                        <span class="keyword">else</span> <span class="keyword">if</span> (y &gt; bmax.y) bmax.y = y;</span><br><span class="line"></span><br><span class="line">                        vertexIndex++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.meshBoundsMin = bmin;</span><br><span class="line">    <span class="keyword">this</span>.meshBoundsMax = bmax;</span><br><span class="line">    <span class="keyword">this</span>.meshBoundsThickness = lastSlotIndex * settings.zSpacing;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> submeshInstructionCount = instruction.submeshInstructions.Count;</span><br><span class="line">    submeshes.Count = submeshInstructionCount;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 添加三角形</span></span><br><span class="line">    <span class="keyword">if</span> (updateTriangles) &#123;</span><br><span class="line">        <span class="comment">// Match submesh buffers count with submeshInstruction count.</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.submeshes.Items.Length &lt; submeshInstructionCount) &#123;</span><br><span class="line">            <span class="keyword">this</span>.submeshes.Resize(submeshInstructionCount);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>, n = submeshInstructionCount; i &lt; n; i++) &#123;</span><br><span class="line">                <span class="keyword">var</span> submeshBuffer = <span class="keyword">this</span>.submeshes.Items[i];</span><br><span class="line">                <span class="keyword">if</span> (submeshBuffer == <span class="literal">null</span>)</span><br><span class="line">                    <span class="keyword">this</span>.submeshes.Items[i] = <span class="keyword">new</span> ExposedList&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                    submeshBuffer.Clear(<span class="literal">false</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> submeshInstructionsItems = instruction.submeshInstructions.Items; <span class="comment">// This relies on the resize above.</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// Fill the buffers.</span></span><br><span class="line">        <span class="keyword">int</span> attachmentFirstVertex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> smbi = <span class="number">0</span>; smbi &lt; submeshInstructionCount; smbi++) &#123;</span><br><span class="line">            <span class="keyword">var</span> submeshInstruction = submeshInstructionsItems[smbi];</span><br><span class="line">            <span class="keyword">var</span> currentSubmeshBuffer = <span class="keyword">this</span>.submeshes.Items[smbi];</span><br><span class="line">            &#123; <span class="comment">//submesh.Resize(submesh.rawTriangleCount);</span></span><br><span class="line">                <span class="keyword">int</span> newTriangleCount = submeshInstruction.rawTriangleCount;</span><br><span class="line">                <span class="keyword">if</span> (newTriangleCount &gt; currentSubmeshBuffer.Items.Length)</span><br><span class="line">                    Array.Resize(<span class="keyword">ref</span> currentSubmeshBuffer.Items, newTriangleCount); </span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (newTriangleCount &lt; currentSubmeshBuffer.Items.Length) &#123;</span><br><span class="line">                    <span class="comment">// Zero the extra.</span></span><br><span class="line">                    <span class="keyword">var</span> sbi = currentSubmeshBuffer.Items;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> ei = newTriangleCount, nn = sbi.Length; ei &lt; nn; ei++)</span><br><span class="line">                        sbi[ei] = <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                currentSubmeshBuffer.Count = newTriangleCount;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> tris = currentSubmeshBuffer.Items;</span><br><span class="line">            <span class="keyword">int</span> triangleIndex = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">var</span> skeleton = submeshInstruction.skeleton;</span><br><span class="line">            <span class="keyword">var</span> skeletonDrawOrderItems = skeleton.drawOrder.Items;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> a = submeshInstruction.startSlot, endSlot = submeshInstruction.endSlot; a &lt; endSlot; a++) &#123;            </span><br><span class="line">                <span class="keyword">var</span> attachment = skeletonDrawOrderItems[a].attachment;</span><br><span class="line">                <span class="keyword">if</span> (attachment <span class="keyword">is</span> RegionAttachment) &#123;</span><br><span class="line">                    tris[triangleIndex] = attachmentFirstVertex;</span><br><span class="line">                    tris[triangleIndex + <span class="number">1</span>] = attachmentFirstVertex + <span class="number">2</span>;</span><br><span class="line">                    tris[triangleIndex + <span class="number">2</span>] = attachmentFirstVertex + <span class="number">1</span>;</span><br><span class="line">                    tris[triangleIndex + <span class="number">3</span>] = attachmentFirstVertex + <span class="number">2</span>;</span><br><span class="line">                    tris[triangleIndex + <span class="number">4</span>] = attachmentFirstVertex + <span class="number">3</span>;</span><br><span class="line">                    tris[triangleIndex + <span class="number">5</span>] = attachmentFirstVertex + <span class="number">1</span>;</span><br><span class="line">                    triangleIndex += <span class="number">6</span>;</span><br><span class="line">                    attachmentFirstVertex += <span class="number">4</span>;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">var</span> meshAttachment = attachment <span class="keyword">as</span> MeshAttachment;</span><br><span class="line">                <span class="keyword">if</span> (meshAttachment != <span class="literal">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">int</span>[] attachmentTriangles = meshAttachment.triangles;</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> ii = <span class="number">0</span>, nn = attachmentTriangles.Length; ii &lt; nn; ii++, triangleIndex++)</span><br><span class="line">                        tris[triangleIndex] = attachmentFirstVertex + attachmentTriangles[ii];</span><br><span class="line">                    attachmentFirstVertex += meshAttachment.worldVerticesLength &gt;&gt; <span class="number">1</span>; <span class="comment">// length/2;</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述是构造Mesh方法。</p>
+<h1 id="SpineMesh-cs"><a href="#SpineMesh-cs" class="headerlink" title="SpineMesh.cs"></a>SpineMesh.cs</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">region</span> Step 3 : Transfer vertex and triangle data to UnityEngine.Mesh</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">FillVertexData</span> (<span class="params">Mesh mesh</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> vbi = vertexBuffer.Items;</span><br><span class="line">    <span class="keyword">var</span> ubi = uvBuffer.Items;</span><br><span class="line">    <span class="keyword">var</span> cbi = colorBuffer.Items;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Zero the extra.</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> listCount = vertexBuffer.Count;</span><br><span class="line">        <span class="keyword">int</span> arrayLength = vertexBuffer.Items.Length;</span><br><span class="line">        <span class="keyword">var</span> vector3zero = Vector3.zero;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = listCount; i &lt; arrayLength; i++)</span><br><span class="line">            vbi[i] = vector3zero;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Set the vertex buffer.</span></span><br><span class="line">    &#123;</span><br><span class="line">        mesh.vertices = vbi;</span><br><span class="line">        mesh.uv = ubi;</span><br><span class="line">        mesh.colors32 = cbi;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">float</span>.IsInfinity(meshBoundsMin.x)) &#123; <span class="comment">// meshBoundsMin.x == BoundsMinDefault // == doesn't work on float Infinity constants.</span></span><br><span class="line">            mesh.bounds = <span class="keyword">new</span> Bounds();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//mesh.bounds = ArraysMeshGenerator.ToBounds(meshBoundsMin, meshBoundsMax);</span></span><br><span class="line">            Vector2 halfSize = (meshBoundsMax - meshBoundsMin) * <span class="number">0.5f</span>;</span><br><span class="line">            mesh.bounds = <span class="keyword">new</span> Bounds &#123;</span><br><span class="line">                center = (Vector3)(meshBoundsMin + halfSize),</span><br><span class="line">                extents = <span class="keyword">new</span> Vector3(halfSize.x, halfSize.y, meshBoundsThickness * <span class="number">0.5f</span>)</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> vertexCount = <span class="keyword">this</span>.vertexBuffer.Count;</span><br><span class="line">        <span class="keyword">if</span> (settings.addNormals) &#123;</span><br><span class="line">            <span class="keyword">int</span> oldLength = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (normals == <span class="literal">null</span>)</span><br><span class="line">                normals = <span class="keyword">new</span> Vector3[vertexCount]; </span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                oldLength = normals.Length;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (oldLength &lt; vertexCount) &#123;</span><br><span class="line">                Array.Resize(<span class="keyword">ref</span> <span class="keyword">this</span>.normals, vertexCount);</span><br><span class="line">                <span class="keyword">var</span> localNormals = <span class="keyword">this</span>.normals;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = oldLength; i &lt; vertexCount; i++) localNormals[i] = Vector3.back;</span><br><span class="line">            &#125;</span><br><span class="line">            mesh.normals = <span class="keyword">this</span>.normals;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (settings.tintBlack) &#123;</span><br><span class="line">            <span class="keyword">if</span> (uv2 != <span class="literal">null</span>) &#123;</span><br><span class="line">                mesh.uv2 = <span class="keyword">this</span>.uv2.Items;</span><br><span class="line">                mesh.uv3 = <span class="keyword">this</span>.uv3.Items;</span><br><span class="line">            &#125;   </span><br><span class="line">        &#125;               </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 通过上面设置的三角形，在这里设置(lateUpdate)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">FillTrianglesSingle</span> (<span class="params">Mesh mesh</span>)</span> &#123;</span><br><span class="line">    mesh.SetTriangles(submeshes.Items[<span class="number">0</span>].Items, <span class="number">0</span>, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="SkeletonRenderer-cs"><a href="#SkeletonRenderer-cs" class="headerlink" title="SkeletonRenderer.cs"></a>SkeletonRenderer.cs</h1><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Generates a new UnityEngine.Mesh from the internal Skeleton.</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">LateUpdate</span> (<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!valid) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> SPINE_OPTIONAL_RENDEROVERRIDE</span></span><br><span class="line">    <span class="keyword">bool</span> doMeshOverride = generateMeshOverride != <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> ((!meshRenderer.enabled) &amp;&amp; !doMeshOverride) <span class="keyword">return</span>;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">bool</span> doMeshOverride = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (!meshRenderer.enabled) <span class="keyword">return</span>;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="keyword">var</span> currentInstructions = <span class="keyword">this</span>.currentInstructions;</span><br><span class="line">    <span class="keyword">var</span> workingSubmeshInstructions = currentInstructions.submeshInstructions;</span><br><span class="line">    <span class="keyword">var</span> currentSmartMesh = rendererBuffers.GetNextMesh(); <span class="comment">// Double-buffer for performance.</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> updateTriangles;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (singleSubmesh) &#123;</span><br><span class="line">        <span class="comment">// STEP 1. Determine a SmartMesh.Instruction. Split up instructions into submeshes. =============================================</span></span><br><span class="line">        MeshGenerator.GenerateSingleSubmeshInstruction(currentInstructions, skeleton, skeletonDataAsset.atlasAssets[<span class="number">0</span>].materials[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// STEP 1.9. Post-process workingInstructions. ==================================================================================</span></span><br><span class="line">        <span class="meta">#<span class="meta-keyword">if</span> SPINE_OPTIONAL_MATERIALOVERRIDE</span></span><br><span class="line">        <span class="keyword">if</span> (customMaterialOverride.Count &gt; <span class="number">0</span>) <span class="comment">// isCustomMaterialOverridePopulated </span></span><br><span class="line">            MeshGenerator.TryReplaceMaterials(workingSubmeshInstructions, customMaterialOverride);</span><br><span class="line">        <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// STEP 2. Update vertex buffer based on verts from the attachments.  ===========================================================</span></span><br><span class="line">        meshGenerator.settings = <span class="keyword">new</span> MeshGenerator.Settings &#123;</span><br><span class="line">            pmaVertexColors = <span class="keyword">this</span>.pmaVertexColors,</span><br><span class="line">            zSpacing = <span class="keyword">this</span>.zSpacing,</span><br><span class="line">            useClipping = <span class="keyword">this</span>.useClipping,</span><br><span class="line">            tintBlack = <span class="keyword">this</span>.tintBlack,</span><br><span class="line">            calculateTangents = <span class="keyword">this</span>.calculateTangents,</span><br><span class="line">            addNormals = <span class="keyword">this</span>.addNormals</span><br><span class="line">        &#125;;</span><br><span class="line">        meshGenerator.Begin();</span><br><span class="line">        updateTriangles = SkeletonRendererInstruction.GeometryNotEqual(currentInstructions, currentSmartMesh.instructionUsed);</span><br><span class="line">        <span class="keyword">if</span> (currentInstructions.hasActiveClipping) &#123;</span><br><span class="line">            meshGenerator.AddSubmesh(workingSubmeshInstructions.Items[<span class="number">0</span>], updateTriangles);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            meshGenerator.BuildMeshWithArrays(currentInstructions, updateTriangles);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// STEP 1. Determine a SmartMesh.Instruction. Split up instructions into submeshes. =============================================</span></span><br><span class="line">        MeshGenerator.GenerateSkeletonRendererInstruction(currentInstructions, skeleton, customSlotMaterials, separatorSlots, doMeshOverride, <span class="keyword">this</span>.immutableTriangles);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// STEP 1.9. Post-process workingInstructions. ==================================================================================</span></span><br><span class="line">        <span class="meta">#<span class="meta-keyword">if</span> SPINE_OPTIONAL_MATERIALOVERRIDE</span></span><br><span class="line">        <span class="keyword">if</span> (customMaterialOverride.Count &gt; <span class="number">0</span>) <span class="comment">// isCustomMaterialOverridePopulated </span></span><br><span class="line">            MeshGenerator.TryReplaceMaterials(workingSubmeshInstructions, customMaterialOverride);</span><br><span class="line">        <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">        <span class="meta">#<span class="meta-keyword">if</span> SPINE_OPTIONAL_RENDEROVERRIDE</span></span><br><span class="line">        <span class="keyword">if</span> (doMeshOverride) &#123;</span><br><span class="line">            <span class="keyword">this</span>.generateMeshOverride(currentInstructions);</span><br><span class="line">            <span class="keyword">if</span> (disableRenderingOnOverride) <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">        updateTriangles = SkeletonRendererInstruction.GeometryNotEqual(currentInstructions, currentSmartMesh.instructionUsed);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// STEP 2. Update vertex buffer based on verts from the attachments.  ===========================================================</span></span><br><span class="line">        meshGenerator.settings = <span class="keyword">new</span> MeshGenerator.Settings &#123;</span><br><span class="line">            pmaVertexColors = <span class="keyword">this</span>.pmaVertexColors,</span><br><span class="line">            zSpacing = <span class="keyword">this</span>.zSpacing,</span><br><span class="line">            useClipping = <span class="keyword">this</span>.useClipping,</span><br><span class="line">            tintBlack = <span class="keyword">this</span>.tintBlack,</span><br><span class="line">            calculateTangents = <span class="keyword">this</span>.calculateTangents,</span><br><span class="line">            addNormals = <span class="keyword">this</span>.addNormals</span><br><span class="line">        &#125;;</span><br><span class="line">        meshGenerator.Begin();</span><br><span class="line">        <span class="keyword">if</span> (currentInstructions.hasActiveClipping)</span><br><span class="line">            meshGenerator.BuildMesh(currentInstructions, updateTriangles);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            meshGenerator.BuildMeshWithArrays(currentInstructions, updateTriangles);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (OnPostProcessVertices != <span class="literal">null</span>) OnPostProcessVertices.Invoke(<span class="keyword">this</span>.meshGenerator.Buffers);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// STEP 3. Move the mesh data into a UnityEngine.Mesh ===========================================================================</span></span><br><span class="line">    <span class="keyword">var</span> currentMesh = currentSmartMesh.mesh;</span><br><span class="line">    meshGenerator.FillVertexData(currentMesh);</span><br><span class="line">    rendererBuffers.UpdateSharedMaterials(workingSubmeshInstructions);</span><br><span class="line">    <span class="keyword">if</span> (updateTriangles) &#123; <span class="comment">// Check if the triangles should also be updated.</span></span><br><span class="line">        meshGenerator.FillTriangles(currentMesh);</span><br><span class="line">        meshRenderer.sharedMaterials = rendererBuffers.GetUpdatedSharedMaterialsArray();</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (rendererBuffers.MaterialsChangedInLastUpdate()) &#123;</span><br><span class="line">        meshRenderer.sharedMaterials = rendererBuffers.GetUpdatedSharedMaterialsArray();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    meshGenerator.FillLateVertexData(currentMesh);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// STEP 4. The UnityEngine.Mesh is ready. Set it as the MeshFilter's mesh. Store the instructions used for that mesh. ===========</span></span><br><span class="line">    meshFilter.sharedMesh = currentMesh;</span><br><span class="line">    currentSmartMesh.instructionUsed.Set(currentInstructions);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="group-picture"><div class="group-picture-container"><div class="group-picture-row"><div class="group-picture-column" style="width: 50%;"><img src="/2019/04/28/spine/2.jpg" title="初始状态"></div><div class="group-picture-column" style="width: 50%;"><img src="/2019/04/28/spine/1.jpg" title="某一帧的状态"></div></div></div></div>
+<p>左图是默认的mesh，右图是设置关键帧的状态，三角形数量和顶点数量没有改变，只是改变的顶点位置。类似蒙皮的原理<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DrawBoundingBoxes</span> (<span class="params">Transform transform, Skeleton skeleton</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> slot <span class="keyword">in</span> skeleton.Slots) &#123;</span><br><span class="line">        <span class="keyword">var</span> bba = slot.Attachment <span class="keyword">as</span> BoundingBoxAttachment;</span><br><span class="line">        <span class="keyword">if</span> (bba != <span class="literal">null</span>) SpineHandles.DrawBoundingBox(slot, bba, transform);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="为什么写这个东西"><a href="#为什么写这个东西" class="headerlink" title="为什么写这个东西"></a>为什么写这个东西</h1><p>为了支持SkeletonAnimation在编辑状态下预览，最后查到的问题是，渲染没有刷新，然后在每帧做强制刷新EditorUtility.SetDirty(action.gameObject);</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spine/" rel="tag"># Spine</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/28/Non-photorealistic-rendering/" rel="next" title="非真实感渲染">
+                <i class="fa fa-chevron-left"></i> 非真实感渲染
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/30/spine-IK/" rel="prev" title="【spine】反向动力学 Inverse Kinematics (IK)">
+                【spine】反向动力学 Inverse Kinematics (IK) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概念"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bone-骨骼"><span class="nav-number">1.1.</span> <span class="nav-text">Bone 骨骼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Slot-插槽"><span class="nav-number">1.2.</span> <span class="nav-text">Slot 插槽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Attachment-附件"><span class="nav-number">1.3.</span> <span class="nav-text">Attachment 附件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Draw-order-描画顺序"><span class="nav-number">1.4.</span> <span class="nav-text">Draw order 描画顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Animation-动画"><span class="nav-number">1.5.</span> <span class="nav-text">Animation 动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Skin-皮肤"><span class="nav-number">1.6.</span> <span class="nav-text">Skin 皮肤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bounding-Box-边界框"><span class="nav-number">1.7.</span> <span class="nav-text">Bounding Box 边界框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#atlas-图集"><span class="nav-number">1.8.</span> <span class="nav-text">atlas 图集</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现"><span class="nav-number">2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TransformMode"><span class="nav-number">3.</span> <span class="nav-text">TransformMode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BoneData"><span class="nav-number">4.</span> <span class="nav-text">BoneData</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BlendMode"><span class="nav-number">5.</span> <span class="nav-text">BlendMode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SlotData"><span class="nav-number">6.</span> <span class="nav-text">SlotData</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IKContraintData"><span class="nav-number">7.</span> <span class="nav-text">IKContraintData</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TransformConstraintData"><span class="nav-number">8.</span> <span class="nav-text">TransformConstraintData</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PathConstraintData"><span class="nav-number">9.</span> <span class="nav-text">PathConstraintData</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SkeletonData"><span class="nav-number">10.</span> <span class="nav-text">SkeletonData</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Skeleton-骨架"><span class="nav-number">11.</span> <span class="nav-text">Skeleton(骨架)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Bone-骨头"><span class="nav-number">12.</span> <span class="nav-text">Bone(骨头)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SubmeshInstruction"><span class="nav-number">13.</span> <span class="nav-text">SubmeshInstruction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#RegionAttachment-显示纹理区域的附件"><span class="nav-number">14.</span> <span class="nav-text">RegionAttachment(显示纹理区域的附件)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MeshAttachment-使用网格显示纹理区域的附件"><span class="nav-number">15.</span> <span class="nav-text">MeshAttachment(使用网格显示纹理区域的附件)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BuildMeshWithArrays-构建顶点等数据，渲染帧中只负责渲染"><span class="nav-number">16.</span> <span class="nav-text">BuildMeshWithArrays(构建顶点等数据，渲染帧中只负责渲染)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SpineMesh-cs"><span class="nav-number">17.</span> <span class="nav-text">SpineMesh.cs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SkeletonRenderer-cs"><span class="nav-number">18.</span> <span class="nav-text">SkeletonRenderer.cs</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么写这个东西"><span class="nav-number">19.</span> <span class="nav-text">为什么写这个东西</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

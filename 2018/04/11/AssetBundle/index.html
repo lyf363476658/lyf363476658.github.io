@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Unity有两种动态加载机制：Resources.Load和AssetBundle，二者本质并无区别。Resources.Load就是从一个缺省打进程程序包的AssetBundle(Resourece)里加载资源，而一般AssetBundle文件需要你自己创建，运行时加载。 AssetBundle加载基础通过AssetBunlde加载资源，分为两步，第一步是获取AssetBundle对象，第二步是">
+<meta name="keywords" content="Unity3D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity加载和内存管理">
+<meta property="og:url" content="http://zentia.github.io/2018/04/11/AssetBundle/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="Unity有两种动态加载机制：Resources.Load和AssetBundle，二者本质并无区别。Resources.Load就是从一个缺省打进程程序包的AssetBundle(Resourece)里加载资源，而一般AssetBundle文件需要你自己创建，运行时加载。 AssetBundle加载基础通过AssetBunlde加载资源，分为两步，第一步是获取AssetBundle对象，第二步是">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.822Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity加载和内存管理">
+<meta name="twitter:description" content="Unity有两种动态加载机制：Resources.Load和AssetBundle，二者本质并无区别。Resources.Load就是从一个缺省打进程程序包的AssetBundle(Resourece)里加载资源，而一般AssetBundle文件需要你自己创建，运行时加载。 AssetBundle加载基础通过AssetBunlde加载资源，分为两步，第一步是获取AssetBundle对象，第二步是">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/04/11/AssetBundle/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity加载和内存管理 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/11/AssetBundle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity加载和内存管理
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/04/11/AssetBundle/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/11/AssetBundle/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Unity有两种动态加载机制：Resources.Load和AssetBundle，二者本质并无区别。Resources.Load就是从一个缺省打进程程序包的AssetBundle(Resourece)里加载资源，而一般AssetBundle文件需要你自己创建，运行时加载。</p>
+<h1 id="AssetBundle加载基础"><a href="#AssetBundle加载基础" class="headerlink" title="AssetBundle加载基础"></a>AssetBundle加载基础</h1><p>通过AssetBunlde加载资源，分为两步，第一步是获取AssetBundle对象，第二步是通过该对象加载需要的资源。而第一步又分为两种方式，下文中将结合常用的API进行详细地描述。</p>
+<h2 id="第一步，获取AssetBundle对象常用地API"><a href="#第一步，获取AssetBundle对象常用地API" class="headerlink" title="第一步，获取AssetBundle对象常用地API"></a>第一步，获取AssetBundle对象常用地API</h2><h3 id="方式一，先获取WWW对象，再通过WWW-assetBundle获取AssetBundle对象："><a href="#方式一，先获取WWW对象，再通过WWW-assetBundle获取AssetBundle对象：" class="headerlink" title="方式一，先获取WWW对象，再通过WWW.assetBundle获取AssetBundle对象："></a>方式一，先获取WWW对象，再通过WWW.assetBundle获取AssetBundle对象：</h3><pre><code>public WWW(string uri);
+</code></pre><p>加载Bundle文件并获取WWW对象，完成后会在内存中创建较大地WebStream(解压后的内容，通常为原Bundle文件的4~5倍大小，纹理资源比例可能更大),因此后续的AssetBundle.Load可以直接在内存中进行。</p>
+<pre><code>public static WWW LoadFromCacheOrDownload(string uri, int version, unit crc = 0);
+</code></pre><p>加载Bundle文件并获取WWW对象，同时将解压形式的Bundle内容存入磁盘中作为缓存（如果该Bundle已在缓存中，则省去这一步），完成后只会在内存中创建较小的SerializedFile，而后续的AssetBundle.Load需要通过IO从磁盘中的缓存获取。</p>
+<pre><code>public AssetBundle assetBundle;
+</code></pre><p>通过之前两个接口获取WWW对象后，即可通过WWW.assetBundle获取AssetBundle对象。</p>
+<h3 id="方式二，直接获取AssetBundle"><a href="#方式二，直接获取AssetBundle" class="headerlink" title="方式二，直接获取AssetBundle:"></a>方式二，直接获取AssetBundle:</h3><pre><code>public static AssetBundle LoadFromFile(string path); 
+public static AssetBundle LoadFromFileAsync(string path);
+</code></pre><p>通过未压缩的Bundle文件，同步创建AssetBundle对象，这是最快的方式。创建完成后只会在内存中创建较小的SerializedFile，而后续的AssetBundle.Load需要通过IO从磁盘中获取。<br>如果AssetBundle是未压缩，或者是数据块形式（LZ4算法压缩）的，LoadFromFile将从磁盘中直接加载它。如果AssetBundle是高度压缩(LZMA算法压缩)的，再将它加载进入内存前，会首先将它解压。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">void LoadAssetBundles(string baseDir)</span><br><span class="line">&#123;</span><br><span class="line">    if (assetBundleInfos != null)</span><br><span class="line">    &#123;</span><br><span class="line">        for (int i = 0; i &lt; assetBundleInfos.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            var bInfo = assetBundleInfos[i];</span><br><span class="line">            if (bInfo.assetBundle != null)</span><br><span class="line">            &#123;</span><br><span class="line">                bInfo.assetBundle.Unload(false);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        assetBundleInfos = null;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    var abInfos = new List&lt;AssetBundleInfo&gt;(50);</span><br><span class="line"></span><br><span class="line">    var files = Directory.GetFiles(m_dir_update, &quot;*.bytes&quot;);</span><br><span class="line">    for (int i = 0; i &lt; files.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        string f = files[i];</span><br><span class="line">        string n = Path.GetFileName(f);</span><br><span class="line">        if (!CheckABName(abInfos, n)) contine;</span><br><span class="line"></span><br><span class="line">        abInfos.Add(new AssetBundleInfo&#123;name = n, uri = f&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (baseDir != null)</span><br><span class="line">    &#123;</span><br><span class="line">        files = Directory.GetFiles(baseDir, &quot;*.bytes&quot;);</span><br><span class="line">        for (int i = 0; i &lt; files.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            string f = files[i];</span><br><span class="line">            string n = Path.GetFileName(f);</span><br><span class="line">            if (!CheckABName(abInfos, n)) continue;</span><br><span class="line"></span><br><span class="line">            abInfos.Add(new AssetBundleInfo&#123;name = n, uri = f&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    files = LoadConfigLines(&quot;res_idx&quot;);</span><br><span class="line">    for (int i = 0; i &lt; files.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        string n = files[i].Trim();</span><br><span class="line">        if (!CheckABName(abInfos, n)) continue;</span><br><span class="line"></span><br><span class="line">        string f = streamAssetsPath + n;</span><br><span class="line">        abInfos.Add(new AssetBundleInfo&#123;name = n, uri = f&#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (abInfos.Count == 0) return;</span><br><span class="line"></span><br><span class="line">    string prefix = &quot;assets/res/&quot;;</span><br><span class="line">    int cprefix = prefix.Length;</span><br><span class="line"></span><br><span class="line">    for (int i = 0; i &lt; abInfos.Count;)</span><br><span class="line">    &#123;</span><br><span class="line">        var abInfo = abInfos[i];</span><br><span class="line">        var ab = AssetBundle.LoadFromFile(abInfo.uri);</span><br><span class="line">        if (ab == null)</span><br><span class="line">        &#123;</span><br><span class="line">            abInfos.RemoveAt(i);</span><br><span class="line">            sbError.Append(&quot;\nfail ab : &quot;);</span><br><span class="line">            sbError.Append(abInfo)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>public static AssetBundle LoadFromMemory(byte[] binary)
+</code></pre><p>通过Bundle的二进制数据，异步创建AssetBundle对象，完成后会在内存中创建较大的WebStream。调用时，Bundle的解压是异步进行的，因此对于未压缩的Bundle文件，该接口于LoadFromMemoryAsync是等价的。</p>
+<pre><code>public static AssetBundle LoadFromMemoryAsync
+</code></pre><p>该接口是 CreateFromMemory 的同步版本，这个方法的参数是包含了AssetBundle数据的字节数组。如果需要的话，你还可以传入一个CRC(循环冗余校验码)参数。如果AssetBundle使用了LZMA算法压缩，那么AssetBundle在加载的时候会被解压。如果AssetBundle使用了LZ4算法压缩，它将直接以压缩形式被加载。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IEnumerator LoadFromMemoryAsync(string path)</span><br><span class="line">&#123;</span><br><span class="line">    AssetBundleCreateRequest createRequest = AssetBundle.LoadFromMemoryAsync(File.ReadAllBytes(path));</span><br><span class="line">    yield return createRequest;</span><br><span class="line">    AssetBundle bundle = createRequest.assetBundle;</span><br><span class="line">    var prefab = bundle.LoadAsset&lt;GameObject&gt;(&quot;MyObject&quot;);</span><br><span class="line">    Instantiate(prefab);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="第二步，从AssetBundle加载资源的常用API"><a href="#第二步，从AssetBundle加载资源的常用API" class="headerlink" title="第二步，从AssetBundle加载资源的常用API"></a>第二步，从AssetBundle加载资源的常用API</h2><pre><code>public Object Load(string name, Type type);
+</code></pre><p>通过给定的名字和资源类型，加载资源。加载时会自动加载其依赖的资源，即Load一个Prefab时，会自动Load其引用的Texture资源。</p>
+<pre><code>public Object[] LoadAll(Type type);
+public AssetBundleRequest LoadAllAssetsAsync();
+</code></pre><p>一次性加载Bundle中给定资源类型的所有资源</p>
+<pre><code>public AssetBundleRequest LoadAsync(string name, Type type)
+</code></pre><h3 id="AssetBundle的压缩类型"><a href="#AssetBundle的压缩类型" class="headerlink" title="AssetBundle的压缩类型"></a>AssetBundle的压缩类型</h3><p>Unity3D引擎为我们提供了三种压缩策略来处理AssetBundle的压缩，即：</p>
+<ul>
+<li>LZMA格式</li>
+<li>LZ4格式</li>
+<li>不压缩</li>
+</ul>
+<blockquote>
+<p>LZ4是块压缩(chunk-based)，LZMA是流压缩(stream-based)。流压缩(LZMA)在处理整个数据块时使用同一个字典，它提供了最大可能的压缩率但只支持顺序读取。块压缩(LZ4)指的是原始数据被分成大小相同的子块并单端压缩。如果你想要实时解压/随机读取开销小，则应该使用这种。</p>
+<p>LZMA压缩方式的优点在于使用同一个字典压缩率较高，但只能顺序读取意味着加载任意一个资源时，都需要将整个AssetBundle解压，造成卡顿和额外内存占用。LZ4基于快压缩率较低（测试LZMA换LZ4：86.9M-&gt;108M），但只需解压需要块即可，不会有大的卡顿和额外内存占用。</p>
+</blockquote>
+<h4 id="LZMA-stream-based"><a href="#LZMA-stream-based" class="headerlink" title="LZMA(stream-based)"></a>LZMA(stream-based)</h4><p>在默认情况下，打包生成的AssetBundle都会被压缩。在U3D中，AssetBundle的标准压缩格式便是LZMA（LZMA是一种序列化流文件），因此在默认情况下，打出的AssetBundle包处于LZMA格式的压缩状态。</p>
+<h4 id="LZ4-chunk-based"><a href="#LZ4-chunk-based" class="headerlink" title="LZ4(chunk-based)"></a>LZ4(chunk-based)</h4><p>Unity 5.3之后的版本增加了LZ4格式压缩，是一种块压缩方式，由于LZ4的压缩比一般，因此经过压缩之后的AssetBundle包体的体积较大（该算法基于chunk）。但是，使用LZ4格式的好处在于解压缩的时间相对要短。</p>
+<p>使用LZ4格式压缩，需要打包设置</p>
+<pre><code>BuildPipeline.BuildAssetBundles(Application.streamingAssetPath, BuildAssetBundleOptions.ChunkBasedCompression);
+</code></pre><h4 id="不压缩"><a href="#不压缩" class="headerlink" title="不压缩"></a>不压缩</h4><p>当然，我们也可以不对AssetBundle进行压缩。没有经过压缩的胞体系最大，但是访问速度最快。</p>
+<p>若要使用不压缩的策略，只需要在打包的时候开启</p>
+<pre><code>BuildPipeline.BuildAsetBundles(Application.streamingAssetPath, BuildAssetBundleOptions.UncompressedAssetBundle);
+</code></pre><h1 id="五-AssetBundle原理分析"><a href="#五-AssetBundle原理分析" class="headerlink" title="五 AssetBundle原理分析"></a>五 AssetBundle原理分析</h1><h2 id="5-2-AssetBundle及Assets的卸载"><a href="#5-2-AssetBundle及Assets的卸载" class="headerlink" title="5.2 AssetBundle及Assets的卸载"></a>5.2 AssetBundle及Assets的卸载</h2><p>在AssetBundle的下载和加载过程中，以及Assets加载和实例化过程中，AssetBundle以及加载的Assets都会占用内存。</p>
+<ol>
+<li>AssetBundle的卸载采用Assetbundle.Unload(bool)接口。</li>
+<li>Assets的卸载有两种方式:<ul>
+<li>AssetBundle.Unload(true); // 这会强制卸载掉所有从AssetBundle加载的Assets。</li>
+<li>Resource.UnloadUnusedAssets()和Resources.UnloadAsset。这会卸载掉所有没有用到的Assets。需要注意的是，该接口作用于整个系统，而不仅仅是当前的AssetBundle，而且不会卸载从当前AssetBundle文件中加载并仍在使用的Assets。</li>
+</ul>
+</li>
+<li>对于实例化出来的对象，可以使用GameObject.Destroy活GameObject.DestroyImmediate。注意的是：官方说法是这样的，如果使用GameObject.Destroy接口，Unity会将真正的删除操作延后到一个合适的时机统一进行处理，但会在渲染之前。</li>
+</ol>
+<p>对于WWW对象，可以使用www=null或www.dispose。<br>这两者是由区别的，www=null不会立即释放内存，而是系统自动回收机制启动时回收。www.dispose则会立即调用系统的回收机制来释放内存。当WWW对象被释放后，其对于Web Stream数据的引用计数也会相应减1。</p>
+<p>对于Web Stream数据，它所占用的内存会在其引用计数为0时，被系统自动回收。例如：当上图中的AssetBundle对象和WWW对象被释放后，Web Stream数据所占内存也会被系统自动回收。</p>
+<h1 id="AssetBundle依赖加载"><a href="#AssetBundle依赖加载" class="headerlink" title="AssetBundle依赖加载"></a>AssetBundle依赖加载</h1><p>如果一个或者多个UnityEngine.Objects引用了其他AssetBundle中的UnityEngine.Object，那么AssetBundle之间就产生了依赖关系了。如果UnityEngine.ObjectA所引用的UnityEngine.ObjectB不是其他的AssetBundle中的，那么依赖就不会产生。<br>如果产生依赖，被依赖对象(UnityEngine.ObjectB)将被拷贝进你创建的AssetBundle(指包含UnityEngine.ObjectA的AssetBundle)</p>
+<p>更近一步，如果有多个对象(UnityEngine.ObjectA1、UnityEngine.ObjectA2、UnityEngine.ObjectA3…)引用了同一个被依赖对象(UnityEngine.ObjectB)，那么被依赖对象将被拷贝多份，打包进各个对象各自的AssetBundle。</p>
+<p>如果一个AssetBundle存在依赖性，那么要注意的是，那些包含了被依赖对象的AssetBundles，需要在你想要实例化的对象的加载之前加载。Unity不会自动帮你加载这些依赖。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity3D/" rel="tag"># Unity3D</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/11/Unity-Note/" rel="next" title="Unity3D中自带事件函数的执行顺序">
+                <i class="fa fa-chevron-left"></i> Unity3D中自带事件函数的执行顺序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/11/managed-code-unmanaged-code/" rel="prev" title="托管代码和非托管代码">
+                托管代码和非托管代码 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#AssetBundle加载基础"><span class="nav-number">1.</span> <span class="nav-text">AssetBundle加载基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一步，获取AssetBundle对象常用地API"><span class="nav-number">1.1.</span> <span class="nav-text">第一步，获取AssetBundle对象常用地API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方式一，先获取WWW对象，再通过WWW-assetBundle获取AssetBundle对象："><span class="nav-number">1.1.1.</span> <span class="nav-text">方式一，先获取WWW对象，再通过WWW.assetBundle获取AssetBundle对象：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式二，直接获取AssetBundle"><span class="nav-number">1.1.2.</span> <span class="nav-text">方式二，直接获取AssetBundle:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二步，从AssetBundle加载资源的常用API"><span class="nav-number">1.2.</span> <span class="nav-text">第二步，从AssetBundle加载资源的常用API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AssetBundle的压缩类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">AssetBundle的压缩类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LZMA-stream-based"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">LZMA(stream-based)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LZ4-chunk-based"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">LZ4(chunk-based)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#不压缩"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">不压缩</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五-AssetBundle原理分析"><span class="nav-number">2.</span> <span class="nav-text">五 AssetBundle原理分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-AssetBundle及Assets的卸载"><span class="nav-number">2.1.</span> <span class="nav-text">5.2 AssetBundle及Assets的卸载</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AssetBundle依赖加载"><span class="nav-number">3.</span> <span class="nav-text">AssetBundle依赖加载</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="当前大部分来源是5.1的标准 lua_Readertypedef const char * (*lua_Reader) (lua_State *L, void *data, size_t *size); lua_load 用到的读取器函数， 每次它需要一块新的 chunk 的时候， lua_load 就调用读取器， 每次都会传入一个参数 data 。 读取器需要返回含有新的 chunk 的一块内存">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua参考手册下半部分">
+<meta property="og:url" content="http://zentia.github.io/2019/05/24/luarefermanual/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="当前大部分来源是5.1的标准 lua_Readertypedef const char * (*lua_Reader) (lua_State *L, void *data, size_t *size); lua_load 用到的读取器函数， 每次它需要一块新的 chunk 的时候， lua_load 就调用读取器， 每次都会传入一个参数 data 。 读取器需要返回含有新的 chunk 的一块内存">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.214Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lua参考手册下半部分">
+<meta name="twitter:description" content="当前大部分来源是5.1的标准 lua_Readertypedef const char * (*lua_Reader) (lua_State *L, void *data, size_t *size); lua_load 用到的读取器函数， 每次它需要一块新的 chunk 的时候， lua_load 就调用读取器， 每次都会传入一个参数 data 。 读取器需要返回含有新的 chunk 的一块内存">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/05/24/luarefermanual/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Lua参考手册下半部分 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/24/luarefermanual/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Lua参考手册下半部分
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/05/24/luarefermanual/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/24/luarefermanual/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>当前大部分来源是5.1的标准</p>
+<h3 id="lua-Reader"><a href="#lua-Reader" class="headerlink" title="lua_Reader"></a>lua_Reader</h3><pre><code>typedef const char * (*lua_Reader) (lua_State *L, void *data, size_t *size);
+</code></pre><p>lua_load 用到的读取器函数， 每次它需要一块新的 chunk 的时候， lua_load 就调用读取器， 每次都会传入一个参数 data 。 读取器需要返回含有新的 chunk 的一块内存的指针， 并把 size 设为这块内存的大小。 内存块必须在下一次函数被调用之前一直存在。 读取器可以通过返回一个 NULL 来指示 chunk 结束。 读取器可能返回多个块，每个块可以有任意的大于零的尺寸。</p>
+<h3 id="lua-register"><a href="#lua-register" class="headerlink" title="lua_register"></a>lua_register</h3><pre><code>void lua_register (lua_State *L, const char *name, lua_CFunction f);
+</code></pre><p>把 C 函数 f 设到全局变量 name 中。 它通过一个宏定义：</p>
+<pre><code> #define lua_register(L,n,f) \
+        (lua_pushcfunction(L, f), lua_setglobal(L, n))
+</code></pre><h3 id="lua-remove"><a href="#lua-remove" class="headerlink" title="lua_remove"></a>lua_remove</h3><pre><code>void lua_remove (lua_State *L, int index);
+</code></pre><p>从给定有效索引处移除一个元素， 把这个索引之上的所有元素移下来填补上这个空隙。 不能用伪索引来调用这个函数， 因为伪索引并不指向真实的栈上的位置。</p>
+<h3 id="lua-replace"><a href="#lua-replace" class="headerlink" title="lua_replace"></a>lua_replace</h3><pre><code>void lua_replace (lua_State *L, int index);
+</code></pre><p>把栈顶元素移动到给定位置（并且把这个栈顶元素弹出）， 不移动任何元素（因此在那个位置处的值被覆盖掉）。</p>
+<h3 id="lua-resume"><a href="#lua-resume" class="headerlink" title="lua_resume"></a>lua_resume</h3><pre><code>int lua_resume (lua_State *L, int narg);
+</code></pre><p>在给定线程中启动或继续一个 coroutine 。<br>要启动一个 coroutine 的话，首先你要创建一个新线程 （参见 lua_newthread ）； 然后把主函数和若干参数压到新线程的堆栈上； 最后调用 lua_resume ， 把 narg 设为参数的个数。 这次调用会在 coroutine 挂起时或是结束运行后返回。 当函数返回时，堆栈中会有传给 lua_yield 的所有值， 或是主函数的所有返回值。 如果 coroutine 切换时，lua_resume 返回 LUA_YIELD ， 而当 coroutine 结束运行且没有任何错误时，返回 0 。 如果有错则返回错误代码（参见 lua_pcall）。 在发生错误的情况下， 堆栈没有展开， 因此你可以使用 debug API 来处理它。 出错信息放在栈顶。 要继续运行一个 coroutine 的话，你把需要传给 yield 作结果的返回值压入堆栈，然后调用 lua_resume 。</p>
+<h3 id="lua-setallocf"><a href="#lua-setallocf" class="headerlink" title="lua_setallocf"></a>lua_setallocf</h3><pre><code>void lua_setallocf (lua_State *L, lua_Alloc f, void *ud);
+</code></pre><p>把指定状态机的分配器函数换成带上指针 ud 的 f 。</p>
+<h3 id="lua-setfenv"><a href="#lua-setfenv" class="headerlink" title="lua_setfenv"></a>lua_setfenv</h3><pre><code>int lua_setfenv (lua_State *L, int index);
+</code></pre><p>从堆栈上弹出一个 table 并把它设为指定索引处值的新环境。 如果指定索引处的值即不是函数又不是线程或是 userdata ， lua_setfenv 会返回 0 ， 否则返回 1 。</p>
+<h3 id="lua-setfield"><a href="#lua-setfield" class="headerlink" title="lua_setfield"></a>lua_setfield</h3><pre><code>void lua_setfield(lua_State *L, int index, const char *k);
+</code></pre><p>等价于<code>t[k] = v</code>的操作，这里t是给出的有效索引index处的值，而v是栈顶的那个值。这个函数将把这个值弹出堆栈。 跟在Lua中一样，这个函数可能触发一个<code>newindex</code>事件的元方法。</p>
+<h3 id="lua-setglobal"><a href="#lua-setglobal" class="headerlink" title="lua_setglobal"></a>lua_setglobal</h3><pre><code>void lua_setglobal (lua_State *L, const char *name);
+</code></pre><p>从堆栈上弹出一个值，并将其设到全局变量 name 中。 它由一个宏定义出来：</p>
+<pre><code>#define lua_setglobal(L,s)   lua_setfield(L, LUA_GLOBALSINDEX, s)
+</code></pre><h3 id="lua-setmetatable"><a href="#lua-setmetatable" class="headerlink" title="lua_setmetatable"></a>lua_setmetatable</h3><pre><code>int lua_setmetatable(lua_State *L, int index);
+</code></pre><p>把一个table 弹出堆栈，并将其设为给定索引处的值的 metatable 。</p>
+<h3 id="lua-settable"><a href="#lua-settable" class="headerlink" title="lua_settable"></a>lua_settable</h3><pre><code>void lua_settable(lua_State *L, int index);
+</code></pre><p>作一个等价于 t[k] = v的操作，这里t是一个给定有效索引 index 处的值， v 指栈顶的值， 而 k 是栈顶之下的那个值。这个函数会把键和值都从堆栈中弹出。 和在 Lua 中一样，这个函数可能触发 “newindex” 事件的元方法。</p>
+<h3 id="lua-settop"><a href="#lua-settop" class="headerlink" title="lua_settop"></a>lua_settop</h3><pre><code>void lua_settop(lua_State *L, int index);
+</code></pre><p>参数允许传入任何可接受的索引以及0。它将把堆栈的栈顶设为这个索引。如果新的栈顶比原来的大，超出部分的新元素将被填为nil。如果index为0，把栈上所有元素移除。</p>
+<h3 id="lua-State"><a href="#lua-State" class="headerlink" title="lua_State"></a>lua_State</h3><p>typedef struct lua_State lua_State;<br>一个不透明的结构，它保存了整个 Lua 解释器的状态。 Lua 库是完全可重入的： 它没有任何全局变量。 （译注：从 C 语法上来说，也不尽然。例如，在 table 的实现中 用了一个静态全局变量 dummynode_ ，但这在正确使用时并不影响可重入性。 只是万一你错误链接了 lua 库，不小心在同一进程空间中存在两份 lua 库实现的代码的话， 多份 dummynode_ 不同的地址会导致一些问题。） 所有的信息都保存在这个结构中。</p>
+<p>这个状态机的指针必须作为第一个参数传递给每一个库函数。 lua_newstate 是一个例外， 这个函数会从头创建一个 Lua 状态机。</p>
+<h3 id="lua-status"><a href="#lua-status" class="headerlink" title="lua_status"></a>lua_status</h3><pre><code>int lua_status (lua_State *L);
+</code></pre><p>返回线程 L 的状态。<br>正常的线程状态是 0 。 当线程执行完毕或发生一个错误时，状态值是错误码。 如果线程被挂起，状态为 LUA_YIELD 。</p>
+<h3 id="lua-toboolean"><a href="#lua-toboolean" class="headerlink" title="lua_toboolean"></a>lua_toboolean</h3><pre><code>int lua_toboolean (lua_State *L, int index);
+</code></pre><p>把指定的索引处的的Lua值转换为一个C中的boolean值（0或是1）。和Lua中做的所有测试一样，lua_toboolean会把任何不同于false和nil的值当作1返回； 否则就返回0。 如果用一个无效索引去调用也会返回0。 （如果你想只接收真正的boolean值，就需要使用<code>lua_isboolean</code>来测试值的类型。）</p>
+<h3 id="lua-tocfunction"><a href="#lua-tocfunction" class="headerlink" title="lua_tocfunction"></a>lua_tocfunction</h3><pre><code>lua_CFunction lua_tocfunction (lua_State *L, int index);
+</code></pre><p>把给定索引处的 Lua 值转换为一个 C 函数。 这个值必须是一个 C 函数；如果不是就返回 NULL 。</p>
+<h3 id="lua-tointeger"><a href="#lua-tointeger" class="headerlink" title="lua_tointeger"></a>lua_tointeger</h3><pre><code>lua_Integer lua_tointeger (lua_State *L, int idx);
+</code></pre><p>把给定索引处的 Lua 值转换为 lua_Integer 这样一个有符号整数类型。 这个 Lua 值必须是一个数字或是一个可以转换为数字的字符串 （参见 §2.2.1）； 否则，lua_tointeger 返回 0 。<br>如果数字不是一个整数， 截断小数部分的方式没有被明确定义。</p>
+<h3 id="lua-tolstring"><a href="#lua-tolstring" class="headerlink" title="lua_tolstring"></a>lua_tolstring</h3><pre><code>const char *lua_tolstring (lua_State *L, int index, size_t *len);
+</code></pre><p>把给定索引处的 Lua 值转换为一个 C 字符串。 如果 len 不为 NULL ， 它还把字符串长度设到 *len 中。 这个 Lua 值必须是一个字符串或是一个数字； 否则返回返回 NULL 。 如果值是一个数字，lua_tolstring 还会把堆栈中的那个值的实际类型转换为一个字符串。 （当遍历一个表的时候，把 lua_tolstring 作用在键上，这个转换有可能导致 lua_next 弄错。）</p>
+<p>lua_tolstring 返回 Lua 状态机中 字符串的以对齐指针。 这个字符串总能保证 （ C 要求的）最后一个字符为零 (‘\0’) ， 而且它允许在字符串内包含多个这样的零。 因为 Lua 中可能发生垃圾收集， 所以不保证 lua_tolstring 返回的指针， 在对应的值从堆栈中移除后依然有效。</p>
+<h3 id="lua-tonumber"><a href="#lua-tonumber" class="headerlink" title="lua_tonumber"></a>lua_tonumber</h3><pre><code>lua_Number lua_tonumber (lua_State *L, int index);
+</code></pre><p>把给定索引处的 Lua 值转换为 lua_Number 这样一个 C 类型（参见 lua_Number ）。 这个 Lua 值必须是一个数字或是一个可转换为数字的字符串 （参见 §2.2.1 ）； 否则，lua_tonumber 返回 0 。</p>
+<h3 id="lua-topointer"><a href="#lua-topointer" class="headerlink" title="lua_topointer"></a>lua_topointer</h3><pre><code>const void *lua_topointer (lua_State *L, int index);
+</code></pre><p>把给定索引处的值转换为一般的 C 指针 (void*) 。 这个值可以是一个 userdata ，table ，thread 或是一个 function ； 否则，lua_topointer 返回 NULL 。 不同的对象有不同的指针。 不存在把指针再转回原有类型的方法。<br>这个函数通常只为产生 debug 信息用。</p>
+<h3 id="lua-tostring"><a href="#lua-tostring" class="headerlink" title="lua_tostring"></a>lua_tostring</h3><pre><code>const char *lua_tostring (lua_State *L, int index);
+</code></pre><p>等价于 lua_tolstring ，而参数 len 设为 NULL 。</p>
+<h3 id="lua-tothread"><a href="#lua-tothread" class="headerlink" title="lua_tothread"></a>lua_tothread</h3><pre><code>lua_State *lua_tothread (lua_State *L, int index);
+</code></pre><p>把给定索引处的值转换为一个 Lua 线程（由 lua_State* 代表）。 这个值必须是一个线程；否则函数返回 NULL 。</p>
+<h3 id="lua-touserdata"><a href="#lua-touserdata" class="headerlink" title="lua_touserdata"></a>lua_touserdata</h3><pre><code>void *lua_touserdata (lua_State *L, int index);
+</code></pre><p>如果给定索引处的值是一个完整的userdata ，函数返回内存块的地址。 如果值是一个 light userdata ，那么就返回它表示的指针。 否则，返回 NULL 。</p>
+<h3 id="lua-type"><a href="#lua-type" class="headerlink" title="lua_type"></a>lua_type</h3><pre><code>int lua_type (lua_State *L, int index);
+</code></pre><p>返回给定索引处的值的类型， 当索引无效时则返回 LUA_TNONE （那是指一个指向堆栈上的空位置的索引）。 lua_type 返回的类型是一些个在 lua.h 中定义的常量： LUA_TNIL ， LUA_TNUMBER ， LUA_TBOOLEAN ， LUA_TSTRING ， LUA_TTABLE ， LUA_TFUNCTION ， LUA_TUSERDATA ， LUA_TTHREAD ， LUA_TLIGHTUSERDATA 。</p>
+<h3 id="lua-typename"><a href="#lua-typename" class="headerlink" title="lua_typename"></a>lua_typename</h3><pre><code>const char *lua_typename  (lua_State *L, int tp);
+</code></pre><p>返回 tp 表示的类型名， 这个 tp 必须是 lua_type 可能返回的值中之一。</p>
+<h3 id="lua-Writer"><a href="#lua-Writer" class="headerlink" title="lua_Writer"></a>lua_Writer</h3><p>typedef int (<em>lua_Writer) (lua_State </em>L, const void<em> p, size_t sz, void</em> ud);</p>
+<p>由 lua_dump 用到的写入器函数。 每次 lua_dump 产生了一块新的 chunk ，它都会调用写入器。 传入要写入的缓存 (p) 和它的尺寸 (sz) ， 还有 lua_dump 的参数 data 。<br>写入器会返回一个错误码： 0 表示没有错误； 别的值均表示一个错误，并且会让 lua_dump 停止再次调用写入器。</p>
+<h3 id="lua-xmove"><a href="#lua-xmove" class="headerlink" title="lua_xmove"></a>lua_xmove</h3><pre><code>void lua_xmove (lua_State *from, lua_State *to, int n);
+</code></pre><p>传递 同一个 全局状态机下不同线程中的值。<br>这个函数会从 from 的堆栈中弹出 n 个值， 然后把它们压入 to 的堆栈中。</p>
+<h3 id="lua-yield"><a href="#lua-yield" class="headerlink" title="lua_yield"></a>lua_yield</h3><pre><code>int lua_yield  (lua_State *L, int nresults);
+</code></pre><p>切出一个 coroutine 。<br>这个函数只能在一个 C 函数的返回表达式中调用。如下：</p>
+<pre><code> return lua_yield (L, nresults);
+</code></pre><p>当一个 C 函数这样调用 lua_yield ， 正在运行中的 coroutine 将从运行中挂起， 然后启动这个 coroutine 用的那次对 lua_resume 的调用就返回了。 参数 nresults 指的是堆栈中需要返回的结果个数，这些返回值将被传递给 lua_resume 。</p>
+<p>3.8 - 调试接口<br>Lua 没有内建的调试设施。 取而代之的是提供了一些函数接口和钩子。 利用这些接口，可以做出一些不同类型的调试器， 性能分析器，或是其它一些需要从解释器中取到“内部信息”的工具。</p>
+<h3 id="lua-Debug"><a href="#lua-Debug" class="headerlink" title="lua_Debug"></a>lua_Debug</h3><pre><code>typedef struct lua_Debug 
+{ 
+    int event;
+    const char *name;           /* (n) */
+    const char *namewhat;       /* (n) */
+    const char *what;           /* (S) */
+    const char *source;         /* (S) */
+    int currentline;            /* (l) */
+    int nups;                   /* (u) upvalue 个数 */
+    int linedefined;            /* (S) */
+    int lastlinedefined;        /* (S) */
+    char short_src[LUA_IDSIZE]; /* (S) */
+    /* 私有部分 */
+    其它域
+} lua_Debug;
+</code></pre><p>一个用来携带活动中函数的各种信息的结构。 lua_getstack 仅填写这个结构中的私有部分， 这些部分以后会用到。 调用 lua_getinfo 则可以填上 lua_Debug 中有用信息的那些域。</p>
+<p>lua_Debug 中的各个域有下列含义：</p>
+<p>source: 如果函数是定义在一个字符串中，source 就是这个字符串。 如果函数定义在一个文件中， source 是一个以 ‘@’ 开头的文件名。<br>short_src: 一个“可打印版本”的 source，用于出错信息。<br>linedefined: 函数定义开始处的行号。<br>lastlinedefined: 函数定义结束处的行号。<br>what: 如果函数是一个 Lua 函数，则为一个字符串 “Lua” ； 如果是一个 C 函数，则为 “C”； 如果它是一个 chunk 的主体部分，则为 “main”； 如果是一个作了尾调用的函数，则为 “tail” 。 别的情况下，Lua 没有关于函数的别的信息。<br>currentline: 给定函数正在执行的那一行。 当提供不了行号信息的时候，currentline 被设为 -1 。<br>name: 给定函数的一个合理的名字。 因为 Lua 中的函数也是一个值， 所以它们没有固定的名字： 一些函数可能是全局复合变量的值， 另一些可能仅仅只是被保存在一个 table 中。 lua_getinfo 函数会检查函数是这样被调用的，以此来找到一个适合的名字。 如果它找不到名字，name 就被设置为 NULL 。<br>namewhat: 结实 name 域。 namewhat 的值可以是 “global”, “local”, “method”, “field”, “upvalue”, 或是 “” （空串）。 这取决于函数怎样被调用。 （Lua 用空串表示其它选项都不符合）<br>nups: 函数的 upvalue 的个数。</p>
+<h3 id="lua-gethook"><a href="#lua-gethook" class="headerlink" title="lua_gethook"></a>lua_gethook</h3><pre><code>lua_Hook lua_gethook (lua_State *L);
+</code></pre><p>返回当前的钩子函数。</p>
+<h3 id="lua-gethookcount"><a href="#lua-gethookcount" class="headerlink" title="lua_gethookcount"></a>lua_gethookcount</h3><pre><code>int lua_gethookcount (lua_State *L);
+</code></pre><p>返回当前钩子记数。</p>
+<h3 id="lua-gethookmask"><a href="#lua-gethookmask" class="headerlink" title="lua_gethookmask"></a>lua_gethookmask</h3><pre><code>int lua_gethookmask (lua_State *L);
+</code></pre><p>返回当前的钩子掩码 (mask) 。</p>
+<h3 id="lua-getinfo"><a href="#lua-getinfo" class="headerlink" title="lua_getinfo"></a>lua_getinfo</h3><pre><code>int lua_getinfo (lua_State *L, const char *what, lua_Debug *ar);
+</code></pre><p>返回一个指定的函数或函数调用的信息。<br>当用于取得一次函数调用的信息时， 参数 ar 必须是一个有效的活动的记录。 这条记录可以是前一次调用 lua_getstack 得到的， 或是一个钩子 （参见 lua_Hook）得到的参数。<br>用于获取一个函数的信息时，可以把这个函数压入堆栈， 然后把 what 字符串以字符 ‘&gt;’ 起头。 （这个情况下，lua_getinfo 从栈顶上弹出函数。） 例如，想知道函数 f 在哪一行定义的， 你可以下下列代码：</p>
+<pre><code>lua_Debug ar;
+lua_getfield(L, LUA_GLOBALSINDEX, &quot;f&quot;);  /* 取到全局变量 &#39;f&#39; */
+lua_getinfo(L, &quot;&gt;S&quot;, &amp;ar);
+printf(&quot;%d\n&quot;, ar.linedefined);
+</code></pre><p>what 字符串中的每个字符都筛选出结构 ar 结构中一些域用于填充，或是把一个值压入堆栈：</p>
+<p>‘n’: 填充 name 及 namewhat 域；<br>‘S’: 填充 source， short_src， linedefined， lastlinedefined，以及 what 域；<br>‘l’: 填充 currentline 域；<br>‘u’: 填充 nups 域；<br>‘f’: 把正在运行中指定级别处函数压入堆栈； （译注：一般用于获取函数调用中的信息， 级别是由 ar 中的私有部分来提供。 如果用于获取静态函数，那么就直接把指定函数重新压回堆栈， 但这样做通常无甚意义。）<br>‘L’: 压一个 table 入栈，这个 table 中的整数索引用于描述函数中哪些行是有效行。 （有效行指有实际代码的行， 即你可以置入断点的行。 无效行包括空行和只有注释的行。）<br>这个函数出错会返回 0 （例如，what 中有一个无效选项）。</p>
+<h3 id="lua-getlocal"><a href="#lua-getlocal" class="headerlink" title="lua_getlocal"></a>lua_getlocal</h3><pre><code>const char *lua_getlocal (lua_State *L, lua_Debug *ar, int n);
+</code></pre><p>从给定活动记录中获取一个局部变量的信息。 参数 ar 必须是一个有效的活动的记录。 这条记录可以是前一次调用 lua_getstack 得到的， 或是一个钩子 （参见 lua_Hook）得到的参数。 索引 n 用于选择要检阅哪个局部变量 （ 1 表示第一个参数或是激活的第一个局部变量，以此类推，直到最后一个局部变量）。 lua_getlocal 把变量的值压入堆栈并返回它的名字。<br>以 ‘(‘ （正小括号）开始的变量指内部变量 （循环控制变量，临时变量，C 函数局部变量）。<br>当索引大于局部变量的个数时，返回 NULL （什么也不压入）。</p>
+<h3 id="lua-getstack"><a href="#lua-getstack" class="headerlink" title="lua_getstack"></a>lua_getstack</h3><pre><code>int lua_getstack (lua_State *L, int level, lua_Debug *ar);
+</code></pre><p>获取解释器的运行时栈的信息。<br>这个函数用正在运行中的给定级别处的函数的活动记录来填写 lua_Debug 结构的一部分。 0 级表示当前运行的函数， 而 n+1 级处的函数就是调用第 n 级函数的那一个。 如果没有错误，lua_getstack 返回 1 ； 当调用传入的级别大于堆栈深度的时候，返回 0 。</p>
+<h3 id="lua-getupvalue"><a href="#lua-getupvalue" class="headerlink" title="lua_getupvalue"></a>lua_getupvalue</h3><pre><code>const char *lua_getupvalue (lua_State *L, int funcindex, int n);
+</code></pre><p>获取一个 closure 的 upvalue 信息。 （对于 Lua 函数，upvalue 是函数需要使用的外部局部变量， 因此这些变量被包含在 closure 中。） lua_getupvalue 获取第 n 个 upvalue ， 把这个 upvalue 的值压入堆栈，并且返回它的名字。 funcindex 指向堆栈上 closure 的位置。 （ 因为 upvalue 在整个函数中都有效，所以它们没有特别的次序。 因此，它们以字母次序来编号。）</p>
+<p>当索引号比 upvalue 数量大的时候，返回 NULL （而且不会压入任何东西） 对于 C 函数，这个函数用空串 “” 表示所有 upvalue 的名字。</p>
+<h3 id="lua-Hook"><a href="#lua-Hook" class="headerlink" title="lua_Hook"></a>lua_Hook</h3><pre><code>typedef void (*lua_Hook) (lua_State *L, lua_Debug *ar);
+</code></pre><p>用于调试的钩子函数类型。<br>无论何时钩子被调用，它的参数 ar 中的 event 域 都被设为触发钩子的事件。 Lua 把这些事件定义为以下常量： LUA_HOOKCALL， LUA_HOOKRET, LUA_HOOKTAILRET， LUA_HOOKLINE， and LUA_HOOKCOUNT。 除此之外，对于 line 事件，currentline 域也被设置。 要想获得 ar 中的其他域， 钩子必须调用 lua_getinfo。 对于返回事件，event 的正常值可能是 LUA_HOOKRET， 或者是 LUA_HOOKTAILRET 。 对于后一种情况，Lua 会对一个函数做的尾调用也模拟出一个返回事件出来； 对于这个模拟的返回事件，调用 lua_getinfo 没有什么作用。<br>当 Lua 运行在一个钩子内部时，它将屏蔽掉其它对钩子的调用。 也就是说，如果一个钩子函数内再调回 Lua 来执行一个函数或是一个 chunk ， 这个执行操作不会触发任何的钩子。</p>
+<h3 id="lua-sethook"><a href="#lua-sethook" class="headerlink" title="lua_sethook"></a>lua_sethook</h3><pre><code>int lua_sethook (lua_State *L, lua_Hook f, int mask, int count);
+</code></pre><p>设置一个调试用钩子函数。</p>
+<p>参数 f 是钩子函数。 mask 指定在哪些事件时会调用： 它由下列一组位常量构成 LUA_MASKCALL， LUA_MASKRET， LUA_MASKLINE， 以及 LUA_MASKCOUNT。 参数 count 只在 mask 中包含有 LUA_MASKCOUNT 才有意义。 对于每个事件，钩子被调用的情况解释如下：<br>call hook: 在解释器调用一个函数时被调用。 钩子将于 Lua 进入一个新函数后，函数获取参数前被调用。<br>return hook: 在解释器从一个函数中返回时调用。 钩子将于 Lua 离开函数之前的那一刻被调用。 你无权访问被函数返回出去的那些值。 （译注：原文 (You have no access to the values to be returned by the function) 如此。 但“无权访问”一词值得商榷。 某些情况下你可以访问到一些被命名为 (*temporary) 的局部变量， 那些索引被排在最后的 (<em>temporary) 变量指的就是返回值。 但是由于 Lua 对特殊情况做了一些优化，比如直接返回一个被命名的局部变量， 那么就找不到对应的 (</em>temporary) 变量了。本质上，返回值一定存在于此刻的局部变量中， 并且可以访问它，只是无法确定是哪些罢了。至于这个时候函数体内的其它局部变量， 是不保证有效的。进入 return hook 的那一刻起，实际已经退出函数内部的运行环节， 返回值占用的局部变量空间以后的部分，都有可能因 hook 本身复用它们而改变。）<br>line hook: 在解释器准备开始执行新的一行代码时， 或是跳转到这行代码中时（即使在同一行内跳转）被调用。 （这个事件仅仅在 Lua 执行一个 Lua 函数时发生。）<br>count hook: 在解释器每执行 count 条指令后被调用。 （这个事件仅仅在 Lua 执行一个 Lua 函数时发生。）<br>钩子可以通过设置 mask 为零屏蔽。</p>
+<h3 id="lua-setlocal"><a href="#lua-setlocal" class="headerlink" title="lua_setlocal"></a>lua_setlocal</h3><pre><code>const char *lua_setlocal (lua_State *L, lua_Debug *ar, int n);
+</code></pre><p>设置给定活动记录中的局部变量的值。 参数 ar 与 n 和 lua_getlocal 中的一样 （参见 lua_getlocal）。 lua_setlocal 把栈顶的值赋给变量然后返回变量的名字。 它会将值从栈顶弹出。<br>当索引大于局部变量的个数时，返回 NULL （什么也不弹出）。</p>
+<h3 id="lua-setupvalue"><a href="#lua-setupvalue" class="headerlink" title="lua_setupvalue"></a>lua_setupvalue</h3><pre><code>const char *lua_setupvalue (lua_State *L, int funcindex, int n);
+</code></pre><p>设置 closure 的 upvalue 的值。 它把栈顶的值弹出并赋于 upvalue 并返回 upvalue 的名字。 参数 funcindex 与 n 和 lua_getupvalue 中的一样 （参见 lua_getupvalue）。<br>当索引大于 upvalue 的个数时，返回 NULL （什么也不弹出）。</p>
+<p>4 - The Auxiliary Library<br>The auxiliary library provides several convenient functions to interface C with Lua. While the basic API provides the primitive functions for all interactions between C and Lua, the auxiliary library provides higher-level functions for some common tasks.</p>
+<p>All functions from the auxiliary library are defined in header file lauxlib.h and have a prefix luaL_.</p>
+<p>All functions in the auxiliary library are built on top of the basic API, and so they provide nothing that cannot be done with this API.</p>
+<p>Several functions in the auxiliary library are used to check C function arguments. Their names are always luaL_check<em> or luaL_opt\</em>. All of these functions raise an error if the check is not satisfied. Because the error message is formatted for arguments (e.g., “bad argument #1”), you should not use these functions for other stack values.</p>
+<p>4.1 - Functions and Types<br>Here we list all functions and types from the auxiliary library in alphabetical order.</p>
+<h3 id="luaL-addchar"><a href="#luaL-addchar" class="headerlink" title="luaL_addchar"></a>luaL_addchar</h3><pre><code>void luaL_addchar (luaL_Buffer *B, char c);
+</code></pre><p>Adds the character c to the buffer B (see luaL_Buffer).</p>
+<h3 id="luaL-addlstring"><a href="#luaL-addlstring" class="headerlink" title="luaL_addlstring"></a>luaL_addlstring</h3><pre><code>void luaL_addlstring (luaL_Buffer *B, const char *s, size_t l);
+</code></pre><p>Adds the string pointed to by s with length l to the buffer B (see luaL_Buffer). The string may contain embedded zeros.</p>
+<h3 id="luaL-addsize"><a href="#luaL-addsize" class="headerlink" title="luaL_addsize"></a>luaL_addsize</h3><pre><code>void luaL_addsize (luaL_Buffer *B, size_t n);
+</code></pre><p>Adds to the buffer B (see luaL_Buffer) a string of length n previously copied to the buffer area (see luaL_prepbuffer).</p>
+<h3 id="luaL-addstring"><a href="#luaL-addstring" class="headerlink" title="luaL_addstring"></a>luaL_addstring</h3><pre><code>void luaL_addstring (luaL_Buffer *B, const char *s);
+</code></pre><p>Adds the zero-terminated string pointed to by s to the buffer B (see luaL_Buffer). The string may not contain embedded zeros.</p>
+<h3 id="luaL-addvalue"><a href="#luaL-addvalue" class="headerlink" title="luaL_addvalue"></a>luaL_addvalue</h3><pre><code>void luaL_addvalue (luaL_Buffer *B);
+</code></pre><p>Adds the value at the top of the stack to the buffer B (see luaL_Buffer). Pops the value.<br>This is the only function on string buffers that can (and must) be called with an extra element on the stack, which is the value to be added to the buffer.</p>
+<h3 id="luaL-argcheck"><a href="#luaL-argcheck" class="headerlink" title="luaL_argcheck"></a>luaL_argcheck</h3><pre><code>void luaL_argcheck (lua_State *L, int cond, int narg, const char *extramsg);
+</code></pre><p>Checks whether cond is true. If not, raises an error with the following message, where func is retrieved from the call stack:</p>
+<pre><code> bad argument #&lt;narg&gt; to &lt;func&gt; (&lt;extramsg&gt;)
+</code></pre><h3 id="luaL-argerror"><a href="#luaL-argerror" class="headerlink" title="luaL_argerror"></a>luaL_argerror</h3><pre><code>int luaL_argerror (lua_State *L, int narg, const char *extramsg);
+</code></pre><p>Raises an error with the following message, where func is retrieved from the call stack:</p>
+<pre><code> bad argument #&lt;narg&gt; to &lt;func&gt; (&lt;extramsg&gt;)
+</code></pre><p>This function never returns, but it is an idiom to use it in C functions as return luaL_argerror(args).</p>
+<h3 id="luaL-Buffer"><a href="#luaL-Buffer" class="headerlink" title="luaL_Buffer"></a>luaL_Buffer</h3><p>typedef struct luaL_Buffer luaL_Buffer;<br>Type for a string buffer.<br>A string buffer allows C code to build Lua strings piecemeal. Its pattern of use is as follows:<br>First you declare a variable b of type luaL_Buffer.<br>Then you initialize it with a call luaL_buffinit(L, &amp;b).<br>Then you add string pieces to the buffer calling any of the luaL_add* functions.<br>You finish by calling luaL_pushresult(&amp;b). This call leaves the final string on the top of the stack.<br>During its normal operation, a string buffer uses a variable number of stack slots. So, while using a buffer, you cannot assume that you know where the top of the stack is. You can use the stack between successive calls to buffer operations as long as that use is balanced; that is, when you call a buffer operation, the stack is at the same level it was immediately after the previous buffer operation. (The only exception to this rule is luaL_addvalue.) After calling luaL_pushresult the stack is back to its level when the buffer was initialized, plus the final string on its top.</p>
+<h3 id="luaL-buffinit"><a href="#luaL-buffinit" class="headerlink" title="luaL_buffinit"></a>luaL_buffinit</h3><pre><code>void luaL_buffinit (lua_State *L, luaL_Buffer *B);
+</code></pre><p>Initializes a buffer B. This function does not allocate any space; the buffer must be declared as a variable (see luaL_Buffer).</p>
+<h3 id="luaL-callmeta"><a href="#luaL-callmeta" class="headerlink" title="luaL_callmeta"></a>luaL_callmeta</h3><pre><code>int luaL_callmeta (lua_State *L, int obj, const char *e);
+</code></pre><p>Calls a metamethod.<br>If the object at index obj has a metatable and this metatable has a field e, this function calls this field and passes the object as its only argument. In this case this function returns 1 and pushes onto the stack the value returned by the call. If there is no metatable or no metamethod, this function returns 0 (without pushing any value on the stack).</p>
+<h3 id="luaL-checkany"><a href="#luaL-checkany" class="headerlink" title="luaL_checkany"></a>luaL_checkany</h3><pre><code>void luaL_checkany (lua_State *L, int narg);
+</code></pre><p>Checks whether the function has an argument of any type (including nil) at position narg.</p>
+<h3 id="luaL-checkint"><a href="#luaL-checkint" class="headerlink" title="luaL_checkint"></a>luaL_checkint</h3><pre><code>int luaL_checkint (lua_State *L, int narg);
+</code></pre><p>Checks whether the function argument narg is a number and returns this number cast to an int.</p>
+<h3 id="luaL-checkinteger"><a href="#luaL-checkinteger" class="headerlink" title="luaL_checkinteger"></a>luaL_checkinteger</h3><pre><code>lua_Integer luaL_checkinteger (lua_State *L, int narg);
+</code></pre><p>Checks whether the function argument narg is a number and returns this number cast to a lua_Integer.</p>
+<h3 id="luaL-checklong"><a href="#luaL-checklong" class="headerlink" title="luaL_checklong"></a>luaL_checklong</h3><pre><code>long luaL_checklong (lua_State *L, int narg);
+</code></pre><p>Checks whether the function argument narg is a number and returns this number cast to a long.</p>
+<h3 id="luaL-checklstring"><a href="#luaL-checklstring" class="headerlink" title="luaL_checklstring"></a>luaL_checklstring</h3><pre><code>const char *luaL_checklstring (lua_State *L, int narg, size_t *l);
+</code></pre><p>Checks whether the function argument narg is a string and returns this string; if l is not NULL fills *l with the string’s length.</p>
+<p>luaL_checknumber<br>lua_Number luaL_checknumber (lua_State *L, int narg);<br>Checks whether the function argument narg is a number and returns this number.</p>
+<h3 id="luaL-checkoption"><a href="#luaL-checkoption" class="headerlink" title="luaL_checkoption"></a>luaL_checkoption</h3><pre><code>int luaL_checkoption (lua_State *L, int narg, const char *def, const char *const lst[]);
+</code></pre><p>Checks whether the function argument narg is a string and searches for this string in the array lst (which must be NULL-terminated). Returns the index in the array where the string was found. Raises an error if the argument is not a string or if the string cannot be found.<br>If def is not NULL, the function uses def as a default value when there is no argument narg or if this argument is nil.<br>This is a useful function for mapping strings to C enums. (The usual convention in Lua libraries is to use strings instead of numbers to select options.)</p>
+<p>luaL_checkstack<br>void luaL_checkstack (lua_State <em>L, int sz, const char </em>msg);<br>Grows the stack size to top + sz elements, raising an error if the stack cannot grow to that size. msg is an additional text to go into the error message.</p>
+<p>luaL_checkstring<br>const char <em>luaL_checkstring (lua_State </em>L, int narg);<br>Checks whether the function argument narg is a string and returns this string.</p>
+<p>luaL_checktype<br>void luaL_checktype (lua_State *L, int narg, int t);<br>Checks whether the function argument narg has type t.</p>
+<p>luaL_checkudata<br>void <em>luaL_checkudata (lua_State </em>L, int narg, const char *tname);<br>Checks whether the function argument narg is a userdata of the type tname (see luaL_newmetatable).</p>
+<p>luaL_dofile<br>int luaL_dofile (lua_State <em>L, const char </em>filename);<br>Loads and runs the given file. It is defined as the following macro:</p>
+<pre><code> (luaL_loadfile(L, filename) || lua_pcall(L, 0, LUA_MULTRET, 0))
+</code></pre><p>It returns 0 if there are no errors or 1 in case of errors.</p>
+<p>luaL_dostring<br>int luaL_dostring (lua_State <em>L, const char </em>str);<br>Loads and runs the given string. It is defined as the following macro:</p>
+<pre><code> (luaL_loadstring(L, str) || lua_pcall(L, 0, LUA_MULTRET, 0))
+</code></pre><p>It returns 0 if there are no errors or 1 in case of errors.</p>
+<h3 id="luaL-error"><a href="#luaL-error" class="headerlink" title="luaL_error"></a>luaL_error</h3><pre><code>int luaL_error (lua_State *L, const char *fmt, ...);
+</code></pre><p>Raises an error. The error message format is given by fmt plus any extra arguments, following the same rules of lua_pushfstring. It also adds at the beginning of the message the file name and the line number where the error occurred, if this information is available.<br>This function never returns, but it is an idiom to use it in C functions as return luaL_error(args).</p>
+<h3 id="luaL-getmetafield"><a href="#luaL-getmetafield" class="headerlink" title="luaL_getmetafield"></a>luaL_getmetafield</h3><pre><code>int luaL_getmetafield (lua_State *L, int obj, const char *e);
+</code></pre><p>Pushes onto the stack the field e from the metatable of the object at index obj. If the object does not have a metatable, or if the metatable does not have this field, returns 0 and pushes nothing.</p>
+<h3 id="luaL-getmetatable"><a href="#luaL-getmetatable" class="headerlink" title="luaL_getmetatable"></a>luaL_getmetatable</h3><pre><code>void luaL_getmetatable (lua_State *L, const char *tname);
+</code></pre><p>Pushes onto the stack the metatable associated with name tname in the registry (see luaL_newmetatable).</p>
+<h3 id="luaL-gsub"><a href="#luaL-gsub" class="headerlink" title="luaL_gsub"></a>luaL_gsub</h3><pre><code>const char *luaL_gsub (lua_State *L, const char *s, const char *p, const char *r);
+</code></pre><p>Creates a copy of string s by replacing any occurrence of the string p with the string r. Pushes the resulting string on the stack and returns it.</p>
+<h3 id="luaL-loadbuffer"><a href="#luaL-loadbuffer" class="headerlink" title="luaL_loadbuffer"></a>luaL_loadbuffer</h3><pre><code>int luaL_loadbuffer (lua_State *L, const char *buff, size_t sz, const char *name);
+</code></pre><p>Loads a buffer as a Lua chunk. This function uses lua_load to load the chunk in the buffer pointed to by buff with size sz.<br>This function returns the same results as lua_load. name is the chunk name, used for debug information and error messages.</p>
+<h3 id="luaL-loadfile"><a href="#luaL-loadfile" class="headerlink" title="luaL_loadfile"></a>luaL_loadfile</h3><pre><code>int luaL_loadfile (lua_State *L, const char *filename);
+</code></pre><p>Loads a file as a Lua chunk. This function uses lua_load to load the chunk in the file named filename. If filename is NULL, then it loads from the standard input. The first line in the file is ignored if it starts with a #.<br>This function returns the same results as lua_load, but it has an extra error code LUA_ERRFILE if it cannot open/read the file.<br>As lua_load, this function only loads the chunk; it does not run it.</p>
+<h3 id="luaL-loadstring"><a href="#luaL-loadstring" class="headerlink" title="luaL_loadstring"></a>luaL_loadstring</h3><pre><code>int luaL_loadstring (lua_State *L, const char *s);
+</code></pre><p>Loads a string as a Lua chunk. This function uses lua_load to load the chunk in the zero-terminated string s.<br>This function returns the same results as lua_load.<br>Also as lua_load, this function only loads the chunk; it does not run it.</p>
+<h3 id="luaL-newmetatable"><a href="#luaL-newmetatable" class="headerlink" title="luaL_newmetatable"></a>luaL_newmetatable</h3><pre><code>int luaL_newmetatable (lua_State *L, const char *tname);
+</code></pre><p>If the registry already has the key tname, returns 0. Otherwise, creates a new table to be used as a metatable for userdata, adds it to the registry with key tname, and returns 1.<br>In both cases pushes onto the stack the final value associated with tname in the registry.</p>
+<h3 id="luaL-newstate"><a href="#luaL-newstate" class="headerlink" title="luaL_newstate"></a>luaL_newstate</h3><pre><code>lua_State *luaL_newstate (void);
+</code></pre><p>Creates a new Lua state. It calls lua_newstate with an allocator based on the standard C realloc function and then sets a panic function (see lua_atpanic) that prints an error message to the standard error output in case of fatal errors.<br>Returns the new state, or NULL if there is a memory allocation error.</p>
+<h3 id="luaL-openlibs"><a href="#luaL-openlibs" class="headerlink" title="luaL_openlibs"></a>luaL_openlibs</h3><pre><code>void luaL_openlibs (lua_State *L);
+</code></pre><p>Opens all standard Lua libraries into the given state.</p>
+<p>luaL_optint<br>int luaL_optint (lua_State *L, int narg, int d);<br>If the function argument narg is a number, returns this number cast to an int. If this argument is absent or is nil, returns d. Otherwise, raises an error.</p>
+<h3 id="luaL-optinteger"><a href="#luaL-optinteger" class="headerlink" title="luaL_optinteger"></a>luaL_optinteger</h3><pre><code>lua_Integer luaL_optinteger (lua_State *L,
+                         int narg,
+                         lua_Integer d);
+</code></pre><p>If the function argument narg is a number, returns this number cast to a lua_Integer. If this argument is absent or is nil, returns d. Otherwise, raises an error.</p>
+<h3 id="luaL-optlong"><a href="#luaL-optlong" class="headerlink" title="luaL_optlong"></a>luaL_optlong</h3><pre><code>long luaL_optlong (lua_State *L, int narg, long d);
+</code></pre><p>If the function argument narg is a number, returns this number cast to a long. If this argument is absent or is nil, returns d. Otherwise, raises an error.</p>
+<h3 id="luaL-optlstring"><a href="#luaL-optlstring" class="headerlink" title="luaL_optlstring"></a>luaL_optlstring</h3><pre><code>const char *luaL_optlstring (lua_State *L, int narg, const char *d, size_t *l);
+</code></pre><p>If the function argument narg is a string, returns this string. If this argument is absent or is nil, returns d. Otherwise, raises an error.<br>If l is not NULL, fills the position *l with the results’s length.</p>
+<h3 id="luaL-optnumber"><a href="#luaL-optnumber" class="headerlink" title="luaL_optnumber"></a>luaL_optnumber</h3><pre><code>lua_Number luaL_optnumber (lua_State *L, int narg, lua_Number d);
+</code></pre><p>If the function argument narg is a number, returns this number. If this argument is absent or is nil, returns d. Otherwise, raises an error.</p>
+<h3 id="luaL-optstring"><a href="#luaL-optstring" class="headerlink" title="luaL_optstring"></a>luaL_optstring</h3><pre><code>const char *luaL_optstring (lua_State *L, int narg, const char *d);
+</code></pre><p>If the function argument narg is a string, returns this string. If this argument is absent or is nil, returns d. Otherwise, raises an error.</p>
+<h3 id="luaL-prepbuffer"><a href="#luaL-prepbuffer" class="headerlink" title="luaL_prepbuffer"></a>luaL_prepbuffer</h3><pre><code>char *luaL_prepbuffer (luaL_Buffer *B);
+</code></pre><p>Returns an address to a space of size LUAL_BUFFERSIZE where you can copy a string to be added to buffer B (see luaL_Buffer). After copying the string into this space you must call luaL_addsize with the size of the string to actually add it to the buffer.</p>
+<h3 id="luaL-pushresult"><a href="#luaL-pushresult" class="headerlink" title="luaL_pushresult"></a>luaL_pushresult</h3><pre><code>void luaL_pushresult (luaL_Buffer *B);
+</code></pre><p>Finishes the use of buffer B leaving the final string on the top of the stack.</p>
+<h3 id="luaL-ref"><a href="#luaL-ref" class="headerlink" title="luaL_ref"></a>luaL_ref</h3><pre><code>int luaL_ref (lua_State *L, int t);
+</code></pre><p>Creates and returns a reference, in the table at index t, for the object at the top of the stack (and pops the object).<br>A reference is a unique integer key. As long as you do not manually add integer keys into table t, luaL_ref ensures the uniqueness of the key it returns. You can retrieve an object referred by reference r by calling lua_rawgeti(L, t, r). Function luaL_unref frees a reference and its associated object.</p>
+<p>If the object at the top of the stack is nil, luaL_ref returns the constant LUA_REFNIL. The constant LUA_NOREF is guaranteed to be different from any reference returned by luaL_ref.</p>
+<h3 id="luaL-Reg"><a href="#luaL-Reg" class="headerlink" title="luaL_Reg"></a>luaL_Reg</h3><pre><code>typedef struct luaL_Reg {  const char *name;  lua_CFunction func;} luaL_Reg;
+</code></pre><p>Type for arrays of functions to be registered by luaL_register. name is the function name and func is a pointer to the function. Any array of luaL_Reg must end with an sentinel entry in which both name and func are NULL.</p>
+<h3 id="luaL-register"><a href="#luaL-register" class="headerlink" title="luaL_register"></a>luaL_register</h3><pre><code>void luaL_register (lua_State *L, const char *libname, const luaL_Reg *l);
+</code></pre><p>Opens a library.</p>
+<p>When called with libname equal to NULL, it simply registers all functions in the list l (see luaL_Reg) into the table on the top of the stack.<br>When called with a non-null libname, luaL_register creates a new table t, sets it as the value of the global variable libname, sets it as the value of package.loaded[libname], and registers on it all functions in the list l. If there is a table in package.loaded[libname] or in variable libname, reuses this table instead of creating a new one.<br>In any case the function leaves the table on the top of the stack.</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">static int foo(lua_State *L)</span><br><span class="line">&#123;</span><br><span class="line">    lua_pushnumber(L, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static const struct lua_Reg modulename[] = &#123;</span><br><span class="line">    &#123;<span class="string">"foo"</span>, foo&#125;,</span><br><span class="line">    &#123;NULL, NULL&#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int luaopen_modulename(lua_State *L)</span><br><span class="line">&#123;</span><br><span class="line">    luaL_newlib(L, modulename);// <span class="number">5.2</span>之前使用的Lua_register(L, <span class="string">"modulename"</span>, modulename);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>工程目录 <a href="https://github.com/metanqy/binary_world.git" target="_blank" rel="noopener">https://github.com/metanqy/binary_world.git</a></p>
+<h3 id="luaL-typename"><a href="#luaL-typename" class="headerlink" title="luaL_typename"></a>luaL_typename</h3><p>const char <em>luaL_typename (lua_State </em>L, int idx);<br>Returns the name of the type of the value at index idx.</p>
+<p>luaL_typerror<br>int luaL_typerror (lua_State <em>L, int narg, const char </em>tname);<br>Generates an error with a message like the following:</p>
+<pre><code> location: bad argument narg to &#39;func&#39; (tname expected, got rt)
+</code></pre><p>where location is produced by luaL_where, func is the name of the current function, and rt is the type name of the actual argument.</p>
+<h3 id="luaL-unref"><a href="#luaL-unref" class="headerlink" title="luaL_unref"></a>luaL_unref</h3><pre><code>void luaL_unref (lua_State *L, int t, int ref);
+</code></pre><p>Releases reference ref from the table at index t (see luaL_ref). The entry is removed from the table, so that the referred object can be collected. The reference ref is also freed to be used again.</p>
+<p>If ref is LUA_NOREF or LUA_REFNIL, luaL_unref does nothing.</p>
+<h3 id="luaL-where"><a href="#luaL-where" class="headerlink" title="luaL_where"></a>luaL_where</h3><pre><code>void luaL_where (lua_State *L, int lvl);
+</code></pre><p>Pushes onto the stack a string identifying the current position of the control at level lvl in the call stack. Typically this string has the following format:</p>
+<pre><code> chunkname:currentline:
+</code></pre><p>Level 0 is the running function, level 1 is the function that called the running function, etc.<br>This function is used to build a prefix for error messages.</p>
+<p>Standard Libraries<br>The standard Lua libraries provide useful functions that are implemented directly through the C API. Some of these functions provide essential services to the language (e.g., type and getmetatable); others provide access to “outside” services (e.g., I/O); and others could be implemented in Lua itself, but are quite useful or have critical performance requirements that deserve an implementation in C (e.g., sort).</p>
+<p>All libraries are implemented through the official C API and are provided as separate C modules. Currently, Lua has the following standard libraries:</p>
+<p>basic library;<br>package library;<br>string manipulation;<br>table manipulation;<br>mathematical functions (sin, log, etc.);<br>input and output;<br>operating system facilities;<br>debug facilities.<br>Except for the basic and package libraries, each library provides all its functions as fields of a global table or as methods of its objects.</p>
+<p>To have access to these libraries, the C host program should call the luaL_openlibs function, which opens all standard libraries. Alternatively, it can open them individually by calling luaopen_base (for the basic library), luaopen_package (for the package library), luaopen_string (for the string library), luaopen_table (for the table library), luaopen_math (for the mathematical library), luaopen_io (for the I/O and the Operating System libraries), and luaopen_debug (for the debug library). These functions are declared in lualib.h and should not be called directly: you must call them like any other Lua C function, e.g., by using lua_call.</p>
+<p>The basic library provides some core functions to Lua. If you do not include this library in your application, you should check carefully whether you need to provide implementations for some of its facilities.</p>
+<h3 id="assert-v-message"><a href="#assert-v-message" class="headerlink" title="assert (v [, message])"></a>assert (v [, message])</h3><p>Issues an error when the value of its argument v is false (i.e., nil or false); otherwise, returns all its arguments. message is an error message; when absent, it defaults to “assertion failed!”<br>collectgarbage (opt [, arg])<br>This function is a generic interface to the garbage collector. It performs different functions according to its first argument, opt:</p>
+<p>“stop”: stops the garbage collector.<br>“restart”: restarts the garbage collector.<br>“collect”: performs a full garbage-collection cycle.<br>“count”: returns the total memory in use by Lua (in Kbytes).<br>“step”: performs a garbage-collection step. The step “size” is controlled by arg (larger values mean more steps) in a non-specified way. If you want to control the step size you must experimentally tune the value of arg. Returns true if the step finished a collection cycle.<br>“setpause”: sets arg/100 as the new value for the pause of the collector (see §2.10).<br>“setstepmul”: sets arg/100 as the new value for the step multiplier of the collector (see §2.10).<br>dofile (filename)<br>Opens the named file and executes its contents as a Lua chunk. When called without arguments, dofile executes the contents of the standard input (stdin). Returns all values returned by the chunk. In case of errors, dofile propagates the error to its caller (that is, dofile does not run in protected mode).<br>error (message [, level])<br>Terminates the last protected function called and returns message as the error message. Function error never returns.<br>Usually, error adds some information about the error position at the beginning of the message. The level argument specifies how to get the error position. With level 1 (the default), the error position is where the error function was called. Level 2 points the error to where the function that called error was called; and so on. Passing a level 0 avoids the addition of error position information to the message.</p>
+<p>_G<br>A global variable (not a function) that holds the global environment (that is, _G._G = _G). Lua itself does not use this variable; changing its value does not affect any environment, nor vice-versa. (Use setfenv to change environments.)<br>getfenv (f)<br>Returns the current environment in use by the function. f can be a Lua function or a number that specifies the function at that stack level: Level 1 is the function calling getfenv. If the given function is not a Lua function, or if f is 0, getfenv returns the global environment. The default for f is 1.<br>getmetatable (object)<br>If object does not have a metatable, returns nil. Otherwise, if the object’s metatable has a “__metatable” field, returns the associated value. Otherwise, returns the metatable of the given object.</p>
+<p>ipairs (t)<br>Returns three values: an iterator function, the table t, and 0, so that the construction</p>
+<pre><code> for i,v in ipairs(t) do body end
+</code></pre><p>will iterate over the pairs (1,t[1]), (2,t[2]), ···, up to the first integer key absent from the table.</p>
+<p>load (func [, chunkname])<br>Loads a chunk using function func to get its pieces. Each call to func must return a string that concatenates with previous results. A return of nil (or no value) signals the end of the chunk.</p>
+<p>If there are no errors, returns the compiled chunk as a function; otherwise, returns nil plus the error message. The environment of the returned function is the global environment.</p>
+<p>chunkname is used as the chunk name for error messages and debug information.</p>
+<p>loadfile ([filename])<br>Similar to load, but gets the chunk from file filename or from the standard input, if no file name is given.</p>
+<p>loadstring (string [, chunkname])<br>Similar to load, but gets the chunk from the given string.</p>
+<p>To load and run a given string, use the idiom</p>
+<pre><code> assert(loadstring(s))()
+</code></pre><p>next (table [, index])<br>Allows a program to traverse all fields of a table. Its first argument is a table and its second argument is an index in this table. next returns the next index of the table and its associated value. When called with nil as its second argument, next returns an initial index and its associated value. When called with the last index, or with nil in an empty table, next returns nil. If the second argument is absent, then it is interpreted as nil. In particular, you can use next(t) to check whether a table is empty.</p>
+<p>The order in which the indices are enumerated is not specified, even for numeric indices. (To traverse a table in numeric order, use a numerical for or the ipairs function.)</p>
+<p>The behavior of next is undefined if, during the traversal, you assign any value to a non-existent field in the table. You may however modify existing fields. In particular, you may clear existing fields.</p>
+<h3 id="pairs-t"><a href="#pairs-t" class="headerlink" title="pairs (t)"></a>pairs (t)</h3><p>Returns three values: the next function, the table t, and nil, so that the construction</p>
+<pre><code> for k,v in pairs(t) do body end
+</code></pre><p>will iterate over all key–value pairs of table t.</p>
+<p>See function next for the caveats of modifying the table during its traversal.</p>
+<h3 id="pcall-f-arg1-···"><a href="#pcall-f-arg1-···" class="headerlink" title="pcall (f, arg1, ···)"></a>pcall (f, arg1, ···)</h3><p>Calls function f with the given arguments in protected mode. This means that any error inside f is not propagated; instead, pcall catches the error and returns a status code. Its first result is the status code (a boolean), which is true if the call succeeds without errors. In such case, pcall also returns all results from the call, after this first result. In case of any error, pcall returns false plus the error message.</p>
+<h3 id="print-···"><a href="#print-···" class="headerlink" title="print (···)"></a>print (···)</h3><p>Receives any number of arguments, and prints their values to stdout, using the tostring function to convert them to strings. print is not intended for formatted output, but only as a quick way to show a value, typically for debugging. For formatted output, use string.format.<br>rawequal (v1, v2)<br>Checks whether v1 is equal to v2, without invoking any metamethod. Returns a boolean.<br>rawget (table, index)<br>Gets the real value of table[index], without invoking any metamethod. table must be a table; index may be any value.<br>rawset (table, index, value)<br>Sets the real value of table[index] to value, without invoking any metamethod. table must be a table, index any value different from nil, and value any Lua value.<br>This function returns table.</p>
+<p>select (index, ···)<br>If index is a number, returns all arguments after argument number index. Otherwise, index must be the string “#”, and select returns the total number of extra arguments it received.</p>
+<p>setfenv (f, table)<br>Sets the environment to be used by the given function. f can be a Lua function or a number that specifies the function at that stack level: Level 1 is the function calling setfenv. setfenv returns the given function.</p>
+<p>As a special case, when f is 0 setfenv changes the environment of the running thread. In this case, setfenv returns no values.</p>
+<p>setmetatable (table, metatable)<br>Sets the metatable for the given table. (You cannot change the metatable of other types from Lua, only from C.) If metatable is nil, removes the metatable of the given table. If the original metatable has a “__metatable” field, raises an error.</p>
+<p>This function returns table.</p>
+<p>tonumber (e [, base])<br>Tries to convert its argument to a number. If the argument is already a number or a string convertible to a number, then tonumber returns this number; otherwise, it returns nil.<br>An optional argument specifies the base to interpret the numeral. The base may be any integer between 2 and 36, inclusive. In bases above 10, the letter ‘A’ (in either upper or lower case) represents 10, ‘B’ represents 11, and so forth, with ‘Z’ representing 35. In base 10 (the default), the number may have a decimal part, as well as an optional exponent part (see §2.1). In other bases, only unsigned integers are accepted.</p>
+<p>tostring (e)<br>Receives an argument of any type and converts it to a string in a reasonable format. For complete control of how numbers are converted, use string.format.<br>If the metatable of e has a “__tostring” field, then tostring calls the corresponding value with e as argument, and uses the result of the call as its result.</p>
+<p>type (v)<br>Returns the type of its only argument, coded as a string. The possible results of this function are “nil” (a string, not the value nil), “number”, “string”, “boolean”, “table”, “function”, “thread”, and “userdata”.<br>unpack (list [, i [, j]])<br>Returns the elements from the given table. This function is equivalent to<br>     return list[i], list[i+1], ···, list[j]<br>except that the above code can be written only for a fixed number of elements. By default, i is 1 and j is the length of the list, as defined by the length operator (see §2.5.5).</p>
+<p>_VERSION<br>A global variable (not a function) that holds a string containing the current interpreter version. The current contents of this variable is “Lua 5.1”.<br>xpcall (f, err)<br>This function is similar to pcall, except that you can set a new error handler.</p>
+<p>xpcall calls function f in protected mode, using err as the error handler. Any error inside f is not propagated; instead, xpcall catches the error, calls the err function with the original error object, and returns a status code. Its first result is the status code (a boolean), which is true if the call succeeds without errors. In this case, xpcall also returns all results from the call, after this first result. In case of any error, xpcall returns false plus the result from err.</p>
+<h3 id="Coroutine-Manipulation"><a href="#Coroutine-Manipulation" class="headerlink" title="Coroutine Manipulation"></a>Coroutine Manipulation</h3><p>The operations related to coroutines comprise a sub-library of the basic library and come inside the table coroutine. </p>
+<p>coroutine.create (f)<br>Creates a new coroutine, with body f. f must be a Lua function. Returns this new coroutine, an object with type “thread”.</p>
+<p>coroutine.resume (co [, val1, ···])<br>Starts or continues the execution of coroutine co. The first time you resume a coroutine, it starts running its body. The values val1, ··· are passed as the arguments to the body function. If the coroutine has yielded, resume restarts it; the values val1, ··· are passed as the results from the yield.</p>
+<p>If the coroutine runs without any errors, resume returns true plus any values passed to yield (if the coroutine yields) or any values returned by the body function (if the coroutine terminates). If there is any error, resume returns false plus the error message.</p>
+<p>coroutine.running ()<br>Returns the running coroutine, or nil when called by the main thread.</p>
+<p>coroutine.status (co)<br>Returns the status of coroutine co, as a string: “running”, if the coroutine is running (that is, it called status); “suspended”, if the coroutine is suspended in a call to yield, or if it has not started running yet; “normal” if the coroutine is active but not running (that is, it has resumed another coroutine); and “dead” if the coroutine has finished its body function, or if it has stopped with an error.</p>
+<p>coroutine.wrap (f)<br>Creates a new coroutine, with body f. f must be a Lua function. Returns a function that resumes the coroutine each time it is called. Any arguments passed to the function behave as the extra arguments to resume. Returns the same values returned by resume, except the first boolean. In case of error, propagates the error.</p>
+<p>coroutine.yield (···)<br>Suspends the execution of the calling coroutine. The coroutine cannot be running a C function, a metamethod, or an iterator. Any arguments to yield are passed as extra results to resume.</p>
+<h3 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h3><p>The package library provides basic facilities for loading and building modules in Lua. It exports two of its functions directly in the global environment: require and module. Everything else is exported in a table package.<br>module (name [, ···])<br>Creates a module. If there is a table in package.loaded[name], this table is the module. Otherwise, if there is a global table t with the given name, this table is the module. Otherwise creates a new table t and sets it as the value of the global name and the value of package.loaded[name]. This function also initializes t._NAME with the given name, t._M with the module (t itself), and t._PACKAGE with the package name (the full module name minus last component; see below). Finally, module sets t as the new environment of the current function and the new value of package.loaded[name], so that require returns t.</p>
+<p>If name is a compound name (that is, one with components separated by dots), module creates (or reuses, if they already exist) tables for each component. For instance, if name is a.b.c, then module stores the module table in field c of field b of global a.</p>
+<p>This function may receive optional options after the module name, where each option is a function to be applied over the module.</p>
+<h3 id="require-modname"><a href="#require-modname" class="headerlink" title="require (modname)"></a>require (modname)</h3><p>Loads the given module. The function starts by looking into the package.loaded table to determine whether modname is already loaded. If it is, then require returns the value stored at package.loaded[modname]. Otherwise, it tries to find a loader for the module.</p>
+<p>To find a loader, first require queries package.preload[modname]. If it has a value, this value (which should be a function) is the loader. Otherwise require searches for a Lua loader using the path stored in package.path. If that also fails, it searches for a C loader using the path stored in package.cpath. If that also fails, it tries an all-in-one loader (see below).</p>
+<p>When loading a C library, require first uses a dynamic link facility to link the application with the library. Then it tries to find a C function inside this library to be used as the loader. The name of this C function is the string “luaopen_” concatenated with a copy of the module name where each dot is replaced by an underscore. Moreover, if the module name has a hyphen, its prefix up to (and including) the first hyphen is removed. For instance, if the module name is a.v1-b.c, the function name will be luaopen_b_c.</p>
+<p>If require finds neither a Lua library nor a C library for a module, it calls the all-in-one loader. This loader searches the C path for a library for the root name of the given module. For instance, when requiring a.b.c, it will search for a C library for a. If found, it looks into it for an open function for the submodule; in our example, that would be luaopen_a_b_c. With this facility, a package can pack several C submodules into one single library, with each submodule keeping its original open function.</p>
+<p>Once a loader is found, require calls the loader with a single argument, modname. If the loader returns any value, require assigns the returned value to package.loaded[modname]. If the loader returns no value and has not assigned any value to package.loaded[modname], then require assigns true to this entry. In any case, require returns the final value of package.loaded[modname].</p>
+<p>If there is any error loading or running the module, or if it cannot find any loader for the module, then require signals an error.</p>
+<p>package.cpath<br>The path used by require to search for a C loader.</p>
+<p>Lua initializes the C path package.cpath in the same way it initializes the Lua path package.path, using the environment variable LUA_CPATH (plus another default path defined in luaconf.h).</p>
+<p>package.loaded<br>A table used by require to control which modules are already loaded. When you require a module modname and package.loaded[modname] is not false, require simply returns the value stored there.</p>
+<p>package.loadlib (libname, funcname)<br>Dynamically links the host program with the C library libname. Inside this library, looks for a function funcname and returns this function as a C function. (So, funcname must follow the protocol (see lua_CFunction)).</p>
+<p>This is a low-level function. It completely bypasses the package and module system. Unlike require, it does not perform any path searching and does not automatically adds extensions. libname must be the complete file name of the C library, including if necessary a path and extension. funcname must be the exact name exported by the C library (which may depend on the C compiler and linker used).</p>
+<p>This function is not supported by ANSI C. As such, it is only available on some platforms (Windows, Linux, Mac OS X, Solaris, BSD, plus other Unix systems that support the dlfcn standard).</p>
+<p>package.path<br>The path used by require to search for a Lua loader.</p>
+<p>At start-up, Lua initializes this variable with the value of the environment variable LUA_PATH or with a default path defined in luaconf.h, if the environment variable is not defined. Any “;;” in the value of the environment variable is replaced by the default path.</p>
+<p>A path is a sequence of templates separated by semicolons. For each template, require will change each interrogation mark in the template by filename, which is modname with each dot replaced by a “directory separator” (such as “/“ in Unix); then it will try to load the resulting file name. So, for instance, if the Lua path is</p>
+<pre><code> &quot;./?.lua;./?.lc;/usr/local/?/init.lua&quot;
+</code></pre><p>the search for a Lua loader for module foo will try to load the files ./foo.lua, ./foo.lc, and /usr/local/foo/init.lua, in that order.</p>
+<p>package.preload<br>A table to store loaders for specific modules (see require).</p>
+<p>package.seeall (module)<br>Sets a metatable for module with its __index field referring to the global environment, so that this module inherits values from the global environment. To be used as an option to function module.</p>
+<p>5.4 - String Manipulation<br>This library provides generic functions for string manipulation, such as finding and extracting substrings, and pattern matching. When indexing a string in Lua, the first character is at position 1 (not at 0, as in C). Indices are allowed to be negative and are interpreted as indexing backwards, from the end of the string. Thus, the last character is at position -1, and so on.</p>
+<p>The string library provides all its functions inside the table string. It also sets a metatable for strings where the __index field points to the string table. Therefore, you can use the string functions in object-oriented style. For instance, string.byte(s, i) can be written as s:byte(i).</p>
+<p>string.byte (s [, i [, j]])<br>Returns the internal numerical codes of the characters s[i], s[i+1], ···, s[j]. The default value for i is 1; the default value for j is i.<br>Note that numerical codes are not necessarily portable across platforms.</p>
+<p>string.char (···)<br>Receives zero or more integers. Returns a string with length equal to the number of arguments, in which each character has the internal numerical code equal to its corresponding argument.<br>Note that numerical codes are not necessarily portable across platforms.</p>
+<p>string.dump (function)<br>Returns a string containing a binary representation of the given function, so that a later loadstring on this string returns a copy of the function. function must be a Lua function without upvalues.</p>
+<p>string.find (s, pattern [, init [, plain]])<br>Looks for the first match of pattern in the string s. If it finds a match, then find returns the indices of s where this occurrence starts and ends; otherwise, it returns nil. A third, optional numerical argument init specifies where to start the search; its default value is 1 and may be negative. A value of true as a fourth, optional argument plain turns off the pattern matching facilities, so the function does a plain “find substring” operation, with no characters in pattern being considered “magic”. Note that if plain is given, then init must be given as well.<br>If the pattern has captures, then in a successful match the captured values are also returned, after the two indices.</p>
+<p>string.format (formatstring, ···)<br>Returns a formatted version of its variable number of arguments following the description given in its first argument (which must be a string). The format string follows the same rules as the printf family of standard C functions. The only differences are that the options/modifiers *, l, L, n, p, and h are not supported and that there is an extra option, q. The q option formats a string in a form suitable to be safely read back by the Lua interpreter: the string is written between double quotes, and all double quotes, newlines, embedded zeros, and backslashes in the string are correctly escaped when written. For instance, the call<br>     string.format(‘%q’, ‘a string with “quotes” and \n new line’)<br>will produce the string:</p>
+<pre><code> &quot;a string with \&quot;quotes\&quot; and \
+  new line&quot;
+</code></pre><p>The options c, d, E, e, f, g, G, i, o, u, X, and x all expect a number as argument, whereas q and s expect a string.</p>
+<p>This function does not accept string values containing embedded zeros.</p>
+<p>string.gmatch (s, pattern)<br>Returns an iterator function that, each time it is called, returns the next captures from pattern over string s.<br>If pattern specifies no captures, then the whole match is produced in each call.</p>
+<p>As an example, the following loop</p>
+<pre><code> s = &quot;hello world from Lua&quot;
+ for w in string.gmatch(s, &quot;%a+&quot;) do
+   print(w)
+ end
+</code></pre><p>will iterate over all the words from string s, printing one per line. The next example collects all pairs key=value from the given string into a table:</p>
+<pre><code> t = {}
+ s = &quot;from=world, to=Lua&quot;
+ for k, v in string.gmatch(s, &quot;(%w+)=(%w+)&quot;) do
+   t[k] = v
+ end
+</code></pre><p>string.gsub (s, pattern, repl [, n])<br>Returns a copy of s in which all occurrences of the pattern have been replaced by a replacement string specified by repl, which may be a string, a table, or a function. gsub also returns, as its second value, the total number of substitutions made.<br>If repl is a string, then its value is used for replacement. The character % works as an escape character: any sequence in repl of the form %n, with n between 1 and 9, stands for the value of the n-th captured substring (see below). The sequence %0 stands for the whole match. The sequence %% stands for a single %.</p>
+<p>If repl is a table, then the table is queried for every match, using the first capture as the key; if the pattern specifies no captures, then the whole match is used as the key.</p>
+<p>If repl is a function, then this function is called every time a match occurs, with all captured substrings passed as arguments, in order; if the pattern specifies no captures, then the whole match is passed as a sole argument.</p>
+<p>If the value returned by the table query or by the function call is a string or a number, then it is used as the replacement string; otherwise, if it is false or nil, then there is no replacement (that is, the original match is kept in the string).</p>
+<p>The optional last parameter n limits the maximum number of substitutions to occur. For instance, when n is 1 only the first occurrence of pattern is replaced.</p>
+<p>Here are some examples:</p>
+<pre><code> x = string.gsub(&quot;hello world&quot;, &quot;(%w+)&quot;, &quot;%1 %1&quot;)
+ --&gt; x=&quot;hello hello world world&quot;
+
+ x = string.gsub(&quot;hello world&quot;, &quot;%w+&quot;, &quot;%0 %0&quot;, 1)
+ --&gt; x=&quot;hello hello world&quot;
+
+ x = string.gsub(&quot;hello world from Lua&quot;, &quot;(%w+)%s*(%w+)&quot;, &quot;%2 %1&quot;)
+ --&gt; x=&quot;world hello Lua from&quot;
+
+ x = string.gsub(&quot;home = $HOME, user = $USER&quot;, &quot;%$(%w+)&quot;, os.getenv)
+ --&gt; x=&quot;home = /home/roberto, user = roberto&quot;
+
+ x = string.gsub(&quot;4+5 = $return 4+5$&quot;, &quot;%$(.-)%$&quot;, function (s)
+       return loadstring(s)()
+     end)
+ --&gt; x=&quot;4+5 = 9&quot;
+
+ local t = {name=&quot;lua&quot;, version=&quot;5.1&quot;}
+ x = string.gsub(&quot;$name%-$version.tar.gz&quot;, &quot;%$(%w+)&quot;, t)
+ --&gt; x=&quot;lua-5.1.tar.gz&quot;
+</code></pre><p>string.len (s)<br>Receives a string and returns its length. The empty string “” has length 0. Embedded zeros are counted, so “a\000bc\000” has length 5.<br>string.lower (s)<br>Receives a string and returns a copy of this string with all uppercase letters changed to lowercase. All other characters are left unchanged. The definition of what an uppercase letter is depends on the current locale.<br>string.match (s, pattern [, init])<br>Looks for the first match of pattern in the string s. If it finds one, then match returns the captures from the pattern; otherwise it returns nil. If pattern specifies no captures, then the whole match is returned. A third, optional numerical argument init specifies where to start the search; its default value is 1 and may be negative.<br>string.rep (s, n)<br>Returns a string that is the concatenation of n copies of the string s.<br>string.reverse (s)<br>Returns a string that is the string s reversed.<br>string.sub (s, i [, j])<br>Returns the substring of s that starts at i and continues until j; i and j may be negative. If j is absent, then it is assumed to be equal to -1 (which is the same as the string length). In particular, the call string.sub(s,1,j) returns a prefix of s with length j, and string.sub(s, -i) returns a suffix of s with length i.<br>string.upper (s)<br>Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. The definition of what a lowercase letter is depends on the current locale.<br>5.4.1 - Patterns<br>Character Class:<br>A character class is used to represent a set of characters. The following combinations are allowed in describing a character class:</p>
+<p>x: (where x is not one of the magic characters ^$()%.[]*+-?) represents the character x itself.<br>.: (a dot) represents all characters.<br>%a: represents all letters.<br>%c: represents all control characters.<br>%d: represents all digits.<br>%l: represents all lowercase letters.<br>%p: represents all punctuation characters.<br>%s: represents all space characters.<br>%u: represents all uppercase letters.<br>%w: represents all alphanumeric characters.<br>%x: represents all hexadecimal digits.<br>%z: represents the character with representation 0.<br>%x: (where x is any non-alphanumeric character) represents the character x. This is the standard way to escape the magic characters. Any punctuation character (even the non magic) can be preceded by a ‘%’ when used to represent itself in a pattern.<br>[set]: represents the class which is the union of all characters in set. A range of characters may be specified by separating the end characters of the range with a ‘-‘. All classes %x described above may also be used as components in set. All other characters in set represent themselves. For example, [%w_] (or [_%w]) represents all alphanumeric characters plus the underscore, [0-7] represents the octal digits, and [0-7%l%-] represents the octal digits plus the lowercase letters plus the ‘-‘ character.<br>The interaction between ranges and classes is not defined. Therefore, patterns like [%a-z] or [a-%%] have no meaning.</p>
+<blockquote id="fn_set">
+<sup>set</sup>. represents the complement of set, where set is interpreted as above.<a href="#reffn_set" title="Jump back to footnote [set] in the text."> &#8617;</a>
+</blockquote>
+<p>For all classes represented by single letters (%a, %c, etc.), the corresponding uppercase letter represents the complement of the class. For instance, %S represents all non-space characters.</p>
+<p>The definitions of letter, space, and other character groups depend on the current locale. In particular, the class [a-z] may not be equivalent to %l.</p>
+<p>Pattern Item:<br>A pattern item may be</p>
+<p>a single character class, which matches any single character in the class;<br>a single character class followed by ‘<em>‘, which matches 0 or more repetitions of characters in the class. These repetition items will always match the longest possible sequence;<br>a single character class followed by ‘+’, which matches 1 or more repetitions of characters in the class. These repetition items will always match the longest possible sequence;<br>a single character class followed by ‘-‘, which also matches 0 or more repetitions of characters in the class. Unlike ‘</em>‘, these repetition items will always match the shortest possible sequence;<br>a single character class followed by ‘?’, which matches 0 or 1 occurrence of a character in the class;<br>%n, for n between 1 and 9; such item matches a substring equal to the n-th captured string (see below);<br>%bxy, where x and y are two distinct characters; such item matches strings that start with x, end with y, and where the x and y are balanced. This means that, if one reads the string from left to right, counting +1 for an x and -1 for a y, the ending y is the first y where the count reaches 0. For instance, the item %b() matches expressions with balanced parentheses.<br>Pattern:<br>A pattern is a sequence of pattern items. A ‘^’ at the beginning of a pattern anchors the match at the beginning of the subject string. A ‘$’ at the end of a pattern anchors the match at the end of the subject string. At other positions, ‘^’ and ‘$’ have no special meaning and represent themselves.</p>
+<p>Captures:<br>A pattern may contain sub-patterns enclosed in parentheses; they describe captures. When a match succeeds, the substrings of the subject string that match captures are stored (captured) for future use. Captures are numbered according to their left parentheses. For instance, in the pattern “(a<em>(.)%w(%s</em>))”, the part of the string matching “a<em>(.)%w(%s</em>)” is stored as the first capture (and therefore has number 1); the character matching “.” is captured with number 2, and the part matching “%s*” has number 3.</p>
+<p>As a special case, the empty capture () captures the current string position (a number). For instance, if we apply the pattern “()aa()” on the string “flaaap”, there will be two captures: 3 and 5.</p>
+<p>A pattern cannot contain embedded zeros. Use %z instead.</p>
+<p>5.5 - Table Manipulation<br>This library provides generic functions for table manipulation. It provides all its functions inside the table table.</p>
+<p>Most functions in the table library assume that the table represents an array or a list. For these functions, when we talk about the “length” of a table we mean the result of the length operator.</p>
+<p>table.concat (table [, sep [, i [, j]]])<br>Given an array where all elements are strings or numbers, returns table[i]..sep..table[i+1] ··· sep..table[j]. The default value for sep is the empty string, the default for i is 1, and the default for j is the length of the table. If i is greater than j, returns the empty string.<br>table.insert (table, [pos,] value)<br>Inserts element value at position pos in table, shifting up other elements to open space, if necessary. The default value for pos is n+1, where n is the length of the table (see §2.5.5), so that a call table.insert(t,x) inserts x at the end of table t.</p>
+<p>table.maxn (table)<br>Returns the largest positive numerical index of the given table, or zero if the table has no positive numerical indices. (To do its job this function does a linear traversal of the whole table.)</p>
+<p>table.remove (table [, pos])<br>Removes from table the element at position pos, shifting down other elements to close the space, if necessary. Returns the value of the removed element. The default value for pos is n, where n is the length of the table, so that a call table.remove(t) removes the last element of table t.</p>
+<p>table.sort (table [, comp])<br>Sorts table elements in a given order, in-place, from table[1] to table[n], where n is the length of the table. If comp is given, then it must be a function that receives two table elements, and returns true when the first is less than the second (so that not comp(a[i+1],a[i]) will be true after the sort). If comp is not given, then the standard Lua operator &lt; is used instead.<br>The sort algorithm is not stable; that is, elements considered equal by the given order may have their relative positions changed by the sort.</p>
+<p>5.6 - Mathematical Functions<br>This library is an interface to the standard C math library. It provides all its functions inside the table math.</p>
+<p>math.abs (x)<br>Returns the absolute value of x.</p>
+<p>math.acos (x)<br>Returns the arc cosine of x (in radians).</p>
+<p>math.asin (x)<br>Returns the arc sine of x (in radians).</p>
+<p>math.atan (x)<br>Returns the arc tangent of x (in radians).</p>
+<p>math.atan2 (x, y)<br>Returns the arc tangent of x/y (in radians), but uses the signs of both parameters to find the quadrant of the result. (It also handles correctly the case of y being zero.)</p>
+<p>math.ceil (x)<br>Returns the smallest integer larger than or equal to x.</p>
+<p>math.cos (x)<br>Returns the cosine of x (assumed to be in radians).</p>
+<p>math.cosh (x)<br>Returns the hyperbolic cosine of x.</p>
+<p>math.deg (x)<br>Returns the angle x (given in radians) in degrees.</p>
+<p>math.exp (x)<br>Returns the the value ex.</p>
+<h3 id="math-floor-x"><a href="#math-floor-x" class="headerlink" title="math.floor (x)"></a>math.floor (x)</h3><p>Returns the largest integer smaller than or equal to x.</p>
+<p>math.fmod (x, y)<br>Returns the remainder of the division of x by y.</p>
+<p>math.frexp (x)<br>Returns m and e such that x = m2e, e is an integer and the absolute value of m is in the range [0.5, 1) (or zero when x is zero).</p>
+<p>math.huge<br>The value HUGE_VAL, a value larger than or equal to any other numerical value.</p>
+<p>math.ldexp (m, e)<br>Returns m2e (e should be an integer).</p>
+<p>math.log (x)<br>Returns the natural logarithm of x.</p>
+<p>math.log10 (x)<br>Returns the base-10 logarithm of x.</p>
+<p>math.max (x, ···)<br>Returns the maximum value among its arguments.</p>
+<p>math.min (x, ···)<br>Returns the minimum value among its arguments.</p>
+<p>math.modf (x)<br>Returns two numbers, the integral part of x and the fractional part of x.</p>
+<p>math.pi<br>The value of pi.</p>
+<p>math.pow (x, y)<br>Returns xy. (You can also use the expression x^y to compute this value.)</p>
+<p>math.rad (x)<br>Returns the angle x (given in degrees) in radians.</p>
+<p>math.random ([m [, n]])<br>This function is an interface to the simple pseudo-random generator function rand provided by ANSI C. (No guarantees can be given for its statistical properties.)</p>
+<p>When called without arguments, returns a pseudo-random real number in the range [0,1). When called with a number m, math.random returns a pseudo-random integer in the range [1, m]. When called with two numbers m and n, math.random returns a pseudo-random integer in the range [m, n].</p>
+<p>math.randomseed (x)<br>Sets x as the “seed” for the pseudo-random generator: equal seeds produce equal sequences of numbers.</p>
+<p>math.sin (x)<br>Returns the sine of x (assumed to be in radians).</p>
+<p>math.sinh (x)<br>Returns the hyperbolic sine of x.</p>
+<p>math.sqrt (x)<br>Returns the square root of x. (You can also use the expression x^0.5 to compute this value.)</p>
+<p>math.tan (x)<br>Returns the tangent of x (assumed to be in radians).</p>
+<p>math.tanh (x)<br>Returns the hyperbolic tangent of x.</p>
+<p>5.7 - Input and Output Facilities<br>The I/O library provides two different styles for file manipulation. The first one uses implicit file descriptors; that is, there are operations to set a default input file and a default output file, and all input/output operations are over these default files. The second style uses explicit file descriptors.</p>
+<p>When using implicit file descriptors, all operations are supplied by table io. When using explicit file descriptors, the operation io.open returns a file descriptor and then all operations are supplied as methods of the file descriptor.</p>
+<p>The table io also provides three predefined file descriptors with their usual meanings from C: io.stdin, io.stdout, and io.stderr.</p>
+<p>Unless otherwise stated, all I/O functions return nil on failure (plus an error message as a second result) and some value different from nil on success.</p>
+<p>io.close ([file])<br>Equivalent to file:close(). Without a file, closes the default output file.</p>
+<p>io.flush ()<br>Equivalent to file:flush over the default output file.</p>
+<p>io.input ([file])<br>When called with a file name, it opens the named file (in text mode), and sets its handle as the default input file. When called with a file handle, it simply sets this file handle as the default input file. When called without parameters, it returns the current default input file.</p>
+<p>In case of errors this function raises the error, instead of returning an error code.</p>
+<p>io.lines ([filename])<br>Opens the given file name in read mode and returns an iterator function that, each time it is called, returns a new line from the file. Therefore, the construction</p>
+<pre><code> for line in io.lines(filename) do body end
+</code></pre><p>will iterate over all lines of the file. When the iterator function detects the end of file, it returns nil (to finish the loop) and automatically closes the file.</p>
+<p>The call io.lines() (with no file name) is equivalent to io.input():lines(); that is, it iterates over the lines of the default input file. In this case it does not close the file when the loop ends.</p>
+<p>io.open (filename [, mode])<br>This function opens a file, in the mode specified in the string mode. It returns a new file handle, or, in case of errors, nil plus an error message.</p>
+<p>The mode string can be any of the following:</p>
+<p>“r”: read mode (the default);<br>“w”: write mode;<br>“a”: append mode;<br>“r+”: update mode, all previous data is preserved;<br>“w+”: update mode, all previous data is erased;<br>“a+”: append update mode, previous data is preserved, writing is only allowed at the end of file.<br>The mode string may also have a ‘b’ at the end, which is needed in some systems to open the file in binary mode. This string is exactly what is used in the standard C function fopen.</p>
+<p>io.output ([file])<br>Similar to io.input, but operates over the default output file.</p>
+<p>io.popen (prog [, mode])<br>Starts program prog in a separated process and returns a file handle that you can use to read data from this program (if mode is “r”, the default) or to write data to this program (if mode is “w”).</p>
+<p>This function is system dependent and is not available on all platforms.</p>
+<p>io.read (···)<br>Equivalent to io.input():read.</p>
+<p>io.tmpfile ()<br>Returns a handle for a temporary file. This file is opened in update mode and it is automatically removed when the program ends.</p>
+<p>io.type (obj)<br>Checks whether obj is a valid file handle. Returns the string “file” if obj is an open file handle, “closed file” if obj is a closed file handle, or nil if obj is not a file handle.</p>
+<p>io.write (···)<br>Equivalent to io.output():write.</p>
+<p>file:close ()<br>Closes file. Note that files are automatically closed when their handles are garbage collected, but that takes an unpredictable amount of time to happen.</p>
+<p>file:flush ()<br>Saves any written data to file.</p>
+<p>file:lines ()<br>Returns an iterator function that, each time it is called, returns a new line from the file. Therefore, the construction</p>
+<pre><code> for line in file:lines() do body end
+</code></pre><p>will iterate over all lines of the file. (Unlike io.lines, this function does not close the file when the loop ends.)</p>
+<p>file:read (···)<br>Reads the file file, according to the given formats, which specify what to read. For each format, the function returns a string (or a number) with the characters read, or nil if it cannot read data with the specified format. When called without formats, it uses a default format that reads the entire next line (see below).</p>
+<p>The available formats are</p>
+<p>“<em>n”: reads a number; this is the only format that returns a number instead of a string.<br>“</em>a”: reads the whole file, starting at the current position. On end of file, it returns the empty string.<br>“*l”: reads the next line (skipping the end of line), returning nil on end of file. This is the default format.<br>number: reads a string with up to this number of characters, returning nil on end of file. If number is zero, it reads nothing and returns an empty string, or nil on end of file.<br>file:seek ([whence] [, offset])<br>Sets and gets the file position, measured from the beginning of the file, to the position given by offset plus a base specified by the string whence, as follows:</p>
+<p>“set”: base is position 0 (beginning of the file);<br>“cur”: base is current position;<br>“end”: base is end of file;<br>In case of success, function seek returns the final file position, measured in bytes from the beginning of the file. If this function fails, it returns nil, plus a string describing the error.</p>
+<p>The default value for whence is “cur”, and for offset is 0. Therefore, the call file:seek() returns the current file position, without changing it; the call file:seek(“set”) sets the position to the beginning of the file (and returns 0); and the call file:seek(“end”) sets the position to the end of the file, and returns its size.</p>
+<p>file:setvbuf (mode [, size])<br>Sets the buffering mode for an output file. There are three available modes:</p>
+<p>“no”: no buffering; the result of any output operation appears immediately.<br>“full”: full buffering; output operation is performed only when the buffer is full (or when you explicitly flush the file (see io.flush)).<br>“line”: line buffering; output is buffered until a newline is output or there is any input from some special files (such as a terminal device).<br>For the last two cases, sizes specifies the size of the buffer, in bytes. The default is an appropriate size.</p>
+<p>file:write (···)<br>Writes the value of each of its arguments to the file. The arguments must be strings or numbers. To write other values, use tostring or string.format before write.</p>
+<p>5.8 - Operating System Facilities<br>This library is implemented through table os.</p>
+<p>os.clock ()<br>Returns an approximation of the amount in seconds of CPU time used by the program.</p>
+<p>os.date ([format [, time]])<br>Returns a string or a table containing date and time, formatted according to the given string format.</p>
+<p>If the time argument is present, this is the time to be formatted (see the os.time function for a description of this value). Otherwise, date formats the current time.</p>
+<p>If format starts with ‘!’, then the date is formatted in Coordinated Universal Time. After this optional character, if format is the string “*t”, then date returns a table with the following fields: year (four digits), month (1—12), day (1—31), hour (0—23), min (0—59), sec (0—61), wday (weekday, Sunday is 1), yday (day of the year), and isdst (daylight saving flag, a boolean).</p>
+<p>If format is not “*t”, then date returns the date as a string, formatted according to the same rules as the C function strftime.</p>
+<p>When called without arguments, date returns a reasonable date and time representation that depends on the host system and on the current locale (that is, os.date() is equivalent to os.date(“%c”)).</p>
+<p>os.difftime (t2, t1)<br>Returns the number of seconds from time t1 to time t2. In POSIX, Windows, and some other systems, this value is exactly t2-t1.</p>
+<p>os.execute ([command])<br>This function is equivalent to the C function system. It passes command to be executed by an operating system shell. It returns a status code, which is system-dependent. If command is absent, then it returns nonzero if a shell is available and zero otherwise.</p>
+<p>os.exit ([code])<br>Calls the C function exit, with an optional code, to terminate the host program. The default value for code is the success code.</p>
+<p>os.getenv (varname)<br>Returns the value of the process environment variable varname, or nil if the variable is not defined.</p>
+<p>os.remove (filename)<br>Deletes the file or directory with the given name. Directories must be empty to be removed. If this function fails, it returns nil, plus a string describing the error.</p>
+<p>os.rename (oldname, newname)<br>Renames file or directory named oldname to newname. If this function fails, it returns nil, plus a string describing the error.</p>
+<p>os.setlocale (locale [, category])<br>Sets the current locale of the program. locale is a string specifying a locale; category is an optional string describing which category to change: “all”, “collate”, “ctype”, “monetary”, “numeric”, or “time”; the default category is “all”. The function returns the name of the new locale, or nil if the request cannot be honored.</p>
+<p>When called with nil as the first argument, this function only returns the name of the current locale for the given category.</p>
+<p>os.time ([table])<br>Returns the current time when called without arguments, or a time representing the date and time specified by the given table. This table must have fields year, month, and day, and may have fields hour, min, sec, and isdst (for a description of these fields, see the os.date function).</p>
+<p>The returned value is a number, whose meaning depends on your system. In POSIX, Windows, and some other systems, this number counts the number of seconds since some given start time (the “epoch”). In other systems, the meaning is not specified, and the number returned by time can be used only as an argument to date and difftime.</p>
+<p>os.tmpname ()<br>Returns a string with a file name that can be used for a temporary file. The file must be explicitly opened before its use and explicitly removed when no longer needed.</p>
+<p>5.9 - The Debug Library<br>This library provides the functionality of the debug interface to Lua programs. You should exert care when using this library. The functions provided here should be used exclusively for debugging and similar tasks, such as profiling. Please resist the temptation to use them as a usual programming tool: they can be very slow. Moreover, several of its functions violate some assumptions about Lua code (e.g., that variables local to a function cannot be accessed from outside or that userdata metatables cannot be changed by Lua code) and therefore can compromise otherwise secure code.</p>
+<p>All functions in this library are provided inside the debug table. All functions that operate over a thread have an optional first argument which is the thread to operate over. The default is always the current thread.</p>
+<p>debug.debug ()<br>Enters an interactive mode with the user, running each string that the user enters. Using simple commands and other debug facilities, the user can inspect global and local variables, change their values, evaluate expressions, and so on. A line containing only the word cont finishes this function, so that the caller continues its execution.</p>
+<p>Note that commands for debug.debug are not lexically nested within any function, and so have no direct access to local variables.</p>
+<p>debug.getfenv (o)<br>Returns the environment of object o.<br>debug.gethook ([thread])<br>Returns the current hook settings of the thread, as three values: the current hook function, the current hook mask, and the current hook count (as set by the debug.sethook function).</p>
+<p>debug.getinfo ([thread,] function [, what])<br>Returns a table with information about a function. You can give the function directly, or you can give a number as the value of function, which means the function running at level function of the call stack of the given thread: level 0 is the current function (getinfo itself); level 1 is the function that called getinfo; and so on. If function is a number larger than the number of active functions, then getinfo returns nil.</p>
+<p>The returned table may contain all the fields returned by lua_getinfo, with the string what describing which fields to fill in. The default for what is to get all information available, except the table of valid lines. If present, the option ‘f’ adds a field named func with the function itself. If present, the option ‘L’ adds a field named activelines with the table of valid lines.</p>
+<p>For instance, the expression debug.getinfo(1,”n”).name returns a name of the current function, if a reasonable name can be found, and the expression debug.getinfo(print) returns a table with all available information about the print function.</p>
+<p>debug.getlocal ([thread,] level, local)<br>This function returns the name and the value of the local variable with index local of the function at level level of the stack. (The first parameter or local variable has index 1, and so on, until the last active local variable.) The function returns nil if there is no local variable with the given index, and raises an error when called with a level out of range. (You can call debug.getinfo to check whether the level is valid.)</p>
+<p>Variable names starting with ‘(‘ (open parentheses) represent internal variables (loop control variables, temporaries, and C function locals).</p>
+<p>debug.getmetatable (object)<br>Returns the metatable of the given object or nil if it does not have a metatable.</p>
+<p>debug.getregistry ()<br>Returns the registry table (see §3.5).</p>
+<p>debug.getupvalue (func, up)<br>This function returns the name and the value of the upvalue with index up of the function func. The function returns nil if there is no upvalue with the given index.</p>
+<p>debug.setfenv (object, table)<br>Sets the environment of the given object to the given table. Returns object.</p>
+<p>debug.sethook ([thread,] hook, mask [, count])<br>Sets the given function as a hook. The string mask and the number count describe when the hook will be called. The string mask may have the following characters, with the given meaning:</p>
+<p>“c”: The hook is called every time Lua calls a function;<br>“r”: The hook is called every time Lua returns from a function;<br>“l”: The hook is called every time Lua enters a new line of code.<br>With a count different from zero, the hook is called after every count instructions.</p>
+<p>When called without arguments, debug.sethook turns off the hook.</p>
+<p>When the hook is called, its first parameter is a string describing the event that has triggered its call: “call”, “return” (or “tail return”), “line”, and “count”. For line events, the hook also gets the new line number as its second parameter. Inside a hook, you can call getinfo with level 2 to get more information about the running function (level 0 is the getinfo function, and level 1 is the hook function), unless the event is “tail return”. In this case, Lua is only simulating the return, and a call to getinfo will return invalid data.</p>
+<p>debug.setlocal ([thread,] level, local, value)<br>This function assigns the value value to the local variable with index local of the function at level level of the stack. The function returns nil if there is no local variable with the given index, and raises an error when called with a level out of range. (You can call getinfo to check whether the level is valid.) Otherwise, it returns the name of the local variable.</p>
+<p>debug.setmetatable (object, table)<br>Sets the metatable for the given object to the given table (which can be nil).</p>
+<p>debug.setupvalue (func, up, value)<br>This function assigns the value value to the upvalue with index up of the function func. The function returns nil if there is no upvalue with the given index. Otherwise, it returns the name of the upvalue.</p>
+<p>debug.traceback ([thread,] [message] [, level])<br>Returns a string with a traceback of the call stack. An optional message string is appended at the beginning of the traceback. An optional level number tells at which level to start the traceback (default is 1, the function calling traceback).</p>
+<p>6 - Lua Stand-alone<br>Although Lua has been designed as an extension language, to be embedded in a host C program, it is also frequently used as a stand-alone language. An interpreter for Lua as a stand-alone language, called simply lua, is provided with the standard distribution. The stand-alone interpreter includes all standard libraries, including the debug library. Its usage is:</p>
+<pre><code> lua [options] [script [args]]
+</code></pre><p>The options are:</p>
+<p>-e stat: executes string stat;<br>-l mod: “requires” mod;<br>-i: enters interactive mode after running script;<br>-v: prints version information;<br>—: stops handling options;<br>-: executes stdin as a file and stops handling options.<br>After handling its options, lua runs the given script, passing to it the given args as string arguments. When called without arguments, lua behaves as lua -v -i when the standard input (stdin) is a terminal, and as lua - otherwise.</p>
+<p>Before running any argument, the interpreter checks for an environment variable LUA_INIT. If its format is @filename, then lua executes the file. Otherwise, lua executes the string itself.</p>
+<p>All options are handled in order, except -i. For instance, an invocation like</p>
+<pre><code> $ lua -e&#39;a=1&#39; -e &#39;print(a)&#39; script.lua
+</code></pre><p>will first set a to 1, then print the value of a (which is ‘1’), and finally run the file script.lua with no arguments. (Here $ is the shell prompt. Your prompt may be different.)</p>
+<p>Before starting to run the script, lua collects all arguments in the command line in a global table called arg. The script name is stored at index 0, the first argument after the script name goes to index 1, and so on. Any arguments before the script name (that is, the interpreter name plus the options) go to negative indices. For instance, in the call</p>
+<pre><code> $ lua -la b.lua t1 t2
+</code></pre><p>the interpreter first runs the file a.lua, then creates a table</p>
+<pre><code> arg = { [-2] = &quot;lua&quot;, [-1] = &quot;-la&quot;,
+         [0] = &quot;b.lua&quot;,
+         [1] = &quot;t1&quot;, [2] = &quot;t2&quot; }
+</code></pre><p>and finally runs the file b.lua. The script is called with arg[1], arg[2], ··· as arguments; it can also access these arguments with the vararg expression ‘…’.</p>
+<p>In interactive mode, if you write an incomplete statement, the interpreter waits for its completion by issuing a different prompt.</p>
+<p>If the global variable _PROMPT contains a string, then its value is used as the prompt. Similarly, if the global variable _PROMPT2 contains a string, its value is used as the secondary prompt (issued during incomplete statements). Therefore, both prompts can be changed directly on the command line. For instance,</p>
+<pre><code> $ lua -e&quot;_PROMPT=&#39;myprompt&gt; &#39;&quot; -i
+</code></pre><p>(the outer pair of quotes is for the shell, the inner pair is for Lua), or in any Lua programs by assigning to _PROMPT. Note the use of -i to enter interactive mode; otherwise, the program would just end silently right after the assignment to _PROMPT.</p>
+<p>To allow the use of Lua as a script interpreter in Unix systems, the stand-alone interpreter skips the first line of a chunk if it starts with #. Therefore, Lua scripts can be made into executable programs by using chmod +x and the #! form, as in</p>
+<pre><code> #!/usr/local/bin/lua
+</code></pre><p>(Of course, the location of the Lua interpreter may be different in your machine. If lua is in your PATH, then</p>
+<pre><code> #!/usr/bin/env lua
+</code></pre><p>is a more portable solution.)</p>
+<p>7 - Incompatibilities with the Previous Version<br>Here we list the incompatibilities that you may found when moving a program from Lua 5.0 to Lua 5.1. You can avoid most of the incompatibilities compiling Lua with appropriate options (see file luaconf.h). However, all these compatibility options will be removed in the next version of Lua.</p>
+<p>7.1 - Changes in the Language<br>The vararg system changed from the pseudo-argument arg with a table with the extra arguments to the vararg expression. (See compile-time option LUA_COMPAT_VARARG in luaconf.h.)<br>There was a subtle change in the scope of the implicit variables of the for statement and for the repeat statement.<br>The long string/long comment syntax ([[string]]) does not allow nesting. You can use the new syntax ([=[string]=]) in these cases. (See compile-time option LUA_COMPAT_LSTR in luaconf.h.)<br>7.2 - Changes in the Libraries<br>Function string.gfind was renamed string.gmatch. (See compile-time option LUA_COMPAT_GFIND in luaconf.h.)<br>When string.gsub is called with a function as its third argument, whenever this function returns nil or false the replacement string is the whole match, instead of the empty string.<br>Function table.setn was deprecated. Function table.getn corresponds to the new length operator (#); use the operator instead of the function. (See compile-time option LUA_COMPAT_GETN in luaconf.h.)<br>Function loadlib was renamed package.loadlib. (See compile-time option LUA_COMPAT_LOADLIB in luaconf.h.)<br>Function math.mod was renamed math.fmod. (See compile-time option LUA_COMPAT_MOD in luaconf.h.)<br>Functions table.foreach and table.foreachi are deprecated. You can use a for loop with pairs or ipairs instead.<br>There were substantial changes in function require due to the new module system. However, the new behavior is mostly compatible with the old, but require gets the path from package.path instead of from LUA_PATH.<br>Function collectgarbage has different arguments. Function gcinfo is deprecated; use collectgarbage(“count”) instead.<br>7.3 - Changes in the API<br>The luaopen_* functions (to open libraries) cannot be called directly, like a regular C function. They must be called through Lua, like a Lua function.<br>Function lua_open was replaced by lua_newstate to allow the user to set a memory-allocation function. You can use luaL_newstate from the standard library to create a state with a standard allocation function (based on realloc).<br>Functions luaL_getn and luaL_setn (from the auxiliary library) are deprecated. Use lua_objlen instead of luaL_getn and nothing instead of luaL_setn.<br>Function luaL_openlib was replaced by luaL_register.<br>Function luaL_checkudata now throws an error when the given value is not a userdata of the expected type. (In Lua 5.0 it returned NULL.)<br>8 - The Complete Syntax of Lua<br>Here is the complete syntax of Lua in extended BNF. (It does not describe operator precedences.)</p>
+<pre><code>chunk ::= {stat [`;´]} [laststat [`;´]]
+
+block ::= chunk
+
+stat ::=  varlist1 `=´ explist1 | 
+     functioncall | 
+     do block end | 
+     while exp do block end | 
+     repeat block until exp | 
+     if exp then block {elseif exp then block} [else block] end | 
+     for Name `=´ exp `,´ exp [`,´ exp] do block end | 
+     for namelist in explist1 do block end | 
+     function funcname funcbody | 
+     local function Name funcbody | 
+     local namelist [`=´ explist1] 
+
+laststat ::= return [explist1] | break
+
+funcname ::= Name {`.´ Name} [`:´ Name]
+
+varlist1 ::= var {`,´ var}
+
+var ::=  Name | prefixexp `[´ exp `]´ | prefixexp `.´ Name 
+
+namelist ::= Name {`,´ Name}
+
+explist1 ::= {exp `,´} exp
+
+exp ::=  nil | false | true | Number | String | `...´ | function | 
+     prefixexp | tableconstructor | exp binop exp | unop exp 
+
+prefixexp ::= var | functioncall | `(´ exp `)´
+
+functioncall ::=  prefixexp args | prefixexp `:´ Name args 
+
+args ::=  `(´ [explist1] `)´ | tableconstructor | String 
+
+function ::= function funcbody
+
+funcbody ::= `(´ [parlist1] `)´ block end
+
+parlist1 ::= namelist [`,´ `...´] | `...´
+
+tableconstructor ::= `{´ [fieldlist] `}´
+
+fieldlist ::= field {fieldsep field} [fieldsep]
+
+field ::= `[´ exp `]´ `=´ exp | Name `=´ exp | exp
+
+fieldsep ::= `,´ | `;´
+
+binop ::= `+´ | `-´ | `*´ | `/´ | `^´ | `%´ | `..´ | 
+     `&lt;´ | `&lt;=´ | `&gt;´ | `&gt;=´ | `==´ | `~=´ | 
+     and | or
+
+unop ::= `-´ | not | `#´
+</code></pre>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/23/jx3m/" rel="next" title="剑网3口袋版笔记">
+                <i class="fa fa-chevron-left"></i> 剑网3口袋版笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/24/csharp-precedence-of-operator/" rel="prev" title="C#运算符优先级">
+                C#运算符优先级 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Reader"><span class="nav-number">1.</span> <span class="nav-text">lua_Reader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-register"><span class="nav-number">2.</span> <span class="nav-text">lua_register</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-remove"><span class="nav-number">3.</span> <span class="nav-text">lua_remove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-replace"><span class="nav-number">4.</span> <span class="nav-text">lua_replace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-resume"><span class="nav-number">5.</span> <span class="nav-text">lua_resume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setallocf"><span class="nav-number">6.</span> <span class="nav-text">lua_setallocf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setfenv"><span class="nav-number">7.</span> <span class="nav-text">lua_setfenv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setfield"><span class="nav-number">8.</span> <span class="nav-text">lua_setfield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setglobal"><span class="nav-number">9.</span> <span class="nav-text">lua_setglobal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setmetatable"><span class="nav-number">10.</span> <span class="nav-text">lua_setmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-settable"><span class="nav-number">11.</span> <span class="nav-text">lua_settable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-settop"><span class="nav-number">12.</span> <span class="nav-text">lua_settop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-State"><span class="nav-number">13.</span> <span class="nav-text">lua_State</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-status"><span class="nav-number">14.</span> <span class="nav-text">lua_status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-toboolean"><span class="nav-number">15.</span> <span class="nav-text">lua_toboolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tocfunction"><span class="nav-number">16.</span> <span class="nav-text">lua_tocfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tointeger"><span class="nav-number">17.</span> <span class="nav-text">lua_tointeger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tolstring"><span class="nav-number">18.</span> <span class="nav-text">lua_tolstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tonumber"><span class="nav-number">19.</span> <span class="nav-text">lua_tonumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-topointer"><span class="nav-number">20.</span> <span class="nav-text">lua_topointer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tostring"><span class="nav-number">21.</span> <span class="nav-text">lua_tostring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tothread"><span class="nav-number">22.</span> <span class="nav-text">lua_tothread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-touserdata"><span class="nav-number">23.</span> <span class="nav-text">lua_touserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-type"><span class="nav-number">24.</span> <span class="nav-text">lua_type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-typename"><span class="nav-number">25.</span> <span class="nav-text">lua_typename</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Writer"><span class="nav-number">26.</span> <span class="nav-text">lua_Writer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-xmove"><span class="nav-number">27.</span> <span class="nav-text">lua_xmove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-yield"><span class="nav-number">28.</span> <span class="nav-text">lua_yield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Debug"><span class="nav-number">29.</span> <span class="nav-text">lua_Debug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethook"><span class="nav-number">30.</span> <span class="nav-text">lua_gethook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethookcount"><span class="nav-number">31.</span> <span class="nav-text">lua_gethookcount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethookmask"><span class="nav-number">32.</span> <span class="nav-text">lua_gethookmask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getinfo"><span class="nav-number">33.</span> <span class="nav-text">lua_getinfo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getlocal"><span class="nav-number">34.</span> <span class="nav-text">lua_getlocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getstack"><span class="nav-number">35.</span> <span class="nav-text">lua_getstack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getupvalue"><span class="nav-number">36.</span> <span class="nav-text">lua_getupvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Hook"><span class="nav-number">37.</span> <span class="nav-text">lua_Hook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-sethook"><span class="nav-number">38.</span> <span class="nav-text">lua_sethook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setlocal"><span class="nav-number">39.</span> <span class="nav-text">lua_setlocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setupvalue"><span class="nav-number">40.</span> <span class="nav-text">lua_setupvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addchar"><span class="nav-number">41.</span> <span class="nav-text">luaL_addchar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addlstring"><span class="nav-number">42.</span> <span class="nav-text">luaL_addlstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addsize"><span class="nav-number">43.</span> <span class="nav-text">luaL_addsize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addstring"><span class="nav-number">44.</span> <span class="nav-text">luaL_addstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addvalue"><span class="nav-number">45.</span> <span class="nav-text">luaL_addvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-argcheck"><span class="nav-number">46.</span> <span class="nav-text">luaL_argcheck</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-argerror"><span class="nav-number">47.</span> <span class="nav-text">luaL_argerror</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-Buffer"><span class="nav-number">48.</span> <span class="nav-text">luaL_Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-buffinit"><span class="nav-number">49.</span> <span class="nav-text">luaL_buffinit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-callmeta"><span class="nav-number">50.</span> <span class="nav-text">luaL_callmeta</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkany"><span class="nav-number">51.</span> <span class="nav-text">luaL_checkany</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkint"><span class="nav-number">52.</span> <span class="nav-text">luaL_checkint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkinteger"><span class="nav-number">53.</span> <span class="nav-text">luaL_checkinteger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checklong"><span class="nav-number">54.</span> <span class="nav-text">luaL_checklong</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checklstring"><span class="nav-number">55.</span> <span class="nav-text">luaL_checklstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkoption"><span class="nav-number">56.</span> <span class="nav-text">luaL_checkoption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-error"><span class="nav-number">57.</span> <span class="nav-text">luaL_error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-getmetafield"><span class="nav-number">58.</span> <span class="nav-text">luaL_getmetafield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-getmetatable"><span class="nav-number">59.</span> <span class="nav-text">luaL_getmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-gsub"><span class="nav-number">60.</span> <span class="nav-text">luaL_gsub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadbuffer"><span class="nav-number">61.</span> <span class="nav-text">luaL_loadbuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadfile"><span class="nav-number">62.</span> <span class="nav-text">luaL_loadfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadstring"><span class="nav-number">63.</span> <span class="nav-text">luaL_loadstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-newmetatable"><span class="nav-number">64.</span> <span class="nav-text">luaL_newmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-newstate"><span class="nav-number">65.</span> <span class="nav-text">luaL_newstate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-openlibs"><span class="nav-number">66.</span> <span class="nav-text">luaL_openlibs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optinteger"><span class="nav-number">67.</span> <span class="nav-text">luaL_optinteger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optlong"><span class="nav-number">68.</span> <span class="nav-text">luaL_optlong</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optlstring"><span class="nav-number">69.</span> <span class="nav-text">luaL_optlstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optnumber"><span class="nav-number">70.</span> <span class="nav-text">luaL_optnumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optstring"><span class="nav-number">71.</span> <span class="nav-text">luaL_optstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-prepbuffer"><span class="nav-number">72.</span> <span class="nav-text">luaL_prepbuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-pushresult"><span class="nav-number">73.</span> <span class="nav-text">luaL_pushresult</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-ref"><span class="nav-number">74.</span> <span class="nav-text">luaL_ref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-Reg"><span class="nav-number">75.</span> <span class="nav-text">luaL_Reg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-register"><span class="nav-number">76.</span> <span class="nav-text">luaL_register</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-typename"><span class="nav-number">77.</span> <span class="nav-text">luaL_typename</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-unref"><span class="nav-number">78.</span> <span class="nav-text">luaL_unref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-where"><span class="nav-number">79.</span> <span class="nav-text">luaL_where</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#assert-v-message"><span class="nav-number">80.</span> <span class="nav-text">assert (v [, message])</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pairs-t"><span class="nav-number">81.</span> <span class="nav-text">pairs (t)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pcall-f-arg1-···"><span class="nav-number">82.</span> <span class="nav-text">pcall (f, arg1, ···)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#print-···"><span class="nav-number">83.</span> <span class="nav-text">print (···)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coroutine-Manipulation"><span class="nav-number">84.</span> <span class="nav-text">Coroutine Manipulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Modules"><span class="nav-number">85.</span> <span class="nav-text">Modules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#require-modname"><span class="nav-number">86.</span> <span class="nav-text">require (modname)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#math-floor-x"><span class="nav-number">87.</span> <span class="nav-text">math.floor (x)</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

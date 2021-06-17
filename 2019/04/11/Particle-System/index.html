@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="许多自然现象是由很多小的小颗粒组成的，它们有相似的行为。（例如，雪花落下，闪烁的火焰，冲出枪管的“子弹”），粒子系统用来模拟这种现象。目标：  学习我们给定的粒子属性，如何描述D3D中的粒子。 设计一个灵活的粒子基系统的基类，包括一般的粒子系统都有的属性和方法。 模拟3个具体的粒子系统，雪、爆炸、粒子枪。14.1 粒子和点精灵（Point Sprite） 粒子是一个很小的对象，它通常用来模拟">
+<meta name="keywords" content="Direct3D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第十四章 粒子系统(Particle Systems)">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/Particle-System/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="许多自然现象是由很多小的小颗粒组成的，它们有相似的行为。（例如，雪花落下，闪烁的火焰，冲出枪管的“子弹”），粒子系统用来模拟这种现象。目标：  学习我们给定的粒子属性，如何描述D3D中的粒子。 设计一个灵活的粒子基系统的基类，包括一般的粒子系统都有的属性和方法。 模拟3个具体的粒子系统，雪、爆炸、粒子枪。14.1 粒子和点精灵（Point Sprite） 粒子是一个很小的对象，它通常用来模拟">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.978Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第十四章 粒子系统(Particle Systems)">
+<meta name="twitter:description" content="许多自然现象是由很多小的小颗粒组成的，它们有相似的行为。（例如，雪花落下，闪烁的火焰，冲出枪管的“子弹”），粒子系统用来模拟这种现象。目标：  学习我们给定的粒子属性，如何描述D3D中的粒子。 设计一个灵活的粒子基系统的基类，包括一般的粒子系统都有的属性和方法。 模拟3个具体的粒子系统，雪、爆炸、粒子枪。14.1 粒子和点精灵（Point Sprite） 粒子是一个很小的对象，它通常用来模拟">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/Particle-System/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>第十四章 粒子系统(Particle Systems) | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Particle-System/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">第十四章 粒子系统(Particle Systems)
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/Particle-System/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Particle-System/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>   许多自然现象是由很多小的小颗粒组成的，它们有相似的行为。（例如，雪花落下，闪烁的火焰，冲出枪管的“子弹”），粒子系统用来模拟这种现象。<br>目标：</p>
+<ul>
+<li>学习我们给定的粒子属性，如何描述D3D中的粒子。</li>
+<li>设计一个灵活的粒子基系统的基类，包括一般的粒子系统都有的属性和方法。</li>
+<li>模拟3个具体的粒子系统，雪、爆炸、粒子枪。<br>14.1 粒子和点精灵（Point Sprite）<br> 粒子是一个很小的对象，它通常用来模拟数学中的一个点。点元是用来显示粒子的很好的方案。可是点元被光栅化成一个简单的像素。这没给我们多少灵活性，因为我们想有各种大小不同的粒子，并且把整个纹理平滑映射到这些粒子上。在Direct3D 8.0,以前，因为点元方法的局限性而完全不使用他们。代替的方法是，程序员将使用公告板去显示粒子，一个板是一个方格，世界矩阵用它来确定方向，使它总是朝向照相机。<br> Direct3D 8.0引入一个特殊的点元叫点精灵，多数时候被应用在粒子系统中。与一般的点元不同的是，点精灵有纹理映射并能改变大小。与公告板不同的是，能用一个简单的点描述一个点精灵，节省内存和处理时间，因为我们只是必须保存和处理一个点，而公告板则是四个。</li>
+</ul>
+<p>14.1.1 结构的格式<br>   我们使用下面的顶点结构来描述粒子的位置和颜色：<br>struct Particle<br>{<br>     D3DXVECTOR3 _position;<br>     D3DCOLOR    _color;<br>     static const DWORD FVF;<br>};<br>const DWORD Particle::FVF = D3DFVF_XYZ | D3DFVF_DIFFUSE;<br>   这个结构只保存粒子的位置和颜色，这取决于你程序的需要，你能够用同样的结构去保存一套纹理坐标，我们在下一节讨论给点精灵赋予纹理。<br>   增加一个浮点变量给Particle结构去指定粒子的大小是可能的。我们必须增加一个D3DFVF_PSIZE标记给我们的灵活的顶点格式，以反映这个变化。每个粒子维护自己的大小很有用，因为它允许我们以具体情况指定并改变粒子的大小。可是，大多数的图形卡不支持控制粒子的大小，因此我们不使用它。（检查D3DFVFCAPS_PSIZE在D3 DCAPS9结构的FVFCaps成员）代替的方法是：用渲染状态（render states）去控制粒子的大小，就像你很快看到的，有尺寸成员的顶点结构的例子：<br>strict Particle<br>{<br>     D3DXVECTOR3 _position;<br>     D3DCOLOR    _color;<br>     float       _size;<br>     static const DWORD FVF;<br>};<br>const DWORD Particle::FVF = D3DFVF XYZ | D3DFVF DIFFUSE |<br>  D3DFVF_PSIZE;<br>   注意：通过vertex shader，能够获取每个粒子的大小，即使你的硬件不支持D3DFVFCAPS_PSIZE。Vertex shaders的内容在本书的第IV部分。</p>
+<p>14.1.2点精灵（Point Sprite）渲染状态<br>   点精灵的行为大部分由渲染状态（render states）来控制，现在让我们来看一下这些渲染状态：<br>D3DRS_POINTSPRITEENABLE—A Boolean value. The default value is false.<br>True表示将当前的纹理全部映射到点精灵上。<br>False 表示用指定的纹理坐标映射到点精灵的点（图素）上。<br>_device-&gt;SetRenderState(D3DRS_POINTSPRITEENABLE, true);</p>
+<p>D3DRS_POINTSCALEENABLE—A Boolean value. The default value is false.<br>True表示用视图空间单位来解释点的大小。视图空间单位的3D空间点在照相机中，点精灵将会自动缩放，这取决到它有多远, 像其他对象一样，离照相机近的粒子比离照相机远的粒子要小。<br>False 表示点的大小将用屏幕空间单位来解释。屏幕空间单位是屏幕上的像素单位。. 因此如果你指定false, 例如, 设置点精灵的尺寸为3, 则点精灵在屏幕区域中的尺寸为3×3像素。.<br>_device-&gt;SetRenderState(D3DRS_POINTSCALEENABLE, true);</p>
+<p>D3DRS_POINTSIZE—表示点精灵的尺寸. 这个值可以任意指定视图空间或屏幕空间的点精灵的尺寸, 取决于D3DRS_POINTSCALEENABLE 状态如何设置. 下面的代码段设置点的尺寸为2.5个单位。:<br>_device-&gt;SetRenderState( D3DRS_POINTSIZE, d3d::FtoDw(2.5f) );</p>
+<p>d3d::FtoDw 是我们新加进 d3dUtility.h/cpp 文件中的一个函数，它将float型转换为 DWORD型。 我们必须这么做是因为所有的IDirect3DDevice9::SetRenderState 都要一个 DWORD 型的值而不是float型。<br>DWORD d3d::FtoDw(float f)<br>{<br>     return <em>((DWORD</em>)&amp;f);<br>}</p>
+<p>D3DRS_POINTSIZE_MIN—表示点精灵的最小尺寸。例子，将设置最小值为0.2：<br>_device-&gt;SetRenderState(D3DRS_POINTSIZE_MIN, d3d::FtoDw(0.2f));</p>
+<p>D3DRS_POINTSIZE_MAX—表示点精灵的最大尺寸。例子，将设置最大值为5.0:<br>_device-&gt;SetRenderState(D3DRS_POINTSIZE_MAX, d3d::FtoDw(5.0f));</p>
+<p>D3DRS_POINTSCALE_A, D3DRS_POINTSCALE_B, D3DRS_POINTSCALE_C—这3个常量表示如何根据距离控制点精灵的尺寸—这个距离是点精灵到照相机的距离。</p>
+<p>D3D用以下的公式去计算点精灵的最终尺寸，这取决于距离和这3个常量。</p>
+<p>其中：<br>FinalSize：距离计算后，点精灵的最后尺寸。<br>ViewportHeight：视口的高度。<br>Size：分别为D3DRS_POINTSCALE_A, D3DRS_POINTSCALE_B, and D3DRS_POINTSCALE_C值。<br>D：在视图空间中点精灵与照相机的距离。因为照相机被放置在视图空间中的原点，这个值是：，也是点精灵所在的位置。</p>
+<p>   下面代码设置点精灵的距离常量，因此远处的点精灵将变小。<br>_device-&gt;SetRenderState(D3DRS_POINTSCALE_A, d3d::FtoDw(0.0f));<br>_device-&gt;SetRenderState(D3DRS_POINTSCALE_B, d3d::FtoDw(0.0f));<br>_device-&gt;SetRenderState(D3DRS_POINTSCALE_C, d3d::FtoDw(1.0f));</p>
+<p>14.1.3 粒子和他们的属性<br>    一个粒子系统是由除了位置、颜色以外的更多的属性组成，例如，一个粒子有某些速度。然而，这些额外的属性对于渲染粒子来说不是必须的。因此，我们在单独的结构中保存渲染粒子所必须的数据和属性。当我们创建、显示或更新粒子时，我们使用属性来工作。当我们准备渲染时，我们从Particle（粒子）结构中COPY位置和颜色。<br>   对于我们模拟的具体粒子系统，粒子的属性也是不同的。因此我们能够归纳一些通用的属性，一面的结构例子中包含一些通用的属性，大多数系统用不上这么多，一些系统需要的属性这里可能还没有。<br>struct Attribute<br>{<br>     D3DXVECTOR3 _position;<br>     D3DXVECTOR3 _velocity;<br>     D3DXVECTOR3 _acceleration;<br>     float       _lifeTime;<br>     float       _age;<br>     D3DXCOLOR   _color;<br>     D3DXCOLOR   _colorFade;<br>     bool        _isAlive;<br>};<br>_position—粒子在世界空间中的位置<br>_velocity—粒子的速度，每秒多少个单位。<br>_acceleration—粒子的加速度, 每秒多少个单位。<br>_lifeTime—粒子的生命周期. 例如,当一个时间段后，我们可以杀死一个激光柱的粒子.<br>_age—粒子的当前年龄。<br>_color—粒子的颜色。<br>_colorFade—粒子随时间的变化而褪去的颜色。<br>_isAlive—True 表示粒子活着;false 表示粒子死了。 </p>
+<p>14.2 粒子系统的组成<br>   粒子系统是粒子的集合，用来保存和显示这些粒子。粒子系统维护所有粒子的全部属性，影响系统中的所有粒子：粒子的尺寸，起始的位置及应用在粒子上的纹理等。粒子系统的方法负责更新、显示、杀死和创建粒子。<br>   虽然不同的具体（与抽象是相对的）粒子系统有不同的行为，我们归纳并找到一些所有的粒子系统共有的基本属性，我们把这些公共的属性放到一个抽象的Psystem基类，它是我们所有的具体粒子系统的父类，现在让我们看一下Psystem类：<br>class PSystem<br>{<br>public:<br>     PSystem();<br>     virtual ~PSystem();</p>
+<pre><code> virtual bool init(IDirect3DDevice9* device, char* texFileName);
+ virtual void reset();
+ virtual void resetParticle(Attribute* attribute) = 0;
+ virtual void addParticle();
+ virtual void update(float timeDelta) = 0;
+
+ virtual void preRender();
+ virtual void render();
+ virtual void postRender();
+
+ bool isEmpty();
+ bool isDead();
+</code></pre><p>protected:<br>     virtual void removeDeadParticles();</p>
+<p>protected:<br>     IDirect3DDevice9<em>       _device;<br>     D3DXVECTOR3             _origin;<br>     d3d::BoundingBox        _boundingBox;<br>     float                   _emitRate;<br>     float                   _size;<br>     IDirect3DTexture9</em>      _tex;<br>     IDirect3DVertexBuffer9* _vb;<br>     std::list<attribute>    _particles;<br>     int                     _maxParticles;</attribute></p>
+<pre><code> DWORD _vbSize;
+ DWORD _vbOffset;
+ DWORD _vbBatchSize;
+</code></pre><p>};</p>
+<p>   一些数据成员：</p>
+<ul>
+<li>_origin—粒子系统的原点， 这是粒子系统产生时的位置。</li>
+<li>_boundingBox—创建粒子系统使用的边界盒，用于限制粒子的活动范围。例如，假如我们让雪系统只落在一个围绕高山的峰顶的体积内； 我们会定义一个包括这个体积的边界盒, 出界的粒子将会被杀死。</li>
+<li>_emitRate—新增加到系统中的粒子的速度。 通常的标准是每秒。</li>
+<li>_size—系统中所有粒子的尺寸。</li>
+<li>_particles—系统中粒子属性的一个列表。 我们用这个列表创建，释放及更新粒子。 当我们准备画粒子时, 我们COPY列表节点的一部分到顶点缓存并画粒子。 当我们COPY另外一批时绘制这批粒子，然后重复这一过程直到绘制完所有粒子。 这有点太简单了，我们将在section 14.2.1节详细的解释绘制的过程。</li>
+<li>_maxParticles—在给定的时间内，系统中允许的粒子最大数。例如, 如果创建粒子的速度比释放快的话, 随着时间的增长粒子的数量将会是巨大的，这个成员将避免出现这样的问题。</li>
+<li>_vbSize—在给定的时间内顶点缓存中能够保存的粒子的数量，这个值与实际的粒子系统中的粒子数量无关。<br>注意：member _vbOffset和_vbBatchSize数据成员在渲染粒子系统时使用，我们在稍后的section 14.2.1节讨论。</li>
+</ul>
+<p>方法：</p>
+<ul>
+<li>PSystem/ ~PSystem—用来初始化默认值的构造器/用来释放设备接口的析构器 (vertex buffer, texture)。</li>
+<li>init—这个方法做与设备无关的初始化工作, 比如创建用来保存点精灵的顶点缓存或创建纹理。 顶点缓存的创建包括一些标记，现在我们都已经讨论过了，但还没有用:<br>hr = device-&gt;CreateVertexBuffer(<br>   _vbSize * sizeof(Particle),<br>   D3DUSAGE DYNAMIC | D3DUSAGE POINTS | D3DUSAGE WRITEONLY,<br>   Particle::FVF,<br>   D3DPOOL_DEFAULT,<br>   &amp;_vb,<br>   0) ;</li>
+<li>o 注意： 我们使用动态的顶点缓存（D3DUSAGE DYNAMIC）。 因为我们需要在每帧中更新我们的粒子,意思是我们将会去存取顶点缓存的内存，回想一下，访问一个静态的顶点缓存慢得不可接受， 所以我们使用动态的顶点缓存。<br>o 查看我们用过的 D3DUSAGE_POINTS 标记,它说明顶点缓存将保存点精灵。<br>o 顶点缓存的尺寸是由_vbSize预先确定的，而且与系统中粒子的数量无关。 也就是说, _vbSize 将小于等于系统中粒子的数量。 这是因为渲染粒子系统是一批一批的，不是一次渲染全部。 我们将在section 14.2.1节中解释渲染过程。<br>o 我们使用默认的内存池(pool)代替通常使用的托管内存池，因为动态顶点缓存不能用在托管内存池中。</li>
+<li>reset—这个方法重新设置系统中每个粒子的属性:<br>void PSystem::reset()<br>{<br>   std::list<attribute>::iterator i;<br>   for(i = _particles.begin(); i != _particles.end(); i++)<br>   {<pre><code>    resetParticle( &amp;(*i) );
+</code></pre>   }<br>}</attribute></li>
+<li>resetParticle—这个方法重新设置粒子的属性。如何重设粒子的属性，这依赖于具体粒子系统的特性。因此我们定义这个方法为虚拟的，等待子类去实现。</li>
+<li>addParticle—这个方法用来在系统中增加一个粒子。在增加它到粒子列表之前，使用resetParticle 方法先初始化粒子:<br>void PSystem::addParticle()<br>{<br>   Attribute attribute;<br>   resetParticle(&amp;attribute);<br>   _particles.push_back(attribute);<br>}<br>void PSystem::addParticle()</li>
+<li>update—这个方法更新系统中所有的粒子。因为这个的方法的执行取决于具体粒子系统的特性, 因此我们定义这个方法为抽象的，等待子类去实现。</li>
+<li>render—这个方法用来显示系统中所有的粒子。 执行起来很复杂，我们将在14.2.1 节讨论。</li>
+<li><p>preRender—用它来初始化渲染状态， 在渲染前设置。 因为系统与系统之间是不同的,所以我们定义它为虚拟的。 默认将执行下列代码:<br>void PSystem::preRender()<br>{<br>_device-&gt;SetRenderState(D3DRS_LIGHTING, false);<br>_device-&gt;SetRenderState(D3DRS_POINTSPRITEENABLE, true);<br>_device-&gt;SetRenderState(D3DRS_POINTSCALEENABLE, true);<br>_device-&gt;SetRenderState(D3DRS_POINTSIZE, d3d::FtoDw( size));<br>_device-&gt;SetRenderState(D3DRS_POINTSIZE MIN, d3d::FtoDw(0.0f));</p>
+<p>// control the size of the particle relative to distance<br>_device-&gt;SetRenderState(D3DRS_POINTSCALE A, d3d::FtoDw(0.0f));<br>_device-&gt;SetRenderState(D3DRS_POINTSCALE B, d3d::FtoDw(0.0f));<br>_device-&gt;SetRenderState(D3DRS_POINTSCALE C, d3d::FtoDw(1.0f));</p>
+<p>// use alpha from texture<br>_device-&gt;SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_<br>   TEXTURE);<br>_device-&gt;SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_<br>   SELECTARG1);</p>
+<p>_device-&gt;SetRenderState(D3DRS_ALPHABLENDENABLE, true);<br>_device-&gt;SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);<br>_device-&gt;SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);<br>}</p>
+</li>
+<li>注意：我们使用alpha混合渲染，以便设置纹理的alpha通道，来设置纹理像素的透明度。 用它产生多种效果；一种特殊的情况是：获得象纹理那样的非矩形的粒子。例如， 获得一个圆形“雪球形”的粒子, 我们使用一个简单的带有alpha通道的纹理， 它看上去是背景为黑色的带有白色圆形的样子。因此，显示出来时只是一个白圆，这比白色的矩形纹理要好。</li>
+<li><p>postRender—用它去保存所有渲染状态，它是一个特殊的粒子系统可能有的设置。因为系统与系统间是不同的,所以我们定义它为虚拟的。默认将执行下列代码:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> PSystem::postRender()</span><br><span class="line">&#123;</span><br><span class="line">    _device-&gt;SetRenderState(D3DRS_LIGHTING,          <span class="literal">true</span>);</span><br><span class="line">    _device-&gt;SetRenderState(D3DRS_POINTSPRITEENABLE, <span class="literal">false</span>);</span><br><span class="line">    _device-&gt;SetRenderState(D3DRS_POINTSCALEENABLE,  <span class="literal">false</span>);</span><br><span class="line">    _device-&gt;SetRenderState(D3DRS_ALPHABLENDENABLE,  <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>isEmpty—如果为True 则在当前的系统中没有粒子， 否则为false.</p>
+</li>
+<li>isDead—如果为True 则系统中的所有粒子都是死的，否则为false。 注意： 系统中所有粒子状态为idDead时并不意味着isEmpty. 空意思着系统中没有粒子。 Dead的意思是系统中有粒子，但都是死的。.</li>
+<li>removeDeadParticles—搜索属_particle性表，从表中杀死并删除粒子。<br>14.2.1 绘制粒子系统<br> 因为粒子系统是动态的，在每一个帧中我们需要更新系统中的粒子，对于渲染粒子系统的一种直观但效率低下的方法如下:</li>
+<li><p>创建一个足够大的顶点缓存保存最大数量的粒子。</p>
+<pre><code>   每一帧里执行：
+</code></pre><p>A. 更新所有粒子。<br>B. COPY所有活着的粒子到顶点缓存。<br>C. 绘制顶点缓存。<br> 这个方法正确，不过不是最有效率的。第一，顶点缓冲必须足够大以保存系统中所有粒子。但是非常重要的是，当我们从列表拷贝所有粒子到顶点缓冲（步骤B）时，显卡却什么也不做。举个例子，假设我们系统有10,000个粒子，首先我们需要一个能容纳10,000个粒子的顶点缓冲，这是一个很大的内存。另外显卡将停着什么也不做直到列表中的10,000个粒子拷到顶点缓冲，并且我们调用DrawPrimitive。这个特定情况是CPU与显卡不同时工作的一个很好的例子。</p>
+<p>  更好的办法（SDK中点精灵例程中用到的方法）就象这样：<br> 提示：这是一个简单的描述，但它说明了这一思想。它假定我们总是有500个粒子以填充一个缓存片段，但是这是不可能发生的，因为我们经常杀死并创建粒子，所以从一帧到另一帧粒子数量是变化的。举个例子，假设我们只剩下200个粒子要在当前帧拷贝并渲染。因为200个粒子不能填充整个缓存片段，我们用代码处理这个特定情形。这个特定情形只有在最后的缓存片段中才会出现，因为如果不是最后的片断，就意味着必然有500个粒子将被移到下一缓存片段。</p>
+<p> 创建一个合适尺寸的顶点缓存（能够保存2000个粒子），然后我们划分顶点缓存为几个小的块，就像这个例子，我们设置每个缓存片断的尺寸为500个粒子。</p>
+</li>
+</ul>
+<ul>
+<li>然后创建一个全局变量 i = 0 ，用来记录片段。<pre><code>   每一帧里执行:
+</code></pre>A. 更新所有粒子。<br>B. 直到所有粒子渲染完毕。:</li>
+</ul>
+<ol>
+<li>如果顶点缓存没有满：<br>a 用D3DLOCK_NOOVERWRITE标记锁定缓存片段i<br>b COPY 500个粒子到片段i</li>
+<li><p>如果顶点缓存满了：<br>a 从起始的地方开始顶点缓冲: i=0<br>b 用D3DLOCK_NOOVERWRITE标记锁定缓存段i<br>c COPY 500个粒子到片段i </p>
+</li>
+<li><p>渲染片段i. </p>
+</li>
+<li><p>下一片段： i+ +<br>备注：顶点缓存是动态的， 因此我们能利用动态锁定标记D3DLOCK_NOOVERWRITE 和 D3DLOCK_DISCARD。这两个标记允许我们锁定顶点缓存的某一部分。当顶点缓存中的其他部分被渲染时，它是不能渲染的。例如，假如我们正在使用D3DLOCK_NOOVERWRITE标记渲染片段0时， 当渲染片段0的时候我们能锁定并填充片段1。这样可以防止渲染的延迟。</p>
+<p>这个方法更有效率。首先，我们减少顶点缓存的尺寸；然后， CPU与显卡在协调的工作。也就是说，当我们绘制一小批粒子时(graphics card work)，同时拷贝另一小批粒子到顶点缓存 (CPU work)。这个动作是连续执行的，直到所有的粒子都被渲染完毕，就像你了解的一样， 显卡在全部顶点缓存被填充的时候是不用处于空闲状态的。<br>我们现在将注意力转向这一个渲染方案的实现，为了方便使用这个粒子系统的渲染方案, 我们使用 PSystem 类中的下列数据成员:</p>
+</li>
+</ol>
+<ul>
+<li>_vbSize—在给定时间内我们的顶点缓存能够保存的粒子数量。这个值与实际的粒子系统中的粒子数无关。</li>
+<li>_vbOffset—这个变量是在顶点缓存中的偏移，在顶点缓存里我们将用它开始COPY下一批粒子，例如，如果第一批在缓存中是0到499，偏移到第二批COPY的开始处将是500。</li>
+<li>_vbBatchSize—定义一批缓存中的粒子数量。</li>
+<li>我们现在介绍渲染方法的代码：<br>void PSystem::render()<br>{<br>if( !_particles.empty() )<br>{<br>   // set render states<br>   preRender();<br>   _device-&gt;SetTexture(0, _tex);<br>   _device-&gt;SetFVF(Particle::FVF);<br>   _device-&gt;SetStreamSource(0, _vb, 0, sizeof(Particle));</li>
+</ul>
+<p>// start at beginning if we’re at the end of the vb<br>     if(_vbOffset &gt;= _vbSize)<br>          _vbOffset = 0;</p>
+<pre><code> Particle*v =0;
+
+ _vb-&gt;Lock(
+      _vbOffset    * sizeof( Particle ),
+      _vbBatchSize * sizeof( Particle ),
+      (void**)&amp;v,
+      _vbOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD);
+
+ DWORD numParticlesInBatch = 0;
+
+ //
+ // Until all particles have been rendered.
+ //
+ std::list&lt;Attribute&gt;::iterator i;
+ for(i = _particles.begin(); i != _particles.end(); i++)
+ {
+      if( i-&gt;_isAlive )
+      {
+           //
+           // Copy a batch of the living particles to the
+           // next vertex buffer segment
+           //
+           v-&gt;_position = i-&gt;_position;
+           v-&gt;_color = (D3DCOLOR)i-&gt;_color;
+           v++; // next element;
+
+           numParticlesInBatch++; //increase batch counter
+
+           // is this batch full?
+           if(numParticlesInBatch == _vbBatchSize)
+           {
+                //
+                // Draw the last batch of particles that was
+                // copied to the vertex buffer.
+                //
+                _vb-&gt;Unlock();
+                _device-&gt;DrawPrimitive(
+                     D3DPT_POINTLIST,
+                     _vbOffset,
+                     _vbBatchSize);
+
+           //
+           // While that batch is drawing, start filling the
+           // next batch with particles.
+           //
+
+           // move the offset to the start of the next batch
+           _vbOffset += _vbBatchSize;
+
+           // don&#39;t offset into memory thats outside the vb&#39;s
+           // range. If we&#39;re at the end, start at the beginning.
+           if(_vbOffset &gt;= _vbSize)
+                _vbOffset = 0;
+
+           _vb-&gt;Lock(
+                _vbOffset    * sizeof( Particle ),
+                _vbBatchSize * sizeof( Particle ),
+                (void**)&amp;v,
+                _vbOffset ? D3DLOCK_NOOVERWRITE :
+                   D3DLOCK_DISCARD);
+
+           numParticlesInBatch = 0; // reset for new batch
+      }//end if
+   }//end if
+ }//end for
+
+ _vb-&gt;Unlock();
+
+ // it&#39;s possible that the LAST batch being filled never
+ // got rendered because the condition
+ // (numParticlesInBatch == _vbBatchSize) would not have
+ // been satisfied.  We draw the last partially filled batch now.
+
+ if( numParticlesInBatch )
+ {
+       _device-&gt;DrawPrimitive(
+            D3DPT_POINTLIST,
+            _vbOffset,
+            numParticlesInBatch);
+ }
+
+ // next block
+ _vbOffset += _vbBatchSize;
+
+ postRender();
+ }//end if
+</code></pre><p>}// end render()</p>
+<p>14.2.2 随机<br>   这有一个随机的粒子系统。例如，如果我们模拟雪花，不能让所有雪花以完全相同的方式落下。我们要让它们按相似的方式落下而不是完全相同的方式。为了使粒子系统的随机功能更简单，我们增加了下列两个函数到d3dUtility.h/cpp文件。<br>   第一个函数在[lowBound, highBound]区间内随机的返回一个Float类型值：<br>float d3d::GetRandomFloat(float lowBound, float highBound)<br>{<br>     if( lowBound &gt;= highBound ) // bad input<br>          return lowBound;</p>
+<pre><code> // get random float in [0, 1] interval
+ float f = (rand() % 10000) * 0.0001f;
+
+ // return float in [lowBound, highBound] interval.
+ return (f * (highBound - lowBound)) + lowBound;
+</code></pre><p>}<br>   第二个函数在边界盒的范围内，输出一个随机的向量。<br>void d3d::GetRandomVector(<br>       D3DXVECTOR3<em> out,<br>       D3DXVECTOR3</em> min,<br>       D3DXVECTOR3* max)<br>{<br>       out-&gt;x = GetRandomFloat(min-&gt;x, max-&gt;x);<br>       out-&gt;y = GetRandomFloat(min-&gt;y, max-&gt;y);<br>       out-&gt;z = GetRandomFloat(min-&gt;z, max-&gt;z);<br>}</p>
+<p>   注意：记得用srand()去seed随机数生成器。<br>14.3 具体的粒子系统：雪、火、粒子枪<br>现在让我们用Psystem类开始一个具体的粒子系统，为了说明用意，这些系统的设计很简单，没有用到Psystem类所提供的所有灵活性。我们实现雪、火、粒子枪系统。这些系统的名字基本上概括了他们的模型。雪系统模拟下落的雪花，火系统模拟看上去像火焰的爆炸，粒子枪系统从照相机位置向对面发射出粒子（用键盘）。<br>注意：照例，用全部的工程代码来说明这些系统，你能够在本章找到这些文件。</p>
+<p>14.3.1 例子程序：雪</p>
+<p>图14.2 雪系统例子的屏幕截图</p>
+<p>雪系统类定义如下：<br>class Snow : public PSystem<br>{<br>public:<br>     Snow(d3d::BoundingBox<em> boundingBox, int numParticles);<br>     void resetParticle(Attribute</em> attribute);<br>     void update(float timeDelta);<br>};<br>备注：因为父类做了大部分的工作，所以雪系统的接口非常简单。事实上，我们在这一节中实现的这三个粒子系统，接口简单并相对容易实现。<br>   构造器提供一个点给边界盒结构，边界盒是粒子系统的成员。边界盒描述雪花在哪个范围内（体积范围）下落，如果雪花出了边界盒，它将被杀死并再生。这样，雪系统始终能保存有同样数量的激粒子，构造器的实现：<br>Snow::Snow(d3d::BoundingBox<em> boundingBox, int numParticles)<br>{<br>     _boundingBox   = </em>boundingBox;<br>     _size          = 0.8f;<br>     _vbSize        = 2048;<br>     _vbOffset      = 0;<br>     _vbBatchSize   = 512;<br>     for(int i = 0; i &lt; numParticles; i++)<br>          addParticle();<br>}<br>   同样注意：我们指定顶点缓存的尺寸，每一批的尺寸和开始的偏移。<br>   ResetParticle方法创建一个雪花，在x、z轴随机的位置并在边界盒的范围内。设置y轴高度为边界盒的顶部。如果给雪花一个速度，以便让雪花下落时稍稍向左倾斜。雪花是白色的。<br>void Snow::resetParticle(Attribute* attribute)<br>{<br>     attribute-&gt;_isAlive = true;</p>
+<pre><code> // get random x, z coordinate for the position of the snowflake.
+ d3d::GetRandomVector(
+      &amp;attribute-&gt;_position,
+      &amp;_boundingBox._min,
+      &amp;_boundingBox._max);
+
+ // no randomness for height (y-coordinate). Snowflake
+ // always starts at the top of bounding box.
+ attribute-&gt;_position.y = _boundingBox._max.y;
+
+ // snowflakes fall downward and slightly to the left
+ attribute-&gt;_velocity.x = d3d::GetRandomFloat(0.0f, 1.0f)*-3.0f;
+ attribute-&gt;_velocity.y = d3d::GetRandomFloat(0.0f, 1.0f)*-10.0f;
+ attribute-&gt;_velocity.z = 0.0f;
+
+ // white snowflake
+ attribute-&gt;_color = d3d::WHITE;
+</code></pre><p>}<br>   Update方法更新粒子和粒子间的位置，并且测试粒子是否在系统的边界盒之外，如果它已经跳出边界盒，就再重新创建。<br>void Snow::update(float timeDelta)<br>{<br>     std::list<attribute>::iterator i;<br>     for(i = _particles.begin(); i != _particles.end(); i++)<br>     {<br>          i-&gt;_position += i-&gt;_velocity * timeDelta;</attribute></p>
+<pre><code>      // is the point outside bounds?
+      if( _boundingBox.isPointInside( i-&gt;_position ) == false )
+      {
+           // nope so kill it, but we want to recycle dead
+           // particles, so respawn it instead.
+           resetParticle( &amp;(*i) );
+      }
+ }
+</code></pre><p>}</p>
+<p>14.3.2 例子程序：火</p>
+<p>图14.3 火粒子系统例子的屏幕截图<br>火系统类定义如下：<br>class Firework : public PSystem<br>{<br>public:<br>     Firework(D3DXVECTOR3<em> origin, int numParticles);<br>     void resetParticle(Attribute</em> attribute);<br>     void update(float timeDelta); void preRender();<br>     void postRender();<br>};<br>   构造器需要提供一个点作为粒子系统中的原点，和系统中的粒子数，原点是火焰爆发的那个点。<br>ResetParticle方法在原点位置初始化粒子系统，并在边界球内创建一个随机的速度，粒子系统中的每个例子有一个随机的颜色，我们定义粒子只能存活2秒。<br>void Firework::resetParticle(Attribute* attribute)<br>{<br>     attribute-&gt;_isAlive = true;<br>     attribute-&gt;_position = _origin;</p>
+<pre><code> D3DXVECTOR3 min = D3DXVECTOR3(-1.0f, -1.0f, -1.0f);
+ D3DXVECTOR3 max = D3DXVECTOR3( 1.0f,  1.0f,  1.0f);
+
+ d3d::GetRandomVector(
+      &amp;attribute-&gt;_velocity,
+      &amp;min,
+      &amp;max);
+ // normalize to make spherical
+ D3DXVec3Normalize(
+      &amp;attribute-&gt;_velocity,
+      &amp;attribute-&gt;_velocity);
+
+ attribute-&gt;_velocity *= 100.0f;
+
+ attribute-&gt;_color = D3DXCOLOR(
+      d3d::GetRandomFloat(0.0f, 1.0f),
+      d3d::GetRandomFloat(0.0f, 1.0f),
+      d3d::GetRandomFloat(0.0f, 1.0f),
+      1.0f);
+
+ attribute-&gt;_age      = 0.0f;
+ attribute-&gt;_lifeTime = 2.0f; // lives for 2 seconds
+</code></pre><p>}</p>
+<p>   Update方法更新每个粒子的位置，并在粒子超出自己的生活周期时杀死它。注意：这个系统不能移除死掉的粒子，这么做是因为我们想产生一个新的火焰的时候，我们只要简单的重新设置已经存在的死了的火焰系统就可以了。这样为我们不必频繁的去产生和释放粒子。<br>void Firework::update(float timeDelta)<br>{<br>     std::list<attribute>::iterator i;</attribute></p>
+<pre><code> for(i = _particles.begin(); i != _particles.end(); i++)
+ {
+      // only update living particles
+      if( i-&gt;_isAlive )
+      {
+           i-&gt;_position += i-&gt;_velocity * timeDelta;
+
+           i-&gt;_age += timeDelta;
+
+           if(i-&gt;_age &gt; i-&gt;_lifeTime) // kill
+                i-&gt;_isAlive = false;
+      }
+ }
+</code></pre><p>}<br>当渲染时，火系统使用不同的方法渲染像素。进一步讲，它不写深度缓存，我们可以简单的改变混合像素，通过重写PSystem::preRender方法和PSystem::postRender方法，下面是重写的实现：<br>void Firework::update(float timeDelta)<br>{<br>     std::list<attribute>::iterator i;<br>void Firework::preRender()<br>{<br>     PSystem::preRender();</attribute></p>
+<pre><code> _device-&gt;SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+ _device-&gt;SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+ // read, but don&#39;t write particles to z-buffer
+ _device-&gt;SetRenderState(D3DRS_ZWRITEENABLE, false);
+</code></pre><p>}</p>
+<p>void Firework::postRender()<br>{<br>     PSystem::postRender();</p>
+<pre><code> _device-&gt;SetRenderState(D3DRS_ZWRITEENABLE, true);
+</code></pre><p>}<br>注意：这两个方法调用父类版本，这样，我们仍能重新使用父类的一些功能，做一些小的改变就变成了火焰系统。<br>14.3.3 例子程序：粒子枪</p>
+<p>图14.4 激光枪系统的截图<br>下面是粒子枪系统的定义：<br>class ParticleGun : public PSystem<br>{<br>public:<br>     ParticleGun(Camera<em> camera);<br>     void resetParticle(Attribute</em> attribute);<br>     void update(float timeDelta);</p>
+<p>private:<br>     Camera<em> _camera;<br>};<br>   构造器需要提供一个照相机的位置点，这是因为系统需要知道照相机的位置及朝向，以决定在哪创建一个粒子。<br>   ResetParticle方法设置粒子的位置为当前照相机的位置，并且设置方向上的速度，在照像机视角的100个单位。这样，子弹将射向我们正在看的方向，粒子颜色为绿色。<br>void ParticleGun::resetParticle(Attribute</em> attribute)<br>{<br>     attribute-&gt;_isAlive  = true;</p>
+<pre><code> D3DXVECTOR3 cameraPos;
+ _camera-&gt;getPosition(&amp;cameraPos);
+
+ D3DXVECTOR3 cameraDir;
+ _camera-&gt;getLook(&amp;cameraDir);
+
+ // change to camera position
+ attribute-&gt;_position = cameraPos;
+ attribute-&gt;_position.y -= 1.0f; // slightly below camera so it&#39;s
+                                 // like we&#39;re carrying gun
+
+ // travels in the direction the camera is looking
+ attribute-&gt;_velocity = cameraDir * 100.0f;
+
+ // green
+ attribute-&gt;_color = D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f);
+
+ attribute-&gt;_age      = 0.0f;
+ attribute-&gt;_lifeTime = 1.0f; // lives for 1 seconds
+</code></pre><p>}</p>
+<p>   Update方法更新粒子的位置，并且杀死超过其生命周期的粒子，然后，我们搜索粒子列表删除已经死了的粒子。<br>{<br>     std::list<attribute>::iterator i;</attribute></p>
+<pre><code> for(i = _particles.begin(); i != _particles.end(); i++)
+ {
+      i-&gt;_position += i-&gt;_velocity * timeDelta;
+
+      i-&gt;_age += timeDelta;
+
+      if(i-&gt;_age &gt; i-&gt;_lifeTime) // kill
+           i-&gt;_isAlive = false;
+ }
+ removeDeadParticles();
+</code></pre><p>}</p>
+<p>14.4 摘要</p>
+<ul>
+<li>用点精灵来显示一个粒子是方便且灵活的，它可能改变粒子尺寸、给粒子赋予纹理。此外，能够使用简单的顶点（vertex）来描述它们。</li>
+<li>粒子系统维护一个粒子的集合，并负责创建、释放、更新和显示粒子。</li>
+<li>还有一些其他粒子系统的概念，是你能够实现的：烟，火箭的轨迹，喷泉/河水车效果，火，光，爆炸，和雨。</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Direct3D/" rel="tag"># Direct3D</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/Basic-Terrain-Rendering/" rel="next" title="第十三章 地形渲染基础(Basic Terrain Rendering)">
+                <i class="fa fa-chevron-left"></i> 第十三章 地形渲染基础(Basic Terrain Rendering)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/Picking/" rel="prev" title="第十五章 选取(Picking)">
+                第十五章 选取(Picking) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

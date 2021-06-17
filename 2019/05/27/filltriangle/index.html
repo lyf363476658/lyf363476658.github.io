@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="填充三角形线性插值来复习一下画线,我们知道画线的时候我们做的实际上是这样的事情：对于要画的线AB，在满足我们设定的条件（斜率 ≤ 1, A &amp;lt; B）之后，因为我们要画的是整数的像素点，对于x每增加1，我们算出对应的y，然后来画点（x，y），这样重复直到x增加到B点：  对于 AB 上的任意一点 P 满足：  P = A + t(B - A), 0 \le t \le 1也可以写成：  P =">
+<meta name="keywords" content="计算机图形学,光栅,OpenGL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="填充三角形">
+<meta property="og:url" content="http://zentia.github.io/2019/05/27/filltriangle/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="填充三角形线性插值来复习一下画线,我们知道画线的时候我们做的实际上是这样的事情：对于要画的线AB，在满足我们设定的条件（斜率 ≤ 1, A &amp;lt; B）之后，因为我们要画的是整数的像素点，对于x每增加1，我们算出对应的y，然后来画点（x，y），这样重复直到x增加到B点：  对于 AB 上的任意一点 P 满足：  P = A + t(B - A), 0 \le t \le 1也可以写成：  P =">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://zentia.github.io/2019/05/27/filltriangle/Bresenham.png">
+<meta property="og:image" content="http://zentia.github.io/2019/05/27/filltriangle/upper_down_triangle.png">
+<meta property="og:image" content="http://zentia.github.io/2019/05/27/filltriangle/triangle_left_right.png">
+<meta property="og:image" content="http://zentia.github.io/2019/05/27/filltriangle/filledframe.png">
+<meta property="og:image" content="http://zentia.github.io/2019/05/27/filltriangle/filledrandom.png">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.109Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="填充三角形">
+<meta name="twitter:description" content="填充三角形线性插值来复习一下画线,我们知道画线的时候我们做的实际上是这样的事情：对于要画的线AB，在满足我们设定的条件（斜率 ≤ 1, A &amp;lt; B）之后，因为我们要画的是整数的像素点，对于x每增加1，我们算出对应的y，然后来画点（x，y），这样重复直到x增加到B点：  对于 AB 上的任意一点 P 满足：  P = A + t(B - A), 0 \le t \le 1也可以写成：  P =">
+<meta name="twitter:image" content="http://zentia.github.io/2019/05/27/filltriangle/Bresenham.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/05/27/filltriangle/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>填充三角形 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/27/filltriangle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">填充三角形
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/05/27/filltriangle/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/27/filltriangle/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="填充三角形"><a href="#填充三角形" class="headerlink" title="填充三角形"></a>填充三角形</h1><h2 id="线性插值"><a href="#线性插值" class="headerlink" title="线性插值"></a>线性插值</h2><p>来复习一下画线,我们知道画线的时候我们做的实际上是这样的事情：对于要画的线AB，在满足我们设定的条件（斜率 ≤ 1, A &lt; B）之后，因为我们要画的是整数的像素点，对于x每增加1，我们算出对应的y，然后来画点（x，y），这样重复直到x增加到B点：</p>
+<img src="/2019/05/27/filltriangle/Bresenham.png">
+<p>对于 AB 上的任意一点 P 满足：</p>
+<script type="math/tex; mode=display">
+P = A + t(B - A), 0 \le t \le 1</script><p>也可以写成：</p>
+<script type="math/tex; mode=display">
+P = (1 - t)A + tB , 0 \le t \le 1</script><p>这个公式是著名的线性插值，实际上也是我们画线的基础。因为在画线部分核心代码长这样：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> x=x0; x&lt;=x1; x++) &#123;</span><br><span class="line">  <span class="keyword">float</span> t = (x-x0)/(<span class="keyword">float</span>)(x1-x0);</span><br><span class="line">  <span class="keyword">int</span> y = y0 + (y1 - y0)*t;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于P点，我们根据增加后的x算出t值，然后算出y，得到应该画的点。</p>
+<p>其实在画框架的时候我们已经画过三角形了，就画三条线就OK。现在我们要做的是来填充三角形。</p>
+<h2 id="扫描法"><a href="#扫描法" class="headerlink" title="扫描法"></a>扫描法</h2><p>若要填充一个三角形，最简单的能想到的办法是对于三角形的每一个y，我们找到对应的左侧和右侧，x_left和x_right，我们画上x_left到x_right的线，那么从三角形最上面的点按y增加扫到最下面的点既可。</p>
+<p>为了简单起见，我们先把三角形拆成上下两部分：</p>
+<img src="/2019/05/27/filltriangle/upper_down_triangle.png">
+<p>那么对于一个特定的y，我们想要找到它的左边和右边 A B 两点，思路是这样：</p>
+<ul>
+<li>首先排序，保证 t0 ≤ t1 ≤ t2</li>
+<li>整个三角形的高度必为 t2.y - t0.y</li>
+<li>那么对于上半部分，y每增加1（注意有可能t0 == t1),我们用插值法算出对应的两点A和B</li>
+</ul>
+<p>这样就能算出对应的 A 和 B</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t0.y; y&lt;=t1.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height = t1.y-t0.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t0.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t0 + (t1-t0)*beta; </span><br><span class="line">        image.<span class="built_in">set</span>(A.x, y, red); </span><br><span class="line">        image.<span class="built_in">set</span>(B.x, y, green); </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2019/05/27/filltriangle/triangle_left_right.png">
+<p>那么有了 A 和 B 之后，我们在AB之间调用我们的画线函数，再用同样的方法给下半部分填满，问题既解决。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t0.y; y&lt;=t1.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height = t1.y-t0.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t0.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t0 + (t1-t0)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, y, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t1.y; y&lt;=t2.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height =  t2.y-t1.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t1.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t1 + (t2-t1)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, y, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样三角形填充就解决。代码里有很多重复的部分，然后这里决定让代码短一点，代价是读起来没那么清楚了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (t0.y==t1.y &amp;&amp; t0.y==t2.y) <span class="keyword">return</span>; <span class="comment">// I dont care about degenerate triangles </span></span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;total_height; i++) &#123; </span><br><span class="line">        <span class="keyword">bool</span> second_half = i&gt;t1.y-t0.y || t1.y==t0.y; </span><br><span class="line">        <span class="keyword">int</span> segment_height = second_half ? t2.y-t1.y : t1.y-t0.y; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)i/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(i-(second_half ? t1.y-t0.y : <span class="number">0</span>))/segment_height; <span class="comment">// be careful: with above conditions no division by zero here </span></span><br><span class="line">        Vec2i A =               t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = second_half ? t1 + (t2-t1)*beta : t0 + (t1-t0)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, t0.y+i, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="wavefront-obj"><a href="#wavefront-obj" class="headerlink" title="wavefront obj"></a>wavefront obj</h2><p>上一章我们画了框架，这下我们来填上三角形：</p>
+<img src="/2019/05/27/filltriangle/filledframe.png">
+<p>好吧，并不是很动人=。=之所以不动人是因为光影光影，我们只有颜色，没有考虑光，</p>
+<p><a href="https://github.com/KrisYu/tinyrender/tree/master/code/03_filledtriangle" target="_blank" rel="noopener">代码</a></p>
+<h2 id="重心坐标法"><a href="#重心坐标法" class="headerlink" title="重心坐标法"></a>重心坐标法</h2><p>除了上面提到的扫描法之外，另外一个可以想到的办法是，因为我们终究是画到二维平面上的像素，一个一个的点，那么对于我们要画的区域内的每一个点，我们是否可以检测看它是否在三角形之内，如果是的话，画它，否则不理之。这样的思路是可行的，对于三角形内及其边上的任意一点，我们都可以用重心坐标系来表示：</p>
+<script type="math/tex; mode=display">
+P = (1 - u - v)A + uB + vC, 0 \le u,v \le 1</script><p>这个长得也很像线性插值。</p>
+<p>运算:</p>
+<script type="math/tex; mode=display">
+P = A + u\overrightarrow{AB}  + v\overrightarrow{AC}</script><p>继续：</p>
+<script type="math/tex; mode=display">
+u\overrightarrow{AB}  + v\overrightarrow{AC} + \overrightarrow{PA} = 0</script><p>PA是AB和AC的线性组合。</p>
+<p>拆一拆：</p>
+<script type="math/tex; mode=display">
+u\overrightarrow{AB}_x  + v\overrightarrow{AC}_x + \overrightarrow{PA}_x = 0</script><script type="math/tex; mode=display">
+u\overrightarrow{AB}_y  + v\overrightarrow{AC}_y + \overrightarrow{PA}_y = 0</script><p>实际上我们都可以看做是我们在寻找向量 $(u, v, 1)$ 同时垂直于向量 $(\overrightarrow{AB}_x, \overrightarrow{AC}_x,\overrightarrow{PA}_x)$ 和向量 $(\overrightarrow{AB}_y, \overrightarrow{AC}_y,\overrightarrow{PA}_y)$。 这就是叉乘。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xvector = (B_x - A_x, C_x - A_x, A_x - P_x)</span><br><span class="line">yvector = (B_y - A_y, C_y - A_y, A_y - P_y)</span><br><span class="line">u = xvector x yvector</span><br><span class="line"></span><br><span class="line"># 如果 u 的 z 分量不等于1则说明P点不在三角形内</span><br></pre></td></tr></table></figure>
+<p>因为我们的计算有浮点数，可能u的z分量不会一定等于1,令 u 的三个分量是 (a, b, c),我们代入原式子：</p>
+<script type="math/tex; mode=display">
+a\overrightarrow{AB}  + b\overrightarrow{AC} + c\overrightarrow{PA} = 0</script><script type="math/tex; mode=display">
+P = (1 - a/c - b/c)A +  a/cB + b/cC, c \ne 0</script><p>代码我们这样写：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Vec3f <span class="title">barycentric</span><span class="params">(Vec2f A, Vec2f B, Vec2f C, Vec2f P)</span> </span>&#123;</span><br><span class="line">    Vec3f s[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">2</span>; i--; ) &#123;</span><br><span class="line">        s[i][<span class="number">0</span>] = C[i]-A[i];</span><br><span class="line">        s[i][<span class="number">1</span>] = B[i]-A[i];</span><br><span class="line">        s[i][<span class="number">2</span>] = A[i]-P[i];</span><br><span class="line">    &#125;</span><br><span class="line">    Vec3f u = cross(s[<span class="number">0</span>], s[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">abs</span>(u[<span class="number">2</span>])&gt;<span class="number">1e-2</span>) <span class="comment">// dont forget that u[2] is integer. If it is zero then triangle ABC is degenerate</span></span><br><span class="line">        <span class="keyword">return</span> Vec3f(<span class="number">1.f</span>-(u.x+u.y)/u.z, u.y/u.z, u.x/u.z);</span><br><span class="line">    <span class="keyword">return</span> Vec3f(<span class="number">-1</span>,<span class="number">1</span>,<span class="number">1</span>); <span class="comment">// in this case generate negative coordinates, it will be thrown away by the rasterizator</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们当然也不用把平面区域的每个点代入P去做检查，我们只需要找到三角形的 bounding_box,然后看其中的每一个整数点，如果在其中，那就画之。</p>
+<p>用同样的方法来给模型填色，效果一样。</p>
+<p><a href="https://github.com/KrisYu/tinyrender/tree/master/code/04_barycentricfilled" target="_blank" rel="noopener">代码</a></p>
+<p>效果跟之前依旧一致，我们给每个三角形随机填上色：</p>
+<img src="/2019/05/27/filltriangle/filledrandom.png">
+<p>随机填色这个我们看起来倒是有点cool.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
+          
+            <a href="/tags/光栅/" rel="tag"># 光栅</a>
+          
+            <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/27/python/" rel="next" title="Python">
+                <i class="fa fa-chevron-left"></i> Python
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/28/vulkan/" rel="prev" title="Vulkan">
+                Vulkan <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#填充三角形"><span class="nav-number">1.</span> <span class="nav-text">填充三角形</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性插值"><span class="nav-number">1.1.</span> <span class="nav-text">线性插值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扫描法"><span class="nav-number">1.2.</span> <span class="nav-text">扫描法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wavefront-obj"><span class="nav-number">1.3.</span> <span class="nav-text">wavefront obj</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重心坐标法"><span class="nav-number">1.4.</span> <span class="nav-text">重心坐标法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

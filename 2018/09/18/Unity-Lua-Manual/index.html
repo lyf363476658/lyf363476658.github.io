@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="GameObjectGO_namegameObject.GO_name = &amp;quot;name&amp;quot; 设置或者获取游戏对象的名字 GO_selfgameObject.GO_self 绑定到自己身上的Lua模块指针 GO_activegameObject.GO_active = true/false 设置游戏对象的显式或者隐藏 GO_parentgameObject.GO_parent =">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity-Lua-Manual">
+<meta property="og:url" content="http://zentia.github.io/2018/09/18/Unity-Lua-Manual/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="GameObjectGO_namegameObject.GO_name = &amp;quot;name&amp;quot; 设置或者获取游戏对象的名字 GO_selfgameObject.GO_self 绑定到自己身上的Lua模块指针 GO_activegameObject.GO_active = true/false 设置游戏对象的显式或者隐藏 GO_parentgameObject.GO_parent =">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.032Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity-Lua-Manual">
+<meta name="twitter:description" content="GameObjectGO_namegameObject.GO_name = &amp;quot;name&amp;quot; 设置或者获取游戏对象的名字 GO_selfgameObject.GO_self 绑定到自己身上的Lua模块指针 GO_activegameObject.GO_active = true/false 设置游戏对象的显式或者隐藏 GO_parentgameObject.GO_parent =">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/09/18/Unity-Lua-Manual/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity-Lua-Manual | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/09/18/Unity-Lua-Manual/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity-Lua-Manual
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/09/18/Unity-Lua-Manual/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/09/18/Unity-Lua-Manual/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="GameObject"><a href="#GameObject" class="headerlink" title="GameObject"></a>GameObject</h2><h3 id="GO-name"><a href="#GO-name" class="headerlink" title="GO_name"></a>GO_name</h3><pre><code>gameObject.GO_name = &quot;name&quot;
+</code></pre><p>设置或者获取游戏对象的名字</p>
+<h3 id="GO-self"><a href="#GO-self" class="headerlink" title="GO_self"></a>GO_self</h3><pre><code>gameObject.GO_self
+</code></pre><p>绑定到自己身上的Lua模块指针</p>
+<h3 id="GO-active"><a href="#GO-active" class="headerlink" title="GO_active"></a>GO_active</h3><pre><code>gameObject.GO_active = true/false
+</code></pre><p>设置游戏对象的显式或者隐藏</p>
+<h3 id="GO-parent"><a href="#GO-parent" class="headerlink" title="GO_parent"></a>GO_parent</h3><pre><code>gameObject.GO_parent = parent
+</code></pre><p>设置游戏对象的父节点</p>
+<h3 id="GO-childCount"><a href="#GO-childCount" class="headerlink" title="GO_childCount"></a>GO_childCount</h3><pre><code>gameObject.GO_childCount
+</code></pre><p>获取游戏对象的子节点对象，不递归</p>
+<h3 id="GO-AddComponent"><a href="#GO-AddComponent" class="headerlink" title="GO_AddComponent"></a>GO_AddComponent</h3><pre><code>gameObject:GO_AddComponent(“UILabel&quot;)
+</code></pre><p>给游戏对象添加组件</p>
+<h3 id="GO-GetComponent"><a href="#GO-GetComponent" class="headerlink" title="GO_GetComponent"></a>GO_GetComponent</h3><pre><code>gameObject:GO_GetComponent(&quot;UILabel&quot;)
+gameObject:GO_GetComponent(&quot;UILabel&quot;, &quot;Sprite/Label&quot;)
+</code></pre><p>方法一：获取游戏对象的组件<br>方法二：获取子节点上的组件，参数二表示相对于父节点的路径</p>
+<h3 id="GO-Find"><a href="#GO-Find" class="headerlink" title="GO_Find"></a>GO_Find</h3><pre><code>gameObject:GO_Find(&quot;Sprite/Label&quot;)
+</code></pre><p>获取子节点对象</p>
+<h3 id="GO-AddChild"><a href="#GO-AddChild" class="headerlink" title="GO_AddChild"></a>GO_AddChild</h3><pre><code>gameObject:GO_AddChild(&quot;UI/ui_node&quot;)
+gameObject:GO_AddChild(ui_node)
+</code></pre><p>方法一：通过相对于Resources下的路径来给游戏对象添加子节点<br>方法二：通过实例对象来给游戏对象添加子节点<br>如果是UI节点，请使用<strong><em>UI_AddChild</em></strong></p>
+<h3 id="UI-AddChild"><a href="#UI-AddChild" class="headerlink" title="UI_AddChild"></a>UI_AddChild</h3><pre><code>gameObject:UI_AddChild(&quot;UI/ui_node&quot;)
+gameObject:UI_AddChild(ui_node)    
+</code></pre><p>方法一：通过相对于Resources下的路径来给游戏对象添加子节点<br>方法二：通过实例对象来给游戏对象添加子节点</p>
+<h3 id="GO-DelChild"><a href="#GO-DelChild" class="headerlink" title="GO_DelChild"></a>GO_DelChild</h3><pre><code>gameObject:GO_DelChild(idx)
+</code></pre><p>删除游戏对象的子节点，idx是下标从0开始的索引（顺序是检视面板显示的顺序）</p>
+<h3 id="GO-DestroySelf"><a href="#GO-DestroySelf" class="headerlink" title="GO_DestroySelf"></a>GO_DestroySelf</h3><pre><code>gameObject:GO_DestroySelf()
+</code></pre><p>销毁自己</p>
+<h3 id="GO-RemoveAllChildren"><a href="#GO-RemoveAllChildren" class="headerlink" title="GO_RemoveAllChildren"></a>GO_RemoveAllChildren</h3><pre><code>gameObject:GO_RemoveAllChildren()
+</code></pre><p>销毁所有的子节点</p>
+<h3 id="GO-ShowAllChildren"><a href="#GO-ShowAllChildren" class="headerlink" title="GO_ShowAllChildren"></a>GO_ShowAllChildren</h3><pre><code>gameObject:GO_ShowAllChildren(ture/false)
+</code></pre><p>显示或者隐藏自己所有的子节点</p>
+<h3 id="GO-GetLocalPosition"><a href="#GO-GetLocalPosition" class="headerlink" title="GO_GetLocalPosition"></a>GO_GetLocalPosition</h3><pre><code>local x,y,z = gameObject:GO_GetLocalPosition()
+</code></pre><p>获取自己的localPosition</p>
+<h3 id="GO-SetLocalPosition"><a href="#GO-SetLocalPosition" class="headerlink" title="GO_SetLocalPosition"></a>GO_SetLocalPosition</h3><pre><code>gameObject:GO_SetLocalPosition(x,y [,z])
+</code></pre><p>设置自己的localPosition,[] 表示可选参数,当未指定时表示使用之前的z</p>
+<h3 id="GO-GetLocalRotation"><a href="#GO-GetLocalRotation" class="headerlink" title="GO_GetLocalRotation"></a>GO_GetLocalRotation</h3><pre><code>local x,y,z = gameObject:GO_GetLocalRotation()
+</code></pre><p>获取自己的localRotation</p>
+<h3 id="GO-SetLocalRotation"><a href="#GO-SetLocalRotation" class="headerlink" title="GO_SetLocalRotation"></a>GO_SetLocalRotation</h3><pre><code>gameObject:GO_SetLocalRotation(x,y [,z])
+</code></pre><p>设置自己的localRotation,[]表示可选参数,当未指定时表示使用之前的z</p>
+<h3 id="GO-SetLocalScale"><a href="#GO-SetLocalScale" class="headerlink" title="GO_SetLocalScale"></a>GO_SetLocalScale</h3><pre><code>gameObject:GO_SetLocalScale(x,y,z)
+</code></pre><p>设置自己的localScale</p>
+<h3 id="GO-UpdateAllAnchors"><a href="#GO-UpdateAllAnchors" class="headerlink" title="GO_UpdateAllAnchors"></a>GO_UpdateAllAnchors</h3><pre><code>gameObject:GO_UpdateAllAnchors()
+</code></pre><p>手动刷新自身的锚点</p>
+<h3 id="UI-active"><a href="#UI-active" class="headerlink" title="UI_active"></a>UI_active</h3><pre><code>gameObject.UI_active = true/false
+</code></pre><p>递归刷新自己和子节点的显示和隐藏，如无特殊要求请使用<strong><em>GO_active</em></strong></p>
+<h3 id="UI-onClick"><a href="#UI-onClick" class="headerlink" title="UI_onClick"></a>UI_onClick</h3><pre><code>gameObject.UI_onClick = function()
+end
+</code></pre><p>添加点击事件，游戏对象需要添加boxcollider2D</p>
+<h3 id="UIToggle-onChange"><a href="#UIToggle-onChange" class="headerlink" title="UIToggle_onChange"></a>UIToggle_onChange</h3><pre><code>gameObject.UIToggle_onChange = function()
+end
+</code></pre><p>添加Toggle状态改变的回调函数，游戏对象需要添加UIToggle</p>
+<h3 id="UILabel-text"><a href="#UILabel-text" class="headerlink" title="UILabel_text"></a>UILabel_text</h3><pre><code>gameObject.UILabel_text = &quot;Hello, World!&quot;
+</code></pre><p>设置或者读取游戏对象的UILabel文本，游戏对象需要添加UILabel</p>
+<h3 id="UILabel-color"><a href="#UILabel-color" class="headerlink" title="UILabel_color"></a>UILabel_color</h3><pre><code>gameObject.UILabel_color = Color.FromHex(&quot;C4C4C4FF&quot;)
+</code></pre><p>设置或者读取文本颜色，返回值是Color</p>
+<h3 id="UISprite-spriteName"><a href="#UISprite-spriteName" class="headerlink" title="UISprite_spriteName"></a>UISprite_spriteName</h3><pre><code>gameObject.UISprite_spriteName = &quot;btn_blue&quot;
+</code></pre><p>设置或者读取精灵的名字，游戏对象需要添加UISprite组件</p>
+<h3 id="UISprite-color"><a href="#UISprite-color" class="headerlink" title="UISprite_color"></a>UISprite_color</h3><pre><code>gameObject.UISprite_color = Color.FormHex(&quot;6f4f3fff&quot;)
+</code></pre><p>设置或者读取精灵的颜色，游戏对象需要添加UISprite组件</p>
+<h3 id="UIToggle-value"><a href="#UIToggle-value" class="headerlink" title="UIToggle_value"></a>UIToggle_value</h3><pre><code>gameObject.UIToggle_value = true/false
+</code></pre><p>设置UIToggle的值</p>
+<h3 id="UIWidget-color"><a href="#UIWidget-color" class="headerlink" title="UIWidget_color"></a>UIWidget_color</h3><pre><code>gameObject.UIWidget_color = Color.FormHex(&quot;6f4f3fff&quot;)
+</code></pre><p>设置UIWidget或者继承他的子类（UILabel,UISprite)的颜色</p>
+<h3 id="UIWidget-width"><a href="#UIWidget-width" class="headerlink" title="UIWidget_width"></a>UIWidget_width</h3><pre><code>gameObject.UIWidget_width = 100
+</code></pre><p>设置UIWidget或者继承他的子类（UILabel,UISprite)的宽度</p>
+<h3 id="UIWidget-height"><a href="#UIWidget-height" class="headerlink" title="UIWidget_height"></a>UIWidget_height</h3><pre><code>gameObject.UIWidget_height = 100
+</code></pre><p>设置UIWidget或者继承他的子类的高度</p>
+<h3 id="UIGrid-Reposition"><a href="#UIGrid-Reposition" class="headerlink" title="UIGrid_Reposition"></a>UIGrid_Reposition</h3><pre><code>gameObject:UIGrid_Reposition()
+</code></pre><p>使Grid重新排序，一般给Grid添加了子节点后使用</p>
+<h3 id="Tween-Play"><a href="#Tween-Play" class="headerlink" title="Tween_Play"></a>Tween_Play</h3><pre><code>gameObject:Tween_Play()
+</code></pre><p>播放Tween动画</p>
+<h2 id="MB"><a href="#MB" class="headerlink" title="MB"></a>MB</h2><h3 id="MB-Log"><a href="#MB-Log" class="headerlink" title="MB.Log"></a>MB.Log</h3><pre><code>MB.Log(&quot;Hello,World!&quot;)
+</code></pre><p>打印日志</p>
+<h3 id="MB-PCall"><a href="#MB-PCall" class="headerlink" title="MB.PCall"></a>MB.PCall</h3><pre><code>MB.PCall(function()
+end)
+</code></pre><p>安全的调用函数，当函数内部发生错误的时候，不会中断当前执行环境</p>
+<h3 id="MB-LoadModule"><a href="#MB-LoadModule" class="headerlink" title="MB.LoadModule"></a>MB.LoadModule</h3><pre><code>MB.LoadModule(&quot;ui_task&quot;)
+</code></pre><p>加载一个lua模块</p>
+<h3 id="MB-ShowTheTip"><a href="#MB-ShowTheTip" class="headerlink" title="MB.ShowTheTip"></a>MB.ShowTheTip</h3><pre><code>MB.ShowTheTip(&quot;Hello,World!&quot;, 2)
+</code></pre><p>弹出Tips，第二个参数表示时长单位是秒</p>
+<h3 id="String-CSFormat"><a href="#String-CSFormat" class="headerlink" title="String.CSFormat"></a>String.CSFormat</h3><pre><code>String.CSFormat(&quot;id={0},name={1}&quot;,10,&quot;test&quot;)
+</code></pre><p>调用C#的格式化函数</p>
+<h3 id="MB-GetStringX"><a href="#MB-GetStringX" class="headerlink" title="MB.GetStringX"></a>MB.GetStringX</h3><pre><code>MB.GetStringX(bytes[], 10, &quot;test&quot;)
+</code></pre><p>调用C#的格式化函数，第一个参数是byte数组，一般来说表格中的字段用它</p>
+<h3 id="MB-GetExcelList"><a href="#MB-GetExcelList" class="headerlink" title="MB.GetExcelList"></a>MB.GetExcelList</h3><pre><code>MB.GetExcelList(&quot;NewTaskResConf&quot;)
+</code></pre><p>读取表格</p>
+<h3 id="MB-GO-GetResource"><a href="#MB-GO-GetResource" class="headerlink" title="MB.GO_GetResource"></a>MB.GO_GetResource</h3><pre><code>self.u_testSprite.atlas = MB.GO_GetResource(&quot;UI/01Common&quot;)
+</code></pre><p>获取资源 参数表示相对于Resources的路径，返回的是GameObject</p>
+<h2 id="UITexture"><a href="#UITexture" class="headerlink" title="UITexture"></a>UITexture</h2><h3 id="SetTexturePath"><a href="#SetTexturePath" class="headerlink" title="SetTexturePath"></a>SetTexturePath</h3><pre><code>texture:SetTexturePath(&quot;Texture/UI/Chapter1&quot;)
+</code></pre><p>设置texture的资源路径，路径相对于Resources，texture是通过gameObject获取的组件</p>
+<h3 id="SetMat"><a href="#SetMat" class="headerlink" title="SetMat"></a>SetMat</h3><pre><code>texture:SetMat(path)
+</code></pre><p>设置texture的材质，path表示相对Resources路径</p>
+<h2 id="UILable"><a href="#UILable" class="headerlink" title="UILable"></a>UILable</h2><h3 id="text"><a href="#text" class="headerlink" title="text"></a>text</h3><pre><code>label.text = &quot;Hello, World！&quot;
+</code></pre><p>设置或者读取Label的文本</p>
+<h3 id="color"><a href="#color" class="headerlink" title="color"></a>color</h3><pre><code>label.color = Color.FromHex(&quot;6F4F3FFF&quot;)
+</code></pre><p>设置或者读取Label的颜色</p>
+<h3 id="effectColor"><a href="#effectColor" class="headerlink" title="effectColor"></a>effectColor</h3><pre><code>label.effectColor = Color.FromHex(&quot;6F4F3FFF&quot;)
+</code></pre><p>设置或者读取Label的效果颜色</p>
+<h3 id="fontSize"><a href="#fontSize" class="headerlink" title="fontSize"></a>fontSize</h3><pre><code>label.fontSize = 20
+</code></pre><p>设置或者读取字体的大小</p>
+<h2 id="UISprite"><a href="#UISprite" class="headerlink" title="UISprite"></a>UISprite</h2><h3 id="spriteName"><a href="#spriteName" class="headerlink" title="spriteName"></a>spriteName</h3><pre><code>sprite.spriteName = &quot;btn_red&quot;
+</code></pre><p>设置或者读取Sprite的名字（图集中的）</p>
+<h3 id="width"><a href="#width" class="headerlink" title="width"></a>width</h3><pre><code>sprite.width = 100
+</code></pre><p>设置或者读取Sprite的宽度</p>
+<h3 id="height"><a href="#height" class="headerlink" title="height"></a>height</h3><pre><code>sprite.height = 100
+</code></pre><p>设置或者读取Sprite的高度</p>
+<h3 id="atlas"><a href="#atlas" class="headerlink" title="atlas"></a>atlas</h3><pre><code>sprite.atlas = MB.GO_GetResource(&quot;UI/01Common&quot;)
+</code></pre><p>设置或者读取图集</p>
+<h2 id="LuaEvent"><a href="#LuaEvent" class="headerlink" title="LuaEvent"></a>LuaEvent</h2><p>C#中</p>
+<pre><code>LuaEvent.CallEvent((int)eLuaEvnet.eLuaEvent_PlayerTaskUpdate, param1, param2, param3);
+</code></pre><p>lua中</p>
+<pre><code>lua_event.InvokeEvent(lua_def.eLuaEvent_PlayerTaskUpdate, param1, param2, param3)
+
+lua_event.InsertEvent(lua_def.eLuaEvent_PlayerTaskUpdate, callback, name, 0)
+function callback(param1, param2, param3)
+
+end
+</code></pre><p>CallEvent表示C#事件通知Lua<br>InvokeEvent表示Lua事件通知Lua<br>LuaEvent.CallEvent中的第一个参数表示类型在obj_def.cs中定义，后面是需要传递给lua的参数</p>
+<h2 id="lua-net"><a href="#lua-net" class="headerlink" title="lua_net"></a>lua_net</h2><h3 id="SendBin"><a href="#SendBin" class="headerlink" title="SendBin"></a>SendBin</h3><pre><code>lua_net.SendBin(lua_def.CS_CMD_GET_TASK_LIST_REQ, {Page = 1, Type = 4}, callback)
+function callback(msg)
+end
+</code></pre><p>发送二进制包，第一个参数是消息ID，第二个参数是相对于数据结构类型，callback是回调函数，可选类型<br>回调函数中的msg表示一个json的xml中结构。</p>
+<h3 id="Send"><a href="#Send" class="headerlink" title="Send"></a>Send</h3><pre><code>lua_net.Send(lua_def.eCTS_UI_Task, {op = &quot;get&quot;})
+</code></pre><p>发送JSON包，第一个参数是cts_def.cs中定义的消息，第二个参数是lua table</p>
+<h3 id="Register"><a href="#Register" class="headerlink" title="Register"></a>Register</h3><pre><code>lua_net.Register(lua_def.eSTC_UI_Task, OnUITaskHandle, signal, -1)
+function OnUITaskHandler(msg)
+end
+lua_net.Register(lua_def.CS_CMD_GET_TASK_LIST_RES, OnGetTaskListRes, signal, -1)
+function OnGetTaskListRes(msg) -- msg是xml生成的数据结构，传到lua里面是一个json table
+end
+</code></pre><p>注册一个消息回调，signal表示一个回调的唯一句柄，-1表示调用该回调函数的顺序，默认是0</p>
+<h2 id="lua-timer"><a href="#lua-timer" class="headerlink" title="lua_timer"></a>lua_timer</h2><pre><code>lua_timer.Timer(self.gameObject, span, onTick, count, name)
+</code></pre><p>— 创建Timer对象<br>— go : 指定挂到某个gameObject上<br>— span : 时间间隔，毫秒<br>— onTick : 回调函数(timer, dt)，回调的dt参数是超时的时间，一般也用不上<br>— count : 重复次数，缺省是1，如果是-1则无限循环。<br>— <em>return</em> : 返回一个lua table作为Timer</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/10/luajit/" rel="next" title="luajit">
+                <i class="fa fa-chevron-left"></i> luajit
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/21/TSF4G/" rel="prev" title="TSF4G">
+                TSF4G <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#GameObject"><span class="nav-number">1.</span> <span class="nav-text">GameObject</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-name"><span class="nav-number">1.1.</span> <span class="nav-text">GO_name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-self"><span class="nav-number">1.2.</span> <span class="nav-text">GO_self</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-active"><span class="nav-number">1.3.</span> <span class="nav-text">GO_active</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-parent"><span class="nav-number">1.4.</span> <span class="nav-text">GO_parent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-childCount"><span class="nav-number">1.5.</span> <span class="nav-text">GO_childCount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-AddComponent"><span class="nav-number">1.6.</span> <span class="nav-text">GO_AddComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-GetComponent"><span class="nav-number">1.7.</span> <span class="nav-text">GO_GetComponent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-Find"><span class="nav-number">1.8.</span> <span class="nav-text">GO_Find</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-AddChild"><span class="nav-number">1.9.</span> <span class="nav-text">GO_AddChild</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI-AddChild"><span class="nav-number">1.10.</span> <span class="nav-text">UI_AddChild</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-DelChild"><span class="nav-number">1.11.</span> <span class="nav-text">GO_DelChild</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-DestroySelf"><span class="nav-number">1.12.</span> <span class="nav-text">GO_DestroySelf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-RemoveAllChildren"><span class="nav-number">1.13.</span> <span class="nav-text">GO_RemoveAllChildren</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-ShowAllChildren"><span class="nav-number">1.14.</span> <span class="nav-text">GO_ShowAllChildren</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-GetLocalPosition"><span class="nav-number">1.15.</span> <span class="nav-text">GO_GetLocalPosition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-SetLocalPosition"><span class="nav-number">1.16.</span> <span class="nav-text">GO_SetLocalPosition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-GetLocalRotation"><span class="nav-number">1.17.</span> <span class="nav-text">GO_GetLocalRotation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-SetLocalRotation"><span class="nav-number">1.18.</span> <span class="nav-text">GO_SetLocalRotation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-SetLocalScale"><span class="nav-number">1.19.</span> <span class="nav-text">GO_SetLocalScale</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GO-UpdateAllAnchors"><span class="nav-number">1.20.</span> <span class="nav-text">GO_UpdateAllAnchors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI-active"><span class="nav-number">1.21.</span> <span class="nav-text">UI_active</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI-onClick"><span class="nav-number">1.22.</span> <span class="nav-text">UI_onClick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIToggle-onChange"><span class="nav-number">1.23.</span> <span class="nav-text">UIToggle_onChange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UILabel-text"><span class="nav-number">1.24.</span> <span class="nav-text">UILabel_text</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UILabel-color"><span class="nav-number">1.25.</span> <span class="nav-text">UILabel_color</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UISprite-spriteName"><span class="nav-number">1.26.</span> <span class="nav-text">UISprite_spriteName</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UISprite-color"><span class="nav-number">1.27.</span> <span class="nav-text">UISprite_color</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIToggle-value"><span class="nav-number">1.28.</span> <span class="nav-text">UIToggle_value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIWidget-color"><span class="nav-number">1.29.</span> <span class="nav-text">UIWidget_color</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIWidget-width"><span class="nav-number">1.30.</span> <span class="nav-text">UIWidget_width</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIWidget-height"><span class="nav-number">1.31.</span> <span class="nav-text">UIWidget_height</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UIGrid-Reposition"><span class="nav-number">1.32.</span> <span class="nav-text">UIGrid_Reposition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tween-Play"><span class="nav-number">1.33.</span> <span class="nav-text">Tween_Play</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MB"><span class="nav-number">2.</span> <span class="nav-text">MB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MB-Log"><span class="nav-number">2.1.</span> <span class="nav-text">MB.Log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MB-PCall"><span class="nav-number">2.2.</span> <span class="nav-text">MB.PCall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MB-LoadModule"><span class="nav-number">2.3.</span> <span class="nav-text">MB.LoadModule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MB-ShowTheTip"><span class="nav-number">2.4.</span> <span class="nav-text">MB.ShowTheTip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String-CSFormat"><span class="nav-number">2.5.</span> <span class="nav-text">String.CSFormat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MB-GetStringX"><span class="nav-number">2.6.</span> <span class="nav-text">MB.GetStringX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MB-GetExcelList"><span class="nav-number">2.7.</span> <span class="nav-text">MB.GetExcelList</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MB-GO-GetResource"><span class="nav-number">2.8.</span> <span class="nav-text">MB.GO_GetResource</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UITexture"><span class="nav-number">3.</span> <span class="nav-text">UITexture</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SetTexturePath"><span class="nav-number">3.1.</span> <span class="nav-text">SetTexturePath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SetMat"><span class="nav-number">3.2.</span> <span class="nav-text">SetMat</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UILable"><span class="nav-number">4.</span> <span class="nav-text">UILable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#text"><span class="nav-number">4.1.</span> <span class="nav-text">text</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#color"><span class="nav-number">4.2.</span> <span class="nav-text">color</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#effectColor"><span class="nav-number">4.3.</span> <span class="nav-text">effectColor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fontSize"><span class="nav-number">4.4.</span> <span class="nav-text">fontSize</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UISprite"><span class="nav-number">5.</span> <span class="nav-text">UISprite</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#spriteName"><span class="nav-number">5.1.</span> <span class="nav-text">spriteName</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#width"><span class="nav-number">5.2.</span> <span class="nav-text">width</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#height"><span class="nav-number">5.3.</span> <span class="nav-text">height</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#atlas"><span class="nav-number">5.4.</span> <span class="nav-text">atlas</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LuaEvent"><span class="nav-number">6.</span> <span class="nav-text">LuaEvent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lua-net"><span class="nav-number">7.</span> <span class="nav-text">lua_net</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SendBin"><span class="nav-number">7.1.</span> <span class="nav-text">SendBin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Send"><span class="nav-number">7.2.</span> <span class="nav-text">Send</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Register"><span class="nav-number">7.3.</span> <span class="nav-text">Register</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lua-timer"><span class="nav-number">8.</span> <span class="nav-text">lua_timer</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

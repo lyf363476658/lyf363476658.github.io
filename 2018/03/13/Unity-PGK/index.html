@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="打包策略：按照目录划分目录进行分类配置文件如下：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929">
+<meta name="keywords" content="Unity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity打包详细流程">
+<meta property="og:url" content="http://zentia.github.io/2018/03/13/Unity-PGK/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="打包策略：按照目录划分目录进行分类配置文件如下：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.036Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity打包详细流程">
+<meta name="twitter:description" content="打包策略：按照目录划分目录进行分类配置文件如下：12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/03/13/Unity-PGK/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity打包详细流程 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/13/Unity-PGK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity打包详细流程
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/03/13/Unity-PGK/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/03/13/Unity-PGK/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>打包策略：按照目录划分<br>目录进行分类<br>配置文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;AssetBundleInfo&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;ui.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Art/ResExport/GUI/&quot;,</span><br><span class="line">                &quot;Art/GUI/Atlas/&quot;,</span><br><span class="line">                &quot;res/GUI/res/&quot;,</span><br><span class="line">                &quot;res/GUI/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;ui_font.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/GUI/res/Font/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;particles.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/Particles/&quot;,</span><br><span class="line">                &quot;Art/Particles/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;gfx.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/FX/&quot;,</span><br><span class="line">                &quot;res/SkillWarning/&quot;,</span><br><span class="line">                &quot;res/Shader/&quot;,</span><br><span class="line">                &quot;PluginsScripts/NGUI/Resources/Shaders/&quot;,</span><br><span class="line">                &quot;Art/Graphics/shader/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;misc.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Art/&quot;,</span><br><span class="line">                &quot;res/&quot;,</span><br><span class="line">                &quot;Resources/&quot;,</span><br><span class="line">                &quot;Plugins/&quot;,</span><br><span class="line">                &quot;PluginsScripts/&quot;,</span><br><span class="line">                &quot;Models/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: .bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Scenes/Assets Skyboxes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;scenes.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/Scenes/&quot;,</span><br><span class="line">                &quot;Scenes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;PackageInfo&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;cfg&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;cfg/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;lang&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Art/lang&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;code&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;cfg/&quot;,</span><br><span class="line">                &quot;mb/&quot;,</span><br><span class="line">                &quot;Lua/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;gfx&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;FX/&quot;,</span><br><span class="line">                &quot;MaterialEx/&quot;,</span><br><span class="line">                &quot;Shader/&quot;,</span><br><span class="line">                &quot;SkillWarning/&quot;,</span><br><span class="line">                &quot;Textures/&quot;,</span><br><span class="line">                &quot;Still/&quot;,</span><br><span class="line">                &quot;bones/&quot;,</span><br><span class="line">                &quot;weapons/&quot;,</span><br><span class="line">                &quot;Equips/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;gui&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;GUI/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;particles&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Particles/&quot;,</span><br><span class="line">                &quot;Assets/Art/Particles/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Scenes/&quot;,</span><br><span class="line">                &quot;scn/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;sounds&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Sounds/&quot;,</span><br><span class="line">                &quot;Assets/Art/Sounds/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;animations&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Animations/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes_mesh&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Art/Scene/_Mesh/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes_assets&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Scenes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;models&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Models/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;misc&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;pandora&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;pandora/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>不使用Resources的原因是，打包程序的时候会将Resources目录下的全部文件都加密压缩达到包内，这样如果我们想使用assetbundle方式打小包就不行了（比如更新包）。<br>1.多语言文件先导入<br>2.根据配置文件生成包信息，AssetBundleInfo,AssetBundleIndex<br>3.处理Res目录资源<br>4.AssetDatabase.GetDependencies<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> nameParam = <span class="keyword">new</span> <span class="keyword">string</span>[<span class="number">1</span>];</span><br><span class="line"><span class="function"><span class="keyword">string</span>[] <span class="title">GetDirectDeps</span>(<span class="params"><span class="keyword">string</span> uri</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    DepInfo depInfo = <span class="keyword">new</span> DepInfo();</span><br><span class="line">    nameParam[<span class="number">0</span>] = uri;</span><br><span class="line">    <span class="keyword">var</span> deps = AssetDatabase.GetDependenices(nameParem, <span class="literal">true</span>);<span class="comment">//查找这个资源引用了哪些资源,cs和js文件不用处理</span></span><br><span class="line">    depInfos[uri] = depInfo;<span class="comment">//global</span></span><br><span class="line">    <span class="keyword">return</span> deps;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">string</span>[] <span class="title">MakeDepends</span>(<span class="params"><span class="keyword">string</span> uri</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> deps = GetDirectDeps(uri);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addPkgFile</span>(<span class="params"><span class="keyword">string</span> filePath, <span class="keyword">bool</span> isCompress, <span class="keyword">string</span> accessPath, <span class="keyword">byte</span> fileType, <span class="keyword">byte</span> loadType</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    accessPath = accessPath.ToLower();</span><br><span class="line">    PkgInfo.FileInfo fileInfo = NewPkgFileInfo(filePath, isCompress, accessPath, )</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator <span class="title">ProcessSounds</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    titleText = <span class="string">"处理音频"</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">string</span> soundsDir = Application.dataPath + <span class="string">"/Art/Sounds"</span>;</span><br><span class="line">    <span class="keyword">if</span> (System.IO.Exists(soundsDir))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> rootSize = Application.dataPath.Length - <span class="number">6</span>;<span class="comment">//Assets</span></span><br><span class="line">        <span class="keyword">string</span>[] file = System.IO.Directory.GetFiles(soundsDir, <span class="string">"*.bank"</span>, SearchOption.AllDirectories);</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> file <span class="keyword">in</span> files)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">string</span> path = file.SubString(rootSize).ToLower().Replace(<span class="string">'\\'</span>, <span class="string">'/'</span>);</span><br><span class="line">            addPkgFile(path, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            addFileProcessed.Add(path);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator <span class="title">DoProcess</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return <span class="title">ProcessRes</span>(<span class="params">resUri</span>)</span>;</span><br><span class="line">    <span class="keyword">if</span> (!isRuning) <span class="keyword">yield</span> <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return <span class="title">ProcessSounds</span>(<span class="params"></span>)</span>;<span class="comment">//smod,因为unity自带的容易崩溃</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="打包常见问题整理"><a href="#打包常见问题整理" class="headerlink" title="打包常见问题整理"></a>打包常见问题整理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line">CommandInvokationFailure: Gradle build failed. </span><br><span class="line">C:\Program Files\Unity_2018.3.0f2\Editor\Data\PlaybackEngines\AndroidPlayer/Tools\OpenJDK\Windows\bin\java.exe -classpath &quot;C:\Program Files\Unity_2018.3.0f2\Editor\Data\PlaybackEngines\AndroidPlayer\Tools\gradle\lib\gradle-launcher-4.6.jar&quot; org.gradle.launcher.GradleMain &quot;-Dorg.gradle.jvmargs=-Xmx4096m&quot; &quot;assembleRelease&quot;</span><br><span class="line"></span><br><span class="line">stderr[</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">A problem occurred configuring root project &apos;gradleOut&apos;.</span><br><span class="line">&gt; Could not resolve all artifacts for configuration &apos;:classpath&apos;.</span><br><span class="line">   &gt; Could not download bcpkix-jdk15on.jar (org.bouncycastle:bcpkix-jdk15on:1.56)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download bcprov-jdk15on.jar (org.bouncycastle:bcprov-jdk15on:1.56)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download fastutil.jar (it.unimi.dsi:fastutil:7.2.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jimfs.jar (com.google.jimfs:jimfs:1.1)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download guava.jar (com.google.guava:guava:23.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download gson.jar (com.google.code.gson:gson:2.8.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download httpclient.jar (org.apache.httpcomponents:httpclient:4.5.2)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download httpcore.jar (org.apache.httpcomponents:httpcore:4.4.5)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download kotlin-reflect.jar (org.jetbrains.kotlin:kotlin-reflect:1.2.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download antlr4.jar (org.antlr:antlr4:4.5.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download juniversalchardet.jar (com.googlecode.juniversalchardet:juniversalchardet:1.0.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download kotlin-stdlib.jar (org.jetbrains.kotlin:kotlin-stdlib:1.2.20)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.20/kotlin-stdlib-1.2.20.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.20/kotlin-stdlib-1.2.20.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download proguard-base.jar (net.sf.proguard:proguard-base:6.0.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download auto-value.jar (com.google.auto.value:auto-value:1.5.2)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download protobuf-java.jar (com.google.protobuf:protobuf-java:3.4.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jdom2.jar (org.jdom:jdom2:2.0.6)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download commons-compress.jar (org.apache.commons:commons-compress:1.12)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download commons-codec.jar (commons-codec:commons-codec:1.9)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/commons-codec/commons-codec/1.9/commons-codec-1.9.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/commons-codec/commons-codec/1.9/commons-codec-1.9.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jaxb-runtime.jar (org.glassfish.jaxb:jaxb-runtime:2.2.11)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.2.11/jaxb-runtime-2.2.11.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.2.11/jaxb-runtime-2.2.11.jar&apos;.</span><br><span class="line">            &gt; Remote host closed connection during handshake</span><br><span class="line">   &gt; Could not download FastInfoset.jar (com.sun.xml.fastinfoset:FastInfoset:1.2.13)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.13/FastInfoset-1.2.13.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.13/FastInfoset-1.2.13.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line"></span><br><span class="line">* Try:</span><br><span class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.</span><br><span class="line"></span><br><span class="line">* Get more help at https://help.gradle.org</span><br><span class="line"></span><br><span class="line">BUILD FAILED in 5m 15s</span><br><span class="line">]</span><br><span class="line">stdout[</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.2.0/gradle-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.2.0/lint-gradle-api-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler-common/3.2.0/databinding-compiler-common-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.2.0/builder-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.2.0/gradle-api-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.2.0/shared-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/bundletool/0.5.0/bundletool-0.5.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/jetifier/jetifier-core/1.0.0-alpha10/jetifier-core-1.0.0-alpha10.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/jetifier/jetifier-processor/1.0.0-alpha10/jetifier-processor-1.0.0-alpha10.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/crash/26.2.0/crash-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-analysis/6.0/asm-analysis-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm/6.0/asm-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-commons/6.0/asm-commons-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-gradle/6.0.3/proguard-gradle-6.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-util/6.0/asm-util-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-parent/6.0/asm-parent-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-parent/6.0.3/proguard-parent-6.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/ow2/1.3/ow2-1.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/sonatype/oss/oss-parent/7/oss-parent-7.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.2.0/sdk-common-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/common/26.2.0/common-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.2.0/tracker-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.2.0/protos-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.2.0/manifest-merger-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.2.0/sdklib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.2.0/builder-model-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.2.0/apkzlib-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.2.0/apksig-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.2.0/builder-test-api-3.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-tree/6.0/asm-tree-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.2.0/annotations-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/gson/gson-parent/2.8.0/gson-parent-2.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/guava/guava-parent/23.0/guava-parent-23.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpmime/4.5.2/httpmime-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-client/4.5.2/httpcomponents-client-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-core/4.4.5/httpcomponents-core-4.4.5.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/project/7/project-7.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/13/apache-13.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/databinding/baseLibrary/3.2.0/baseLibrary-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-common/3.2.0/databinding-common-3.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-io/commons-io/2.4/commons-io-2.4.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/squareup/javapoet/1.8.0/javapoet-1.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-parent/25/commons-parent-25.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/antlr/antlr4-master/4.5.3/antlr4-master-4.5.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/sonatype/oss/oss-parent/9/oss-parent-9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/9/apache-9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.0/kotlin-stdlib-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2-proto/0.3.1/aapt2-proto-0.3.1.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.2.0/error_prone_annotations-2.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/auto/auto-parent/3/auto-parent-3.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-parent/3.4.0/protobuf-parent-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.2.0/error_prone_parent-2.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/google/1/google-1.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.2.0/dvlib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.2.0/layoutlib-api-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.2.0/repository-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-parent/39/commons-parent-39.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/16/apache-16.pom</span><br><span class="line">Download https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-logging/commons-logging/1.2/commons-logging-1.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-codec/co&lt;message truncated&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/13/Mono-1/" rel="next" title="Mono-1">
+                <i class="fa fa-chevron-left"></i> Mono-1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/18/openresty/" rel="prev" title="openresty">
+                openresty <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#打包常见问题整理"><span class="nav-number">1.</span> <span class="nav-text">打包常见问题整理</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

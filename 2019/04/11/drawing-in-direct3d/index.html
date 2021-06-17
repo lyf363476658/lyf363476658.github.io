@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="顶点/索引缓存顶点和索引缓存有相似的接口并且共享相似的方法；一个顶点缓存是一块连续的存储了顶点数据的内存。同样的，一个索引缓存是一块连续的存储了索引数据的内存。我们使用顶点和索引缓存保存我们的数据是因为它们能被放置在显存中。渲染显存中的数据要比渲染系统内存中的数据快的多。在代码中，一个顶点缓存是通过IDirect3DVertexBuffer9接口来定义的。类似的，一个索引缓存是通过IDirect3">
+<meta name="keywords" content="图形学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Drawing in Direct3D">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/drawing-in-direct3d/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="顶点/索引缓存顶点和索引缓存有相似的接口并且共享相似的方法；一个顶点缓存是一块连续的存储了顶点数据的内存。同样的，一个索引缓存是一块连续的存储了索引数据的内存。我们使用顶点和索引缓存保存我们的数据是因为它们能被放置在显存中。渲染显存中的数据要比渲染系统内存中的数据快的多。在代码中，一个顶点缓存是通过IDirect3DVertexBuffer9接口来定义的。类似的，一个索引缓存是通过IDirect3">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.104Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Drawing in Direct3D">
+<meta name="twitter:description" content="顶点/索引缓存顶点和索引缓存有相似的接口并且共享相似的方法；一个顶点缓存是一块连续的存储了顶点数据的内存。同样的，一个索引缓存是一块连续的存储了索引数据的内存。我们使用顶点和索引缓存保存我们的数据是因为它们能被放置在显存中。渲染显存中的数据要比渲染系统内存中的数据快的多。在代码中，一个顶点缓存是通过IDirect3DVertexBuffer9接口来定义的。类似的，一个索引缓存是通过IDirect3">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/drawing-in-direct3d/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Drawing in Direct3D | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/drawing-in-direct3d/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Drawing in Direct3D
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/drawing-in-direct3d/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/drawing-in-direct3d/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="顶点-索引缓存"><a href="#顶点-索引缓存" class="headerlink" title="顶点/索引缓存"></a>顶点/索引缓存</h1><p>顶点和索引缓存有相似的接口并且共享相似的方法；一个顶点缓存是一块连续的存储了顶点数据的内存。同样的，一个索引缓存是一块连续的存储了索引数据的内存。我们使用顶点和索引缓存保存我们的数据是因为它们能被放置在显存中。渲染显存中的数据要比渲染系统内存中的数据快的多。<br>在代码中，一个顶点缓存是通过IDirect3DVertexBuffer9接口来定义的。类似的，一个索引缓存是通过IDirect3DIndexBuffer9接口来定义。</p>
+<h2 id="创建一个顶点和索引缓存"><a href="#创建一个顶点和索引缓存" class="headerlink" title="创建一个顶点和索引缓存"></a>创建一个顶点和索引缓存</h2><p>我们能使用下面两个方法创建一个顶点缓存和索引缓存：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">HRESULT IDirect3DDevice9::CreateVertexBuffer(</span><br><span class="line">    UINT Length,</span><br><span class="line">    DWORD Usage,</span><br><span class="line">    DWORD FVF,</span><br><span class="line">    D3DPOOL Pool</span><br><span class="line">    IDirect3DVertexBuffer9** ppVertexBuffer,</span><br><span class="line">    HANDLE* pSharedHandle</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">HRESULT IDirect3DDevice9::CreateIndexBuffer(</span><br><span class="line">    UINT Length,</span><br><span class="line">    DWORD Usage,</span><br><span class="line">    D3DFORMAT Format,</span><br><span class="line">    D3DPOOL Pool,</span><br><span class="line">    IDirect3DIndexBuffer9** ppIndexBuffer,</span><br><span class="line">    HANDLE* pSharedHandle</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>这两个方法大部分参数是相同的，因此我们一起介绍它们。</p>
+<ul>
+<li>Length —— 分配给缓存的字节大小。假如想得到一个能存储8个顶点的顶点缓存，那么我们就要在顶点结构中设置这个参数为 8 * sizeof ( Vertex ) 。</li>
+<li>Usage —— 指定关于怎样使用缓存的额外信息。这个值可以是0，没有标记，或者是下面标记的一个或多个的组合：</li>
+<li>D3DUSAGE_DYNAMIC——设置这个参数可以使缓存是动态的。在下一页说明静态和动态缓存。</li>
+<li>D3DUSAGE_POINTS——这个参数指定缓存存储原始点。原始点将在第14章粒子系统中介绍。这个参数仅仅用在顶点缓冲中。</li>
+<li>D3DUSAGE_SOFTWAREPROCESSING——使用软件顶点处理</li>
+<li>D3DUSAGE_WRITEONLY——指定应用程序只能写缓存。它允许驱动程序分配最适合的内存地址作为写缓存。注意如果从创建好的这种缓存中读数据，将会返回错误信息。</li>
+<li>FVF —— 存储在缓存中的顶点格式</li>
+<li>Pool —— 缓存放置在哪一个内存池中</li>
+<li>ppVertexBuffer ——返回创建好的顶点缓存的指针。</li>
+<li>pSharedHandle ——没有使用；设置为0。</li>
+<li>Format ——指定索引的大小；使用D3DFMT_INDEX16设置16位索引，使用D3DFMT_INDEX32设置32位索引。注意并非所有设备都支持32位索引；请检查设备能力。</li>
+<li>ppIndexBuffer ——返回创建好的索引缓存的指针。</li>
+</ul>
+<p>注意：不使用D3DUSAGE_DYNAMIC参数创建的缓存被叫做静态缓存。静态缓存通常被放置在显存中，在其中的数据能被很有效的处理。然而，对于静态缓存，从中读取和写入数据是很慢的，因为访问显存是很慢的。因为这个原因我们用静态缓存存储静态数据（不需要被经常改变的数据）。对于静态缓存地形和建筑物是很好的后选例子，因为在应用程序中他们通常不需要被改变。静态缓存应该在应用程序初始话的时候就被填充好，而不是在运行时才做。</p>
+<p>注意：使用D3DUSAGE_DYNAMIC参数创建的缓存被叫做动态缓存。动态缓存通常被放在AGP内存中，这种内存中的数据能被很快的更新。处理动态缓存中的数据不会比处理静态缓存中的数据快，因为这些数据必须在渲染前被转移到显存中，动态缓存的好处是它们能够被稍微快点地被更新（比CPU写快）。因此，假如你需要经常更新缓存中的数据，那么你就应该使用动态缓存。对于动态缓存粒子系统是很好的一个应用，因为它们是动态的，并且他们通常每一帧都会被更新。</p>
+<p>注意：在程序中读取显存和AGP内存都是非常慢的。因此，假如你在运行时需要读取你的几何物体，最好的方案是指定一块系统内存，都在其中拷贝并且读取数据。<br>　　  下边是创建一个静态顶点缓存的例子，该缓存能存储8个顶点。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">IDirect3DVertexBuffer9* vb;</span><br><span class="line">device-&gt;CreateVertexBuffer(</span><br><span class="line">    <span class="number">8</span> * <span class="keyword">sizeof</span>( Vertex ),</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    D3DFVF_XYZ,</span><br><span class="line">    D3DPOOL_MANAGED,</span><br><span class="line">    &amp;vb,</span><br><span class="line">    <span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="访问缓冲内存"><a href="#访问缓冲内存" class="headerlink" title="访问缓冲内存"></a>访问缓冲内存</h2><p>　　为了访问一个顶点/索引缓存，我们需要得到一个指针。我们通过一个指针获得缓存数据必须使用Lock方法。当我们访问完缓存后必须对它解锁。一旦有一个指向内存的指针，我们就能对它进行读写。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">HRESULT IDirect3DVertexBuffer9::Lock(</span><br><span class="line">    UINT OffsetToLock,</span><br><span class="line">    UINT SizeToLock,</span><br><span class="line">    BYTE** ppbData,</span><br><span class="line">    DWORD Flags</span><br><span class="line">);</span><br><span class="line">HRESULT IDirect3DIndexBuffer9::Lock(</span><br><span class="line">    UINT OffsetToLock,</span><br><span class="line">    UINT SizeToLock,</span><br><span class="line">    BYTE** ppbData,</span><br><span class="line">    DWORD Flags</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>　　图3.1<br>　　这两个方法的参数都是完全相同的。</p>
+<ul>
+<li>OffsetToLock —— 偏移量，以字节为单位，从缓存开始位置到锁定开始位置的距离。如图3.1。</li>
+<li>SizeToLock —— 锁定的字节数。</li>
+<li>ppbData —— 一个指向锁定内存开始位置的指针。</li>
+<li>Flags —— 标记描述怎样锁定内存。它可能是0或者是下面参数中的1个或多个的组合：</li>
+<li>D3DLOCK_DISCARD——这个参数仅仅会在动态缓存时被使用。它指示硬件丢弃缓存并返回一个指向新分配的缓存的指针。这是很有用，因为当我们存取一个新分配的缓存时它允许硬件继续从丢弃的缓存渲染。这防止了硬件延迟。</li>
+<li>D3DLOCK_NOOVERWRITE——这个参数仅仅会在动态缓存时被使用。它声明你将向缓存中添加数据。即，你不能向已经渲染的内存中写数据。这是有好处的因为他允许你在添加新数据到缓存的同时让硬件继续渲染。</li>
+<li>D3DLOCK_READONLY——这个参数声明你锁定的缓存只能从中读取数据而不能写数据。这允许一些内在的优化。<br>  用参数D3DLOCK_DISCARD和D3DLOCK_NOOVERWRITE的地址实际上就是缓存的一部分被使用（正在渲染）时它被锁定。假如情况允许这些标记被使用，当在锁定时他们防止渲染停止。<br>  下边的例子展示了通常怎样使用Lock方法。注意当我们使用完以后要调用Unlock方法。<br>Vertex<em> vertices;<br>_vb-&gt;Lock(0, 0, (void*</em>)&amp;vertices, 0); // 锁定整个缓存<br>vertices[0] = Vertex(-1.0f, 0.0f, 2.0f); // 向缓存里写顶点<br>vertices[1] = Vertex( 0.0f, 1.0f, 2.0f);<br>vertices[2] = Vertex( 1.0f, 0.0f, 2.0f);<br>_vb-&gt;Unlock(); // 当你访问完缓存时，解锁缓存<br>3.1.3 找回顶点和索引缓存信息<br>有时我们需要得到顶点/索引缓存信息。下面的例子示范了用于获得这些信息的方法：<br>D3DVERTEXBUFFER_DESC vbDescription;<br>_vertexBuffer-&gt;GetDesc(&amp;vbDescription); // 取得顶点缓存信息</li>
+</ul>
+<p>D3DINDEXBUFFER_DESC ibDescription;<br>_indexBuffer-&gt;GetDesc(&amp;ibDescription); //取得索引缓存信息<br>　　<br>　　D3DVERTEXBUFFER_DESC和D3DINDEXBUFFER_DESC结构的定义如下：<br>typedef struct _D3DVERTEXBUFFER_DESC {<br>    D3DFORMAT Format;<br>    D3DRESOURCETYPE Type;<br>    DWORD Usage;<br>    D3DPOOL Pool;<br>    UINT Size;<br>    DWORD FVF;<br>} D3DVERTEXBUFFER_DESC;</p>
+<p>typedef struct _D3DINDEXBUFFER_DESC {<br>    D3DFORMAT Format;<br>    D3DRESOURCETYPE Type;<br>    DWORD Usage;<br>    D3DPOOL Pool;<br>    UINT Size;<br>} D3DINDEXBUFFER_DESC;<br>3.2 渲染状态<br>   Direct3D提供了多种渲染状态，它影响几何物体怎样被渲染。渲染状态有默认值，因此假如你的应用程序需要不同于默认设置的渲染时，你仅仅改变它即可。一种渲染效果会一直起作用，直到你下一次改变渲染状态为止。为了设置一个渲染状态，我们使用下面的方法：<br>HRESULT IDirect3DDevice9::SetRenderState(<br>    D3DRENDERSTATETYPE State, // 更改的渲染状态<br>    DWORD Value // 新的状态值<br>);</p>
+<p>例如，在这一章的例子中我们将使用线框模式渲染我们的物体。因此，我们设置如下的渲染状态：<br>_device-&gt;SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);<br>注意：查看DirectX SDK中关于D3DRENDERSTATETYPE的信息。其中详细介绍了所有的渲染状态。<br>3.3 绘制准备<br>　　一旦我们创建好一个顶点缓存以及一个索引缓存（可选的）后，我们就为渲染其中的内容准备得差不多了，但是在渲染前我们还有3个步骤必须先做。<br>1、 设置资源流。设置资源流与一个顶点缓存挂钩，此流就是一个流入渲染管线的几何信息的流。<br>　　下面的方法是用于设置一个资源流：<br>HRESULT IDirect3DDevice9::SetStreamSource(<br>    UINT StreamNumber,<br>    IDirect3DVertexBuffer9* pStreamData,<br>    UINT OffsetInBytes,<br>    UINT Stride<br>);</p>
+<ul>
+<li>StreamNumber——确定我们的顶点缓存与哪一个资源流挂钩。在这本书中我们不使用多重流；因此我们总是使用0号流。</li>
+<li>pStreamData——一个指向我们想与流挂钩的那个顶点缓存的指针。</li>
+<li>OffsetInBytes——相对流开始处的偏移量。以字节为单位，它指定被填入渲染管线的顶点数据的开始位置。通过检查D3DCAPS9结构中的D3DDEVCAPS2_STREAMOFFSET标志，假如你的设备支持，那么这个参数就有一些非0值。</li>
+<li>Stride——我们在顶点缓存中操作的每个部分的流的字节大小。<br>　　例如，假设vb是一个已经填充了顶点信息的顶点缓存：<br>_device-&gt;SetStreamSource( 0, vb, 0, sizeof( Vertex ) );</li>
+</ul>
+<p>2、 设置顶点格式。在这里我们指定后面用来绘图调用的顶点的顶点格式。<br>_device-&gt;SetFVF( D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 );</p>
+<p>3、 设置索引缓存。假如我们使用了索引缓存，我们必须设置后面要用于绘制操作的索引缓存。每次我们只能使用一个索引缓存；因此假如你需要用一个不同的索引缓存绘制一个物体时，你必须转换到另一个上。下面的代码设置一个索引缓存：<br>_device-&gt;SetIndices( _ib ); // 传递一个索引缓存指针的拷贝<br>3.4用顶点/索引缓存绘制<br>　　在我们创建好顶点/索引缓存以及做好准备工作以后，我们就能绘制我们的几何物体了。这是通过使用DrawPrimitive或者DrawIndexedPrimitive传送几何信息到达渲染管线。这些方法从顶点流中获得顶点信息以及从索引缓存中获得索引信息。<br>3.4.1 IDirect3DDevice9::DrawPrimitive<br>　　这个方法不使用索引信息绘制图元。<br>HRESULT IDirect3DDevice9::DrawPrimitive(<br>    D3DPRIMITIVETYPE PrimitiveType,<br>    UINT StartVertex,<br>    UINT PrimitiveCount<br>);</p>
+<ul>
+<li>PrimitiveType——我们绘制的图元类型。比如，我们能绘制点和线以及三角形。以后我们使用三角形，用D3DPT_TRIANGLELIST参数。</li>
+<li>StartVertex——索引到在顶点流中的一个元素。设置渲染顶点中的开始点。这个参数给予我们一定的机动性，可以绘制一个顶点缓存中的某部分。</li>
+<li>PrimitiveCount——绘制图元的个数。<br>　　例子：<br>// 绘制4个三角形<br>_device-&gt;DrawPrimitive( D3DPT_TRIANGLELIST, 0, 4);<br>3.4.2 IDirect3DDevice9::DrawIndexedPrimitive<br>　　这个方法使用索引信息来绘制图元。<br>HRESULT IDirect3DDevice9::DrawIndexedPrimitive(<br>  D3DPRIMITIVETYPE Type,<br>  INT BaseVertexIndex,<br>  UINT MinIndex,<br>  UINT NumVertices,<br>  UINT StartIndex,<br>  UINT PrimitiveCount<br>);</li>
+<li>Type——我们绘制的图元类型。比如，我们能绘制点和线以及三角形。以后我们使用三角形，用D3DPT_TRIANGLELIST参数。</li>
+<li>BaseVertexIndex——一个基本数字，在调用中用它去加上索引。参看下面的说明。</li>
+<li>MinIndex——将被引用的最小索引值。</li>
+<li>NumVertices——在此调用中将被引用的顶点数。</li>
+<li>StartIndex——索引到索引缓存中的某个位置，它标记开始渲染的开始索引点。</li>
+<li>PrimitiveCount——绘制图元的个数。<br>　　例子：<br>_device-&gt;DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, 8, 0, 12);<br>注意：BaseVertexIndex参数需要一些特别的解释。在解释过程中将会用到的图3.2。</li>
+</ul>
+<p>图3.2<br>   在索引缓存中定位顶点相应的也就在顶点缓存中定位了。然而，假设我们想将球，盒子，圆柱体的顶点放置到一个公共的顶点缓存中。对于每一个物体，我们将不得不再计算在公共顶点缓存中的索引。这个新的索引值是通过与一个偏移量相加得到。注意这个偏移量是标准的顶点，而不是字节。<br>    我们需要计算物体在公共顶点缓存中的索引值。Direct3D允许我们通过设置BaseVertexIndex参数得到一个顶点偏移量，随后Direct3D就能利用顶点自身的索引重新计算新的索引。<br>3.4.3 开始/结束场景<br>   最后一点就是所有绘制方法都必须在IDirect3DDevice9::BeginScene和IDirect3DDevice9::EndScene方法之间被调用。例如，我们将这样写：<br>_device-&gt;BeginScene();<br>　　// 绘制场景<br>    _device-&gt;DrawPrimitive(…);<br>_device-&gt;EndScene();<br>3.5 D3DX几何物体<br>　　通过在代码中建造每个三角形来建造3D物体是一件非常枯燥的事。幸运的是，D3DX库已经为我们提供了一些方法来产生简单3D物体的网格数据。<br>　　D3DX库提供如下6种网格生成函数。</p>
+<ul>
+<li>D3DXCreateBox</li>
+<li>D3DXCreateSphere</li>
+<li>D3DXCreateCylinder</li>
+<li>D3DXCreateTeapot</li>
+<li>D3DXCreatePolygon</li>
+<li>D3DXCreateTorus</li>
+</ul>
+<p>图3.3<br>　　这6种函数的使用都很类似，并且使用D3DX网格数据结构ID3DXMesh就象使用ID3DXBuffer接口一样。这些接口回在第10章和11章中讲解。现在，我们忽视它们的详细信息，只需简单使用它们即可。<br>HRESULT D3DXCreateTeapot(<br>    LPDIRECT3DDEVICE9 pDevice, // 与mesh关联的设备<br>    LPD3DXMESH<em> ppMesh, // 返回的mesh<br>    LPD3DXBUFFER</em> ppAdjacency // 现在设成0<br>);<br>　　<br>　　一个使用D3DXCreateTeapot函数的例子：<br>ID3DXMesh<em> mesh = 0;<br>D3DXCreateTeapot(_device, &amp;mesh, 0);<br>　　一旦生成了网格数据，我们就能使用ID3DXMesh::DrawSubset方法绘制图形了。这个方法有一个参数，它用来识别网格的一个子集。这个网格是通过上面的D3DXCreate</em>函数中的一个子集创建的，因此可以给这个参数指定0值。一个渲染网格的例子：<br>_device-&gt;BeginScene();<br>    mesh-&gt;DrawSubset(0);<br>_device-&gt;EndScene();</p>
+<p>   使用了网格以后，必须释放（release）它：<br>mesh-&gt;Release();<br>_mesh = 0;<br>3.6 实例程序：三角形、立方体、茶壶、D3DXCreate*<br>　　这里有4个例子。</p>
+<ul>
+<li>三角形——这是非常简单的应用程序，它示范了在线框模式下怎样创建并渲染一个三角形。</li>
+<li>立方体——只比三角形稍微复杂一点，这个程序渲染一个线框立方体。</li>
+<li>茶壶——这个程序使用D3DXCreateTeapot函数创建并渲染一个纺纱茶壶。</li>
+<li>D3DXCreate——这个程序创建并渲染几种不同的能够使用D3DXCreate*函数创建的3D物体。<br>让我们简单讨论一下创建立方体的例子。通过对它的学习你自己就能很快地理解其他例子。<br>  这个简单的绘制和渲染立方体的程序的运行结果如图3.4。</li>
+</ul>
+<p>图3.4<br>　　首先我们定义下边两个全局变量来保存立方体的顶点和索引数据：<br>IDirect3DVertexBuffer9<em> VB = 0;<br>IDirect3DIndexBuffer9</em> IB = 0;<br>　　下一步，我们定义两个全局常量，由它们来指定我们的屏幕大小：<br>const int Width = 800;<br>const int Height = 600;<br>　　接下来定义我们的顶点结构以及结构中顶点的格式。在这个例子中顶点结构只保存顶点的位置信息：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Vertex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    Vertex()&#123;&#125;</span><br><span class="line">    Vertex(<span class="keyword">float</span> x, <span class="keyword">float</span> y, <span class="keyword">float</span> z)</span><br><span class="line">    &#123;</span><br><span class="line">        _x = x; _y = y; _z = z;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">float</span> _x, _y, _z;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> DWORD FVF;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> DWORD Vertex::FVF = D3DFVF_XYZ;</span><br></pre></td></tr></table></figure></p>
+<p>让我们把它迁移到框架程序（见1.53节）上。Setup函数创建顶点和索引缓存，锁定它们，把构成立方体的顶点写入顶点缓存，以及把定义立方体的三角形的索引写入索引缓存。然后把摄象机向后移动几个单位以便我们能够看见在世界坐标系中原点处被渲染的立方体。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Setup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 创建顶点、索引缓存</span></span><br><span class="line">    Device-&gt;CreateVertexBuffer(</span><br><span class="line">        <span class="number">8</span> * <span class="keyword">sizeof</span>(Vertex),</span><br><span class="line">        D3DUSAGE_WRITEONLY,</span><br><span class="line">        Vertex::FVF,</span><br><span class="line">        D3DPOOL_MANAGED,</span><br><span class="line">        &amp;VB,</span><br><span class="line">        <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    Device-&gt;CreateIndexBuffer(</span><br><span class="line">        <span class="number">36</span> * <span class="keyword">sizeof</span>(WORD),</span><br><span class="line">        D3DUSAGE_WRITEONLY,</span><br><span class="line">        D3DFMT_INDEX16,</span><br><span class="line">        D3DPOOL_MANAGED,</span><br><span class="line">        &amp;IB,</span><br><span class="line">        <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 向立方体的顶点缓存填充数据</span></span><br><span class="line">    Vertex* vertices;</span><br><span class="line">    VB-&gt;Lock(<span class="number">0</span>, <span class="number">0</span>, (<span class="keyword">void</span>**)&amp;vertices, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// vertices of a unit cube</span></span><br><span class="line">    vertices[<span class="number">0</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">-1.0f</span>);</span><br><span class="line">    vertices[<span class="number">1</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>);</span><br><span class="line">    vertices[<span class="number">2</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>);</span><br><span class="line">    vertices[<span class="number">3</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">-1.0f</span>);</span><br><span class="line">    vertices[<span class="number">4</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">    vertices[<span class="number">5</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">    vertices[<span class="number">6</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">    vertices[<span class="number">7</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line"></span><br><span class="line">    VB-&gt;Unlock();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义立方体的三角形</span></span><br><span class="line">    WORD* indices = <span class="number">0</span>;</span><br><span class="line">    IB-&gt;Lock(<span class="number">0</span>, <span class="number">0</span>, (<span class="keyword">void</span>**)&amp;indices, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 前面</span></span><br><span class="line">    indices[<span class="number">0</span>] = <span class="number">0</span>; indices[<span class="number">1</span>] = <span class="number">1</span>; indices[<span class="number">2</span>] = <span class="number">2</span>;</span><br><span class="line">    indices[<span class="number">3</span>] = <span class="number">0</span>; indices[<span class="number">4</span>] = <span class="number">2</span>; indices[<span class="number">5</span>] = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 背面</span></span><br><span class="line">    indices[<span class="number">6</span>] = <span class="number">4</span>; indices[<span class="number">7</span>] = <span class="number">6</span>; indices[<span class="number">8</span>] = <span class="number">5</span>;</span><br><span class="line">    indices[<span class="number">9</span>] = <span class="number">4</span>; indices[<span class="number">10</span>] = <span class="number">7</span>; indices[<span class="number">11</span>] = <span class="number">6</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 左面</span></span><br><span class="line">    indices[<span class="number">12</span>] = <span class="number">4</span>; indices[<span class="number">13</span>] = <span class="number">5</span>; indices[<span class="number">14</span>] = <span class="number">1</span>;</span><br><span class="line">    indices[<span class="number">15</span>] = <span class="number">4</span>; indices[<span class="number">16</span>] = <span class="number">1</span>; indices[<span class="number">17</span>] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 右面</span></span><br><span class="line">    indices[<span class="number">18</span>] = <span class="number">3</span>; indices[<span class="number">19</span>] = <span class="number">2</span>; indices[<span class="number">20</span>] = <span class="number">6</span>;</span><br><span class="line">    indices[<span class="number">21</span>] = <span class="number">3</span>; indices[<span class="number">22</span>] = <span class="number">6</span>; indices[<span class="number">23</span>] = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 顶部</span></span><br><span class="line">    indices[<span class="number">24</span>] = <span class="number">1</span>; indices[<span class="number">25</span>] = <span class="number">5</span>; indices[<span class="number">26</span>] = <span class="number">6</span>;</span><br><span class="line">    indices[<span class="number">27</span>] = <span class="number">1</span>; indices[<span class="number">28</span>] = <span class="number">6</span>; indices[<span class="number">29</span>] = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 底部</span></span><br><span class="line">    indices[<span class="number">30</span>] = <span class="number">4</span>; indices[<span class="number">31</span>] = <span class="number">0</span>; indices[<span class="number">32</span>] = <span class="number">3</span>;</span><br><span class="line">    indices[<span class="number">33</span>] = <span class="number">4</span>; indices[<span class="number">34</span>] = <span class="number">3</span>; indices[<span class="number">35</span>] = <span class="number">7</span>;</span><br><span class="line"></span><br><span class="line">    IB-&gt;Unlock();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 照相机位置（视图矩阵）</span></span><br><span class="line">    <span class="function">D3DXVECTOR3 <span class="title">position</span><span class="params">(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-5.0f</span>)</span></span>;</span><br><span class="line">    <span class="function">D3DXVECTOR3 <span class="title">target</span><span class="params">(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>)</span></span>;</span><br><span class="line">    <span class="function">D3DXVECTOR3 <span class="title">up</span><span class="params">(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>)</span></span>;</span><br><span class="line">    D3DXMATRIX V;</span><br><span class="line">    D3DXMatrixLookAtLH(&amp;V, &amp;position, &amp;target, &amp;up);</span><br><span class="line"></span><br><span class="line">    Device-&gt;SetTransform(D3DTS_VIEW, &amp;V);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 投影矩阵</span></span><br><span class="line">    D3DXMATRIX proj;</span><br><span class="line">    D3DXMatrixPerspectiveFovLH(</span><br><span class="line">        &amp;proj,</span><br><span class="line">        D3DX_PI * <span class="number">0.5f</span>, <span class="comment">// 90 - degree</span></span><br><span class="line">        (<span class="keyword">float</span>)Width / (<span class="keyword">float</span>)Height,</span><br><span class="line">        <span class="number">1.0f</span>,</span><br><span class="line">        <span class="number">1000.0f</span>);</span><br><span class="line">    Device-&gt;SetTransform(D3DTS_PROJECTION, &amp;proj);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 渲染状态（填充模式：框架填充）</span></span><br><span class="line">    Device-&gt;SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　Display方法有两个任务；它必须更新场景并且紧接着渲染它。既然想旋转立方体，那么我们将对每一帧增加一个角度使立方体能在这一帧旋转。对于这每一帧，立方体将被旋转一个很小的角度，这样我们看起来旋转就会更平滑。接着我们使用IDirect3DDevice9::DrawIndexedPrimitive方法来绘制立方体。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Display</span><span class="params">(<span class="keyword">float</span> timeDelta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( Device )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 旋转立方体</span></span><br><span class="line">        D3DXMATRIX Rx, Ry;</span><br><span class="line">        <span class="comment">// x轴旋转45弧度</span></span><br><span class="line">        D3DXMatrixRotationX(&amp;Rx, <span class="number">3.14f</span> / <span class="number">4.0f</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 每一帧中增加y轴的弧度</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">float</span> y = <span class="number">0.0f</span>;</span><br><span class="line">        D3DXMatrixRotationY(&amp;Ry, y);</span><br><span class="line">        y += timeDelta;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//当y轴旋转2周时，重新回到0弧度</span></span><br><span class="line">        <span class="keyword">if</span>( y &gt;= <span class="number">6.28f</span> )</span><br><span class="line">            y = <span class="number">0.0f</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 结合x轴与y轴的旋转矩阵</span></span><br><span class="line">        D3DXMATRIX p = Rx * Ry;</span><br><span class="line">        Device-&gt;SetTransform(D3DTS_WORLD, &amp;p);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 清空目标缓存和深度缓存（用0xffffffff, 1.0f）</span></span><br><span class="line">        Device-&gt;Clear(<span class="number">0</span>, <span class="number">0</span>, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,</span><br><span class="line">          <span class="number">0xffffffff</span>, <span class="number">1.0f</span>, <span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        Device-&gt;BeginScene(); <span class="comment">// 开始绘制场景</span></span><br><span class="line"></span><br><span class="line">        Device-&gt;SetStreamSource(<span class="number">0</span>, VB, <span class="number">0</span>, <span class="keyword">sizeof</span>(Vertex)); <span class="comment">// 设置资源流</span></span><br><span class="line">        Device-&gt;SetIndices(IB); <span class="comment">// 设置索引缓存</span></span><br><span class="line">        Device-&gt;SetFVF(Vertex::FVF); <span class="comment">// 设置顶点格式</span></span><br><span class="line">　　　　<span class="comment">// 利用索引缓存绘制</span></span><br><span class="line">        Device-&gt;DrawIndexedPrimitive(D3DPT_TRIANGLELIST, <span class="number">0</span>, <span class="number">0</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">12</span>);</span><br><span class="line"></span><br><span class="line">        Device-&gt;EndScene(); <span class="comment">// 结束绘制场景</span></span><br><span class="line">        Device-&gt;Present(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">// 翻转表面</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　最后，我们释放使用过的所有内存。这意味着释放顶点和索引缓存接口：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Cleanup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    d3d::Release&lt;IDirect3DVertexBuffer9*&gt;(VB);</span><br><span class="line">    d3d::Release&lt;IDirect3DIndexBuffer9*&gt;(IB);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/图形学/" rel="tag"># 图形学</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/graphics-learn-step/" rel="next" title="图形学习步骤">
+                <i class="fa fa-chevron-left"></i> 图形学习步骤
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/color/" rel="prev" title="色彩(Color)">
+                色彩(Color) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#顶点-索引缓存"><span class="nav-number">1.</span> <span class="nav-text">顶点/索引缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个顶点和索引缓存"><span class="nav-number">1.1.</span> <span class="nav-text">创建一个顶点和索引缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问缓冲内存"><span class="nav-number">1.2.</span> <span class="nav-text">访问缓冲内存</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

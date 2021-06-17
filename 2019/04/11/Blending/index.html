@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="混合因素　　观察图7.1，我们将一个红色的茶壶绘制在一个木质背景上。　　　　图7.1　　假设想让茶壶有一个透明度，以便我们能够透过茶壶看见背景（如图7.2）。　　　　图7.2　　我们怎样才能实现这个效果呢？我们只需要在木箱子上光栅化茶壶三角形，我们需要结合像素颜色，就象通过茶壶显示木箱那样来计算茶壶的像素颜色。结合像素值的意思就是用以前写过的目标像素值去估算源像素值这被叫做混合。注意混合的效果不仅">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第七章 混合(Blending)">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/Blending/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="混合因素　　观察图7.1，我们将一个红色的茶壶绘制在一个木质背景上。　　　　图7.1　　假设想让茶壶有一个透明度，以便我们能够透过茶壶看见背景（如图7.2）。　　　　图7.2　　我们怎样才能实现这个效果呢？我们只需要在木箱子上光栅化茶壶三角形，我们需要结合像素颜色，就象通过茶壶显示木箱那样来计算茶壶的像素颜色。结合像素值的意思就是用以前写过的目标像素值去估算源像素值这被叫做混合。注意混合的效果不仅">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.826Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第七章 混合(Blending)">
+<meta name="twitter:description" content="混合因素　　观察图7.1，我们将一个红色的茶壶绘制在一个木质背景上。　　　　图7.1　　假设想让茶壶有一个透明度，以便我们能够透过茶壶看见背景（如图7.2）。　　　　图7.2　　我们怎样才能实现这个效果呢？我们只需要在木箱子上光栅化茶壶三角形，我们需要结合像素颜色，就象通过茶壶显示木箱那样来计算茶壶的像素颜色。结合像素值的意思就是用以前写过的目标像素值去估算源像素值这被叫做混合。注意混合的效果不仅">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/Blending/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>第七章 混合(Blending) | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Blending/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">第七章 混合(Blending)
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/Blending/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Blending/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="混合因素"><a href="#混合因素" class="headerlink" title="混合因素"></a>混合因素</h1><p>　　观察图7.1，我们将一个红色的茶壶绘制在一个木质背景上。<br>　　<br>　　图7.1<br>　　假设想让茶壶有一个透明度，以便我们能够透过茶壶看见背景（如图7.2）。<br>　　<br>　　图7.2<br>　　我们怎样才能实现这个效果呢？我们只需要在木箱子上光栅化茶壶三角形，我们需要结合像素颜色，就象通过茶壶显示木箱那样来计算茶壶的像素颜色。结合像素值的意思就是用以前写过的目标像素值去估算源像素值这被叫做混合。注意混合的效果不仅仅象是玻璃透明一样。我们有很多选项来指定颜色是怎样被混合的，就象7.2部分中看到的一样。<br>　　这是很重要的，认识三角形普遍利用以前写入后缓存中的像素来与之混合来光栅化。在示例图片中，木箱图片首先被画出来且它的像素在后缓存中。我们然后绘制茶壶，以便用木箱的像素来混合茶壶的像素。因此，当使用混合时，下面的规则将被遵循：<br>　　规则：首先不使用混合绘制物体。然后根据物体离摄象机的距离使用混合对物体拣选；这是非常有效的处理，假如物体是在视图坐标中，那么你能够利用z分量简单地拣选。最后使用从后到前的顺序混合绘制物体。<br>　　下面的公式是用来混合两个像素值的：<br>　　<br>　　上面的所有变量都是一个4D颜色向量（r,g,b,a），并且符号是表示分量相乘。</p>
+<ul>
+<li>OutputPixel——混合后的像素结果。</li>
+<li>SourcePixel——通常被计算的像素，它是利用在后缓存中的像素来被混合的。</li>
+<li>SourceBlendFactor——在[0，1]范围内的一个值。它指定源像素在混合中的百分比。</li>
+<li>DestPixel——在后缓存中的像素。</li>
+<li>DestBlendFactor——在[0，1]范围内的一个值。它指定目的像素在混合中的百分比。<br>　　源和目的混合要素使我们能够按照多种途径改变原始源和目的像素，允许实现不同的效果。7.2节列举了能够被使用的预先确定的值。<br>　　混合默认是被关闭的；你能够通过设置D3DRS_ALPHABLENDENABLE渲染状态为true来开启它：<br>Device-&gt;SetRenderState(D3DRS_ALPHABLENDENABLE, true);<br>7.2混合要素<br>　　通过设置不同的源和目的要素，我们能够创造很多不同的混合效果。通过实验，使用不同的组合看看它们到底能实现什么效果。你能够通过设置D3DRS_SRCBLEND和D3DRS_DESTBLEND渲染状态来分别设置源混合要素和目的混合要素。例如我们可以这样写：<br>Device-&gt;SetRenderState(D3DRS_SRCBLEND, Source);<br>Device-&gt;SetRenderState(D3DRS_DESTBLEND, Destination);<br>　　这里Source和Destination能够使用下面混合要素中的一个：</li>
+<li>D3DBLEND_ZERO——blendFactor=(0, 0, 0, 0)</li>
+<li>D3DBLEND_ONE——blendFactor=(1, 1, 1, 1)</li>
+<li>D3DBLEND_SRCCOLOR——blendFactor=(rs, gs, bs, as)</li>
+<li>D3DBLEND_INVSRCCOLOR——blendFactor=(1-rs, 1-gs, 1-bs, 1-as)</li>
+<li>D3DBLEND_SRCALPHA——blendFactor=(as, as, as, as)</li>
+<li>D3DBLEND_INVSRCALPHA——blendFactor=(1-as, 1-as, 1-as, 1-as)</li>
+<li>D3DBLEND_DESTALPHA——blendFactor=(ad, ad, ad, ad)</li>
+<li>D3DBLEND_INVDESTALPHA——blendFactor=(1-ad, 1-ad, 1-ad, 1-ad)</li>
+<li>D3DBLEND_DESTCOLOR——blendFactor=(rd, gd, bd, ad)</li>
+<li>D3DBLEND_INVDESTCOLOR——blendFactor=(1-rd, 1-gd, 1-bd, 1-ad)</li>
+<li>D3DBLEND_SRCALPHASAT——blendFactor=(f, f, f, 1)  ,  f=min(as, 1 – ad)</li>
+<li>D3DBLEND_BOTHINVSRCALPHA——这种混合模式设置源混合要素为（1-as, 1-as, 1-as, 1-as,）以及目的混合要素为（as,as,as,as）。这种混合模式仅对D3DRS_SRCBLEND有效。<br>　　源和目的混合要素的默认值分别是D3DBLEND_SRCALPHA和D3DBLEND_INVSRCALPHA。<br>7.3透明度<br>  在以前的章节中我们忽略了颜色顶点和材质中的alpha部分，那是因为当时它并不是必须的。现在它首先被用在混合中。<br>  Alpha部分主要是用来指定像素的透明等级。我们为每个像素的alpha部分保留8位，alpha的有效值在[0,255]范围内，[0,255]代表不透明度[0%,100%]。因此，像素的alpha为0时，表示完全透明，像素的alpha为128时，表示50%透明，像素的alpha为255时，表示完全不透明。<br>  为了让alpha部分描述像素的透明等级，我们必须设置源混合要素为D3DBLEND_SRCALPHA以及目的混合要素为D3DBLEND_INVSRCALPHA。这些值碰巧也是被默认设置的。<br>7.3.1Alpha通道<br>　　代替使用Alpha部分来计算遮影，我们能够从纹理的alpha通道中得到alpha信息。Alpha通道是额外的设置位，用它来保存每一个点的alpha值。当一个纹理被映射到一个图元上时，在alpha通道中的alpha信息也被映射，并且它们利用alpha信息为每个像素赋予纹理。图7.3显示了一个带8位alpha通道的图片。<br>　　<br>　　图7.3<br>　　图7.4显示的是一个利用alpha通道指定透明度来渲染的一个纹理方块。<br>　　<br>　　图7.4<br>7.3.2指定Alpha资源<br>　　默认情况下，假如设置一个有alpha通道的纹理，alpha值从在alpha通道中获得。假如没有alpha通道，那么alpha值是通过顶点颜色获得。然而，你能够通过下面的渲染状态来指定使用哪一个资源：<br>// compute alpha from diffuse colors during shading<br>Device-&gt;SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);<br>Device-&gt;SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);<br>// take alpha from alpha channel<br>Device-&gt;SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);<br>Device-&gt;SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);<br>7.4使用DirectX纹理工具创建Alpha通道<br>  绝大多数普通图象文件格式没有存储alpha信息。在这一部分我们给你演示怎样使用DirectX纹理工具来创建一个带alpha通道的DDS文件。DDS文件是一个为DirectX应用程序和纹理设置的图象格式。DDS文件能够利用D3DXCreateTextureFromFile被读进纹理中，就象bmp和jpg文件一样。DirectX纹理工具被放在你的DXSDK目录下的\Bin\DXUtils文件夹下（我是放在C:\Program Files\Microsoft DirectX 9.0 SDK (February 2005)\Utilities\Bin\x86下的，文件名是DxTex.exe）。<br>  打开DirectX纹理工具，并且把本章中示例文件夹下的crate.jpg文件用工具打开。木箱被自动的按照24位RGB纹理被读取。它包含8位红色，8位绿色，以及8位蓝色。我们需要将该纹理增加为32位ARGB纹理，增加的是额外的8位alpha通道。从菜单中选择Format，选择Change Surface Format。一个象图7.5的对话框将被弹出。选择A8R8G8B8格式点击OK。</li>
+</ul>
+<p>图7.5<br>    它创建了一个32位颜色深度的图象，它的每个象素都有8位alpha通道，8位红色，8位绿色，8位蓝色。我们下一步是向alpha通道中写入数据。我们将图7.3中的8位灰色图片信息写进alpha通道中。选择菜单中的File，选择Open Onto Alpha Channel Of This Texture。一个对话框将弹出让你选择包含你想要写入alpha通道中数据信息的图片。选择alphachannel.bmp文件。图7.6显示的是程序已经插入了alpha通道数据。</p>
+<p>图7.6<br>    现在用你选择的文件名存储纹理；我们使用cratewalpha.dds文件名。<br>7.5实例程序：透明度<br>    这个实例程序是在一个木箱背景上绘制一个透明的茶壶，就象图7.2所显示的一样。在这个例子中alpha值是从材质中得到。应用程序允许我们通过按A或S键来增加/减少alpha的值。<br>    使用混合的必要步骤是：</p>
+<ol>
+<li>设置混合要素D3DRS_SRCBLEND 和 D3DRS_DESTBLEND。</li>
+<li>假如你使用alpha部分，指定资源（材质或alpha通道）。</li>
+<li>允许alpha混合渲染状态。<br>　　对于这个例子，我们定义下面的全局变量：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ID3DXMesh* Teapot = <span class="number">0</span>; <span class="comment">// the teapot</span></span><br><span class="line">D3DMATERIAL9 TeapotMtrl; <span class="comment">// the teapot’s material</span></span><br><span class="line"></span><br><span class="line">IDirect3DVertexBuffer9* BkGndQuad = <span class="number">0</span>; <span class="comment">// background quad - crate</span></span><br><span class="line">IDirect3DTexture9* BkGndTex = <span class="number">0</span>; <span class="comment">// crate texture</span></span><br><span class="line">D3DMATERIAL9 BkGndMtrl; <span class="comment">// background material</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>Setup方法设置很多东西；我们省略了很多与本章无关的代码。关心混合，Setup方法指定alpha值的获取资源。在这个例子中，我们通过材质指定alpha值。注意我们设置茶壶的材质alpha部分为0.5，也就是说茶壶将按照50%的透明度被渲染。我们在这里也要设置混合要素。要注意的是在这个方法中我们不能将alpha混合设置为启用。理由是alpha混合要进行额外的处理并且应该仅在需要用时才被使用。举例，在这个例子中只有茶壶需要用允许alpha混合来被渲染——而方块不需要。因此，我们在Display函数中启用alpha混合。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Setup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    TeapotMtrl = d3d::RED_MTRL;</span><br><span class="line">    TeapotMtrl.Diffuse.a = <span class="number">0.5f</span>; <span class="comment">// set alpha to 50% opacity</span></span><br><span class="line">    BkGndMtrl = d3d::WHITE_MTRL;</span><br><span class="line"></span><br><span class="line">    D3DXCreateTeapot(Device, &amp;Teapot, <span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    ...<span class="comment">// Create background quad snipped    </span></span><br><span class="line">    ...<span class="comment">// Light and texture setup snipped</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// use alpha in material's diffuse component for alpha</span></span><br><span class="line">    Device-&gt;SetTextureStageState(<span class="number">0</span>, D3DTSS_ALPHAARG1, D3DTA_DIFFUSE);</span><br><span class="line">    Device-&gt;SetTextureStageState(<span class="number">0</span>, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);</span><br><span class="line">    <span class="comment">// set blending factors so that alpha</span></span><br><span class="line">    <span class="comment">// component determines transparency</span></span><br><span class="line">    Device-&gt;SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);</span><br><span class="line">    Device-&gt;SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);</span><br><span class="line">    </span><br><span class="line">    ...<span class="comment">// view/projection matrix setup snipped</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在Display函数中，我们检测假如A或S键被按下那么就通过增加或减少材质的alpha值来反馈。注意这个方法要保证alpha值不会超出[0,1]的范围。我们然后渲染背景。最后，我们启用alpha混合，利用alpha混合来渲染茶壶，关闭alpha混合。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Display</span><span class="params">(<span class="keyword">float</span> timeDelta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( Device )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// Update</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// increase/decrease alpha via keyboard input</span></span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'A'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TeapotMtrl.Diffuse.a += <span class="number">0.01f</span>;</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'S'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TeapotMtrl.Diffuse.a -= <span class="number">0.01f</span>;</span><br><span class="line">        <span class="comment">// force alpha to [0, 1] interval</span></span><br><span class="line">        <span class="keyword">if</span>(TeapotMtrl.Diffuse.a &gt; <span class="number">1.0f</span>)</span><br><span class="line">            TeapotMtrl.Diffuse.a = <span class="number">1.0f</span>;</span><br><span class="line">        <span class="keyword">if</span>(TeapotMtrl.Diffuse.a &lt; <span class="number">0.0f</span>)</span><br><span class="line">            TeapotMtrl.Diffuse.a = <span class="number">0.0f</span>;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// Render</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        Device-&gt;Clear(<span class="number">0</span>, <span class="number">0</span>, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,</span><br><span class="line">                        <span class="number">0xffffffff</span>, <span class="number">1.0f</span>, <span class="number">0</span>);</span><br><span class="line">        Device-&gt;BeginScene();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Draw the background</span></span><br><span class="line">        D3DXMATRIX W;</span><br><span class="line">        D3DXMatrixIdentity(&amp;W);</span><br><span class="line">        Device-&gt;SetTransform(D3DTS_WORLD, &amp;W);</span><br><span class="line">        Device-&gt;SetFVF(Vertex::FVF);</span><br><span class="line">        Device-&gt;SetStreamSource(<span class="number">0</span>, BkGndQuad, <span class="number">0</span>, <span class="keyword">sizeof</span>(Vertex));</span><br><span class="line">        Device-&gt;SetMaterial(&amp;BkGndMtrl);</span><br><span class="line">        Device-&gt;SetTexture(<span class="number">0</span>, BkGndTex);</span><br><span class="line">        Device-&gt;DrawPrimitive(D3DPT_TRIANGLELIST, <span class="number">0</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Draw the teapot</span></span><br><span class="line">        Device-&gt;SetRenderState(D3DRS_ALPHABLENDENABLE, <span class="literal">true</span>);</span><br><span class="line">        D3DXMatrixScaling(&amp;W, <span class="number">1.5f</span>, <span class="number">1.5f</span>, <span class="number">1.5f</span>);</span><br><span class="line">        Device-&gt;SetTransform(D3DTS_WORLD, &amp;W);</span><br><span class="line">        Device-&gt;SetMaterial(&amp;TeapotMtrl);</span><br><span class="line">        Device-&gt;SetTexture(<span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        Teapot-&gt;DrawSubset(<span class="number">0</span>);</span><br><span class="line">        Device-&gt;SetRenderState(D3DRS_ALPHABLENDENABLE, <span class="literal">false</span>);</span><br><span class="line">        Device-&gt;EndScene();</span><br><span class="line">        Device-&gt;Present(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意：在本章中有另一个使用纹理通道来演示alpha混合的例子texAlpha。与上边的代码不同之处仅仅在于得到alpha值是从纹理而不是从材质。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// use alpha channel in texture for alpha</span></span><br><span class="line">Device-&gt;SetTextureStageState(<span class="number">0</span>, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);</span><br><span class="line">Device-&gt;SetTextureStageState(<span class="number">0</span>, D3DTSS_ALPHAOP, D3DTOP_SELECTARG1);</span><br></pre></td></tr></table></figure></p>
+<p>这个应用程序读取的是一个在7.4节中用DX Tex Tool工具创建的带有alpha通道的DDS文件。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/Texturing/" rel="next" title="第六章 纹理(Texturing)">
+                <i class="fa fa-chevron-left"></i> 第六章 纹理(Texturing)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/Stenciling/" rel="prev" title="模版(Stenciling)">
+                模版(Stenciling) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#混合因素"><span class="nav-number">1.</span> <span class="nav-text">混合因素</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

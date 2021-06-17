@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="程序的优化处理，这个是面试考察的重点，内存的管理也是Unity开发的重中之重。内存管理无非就是对内存的使用，针对UI的内存管理使用的图集方式，Unity自身的图集功能浪费内存，比如2048 * 2048的图集大小，它占的内存是4M，也就是说不管图集是否填满，它都需要在内存中开辟4M的空间，但是如果使用Texture Packer工具就可以节省没有填满的空间，针对大量UI的加载可以采用分类打包图集">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试经历">
+<meta property="og:url" content="http://zentia.github.io/2018/03/13/interview-1/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="程序的优化处理，这个是面试考察的重点，内存的管理也是Unity开发的重中之重。内存管理无非就是对内存的使用，针对UI的内存管理使用的图集方式，Unity自身的图集功能浪费内存，比如2048 * 2048的图集大小，它占的内存是4M，也就是说不管图集是否填满，它都需要在内存中开辟4M的空间，但是如果使用Texture Packer工具就可以节省没有填满的空间，针对大量UI的加载可以采用分类打包图集">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.194Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试经历">
+<meta name="twitter:description" content="程序的优化处理，这个是面试考察的重点，内存的管理也是Unity开发的重中之重。内存管理无非就是对内存的使用，针对UI的内存管理使用的图集方式，Unity自身的图集功能浪费内存，比如2048 * 2048的图集大小，它占的内存是4M，也就是说不管图集是否填满，它都需要在内存中开辟4M的空间，但是如果使用Texture Packer工具就可以节省没有填满的空间，针对大量UI的加载可以采用分类打包图集">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/03/13/interview-1/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>面试经历 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/13/interview-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">面试经历
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/03/13/interview-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/03/13/interview-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>程序的优化处理，这个是面试考察的重点，内存的管理也是Unity开发的重中之重。内存管理无非就是对内存的使用，针对UI的内存管理使用的图集方式，Unity自身的图集功能浪费内存，比如2048 * 2048的图集大小，它占的内存是4M，也就是说不管图集是否填满，它都需要在内存中开辟4M的空间，但是如果使用Texture Packer工具就可以节省没有填满的空间，针对大量UI的加载可以采用分类打包图集的方法处理。当然内存池的使用也是可以应用到UI的管理，另外就是3D场景资源的管理，需要场景图片有自己的图库，这样图片可以重复利用，另外模型的面熟，骨骼数量，材质数量都是需要去关注。</li>
+<li>内存优化还需要涉及到图片的格式，不带Alpha通道的图片采用jpg格式，带有Alpha通过的采用png格式，这是一种处理方式，另外一种处理方式就是将Alpha通道单独拿出来，所有的图片都是jpg格式，然后用带有Alpha通道的图片跟jpg格式文件进行结合使用。</li>
+<li>在结构涉及方面，就要注意了，代码的编写，比如常用的设计模式，工厂模式，单例模式，MVC模式，FSM模式，观察者模式等，这些模式作为开发者必须要掌握的。</li>
+<li>接下来就是Shader的编写了，可以使用Shader Forge编辑器，对于一些材质渲染非常好用，这个可以作为读者学习Shader的工具。</li>
+<li>九、另外对于C#中定义的String，StringBuilder或者List,ArrayList等它们之间的区分要搞清楚。</li>
+<li>热更新技术的实现，市面上应用比较广的ulua作为脚本语言架构设计。</li>
+<li>作为客户端开发者也需要了解网络方面的知识，比如tcp,udp,http这些协议的处理方式。</li>
+<li>场景、导航、寻路</li>
+<li>作为渲染场景的后处理方式，比如Bloom,Blur,HDR,SSAO,PSSM等等。</li>
+<li>C#中的事件监听，委托的使用也要熟练掌握。</li>
+<li>协程与多线程的区别。</li>
+<li>文本文件的加载，比如json,xml,csv,二进制等等。</li>
+</ul>
+<p>GC是Mono运行时的机智，而非Unity3D引擎的机制，所以GC也主要是针对Mono对象来说的。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String s = <span class="keyword">new</span> String(<span class="string">"lyf"</span>);</span><br></pre></td></tr></table></figure>
+<p>在运行时涉及了几个String Object<br>两个，一个是字符串字面量”lyf”所对应的，驻留(intern)在一个全局共享的字符串常量池中的实例，i另一个是通过new String(String)创建并初始化的、内容于”lyf”相同的实例</p>
+<h1 id="OpenGL中要用到哪几种buffer"><a href="#OpenGL中要用到哪几种buffer" class="headerlink" title="OpenGL中要用到哪几种buffer"></a>OpenGL中要用到哪几种buffer</h1><p>帧缓冲(Frame Buffer)<br>颜色缓冲(Color Buffer)<br>模版缓冲(Stencil Buffer)<br>顶点缓冲(Vertice Buffer)<br>深度缓冲(Depth Buffer)</p>
+<h1 id="冰川网络"><a href="#冰川网络" class="headerlink" title="冰川网络"></a>冰川网络</h1><p>1.啥子是泛型？给你一个CBase基类，写一个继承CBase的泛型。<br>百度答：所谓泛型，即通过参数化类型来实现在同一份代码操作多种数据类型。<br>我答：类的数据成员不固定，成员函数的返回值和传参类型不固定的，这样的方式叫做泛型。本想说这样的类叫做泛型类，但是人家问的是泛型，只能说这样的方式了。</p>
+<p>我不知道写一个继承CBase的泛型考点是啥子，然后我就开始瞎写<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CDrive</span>:<span class="title">public</span> <span class="title">CBase</span> <span class="comment">// 为毛还要加public，难道还有公有继承，保护继承，私有继承？？？</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> Do&lt;T&gt;(T t) <span class="comment">// 这他妈写的什么玩意。</span></span><br><span class="line">    &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3.啥子是反射？写一段加载程序集，然后获取类型Type，然后通过方法名调用<br>网上答案：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Reflection;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">InvokeReflection</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Learn00();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Learn00</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * System.Reflection.Assembly类有两个静态方法：Assembly.Load(string assemblyname)和Assembly.LoadFrom(string filename) 。</span></span><br><span class="line"><span class="comment">         * 通常用这两个方法把程序集加载到应用程序域中。 如果你希望加载的程序集超出了CLR的预定探查范围，你可以用Assembly.LoadFrom直接从一个文件位置加载程序集。</span></span><br><span class="line"><span class="comment">         * Assembly.LoadFrom()和Assembly.LoadFile()，两者的主要区别有两点：</span></span><br><span class="line"><span class="comment">         * 一：Assembly.LoadFile()只载入指定的dll文件，而不会自动加载相关的dll文件。如果下文例子使用Assembly.LoadFile()加载SayHello.dll，那么程序就只会加载</span></span><br><span class="line"><span class="comment">         * SayHello.dll而不会去加载SayHello.dll引用的BaseClass.dll文件。</span></span><br><span class="line"><span class="comment">         * 二：Assembly.LoadFrom()载入一个Assembly时，会先检查前面是否已经载入过相同名字的Assembly；Assembly.LoadFile()则不会做类似的检查。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="comment">//C:\Users\Administrator\Desktop\New Unity Project\Assets\DLL</span></span><br><span class="line">        Assembly assemly2 = Assembly.LoadFrom(<span class="string">@"C:\Users\Administrator\Desktop\New Unity Project\Assets\Scripts\TestReflection.dll"</span>);</span><br><span class="line">        Assembly assemly1 = Assembly.LoadFile(<span class="string">@"C:\Users\Administrator\Desktop\New Unity Project\Assets\Scripts\TestReflection.dll"</span>);</span><br><span class="line">        Assembly assemly = Assembly.Load(<span class="string">"TestReflection"</span>);<span class="comment">//1填加DLL</span></span><br><span class="line">        Type testType = assemly.GetType(<span class="string">"HaiLan.TestReflection.TestReflectionDLL"</span>);<span class="comment">//2获取对应的类信息，需要填加对应的命名空间</span></span><br><span class="line">        <span class="keyword">object</span> oTestReflectionDLL = Activator.CreateInstance(testType);<span class="comment">//3 创建对象</span></span><br><span class="line">        IReflectionDLL iTestReflectionDLL = oTestReflectionDLL <span class="keyword">as</span> IReflectionDLL;<span class="comment">//4 类型转换</span></span><br><span class="line">        iTestReflectionDLL.TestShow1();<span class="comment">//5 方法调用</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> assemly.GetModules())</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(item.Name);<span class="comment">//打印结果 TestReflection.dll</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> type <span class="keyword">in</span> assemly.GetTypes())</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.Log(type.Name);</span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> item <span class="keyword">in</span> type.GetMethods())</span><br><span class="line">            &#123;</span><br><span class="line">                Debug.Log(item.Name);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>4.avatar如何换装？<br>5.啥子是Prefab，如何获取一个Prefab实例化的GameObject的类型？PrefabInstance和PrefabModelInstance有啥子区别（我都不知道他在问啥子）<br>6.获取一个Render的材质，然后设置流光shader的uniform/<br>7.地震了，狗跑了，房屋塌了，人慌了，这是哪个设计模式？写出伪代码或者画出流程图；要求可扩展<br>8.给你一个新项目，内存贼高，FPS贼低，咋优化，是Xlua和C#写的。</p>
+<ol>
+<li>AssetBundle的打包和加载</li>
+<li>如何判断线段和多边形是否相交？</li>
+</ol>
+<h1 id="深圳易凡互动"><a href="#深圳易凡互动" class="headerlink" title="深圳易凡互动"></a>深圳易凡互动</h1><ol>
+<li>NGUI的uv和顶点是怎么生成的？</li>
+<li>客户端网络是否有用多线程？为什么要用？</li>
+<li>TCP IPV6是怎么实现的？</li>
+<li>Unity5.6和Unity2018的光照图有什么区别，流程是怎样的？</li>
+</ol>
+<h1 id="深圳奇妙能力"><a href="#深圳奇妙能力" class="headerlink" title="深圳奇妙能力"></a>深圳奇妙能力</h1><ol>
+<li>TCP粘包可以描述一下吗？</li>
+<li>Shader Bloom泛光是怎么实现的？</li>
+<li>B树，B+树是啥子？</li>
+<li>从一堆无序的数字中找到不重复的数字，重复的数字是都是双数个。</li>
+</ol>
+<h1 id="牛蛙互动"><a href="#牛蛙互动" class="headerlink" title="牛蛙互动"></a>牛蛙互动</h1><ol>
+<li>点和多边形相交（曲线先交）？</li>
+<li><p>输出下列的结果？</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Program</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">readonly</span> <span class="keyword">int</span> b = a + <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">readonly</span> <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> d = c + <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> c = <span class="number">10</span>;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="params"><span class="keyword">string</span>[] args</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        Program p = <span class="keyword">new</span> Program();</span><br><span class="line">        Console.WriteLine(<span class="string">"a = &#123;0&#125;, b = &#123;1&#125;, c = &#123;2&#125;, d = &#123;3&#125;"</span>, p.a, p.b, c, d);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设计一种存储结构实现字典查找。</p>
+</li>
+<li>600个一M的纹理，给一个UI使用，每次只会加载一个，是打成一个AB包好，还是多个好？</li>
+</ol>
+<h1 id="IGG"><a href="#IGG" class="headerlink" title="IGG"></a>IGG</h1><ol>
+<li>TCP粘包和三次握手的联系?</li>
+<li>动静分离？</li>
+<li>Overdraw的优化？</li>
+<li>半透明和不透明物体的渲染流程？</li>
+</ol>
+<h1 id="珠海西山居"><a href="#珠海西山居" class="headerlink" title="珠海西山居"></a>珠海西山居</h1><ol>
+<li>工作中遇到过什么困难，如何解决，获得什么成就？</li>
+<li>Array和List的区别？</li>
+<li>闭包是什么？</li>
+<li>Lua Table如何实现的，Hash是什么，如何解决Hash冲突？</li>
+<li>new Struct存放在哪里？堆和栈的区别？</li>
+<li>什么是元表？有什么应用？</li>
+<li>堆和栈在C++中的运用以及实现方式以及优缺点？</li>
+<li>UI的overdraw如何解决，异步加载造成数据不同步如何解决？</li>
+<li>剧情编辑器如何不根据地形制作剧情？</li>
+<li>协程的原理？</li>
+</ol>
+<h1 id="乐易网络"><a href="#乐易网络" class="headerlink" title="乐易网络"></a>乐易网络</h1><ol>
+<li>NGUI如何优化？</li>
+<li>NGUI是如何绘制的？</li>
+<li>UIWidget如何提交渲染的？</li>
+<li>一个已经排好序的链表构成一个数组，如何合成一个新的链表？（机试题）</li>
+</ol>
+<h1 id="四维时代"><a href="#四维时代" class="headerlink" title="四维时代"></a>四维时代</h1><ol>
+<li>进程间是如何交互的？各自有啥好处还坏处？</li>
+<li>漫反射原理？</li>
+<li>lua的加载流程是怎样的？</li>
+<li>TCP/UDP/HTTP运用场景，优缺点？</li>
+<li>线程和协程的区别？</li>
+</ol>
+<h1 id="乐逗"><a href="#乐逗" class="headerlink" title="乐逗"></a>乐逗</h1><ol>
+<li>TTF字体</li>
+<li>传输层解释一下为什么UDP在手机上要优于TCP</li>
+<li>Lua的Hash是如何实现的</li>
+<li>红黑树的时间复杂度</li>
+<li>渲染流程管线，相机抖动是如何出现的</li>
+<li>new free malloc delete 区别在哪里？</li>
+</ol>
+<h1 id="广州百田"><a href="#广州百田" class="headerlink" title="广州百田"></a>广州百田</h1><ol>
+<li>介绍过往工作、项目经历</li>
+<li>unity的基本框架有哪些？请描述或者简单画一画项目核心的架构分层图，以及核心模块间的交互时序（Unity框架范围问题比较泛，最好能结合业务说下某个业务的框架），如果没用过unity，那就画一下目前项目的业务框架。</li>
+<li>是否做过发布打包相关的工作？用unity是怎么管理和加载资源的？如何热更新资源，对热更资源和放置路径有什么要求？（可以说下热更新分哪些内容，以及对AssetBundle的理解）</li>
+<li>是否完成过大型模块，如战斗，场景，副本等；（说设计思路）</li>
+<li>是否做过游戏相关优化，如GPU，CPU，Shader等；（优化工作的具体方面：1.资源包大小的优化，2.内存占用，内存分配和碎片的优化，3.cpu热点和毛刺优化，4.gpu性能开销优化）</li>
+<li>同步、异步相关问题；（执行时序的概念，资源加载，网络通信，逻辑调用的各种时序流程）</li>
+<li>AI框架有哪些；（这个问题，成熟的AI解决方案就是行为树，面试官会问，对行为树的了解情况，是怎么组合完成复杂AI的，这个是加分题，大部分面试人其实说的不太透）</li>
+<li>底层网络用哪些协议（补充：tcp，udp（以及可靠版的udp）的区别，分别适用于哪些业务场景）</li>
+<li>用过哪些开源库；（单纯考察你对业内相关开源库的敏感度，知识广度）</li>
+<li>了解哪些比较好的AI插件；</li>
+<li>NGUI相关问题（补充问题：NGUI绘制开销如何优化，减少drawcall需要在制作UI和图集的时候注意什么）</li>
+<li>怎么做内存、显存优化；</li>
+<li>图片的处理格式（补充：怎么选择图片的格式，安卓和IOS图片压缩分别是什么格式，有什么要求，不同业务场景下图片尺寸位数，mipmap又分别有什么要求和区别）</li>
+<li>服务器的战斗同步方案，给出一个优质的方案；（你需要针对不通的游戏类型和玩法做出不同的针对性优化，优化策略和网络同步方案都不同，典型代表2类，传统CS同步和帧同步）</li>
+<li>渲染管线流程是由哪些部分组成，分别有什么作用，能讲透彻是加分题；</li>
+<li>vertexshader和pixel shader作用分别是什么，如何协作的；</li>
+<li>后处理是什么？你所知道的后处理效果有哪些，大概说说这些后处理实现的原理</li>
+<li>延迟渲染是什么？</li>
+<li>延迟渲染和延迟光照的区别？</li>
+<li>shadow map的原理</li>
+<li>简单描述1，2个你认为最具有挑战性的功能，你是怎么思考，设计，优化的，是否还有不足，还能否继续改进。</li>
+<li>结构体和类的区别</li>
+<li>ArrayList和List的区别</li>
+<li>如果想将一个class作为字典表的Key需要实现哪些函数</li>
+<li>字典表的赋值与key的遍历需要注意的地方。</li>
+<li>interface与抽象类的区别</li>
+<li>Unity monobehaviour的生命周期中OnEnable() Awake() Start() Update()的顺序，以及哪些会重复调用</li>
+<li>MipMap是什么，以及它的作用</li>
+<li>Renderer是什么，MeshRenderer与SkinnedMeshRenderer的区别</li>
+<li>AplhaBlend与AlphaTest的区别</li>
+<li>Unity自带的Diffuse着色器，里面的灯光运算是顶点灯光还是像素灯光，这两者有什么区别</li>
+<li>在一个固定视角的场景中有一个固定方向的方向光，怎样给渲染物体时做优化</li>
+<li>介绍项目客户端资源分包策略</li>
+<li>介绍客户端代码热更新的实现方式</li>
+<li>介绍ZTEST ZWRITE的作用</li>
+<li>渲染实体对象和半透明对象，有什么优化手段</li>
+<li>AlphaTest为什么在部分移动设备存在性能问题，如何规避</li>
+<li>介绍行为树的各类节点，各类节点返回值对于父节点的影响。</li>
+<li>如何实现镜面效果</li>
+<li>是否使用过NGUI，NGUI如何管理Widget和组织drawcall</li>
+<li>后处理中，如何根据深度缓存还原出世界坐标？</li>
+<li>简述Shadow Map的原理，Shadow bias的作用是什么？</li>
+<li>热更新断点续传？</li>
+</ol>
+<h2 id="图形相关面试题"><a href="#图形相关面试题" class="headerlink" title="图形相关面试题"></a>图形相关面试题</h2><ol>
+<li>软蒙皮和硬蒙皮的区别，硬蒙皮的限制</li>
+<li>阴影的实现方式有哪些，优缺点各是什么，方向光，点光源，聚光灯的阴影实现又有什么区别</li>
+<li>自阴影如何实现</li>
+<li>延迟渲染的原理</li>
+<li>HDR，bloom，径向模糊这几个后处理的实现原理</li>
+<li>Unity里Shader怎么做LOD</li>
+<li>OpenGL ES3.0相比2.0增加了哪些特性</li>
+</ol>
+<h2 id="终面技巧"><a href="#终面技巧" class="headerlink" title="终面技巧"></a>终面技巧</h2><h3 id="技术终面"><a href="#技术终面" class="headerlink" title="技术终面"></a>技术终面</h3><ol>
+<li>回顾自己的简历，对简历上所有提到的技术要点一定要非常熟悉，因为面试官会针对简历上的技术问题进行扩展；</li>
+<li>重点准备项目技术框架，包括如何搭建，技术选型，为何选用这个框架，优劣势，项目开发过程中，上线过程中，维护过程中所出现的问题，针对不通的问题有哪些解决方案，为何选用这种解决方案，优劣势对比等；</li>
+<li>重点阐述自己在项目开发中承担的角色，对项目开发的共享，自己在工作中解决的问题；</li>
+<li>时刻显示出自己对工作，对技术的热情，对新技术的关注（特别关注近期新技术，新闻等）</li>
+<li>可以重点阐述自己工作之余喜爱研究的底层技术</li>
+<li>何回答对待加班的看法：强调自己是效率性员工，自己开发所用时间段，bug少（此处可举例说明），但项目紧急会资源加班，和团队一起完成紧急任务。</li>
+</ol>
+<h3 id="态度"><a href="#态度" class="headerlink" title="态度"></a>态度</h3><p>面带微笑，不卑不亢，无论是待会HR还是技术面试都给予足够尊重，当不懂技术的HR问到技术问题时，一定要当作对方是懂技术的人员去认真回答这个问题。<br>越是简单的问题，越考察基础，遇到简单问题要认真回答。</p>
+<h3 id="离职意愿"><a href="#离职意愿" class="headerlink" title="离职意愿"></a>离职意愿</h3><ul>
+<li>家里和自己更喜欢深圳这个城市，也是家人强烈要求到深圳长期发展，广州深圳的游戏环境也更好</li>
+<li>从个人职业发展上来说，很向往XXX这样的平台，自己也私下了解了一下相关的信息，觉得XXX将来会发展的很好，希望能过来学习更多的东西；</li>
+<li>本身XXX是老牌的研发公司，研发实力很强，但是就现阶段来说，自己上升及发展到达了一个瓶颈期，期望出来寻求给多的技术。</li>
+</ul>
+<h1 id="9130"><a href="#9130" class="headerlink" title="9130"></a>9130</h1><h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><ol>
+<li>Lua的Hash是怎么实现的？</li>
+<li>Hash是怎么实现的？</li>
+<li>介绍一下项目中导航？</li>
+<li>介绍一下Mono</li>
+<li>Google的Probuffer介绍</li>
+<li>Lua的module是如何实现的？</li>
+<li>C++和Lua是如何交互的？</li>
+</ol>
+<h2 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h2><ol>
+<li>描述服务器架构？</li>
+<li>全球服中如何管理玩家连接，当有一个逻辑服宕机之后如何处理？</li>
+<li>对称加密和非对称加密？</li>
+<li>TCP/IP的滑动窗口</li>
+</ol>
+<h1 id="搜狐二面"><a href="#搜狐二面" class="headerlink" title="搜狐二面"></a>搜狐二面</h1><ol>
+<li>针对项目情况问一些技术问题吧，不过问了好几次有遇到什么技术问题或者技术难点之类的。</li>
+<li>问了一下AssetBundle管理</li>
+<li>还有资源管理</li>
+<li>还有问了一下内存占用，面数，drawcall占用，drawcall如何合理分配。模型划分。<br>15.2K的三角形数，14.6k的顶点数，Batches：83，Draw Calls：85</li>
+</ol>
+<h1 id="好游科技"><a href="#好游科技" class="headerlink" title="好游科技"></a>好游科技</h1><ol>
+<li>角色遮挡显示</li>
+<li>渲染管线</li>
+<li>Unity是左手坐标系还是右手坐标系</li>
+<li><p>屏幕坐标如何转换到世界坐标</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Camera.main.ScreenToWorldPoint(<span class="keyword">new</span> vector3(x,y,<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>播放动作到一定时间的时候如何播放粒子</p>
+</li>
+<li>如何将3DMAX的模型导入UNITY中，如何播放3DMAX动作文件</li>
+<li>2D场景，3D人物如何实现</li>
+<li>如何实现热更新</li>
+<li>如何读取StreamingAsset下面的资源</li>
+<li>GameObject.Find和transform.Find的区别<br>第一个返回GameObject类型并且未激活的对象不会被查找到，第二个返回Transform类型。</li>
+<li>结构体和Class的区别</li>
+<li>Foreach遍历类里面所有的成员</li>
+<li>什么是协程，为什么协程可以分布执行</li>
+<li>类内初始化变量和构造函数初始化变量的区别</li>
+</ol>
+<h1 id="网易TA"><a href="#网易TA" class="headerlink" title="网易TA"></a>网易TA</h1><ol>
+<li>判断点在多边形内部 </li>
+<li>不用分支语句推导三角波函数图像的函数</li>
+<li>GPU instance中，渲染大量草用什么方式存储草的颜色位置比较好</li>
+<li>双线性过滤 4倍各向异性过滤 邻近点过滤和三次插值，双三次插值，线性插值优化过后的采样次数</li>
+<li>给你场景物体的顺序和混合因子让你计算最后的颜色的rgba</li>
+<li>rgb转hsv的公式</li>
+<li>美术给模型做细分和GPU曲面细分的适用场合和优缺点</li>
+<li>正交投影下计算良好效果边缘光的方法</li>
+<li>描述一下沙漠的地貌特征和形成原因</li>
+<li>色相差的表现和实现方法</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/13/Real-Time-Rendering-3rd-2/" rel="next" title="Real Time Rendering 3rd 第二部分">
+                <i class="fa fa-chevron-left"></i> Real Time Rendering 3rd 第二部分
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/13/Mono-1/" rel="prev" title="Mono-1">
+                Mono-1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenGL中要用到哪几种buffer"><span class="nav-number">1.</span> <span class="nav-text">OpenGL中要用到哪几种buffer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#冰川网络"><span class="nav-number">2.</span> <span class="nav-text">冰川网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深圳易凡互动"><span class="nav-number">3.</span> <span class="nav-text">深圳易凡互动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#深圳奇妙能力"><span class="nav-number">4.</span> <span class="nav-text">深圳奇妙能力</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#牛蛙互动"><span class="nav-number">5.</span> <span class="nav-text">牛蛙互动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IGG"><span class="nav-number">6.</span> <span class="nav-text">IGG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#珠海西山居"><span class="nav-number">7.</span> <span class="nav-text">珠海西山居</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#乐易网络"><span class="nav-number">8.</span> <span class="nav-text">乐易网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四维时代"><span class="nav-number">9.</span> <span class="nav-text">四维时代</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#乐逗"><span class="nav-number">10.</span> <span class="nav-text">乐逗</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#广州百田"><span class="nav-number">11.</span> <span class="nav-text">广州百田</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#图形相关面试题"><span class="nav-number">11.1.</span> <span class="nav-text">图形相关面试题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终面技巧"><span class="nav-number">11.2.</span> <span class="nav-text">终面技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#技术终面"><span class="nav-number">11.2.1.</span> <span class="nav-text">技术终面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#态度"><span class="nav-number">11.2.2.</span> <span class="nav-text">态度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#离职意愿"><span class="nav-number">11.2.3.</span> <span class="nav-text">离职意愿</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9130"><span class="nav-number">12.</span> <span class="nav-text">9130</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端"><span class="nav-number">12.1.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器"><span class="nav-number">12.2.</span> <span class="nav-text">服务器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搜狐二面"><span class="nav-number">13.</span> <span class="nav-text">搜狐二面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#好游科技"><span class="nav-number">14.</span> <span class="nav-text">好游科技</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网易TA"><span class="nav-number">15.</span> <span class="nav-text">网易TA</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

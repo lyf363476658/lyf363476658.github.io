@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="几何信息ID3DXBaseMesh接口包含一个用来存储网格顶点的顶点缓存和一个用来定义这些顶点怎样连接在一起组成网格三角形的索引缓存。我们能够通过使用下面的方法来得到这些缓存的指针：12HRESULT ID3DXMesh::GetVertexBuffer(LPDIRECT3DVERTEXBUFFER9* ppVB);HRESULT ID3DXMesh::GetIndexBuffer(LPDIREC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第十章 网格模型I(Meshes Part I)">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/Meshes-Part-I/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="几何信息ID3DXBaseMesh接口包含一个用来存储网格顶点的顶点缓存和一个用来定义这些顶点怎样连接在一起组成网格三角形的索引缓存。我们能够通过使用下面的方法来得到这些缓存的指针：12HRESULT ID3DXMesh::GetVertexBuffer(LPDIRECT3DVERTEXBUFFER9* ppVB);HRESULT ID3DXMesh::GetIndexBuffer(LPDIREC">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.920Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第十章 网格模型I(Meshes Part I)">
+<meta name="twitter:description" content="几何信息ID3DXBaseMesh接口包含一个用来存储网格顶点的顶点缓存和一个用来定义这些顶点怎样连接在一起组成网格三角形的索引缓存。我们能够通过使用下面的方法来得到这些缓存的指针：12HRESULT ID3DXMesh::GetVertexBuffer(LPDIRECT3DVERTEXBUFFER9* ppVB);HRESULT ID3DXMesh::GetIndexBuffer(LPDIREC">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/Meshes-Part-I/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>第十章 网格模型I(Meshes Part I) | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Meshes-Part-I/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">第十章 网格模型I(Meshes Part I)
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/Meshes-Part-I/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Meshes-Part-I/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="几何信息"><a href="#几何信息" class="headerlink" title="几何信息"></a>几何信息</h1><p>ID3DXBaseMesh接口包含一个用来存储网格顶点的顶点缓存和一个用来定义这些顶点怎样连接在一起组成网格三角形的索引缓存。我们能够通过使用下面的方法来得到这些缓存的指针：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HRESULT ID3DXMesh::GetVertexBuffer(LPDIRECT3DVERTEXBUFFER9* ppVB);</span><br><span class="line">HRESULT ID3DXMesh::GetIndexBuffer(LPDIRECT3DINDEXBUFFER9* ppIB);</span><br></pre></td></tr></table></figure></p>
+<p>这里有一些使用这些方法的例子：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IDirect3DVertexBuffer9* vb = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;GetVertexBuffer( &amp;vb );</span><br><span class="line">IDirect3DIndexBuffer9* ib = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;GetIndexBuffer( &amp;ib );</span><br></pre></td></tr></table></figure></p>
+<p>假如想锁定这些缓存来读写数据，那么我们能够使用下面的方法。注意这些方法锁定整个顶点/索引缓存。<br>HRESULT ID3DXMesh::LockVertexBuffer(DWORD Flags, BYTE<strong> ppData);<br>HRESULT ID3DXMesh::LockIndexBuffer(DWORD Flags, BYTE</strong> ppData);<br>Flags参数描述怎样锁定它。这些Flags参数在第三章中我们介绍过。ppData是函数返回的指向锁定内存的指针的地址。<br>　　当然在你锁定以后一定要记得解锁：<br>HRESULT ID3DXMesh::UnlockVertexBuffer();<br>HRESULT ID3DXMesh::UnlockIndexBuffer();<br>　　下面是另外一些与mesh几何结构有关的ID3DXMesh接口方法：</p>
+<ul>
+<li>DWORD GetFVF() — 返回顶点的格式</li>
+<li>DWORD GetNumVertices() — 返回顶点缓存中的顶点数</li>
+<li>DWORD GetNumBytesPerVertex() — 返回一个顶点所占的字节数</li>
+<li>DWORD GetNumFaces() — 返回在mesh中的面（三角形）数<br>10.2 子集和属性缓存<br>　　一个mesh由一个或数个子集组成。一个子集（subset）是在mesh中的使用相同属性渲染的一组三角形。这里的属性是指材质，纹理和渲染状态。图10.1显示了一座房子mesh可能被分成的几个子集。<br>　　<br>图10.1<br>我们通过给每个子集指定一个唯一非负整数来标识子集。这个值可以是存储在一个DWORD中的任意数值。例如，在图10.1中我们用0，1，2和3来标识子集。<br>　　在mesh中的每个三角形都与一个属性ID相关联，表示该三角形属于该子集。例如，图10.1中组成地板的三角形具有属性ID0，它表示这些三角形属于子集0。同样，组成墙的三角形具有属性ID1，它表示这些三角形属于子集1。<br>　　三角形的属性ID存储在mesh的属性缓存中，它是一个DWORD数组。因为每个面对应属性缓存中的一项，所以属性缓存中的项目数等于mesh中的面的个数。属性缓存中的项目和索引缓存中定义的三角形一一对应。即，属性缓存中的第i项和索引缓存中的第i个三角形相对应。三角形i由下面三个索引缓存中的索引项定义：<br>　　A = i <em> 3<br>　　B = i </em> 3 + 1<br>　　C = i * 3 + 2<br>图10.2显示了这个对应关系：</li>
+</ul>
+<p>图10.2<br>　　我们可以锁定属性缓存，就象下面的代码片段：<br>DWORD* buffer = 0;<br>Mesh-&gt;LockAttributeBuffer(lockingFlags, &amp;buffer);<br>// Read or write to attribute buffer…<br>Mesh-&gt;UnlockAttributeBuffer();<br>10.3 绘制<br>　　ID3DXMesh接口提供了DrawSubset（DWORD AttribId）方法来绘制AttribId指示的子集中的各个三角形。例如，要绘制子集0中的所有三角形，我们将这样写：<br>Mesh-&gt;DrawSubset(0);<br>　　为了绘制整个mesh，我们必须绘制mesh的所有子集。这是非常方便的用0，1，2，…，n-1来标识子集，这里的n是子集的总数。且有一个相对应的材质和纹理数组，即子集i与材质和纹理数组的第i项对应。这就使我们能够简单的用循环来渲染mesh：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numSubsets; i++)</span><br><span class="line">&#123;</span><br><span class="line">    Device-&gt;SetMaterial( mtrls[i] );</span><br><span class="line">    Device-&gt;SetTexture( <span class="number">0</span>, textures[i] );</span><br><span class="line">    Mesh-&gt;DrawSubset(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>10.4 优化<br>　　Mesh的顶点和索引能够被重组以便能更有效的渲染mesh。当我们这样做时，我们说我们优化了一个mesh。我们可以使用下面的方法来进行优化：<br>HRESULT ID3DXMesh::OptimizeInplace(<br>    DWORD Flags,<br>    CONST DWORD<em> pAdjacencyIn,<br>    DWORD</em> pAdjacencyOut,<br>    DWORD<em> pFaceRemap,<br>    LPD3DXBUFFER</em> ppVertexRemap<br>);</p>
+<ul>
+<li>Flags — 表示执行什么类型的优化方法。它可以是下面的一个或几个的组合：</li>
+<li>D3DXMESHOPT_COMPACT — 从mesh中移除没有用的顶点和索引项。</li>
+<li>D3DXMESHOPT_ATTRSORT — 根据属性给三角形排序并调整属性表，这将使DrawSubset执行更有效（参见10.5节）。</li>
+<li>D3DXMESHOPT_VERTEXCACHE — 增加顶点缓存的命中率。</li>
+<li>D3DXMESHOPT_STRIPREORDER — 重组顶点索引使三角带尽可能的长。</li>
+<li>D3DXMESHOPT_IGNOREVERTS — 只优化索引信息；忽略顶点信息。<br>注意：D3DXMESHOPT_VERTEXCACHE和D3DXMESHOPT_STRIPREORDER不能同时使用。</li>
+<li>pAdjacencyIn — 指向没有优化的mesh的邻接数组。</li>
+<li>pAdjacencyOut — 指向一个DWORD数组，它被用来填充优化好了的mesh邻接信息。该数组必须有ID3DXMesh::GetNumFaces() * 3个元素。如果不需要该信息，可以将其设置为0。</li>
+<li>pFaceRemap —指向一个DWORD数组，它被用来填充面重影射信息。该数组必须不小于ID3DXMesh::GetNumFaces()。当一个mesh被优化时，由索引缓存定义的面可能被移动；也就是说，在pFaceRemap中的第i项表示第i个原始面被移动到的面索引值。如果不需要该信息，可以将其设置为0。</li>
+<li>ppVertexRemap — 指向ID3DXBuffer指针的地址（参见11.1节），它被用来填充顶点重影射信息。这个缓存应该包含ID3DXMesh::GetNumVertices()个顶点。当一个mesh被优化后，顶点可能被移动。顶点重影射信息用来说明原来的顶点被移动到新位置；也就是说，在ppVertexRemap中的第i项表示原来的第i个顶点的新位置。如果不需要该信息，可以将其设置为0。<br>　　例子：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get the adjacency info of the non-optimized mesh.</span></span><br><span class="line">DWORD adjacencyInfo[Mesh-&gt;GetNumFaces() * <span class="number">3</span>];</span><br><span class="line">Mesh-&gt;GenerateAdjacency(<span class="number">0.0f</span>, adjacencyInfo);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Array to hold optimized adjacency info.</span></span><br><span class="line">DWORD optimizedAdjacencyInfo[Mesh-&gt;GetNumFaces() * <span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">Mesh-&gt;OptimizeInplace(</span><br><span class="line">    D3DXMESHOPT_ATTRSORT |</span><br><span class="line">    D3DXMESHOPT_COMPACT |</span><br><span class="line">    D3DXMESHOPT_VERTEXCACHE,</span><br><span class="line">    adjacencyInfo,</span><br><span class="line">    optimizedAdjacencyInfo,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">     <span class="number">0</span>);</span><br><span class="line">　　一个更简单的方法是Optimize方法，它输出一个优化的mesh，而不是在原来mesh的基础上进行优化：</span><br><span class="line">HRESULT ID3DXMesh::Optimize(</span><br><span class="line">    DWORD Flags,</span><br><span class="line">    CONST DWORD* pAdjacencyIn,</span><br><span class="line">    DWORD* pAdjacencyOut,</span><br><span class="line">    DWORD* pFaceRemap,</span><br><span class="line">    LPD3DXBUFFER* ppVertexRemap,</span><br><span class="line">    LPD3DXMESH* ppOptMesh <span class="comment">// the optimized mesh to be output</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>10.5 属性表<br>　　当一个mesh被使用D3DXMESHOPT_ATTRSORT参数来优化后，mesh的几何信息将按照属性进行排序，这样各个子集的顶点/索引将组成连续的块（如图10.3）。</p>
+<p>图10.3<br>　　除了进行几何信息的排序外，D3DXMESHOPT_ATTRSORT优化项还将创建一个属性表。该表是D3DXATTRIBUTERANGE结构的一个数组。在属性表中的每一项对应mesh的一个子集并指示顶点/索引缓存中的一个连续连续内存块，这个子集的几何信息就包含在这个块中。D3DXATTRIBUTERANGE结构的定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">D3DXATTRIBUTERANGE</span> &#123;</span></span><br><span class="line">    DWORD AttribId;</span><br><span class="line">    DWORD FaceStart;</span><br><span class="line">    DWORD FaceCount;</span><br><span class="line">    DWORD VertexStart;</span><br><span class="line">    DWORD VertexCount;</span><br><span class="line">&#125; D3DXATTRIBUTERANGE;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>AttribId — 子集的ID。</li>
+<li>FaceStart — 该子集的面的起始值，FaceStart*3就是起始三角形在索引缓存中的序号。</li>
+<li>FaceCount — 在子集中的面（三角形）数。</li>
+<li>VertexStart — 该子集的起始顶点在顶点缓存中的序号。</li>
+<li>VertexCount — 在子集中的顶点数。<br>　　我们能够很容易的明白D3DXATTRIBUTERANGE结构的各个成员，如图10.3。在图10.3中mesh的属性表有三项——它们和各个子集一一对应。<br>　　建立了属性表以后，渲染一个子集就很容易了。仅仅查一下属性表就能找出自己的几何信息。注意如果没有属性表，每渲染一个子集就需要对属性缓存进行一次线性搜索来找出子集包含的几何信息。<br>　　可以使用下面的方法来访问mesh的属性表：<br>HRESULT ID3DXMesh::GetAttributeTable(<br>  D3DXATTRIBUTERANGE<em> pAttribTable,<br>  DWORD</em> pAttribTableSize<br>);<br>　　这个方法能够做两件事情：它可以返回属性表的属性数，也可以用属性数据来填充一个D3DXATTRIBUTERANGE结构数组。<br>　　要得到属性表的元素个数，可以就将第一个参数设置为0：<br>DWORD numSubsets = 0;<br>Mesh-&gt;GetAttributeTable(0, &amp;numSubsets);<br>　　一旦我们知道了属性表的元素个数，我们就能够通过写属性表来填充一个D3DXATTRIBUTERANGE结构数组：<br>D3DXATTRIBUTERANGE table = new D3DXATTRIBUTERANGE [numSubsets];<br>Mesh-&gt;GetAttributeTable( table, &amp;numSubsets );<br>　　我们能够使用ID3DXMesh::SetAttributeTable方法来直接设置属性表。下面的代码就是设置一个有12个子集的属性表：<br>D3DXATTRIBUTERANGE attributeTable[12];<br>// …fill attributeTable array with data<br>Mesh-&gt;SetAttributeTable( attributeTable, 12);<br>10.6 邻接信息<br>　　对于mesh的某些操作，如优化，有必要了解的是三角形之间的邻接信息。Mesh的邻接数组存储了这些信息。<br>　　邻接数组是一个DWORD数组，其中的每一项对应了mesh中的一个三角形。例如，第i项对应的三角形由以下三个索引值定义：<br>A = i ??3<br>B = i ??3 + 1<br>C = i ??3 + 2<br>注意，使用ULONG_MAX = 4294967295表示该边没有邻接三角形。我们也可以用-1来表示，因为-1转换成DWORD就是ULONG_MAX。回想一下，DWORD就是一个unsigned32-bit整数。<br>　　因为每个三角形都有三条边，所以他就有三个邻接三角形（如图10.4）。<br>　　<br>　　图10.4<br>　　因此，邻接数组必须有三项（ID3DXBaseMesh::GetNumFaces()<em>3）—— 在mesh中每个三角形都可能有三个邻接三角形。<br>　　很多D3Dxmesh创造函数都能输出邻接信息，但我们也可以使用下面的方法：<br>HRESULT ID3DXMesh::GenerateAdjacency(<br>  FLOAT fEpsilon,<br>  DWORD</em> pAdjacency<br>);</li>
+<li>fEpsilon — 指示当两个点距离有多近时，可以认为是一个点。当两点间的距离小于epsilon时，可认为它们是同一个点。</li>
+<li><p>pAdjacency — 一个指向填充了邻接信息的DWORD数组指针。<br>　　例子：<br>DWORD adjacencyInfo[Mesh-&gt;GetNumFaces() * 3];<br>Mesh-&gt;GenerateAdjacency(0.001f, adjacencyInfo);<br>10.7 复制<br>　　有时我们需要将一个mesh中的数据拷贝到另一个之中。我们可以使用ID3DXBaseMesh::CloneMeshFVF方法。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HRESULT ID3DXMesh::CloneMeshFVF(</span><br><span class="line">    DWORD Options,</span><br><span class="line">    DWORD FVF,</span><br><span class="line">    LPDIRECT3DDEVICE9 pDevice,</span><br><span class="line">    LPD3DXMESH* ppCloneMesh</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Options — 用来创建mesh的一个或多个创建标志。要了解所有标志信息请查看sdk文档。现在列出一部分：</p>
+</li>
+<li>D3DXMESH_32BIT — mesh使用32位索引。</li>
+<li>D3DXMESH_MANAGED — mesh数据将被放在受控的内存中。</li>
+<li>D3DXMESH_WRITEONLY — mesh数据只能执行写操作，不能执行读操作。</li>
+<li>D3DXMESH_DYNAMIC — mesh缓存将是动态的。</li>
+<li>FVF — 创建复制mesh的灵活顶点格式。</li>
+<li>pDevice — 与复制mesh有关的设备。</li>
+<li>ppCloneMesh — 输出复制的mesh。<br>　　注意这个方法允许指定与原mesh不同的options和FVF。例如我们有顶点格式为D3DFVF_XYZ的mesh，现在想复制一个顶点格式为D3DFVF_XYZ|D3DFVF_NORMAL的mesh。我们可以这样写：<br>// 假设_mesh和device是有效的<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ID3DXMesh* clone = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;CloneMeshFVF(</span><br><span class="line">    Mesh-&gt;GetOptions(), <span class="comment">// 使用与源模型同样的选项</span></span><br><span class="line">    D3DFVF_XYZ | D3DFVF_NORMAL,<span class="comment">// 指定克隆的FVF</span></span><br><span class="line">    Device,</span><br><span class="line">    &amp;clone</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>10.8 创建一个Mesh（D3DXCreateMeshFVF）<br>　　我们可以使用D3DXCreate*函数来创建mesh物体。然而，我们也可以使用  D3DXCreateMeshFVF函数来创建一个空mesh。所谓空mesh是指我们已经指定了顶点数和面数，函数D3DXCreateMeshFVF也分配了适当大小的内存给顶点、顶点索引、属性缓冲区。有了这些缓冲区后，就可以手动填写上下文数据了（需要分别向顶点缓存，索引缓存、属性缓存提供顶点、索引、属性数据）。<br>　　我们使用D3DXCreateMeshFVF函数来创建空mesh：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">D3DXCreateMeshFVF</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD NumFaces,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD NumVertices,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD Options,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD FVF,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPDIRECT3DDEVICE9 pDevice,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPD3DXMESH* ppMesh</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>NumFaces — mesh将拥有的面数。该值必须大于0。</li>
+<li>NumVertices — mesh将拥有的顶点数。该值必须大于0。</li>
+<li>Options —用来创建mesh的一个或多个创建标志。要了解所有标志信息请查看sdk文档。现在列出一部分：</li>
+<li>D3DXMESH_32BIT — mesh使用32位索引。</li>
+<li>D3DXMESH_MANAGED — mesh数据将被放在受控的内存中。</li>
+<li>D3DXMESH_WRITEONLY — mesh数据只能执行写操作，不能执行读操作。</li>
+<li>D3DXMESH_DYNAMIC — mesh缓存将是动态的。</li>
+<li>FVF — mesh的顶点格式。</li>
+<li>pDevice — 与mesh相关的设备。</li>
+<li>ppMesh — 输出创建好的mesh。<br>　　下一节将给出实例程序，它演示了用这个函数怎样创建一个mesh以及手动填充mesh的数据内容。<br>　　另外，你也可以使用D3DXCreateMesh来创建空mesh。它的原型是：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">D3DXCreateMesh</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD NumFaces,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD NumVertices,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD Options,</span></span></span><br><span class="line"><span class="function"><span class="params">    CONST LPD3DVERTEXELEMENT9* pDeclaration,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPDIRECT3DDEVICE9 pDevice,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPD3DXMESH* ppMesh</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>　　这些参数和D3DXCreateMeshFVF的参数是非常相似的，除了第四个。作为替代指定的FVF，我们指定一个D3DVERTEXELEMENT9结构，它描述了顶点格式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">D3DXDeclaratorFromFVF</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD FVF, <span class="comment">// input format</span></span></span></span><br><span class="line"><span class="function"><span class="params">    D3DVERTEXELEMENT9 Declaration[MAX_FVF_DECL_SIZE]<span class="comment">//output format</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>注意：D3DVERTEXELEMENT9将在第17章中讨论。<br>　　这个函数通过输入一个FVF返回一个D3DVERTEXELEMENT9结构的数组。注意MAX_FVF_DECL_SIZE的定义如下：<br>typedef enum {<br>    MAX_FVF_DECL_SIZE = 18<br>} MAX_FVF_DECL_SIZE;<br>10.9 实例程序：创建和渲染Mesh<br>这一章的实例程序是渲染一个立方体（如图10.5）</p>
+<p>图10.5<br>它演示了这一章中的大部分功能，包括如下一些操作：</p>
+<ul>
+<li>创建一个空mesh。</li>
+<li>用一个立方体几何信息来填充mesh。</li>
+<li>根据mesh的每个面指定子集。</li>
+<li>产生mesh的邻接信息。</li>
+<li>优化mesh。</li>
+<li>绘制mesh。<br>　　注意，我们忽略一些无关的代码来讨论本例。你能在叫做D3DXCreateMeshFVF的例子中找到全部的代码。<br>　　另外，为了更容易调试和研究mesh的构成，我们执行如下的函数来将内在内容放进文件中：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpVertices</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpIndices</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpAttributeBuffer</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpAdjacencyBuffer</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpAttributeTable</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>　　这些函数的名字就显示了它们的功能。执行这些函数是非常简单的，我们在这里讨论时忽略它们（可以看程序的原代码）。在这一节我们只展示一个dumpAttributeTable函数。<br>　　我们首先来浏览一下该例子，看看如下的一些全局变量：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ID3DXMesh* Mesh = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> DWORD NumSubsets = <span class="number">3</span>;</span><br><span class="line">IDirect3DTexture9* Textures[<span class="number">3</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;<span class="comment">// texture for each subset</span></span><br><span class="line"><span class="built_in">std</span>::ofstream OutFile; <span class="comment">// used to dump mesh data to file</span></span><br></pre></td></tr></table></figure></p>
+<p>　　这里我们定义了一个mesh对象的指针，我们以后要创建的。我们也定义了mesh拥有的子集数——三。在这个例子中，每个子集都用一个不同的纹理来渲染；纹理数组包含每个子集的纹理，如第i个纹理对应mesh的第i个子集。最后，Outfile变量被用来把mesh的内容输出为一个文本文件。<br>　　这个例子的大部分工作是在setup函数中进行。我们首先创建一个空的mesh：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Setup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    HRESULT hr = <span class="number">0</span>;</span><br><span class="line">    hr = D3DXCreateMeshFVF(</span><br><span class="line">        <span class="number">12</span>,</span><br><span class="line">        <span class="number">24</span>,</span><br><span class="line">        D3DXMESH_MANAGED,</span><br><span class="line">        Vertex::FVF,</span><br><span class="line">        Device,</span><br><span class="line">         &amp;Mesh);</span><br></pre></td></tr></table></figure></p>
+<p>这里我们分配一个有12个面和24个顶点的mesh，这是描述一个盒子所必须的。<br>　　这样的话，mesh是空的，因此我们需要将组成盒子的顶点和索引分别写入顶点缓存和索引缓存。锁定顶点/索引缓存并手动写入数据这是很容易的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fill in vertices of a box</span></span><br><span class="line">Vertex* v = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;LockVertexBuffer(<span class="number">0</span>, (<span class="keyword">void</span>**)&amp;v);</span><br><span class="line"><span class="comment">// fill in the front face vertex data</span></span><br><span class="line">v[<span class="number">0</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">v[<span class="number">1</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line"></span><br><span class="line">v[<span class="number">22</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">v[<span class="number">23</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">Mesh-&gt;UnlockVertexBuffer();</span><br><span class="line"><span class="comment">// Define the triangles of the box</span></span><br><span class="line">WORD* i = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;LockIndexBuffer(<span class="number">0</span>, (<span class="keyword">void</span>**)&amp;i);</span><br><span class="line"><span class="comment">// fill in the front face index data</span></span><br><span class="line">i[<span class="number">0</span>] = <span class="number">0</span>; i[<span class="number">1</span>] = <span class="number">1</span>; i[<span class="number">2</span>] = <span class="number">2</span>;</span><br><span class="line">i[<span class="number">3</span>] = <span class="number">0</span>; i[<span class="number">4</span>] = <span class="number">2</span>; i[<span class="number">5</span>] = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fill in the right face index data</span></span><br><span class="line">i[<span class="number">30</span>] = <span class="number">20</span>; i[<span class="number">31</span>] = <span class="number">21</span>; i[<span class="number">32</span>] = <span class="number">22</span>;</span><br><span class="line">i[<span class="number">33</span>] = <span class="number">20</span>; i[<span class="number">34</span>] = <span class="number">22</span>; i[<span class="number">35</span>] = <span class="number">23</span>;</span><br><span class="line">Mesh-&gt;UnlockIndexBuffer();</span><br></pre></td></tr></table></figure></p>
+<p>　　一旦mesh的几何信息被写入，我们必须指定每个三角形在哪个子集中。回想一下属性缓存就是存储的在mesh中每个三角形所属的子集信息。在这个例子中，我们指定索引缓存中的前四个三角形子集为0，接着的四个三角形子集为1，最后四个三角形子集为2。代码如下：<br>DWORD<em> attributeBuffer = 0;<br>Mesh-&gt;LockAttributeBuffer(0, &amp;attributeBuffer);<br>for(int a = 0; a &lt; 4; a++) // triangles 1-4<br>    attributeBuffer[a] = 0; // subset 0<br>for(int b = 4; b &lt; 8; b++) // triangles 5-8<br>    attributeBuffer[b] = 1; // subset 1<br>for(int c = 8; c &lt; 12; c++) // triangles 9-12<br>    attributeBuffer[c] = 2; // subset 2<br>Mesh-&gt;UnlockAttributeBuffer();<br>　　现在我们已经创建了一个包含有效数据的mesh。在这一小部分我们将渲染mesh，不过首先还是先将其优化一下。注意虽然这对于一个盒子mesh来说，优化mesh数据没有真正的效果，但是我们还是用ID3DXMesh接口方法来实践一下。为了优化一个mesh，我们首先需要计算mesh的邻接信息：<br>std::vector<dword> adjacencyBuffer(Mesh-&gt;GetNumFaces() </dword></em> 3);<br>Mesh-&gt;GenerateAdjacency(0.0f, &amp;adjacencyBuffer[0]);<br>　　然后我们就能够优化mesh了：<br>hr = Mesh-&gt;OptimizeInplace(<br>        D3DXMESHOPT_ATTRSORT |<br>        D3DXMESHOPT_COMPACT |<br>        D3DXMESHOPT_VERTEXCACHE,<br>        &amp;adjacencyBuffer[0],<br>         0, 0, 0);<br>　　设置好了mesh以后，我们就为渲染它做好了准备。不过在setup函数中还有最后一个问题，也就是在前面我们说的将mesh的内在数据内容写入文件的函数。这能够检查mesh的数据，它能帮助我们调试和学习mesh的结构。<br>OutFile.open(“Mesh Dump.txt”);<br>dumpVertices(OutFile, Mesh);<br>dumpIndices(OutFile, Mesh);<br>dumpAttributeTable(OutFile, Mesh);<br>dumpAttributeBuffer(OutFile, Mesh);<br>dumpAdjacencyBuffer(OutFile, Mesh);<br>OutFile.close();<br>…Texturing loading, setting render states, etc., snipped<br>return true;<br>} // end Setup()<br>　　例如，dumpAttributeTable函数将属性表的数据写入文件。它的具体实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpAttributeTable</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    outFile &lt;&lt; <span class="string">"Attribute Table:"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    outFile &lt;&lt; <span class="string">"----------------"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">// number of entries in the attribute table</span></span><br><span class="line">    DWORD numEntries = <span class="number">0</span>;</span><br><span class="line">    mesh-&gt;GetAttributeTable(<span class="number">0</span>, &amp;numEntries);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;D3DXATTRIBUTERANGE&gt; table(numEntries);</span><br><span class="line">    mesh-&gt;GetAttributeTable(&amp;table[<span class="number">0</span>], &amp;numEntries);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numEntries; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Entry "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"------"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Subset ID: "</span> &lt;&lt; table[i].AttribId &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Face Start: "</span> &lt;&lt; table[i].FaceStart &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Face Count: "</span> &lt;&lt; table[i].FaceCount &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Vertex Start: "</span> &lt;&lt; table[i].VertexStart &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Vertex Count: "</span> &lt;&lt; table[i].VertexCount &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    outFile &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>下面的文本文件来自于通过dumpAttributeTable函数得到的mesh Dump.txt文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Attribute Table:</span><br><span class="line">----------------</span><br><span class="line">Entry 0</span><br><span class="line">------------</span><br><span class="line">Subset ID: 0</span><br><span class="line">Face Start: 0</span><br><span class="line">Face Count: 4</span><br><span class="line">Vertex Start: 0</span><br><span class="line">Vertex Count: 8</span><br><span class="line">Entry 1</span><br><span class="line">------------</span><br><span class="line">Subset ID: 1</span><br><span class="line">Face Start: 4</span><br><span class="line">Face Count: 4</span><br><span class="line">Vertex Start: 8</span><br><span class="line">Vertex Count: 8</span><br><span class="line">Entry 2</span><br><span class="line">------------</span><br><span class="line">Subset ID: 2</span><br><span class="line">Face Start: 8</span><br><span class="line">Face Count: 4</span><br><span class="line">Vertex Start: 16</span><br><span class="line">Vertex Count: 8</span><br></pre></td></tr></table></figure></p>
+<p>我们能够了解到我们为mesh所指定的相匹配的数据——有三个子集且每个子集有4个三角形。建议你去看看本例子Dump.txt的完整信息。该文件在本示例文件目录下。<br>最后，我们使用下面的代码就能够非常容易地渲染mesh了；我们只需要循环每个子集，设置相关联的纹理然后在绘制子集即可。这是非常容易的，因为我们已经为每个子集指定的下标如0，1，2，…，n-1，这里的n就是子集的个数。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Display</span><span class="params">(<span class="keyword">float</span> timeDelta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( Device )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//...update frame code snipped</span></span><br><span class="line">        Device-&gt;Clear(<span class="number">0</span>, <span class="number">0</span>, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,<span class="number">0x00000000</span>, <span class="number">1.0f</span>, <span class="number">0</span>);</span><br><span class="line">        Device-&gt;BeginScene();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; NumSubsets; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Device-&gt;SetTexture( <span class="number">0</span>, Textures[i] );</span><br><span class="line">            Mesh-&gt;DrawSubset( i );</span><br><span class="line">        &#125;</span><br><span class="line">        Device-&gt;EndScene();</span><br><span class="line">        Device-&gt;Present(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/Fonts/" rel="next" title="第九章 字体(Fonts)">
+                <i class="fa fa-chevron-left"></i> 第九章 字体(Fonts)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/Building-a-Flexible-Camera-Class/" rel="prev" title="第十一章 网格模型II(Building a Flexible Camera Class)">
+                第十一章 网格模型II(Building a Flexible Camera Class) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#几何信息"><span class="nav-number">1.</span> <span class="nav-text">几何信息</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

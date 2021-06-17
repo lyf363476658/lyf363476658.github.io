@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="第十七章 顶点着色器入门(Introduction to Vertex Shaders)概览   顶点着色器（vertex shader）是一个在图形卡的GPU上执行的程序，它替换了固定功能管线（fixed function pipeline）中的变换（transformation）和光照（lighting）阶段。（这不是百分之百的正确，因为顶点着色器可以被Direct3D运行时（Direct3D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction-to-Vertex-Shaders">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/Introduction-to-Vertex-Shaders/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="第十七章 顶点着色器入门(Introduction to Vertex Shaders)概览   顶点着色器（vertex shader）是一个在图形卡的GPU上执行的程序，它替换了固定功能管线（fixed function pipeline）中的变换（transformation）和光照（lighting）阶段。（这不是百分之百的正确，因为顶点着色器可以被Direct3D运行时（Direct3D">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.899Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Introduction-to-Vertex-Shaders">
+<meta name="twitter:description" content="第十七章 顶点着色器入门(Introduction to Vertex Shaders)概览   顶点着色器（vertex shader）是一个在图形卡的GPU上执行的程序，它替换了固定功能管线（fixed function pipeline）中的变换（transformation）和光照（lighting）阶段。（这不是百分之百的正确，因为顶点着色器可以被Direct3D运行时（Direct3D">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/Introduction-to-Vertex-Shaders/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Introduction-to-Vertex-Shaders | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Introduction-to-Vertex-Shaders/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Introduction-to-Vertex-Shaders
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/Introduction-to-Vertex-Shaders/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Introduction-to-Vertex-Shaders/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>第十七章 顶点着色器入门(Introduction to Vertex Shaders)<br>概览<br>   顶点着色器（vertex shader）是一个在图形卡的GPU上执行的程序，它替换了固定功能管线（fixed function pipeline）中的变换（transformation）和光照（lighting）阶段。（这不是百分之百的正确，因为顶点着色器可以被Direct3D运行时（Direct3D runtime）以软件模拟，如果硬件不支持顶点着色器的话）。图16.1说明了管线中顶点着色器替换的部件。</p>
+<p>图16.1：顶点着色器替换固定功能管线的光照和变形阶段</p>
+<p>   从图16.1，我们知道，顶点以局部坐标输入到顶点着色器，并且必须输出齐次剪裁空间的有颜色的顶点。（为了保持简单，本书中我们没有深入研究投影变换的细节。但是经投影矩阵变换顶点后的空间称作齐次剪裁空间（homogeneous clip space）。因此，要把一个顶点从局部空间变换到齐次坐标空间，我们必须应用下列变换序列：世界变换（world transformation），视图变换（view transformation）和投影变换（projection transformation），它们分别由世界矩阵，视图矩阵和投影矩阵来完成。）对于点元（point primitive），顶点着色器也被用于操作每个顶点的顶点大小。</p>
+<p>   由于顶点着色器是我们（在HLSL中）写的一个自定义程序，因此我们在图形效果方面获得了我们能够达到的极大的自由性。我们不再受限于Direct3D的固定光照算法。此外，应用程序操纵顶点位置的能力也有了多样性，例如：cloth simulation，粒子系统的点大小操纵，还有顶点混合/morphing。此外，我们的顶点数据结构更自由了，并且可以在可编程管线中包含比在固定功能管线中多得多的数据。</p>
+<p>   顶点着色器仍然是相对新的特性，并且许多图形卡不支持它们，特别是随DirectX 9发布的较新版本的顶点着色器。通过检查D3DCAPS9结构的VertexShaderVersion成员，可以测试顶点着色器的版本。下列代码段展示了这一点：<br>// If the device’s supported version is less than version 2.0<br>if( caps.VertexShaderVersion &lt; D3DVS VERSION(2, 0) )<br>     // Then vertex shader version 2.0 is not supported on this device.</p>
+<p>我们看到D3D_VERSION的两个参数分别接收主和次版本号。现在，D3DXCompileShaderFromFile函数支持顶点着色器版本1.1和2.0。</p>
+<p>目标</p>
+<ul>
+<li>学习如何在可编程管线中定义顶点结构的分量</li>
+<li>了解顶点分量的不同用法</li>
+<li>学习如何创建、设置和销毁一个顶点着色器</li>
+<li>学习如何使用顶点着色器实现卡通动画渲染效果</li>
+</ul>
+<p>17.1顶点声明<br>   到现在为止，我们已经使用自由顶点格式（flexible vertex format，FVF）来描述顶点结构中的各分量。但是，在可编程管线中，顶点数据包含的数据比用FVF所能表达的多很多。因此，我们通常使用更具表达性并且更强大的顶点声明（vertex declaration）。</p>
+<p>注意：如果FVF能够描述我们的顶点格式 我们仍然可以在可编程管线中使用它。不管用何种方法，只是为了方便，同样FVF会在内部被转换为一个顶点声明。</p>
+<p>17.1.1 描述顶点声明<br>   我们将一个顶点声明描述为一个D3DVERTEXELEMENT9结构的数组。D3DVERTEXELEMENT9数组中的每个成员描述了一个顶点的分量。所以，如果你的顶点结构有三个分量（例如：位置、法线、颜色），那么其相应的顶点声明将描述3个D3DVERTEXELEMENT9结构的数组。这个D3DVERTEXELEMENT9结构定义如下：<br>typedef struct _D3DVERTEXELEMENT9 {<br>     BYTE Stream;<br>     BYTE Offset;<br>     BYTE Type;<br>     BYTE Method;<br>     BYTE Usage;<br>     BYTE UsageIndex;<br>} D3DVERTEXELEMENT9;</p>
+<ul>
+<li>Stream——指定关联到顶点分量的流</li>
+<li>Offset——偏移，按字节，相对于顶点结构成员的顶点分量的开始。例如，如果顶点结构是：<br>struct Vertex<br>{<br>   D3DXVECTOR3 pos;<br>   D3DXVECTOR3 normal;<br>};<br>……pos分量的偏移是0，因为它是第一个分量；normal分量的偏移是12，因为sizeof(pos) == 12。换句话说，normal分量以Vertex的第12个字节为开始。</li>
+<li>Type——指定数据类型。它可以是D3DDECLTYPE枚举类型的任意成员；完整列表请参见文档。常用类型如下：</li>
+<li>D3DDECLTYPE_FLOAT1——浮点数值</li>
+<li>D3DDECLTYPE_FLOAT2——2D浮点向量</li>
+<li>D3DDECLTYPE_FLOAT3——3D浮点向量</li>
+<li>D3DDECLTYPE_FLOAT4——4D浮点向量</li>
+<li><p>D3DDECLTYPE_D3DCOLOR—D3DCOLOR类型，它扩展为RGBA浮点颜色向量(r g b a)，其每一分量都是归一化到区间[0, 1]了的。</p>
+</li>
+<li><p>Method——指定网格化方法。我们认为这个参数是高级的，因此我们使用默认值，标识为D3DDECLMETHOD_DEFAULT.。</p>
+</li>
+<li><p>Usage——指定已计划的对顶点分量的使用。例如，它是否准备用于一个位置向量、法线向量、纹理坐标等？有效的用途标识符（usage identifier）是D3DDECLUSAGE枚举类型的：<br>typedef enum _D3DDECLUSAGE {<br>   D3DDECLUSAGE_POSITION     = 0,  // Position.<br>   D3DDECLUSAGE_BLENDWEIGHTS = 1,  // Blending weights.<br>   D3DDECLUSAGE_BLENDINDICES = 2,  // Blending indices.<br>   D3DDECLUSAGE_NORMAL       = 3,  // Normal vector.<br>   D3DDECLUSAGE_PSIZE        = 4,  // Vertex point size.<br>   D3DDECLUSAGE_TEXCOORD     = 5,  // Texture coordinates.<br>   D3DDECLUSAGE_TANGENT      = 6,  // Tangent vector.<br>   D3DDECLUSAGE_BINORMAL     = 7,  // Binormal vector.<br>   D3DDECLUSAGE_TESSFACTOR   = 8,  // Tessellation factor.<br>   D3DDECLUSAGE_POSITIONT    = 9,  // Transformed position.<br>   D3DDECLUSAGE_COLOR        = 10, // Color.<br>   D3DDECLUSAGE_FOG          = 11, // Fog blend value.<br>   D3DDECLUSAGE_DEPTH        = 12, // Depth value.<br>   D3DDECLUSAGE_SAMPLE       = 13  // Sampler data.<br>} D3DDECLUSAGE;</p>
+<p> D3DDECLUSAGE_PSIZE类型用于指定一个顶点的点的大小。它用于点精灵，因此我们可以基于每个顶点控制其大小。一个D3DDECLUSAGE_POSITION成员的顶点声明意味着这个顶点已经被变换，它通知图形卡不要把这个顶点送到顶点处理阶段（变形和光照）。</p>
+</li>
+</ul>
+<p>注意：这些中的少数用途类型（usage type）未在本书中提及，例如BLENDWEIGHTS, BLENDINDICES, TANGENT, BINORMAL, 和TESSFACTOR</p>
+<ul>
+<li>UsageIndex——用于标识多个相同用途的顶点分量。这个用途索引是位于区间[0, 15]间的一个整数。例如，假设我们有三个用途为D3DDECLUSAGE_NORMAL的顶点分量。我们可以为第一个指定用途索引为0，为第二个指定用途索引为1，并且为第三个指定用途索引为2。按这种方式，我们可以通过其用途索引标识每个特定的法线。</li>
+</ul>
+<p>顶点描述声明的例子：假设我们想要描述的顶点格式由位置向量和三个法线向量组成。顶点声明可以指定如下：<br>D3DVERTEXELEMENT9 decl[] =<br>{<br>{0,  0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT,<br>　D3DDECLUSAGE_POSITION, 0},<br>　<br>{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT,<br>　D3DDECLUSAGE_NORMAL, 0},<br>　<br>{0, 24, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT,<br>　D3DDECLUSAGE_NORMAL, 1},<br>　<br>{0, 36, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT,<br>　D3DDECLUSAGE_NORMAL, 2},</p>
+<p>D3DDECL_END()<br>};<br>D3DDECL_END宏用于初始化D3DVERTEXELEMENT9数组的最后一个顶点元素。同样的，注意法线向量的用途索引标签。</p>
+<p>17.1.2 创建顶点声明<br>一旦你描述了一个顶点声明为D3DVERTEXELEMENT9数组，我们就可以使用下面的方法获得一个IDirect3DVertexDeclaration9接口指针：<br>HRESULT IDirect3DDevice9::CreateVertexDeclaration(<br>     CONST D3DVERTEXELEMENT9<em> pVertexElements,<br>     IDirect3DVertexDeclaration9*</em> ppDecl<br>);</p>
+<ul>
+<li>pVertexElements——D3DVERTEXELEMENT9结构数组，它描述我们想要创建的顶点声明。</li>
+<li>ppDecl——用于返回创建的IDirect3DVertexDeclaration9接口指针<br>例子调用，其中decl是一个D3DVERTEXELEMENT9数组：<br>IDirect3DVertexDeclaration9* _decl = 0;<br>hr = _device-&gt;CreateVertexDeclaration(decl, &amp;_decl);</li>
+</ul>
+<p>17.1.3 使用一个顶点声明<br>   回忆一下：自由顶点格式是一个方便的特性并且在内部转换成了顶点声明。因此，当直接使用顶点声明，我们不再需要调用：Device-&gt;SetFVF( fvf );<br>相反，我们调用：Device-&gt;SetVertexDeclaration( _decl );<br>其中，_decl是一个IDirect3DVertexDeclaration9接口指针。<br>17.2顶点数据用途<br>考虑这个顶点声明：<br>D3DVERTEXELEMENT9 decl[] =<br>{<br>{0,  0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT,<br>　D3DDECLUSAGE_POSITION, 0},</p>
+<p>{0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT,<br>　D3DDECLUSAGE_NORMAL,   0},</p>
+<p>{0, 24, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT,<br>　D3DDECLUSAGE_NORMAL,   1},</p>
+<p>{0, 36, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT,<br>  D3DDECLUSAGE_NORMAL,   2},</p>
+<p>D3DDECL_END()<br>};</p>
+<p>   我们需要一种方式，来定义一个顶点声明的元素到顶点着色器的Input结构的数据成员的映射。我们在Input结构中通过指定每个数据成员的语义（: usage-type [usage-index]）定义这个映射。语义通过元素的用途类型和用途索引标识顶点声明中的一个元素。由数据成员的语义标识的顶点元素是得以映射到数据成员的元素。例如，对应于前面的顶点声明的输入结构是：<br>struct VS_INPUT<br>{<br>     vector position    : POSITION;<br>     vector normal     : NORMAL0;<br>     vector faceNormal1 : NORMAL1;<br>     vector faceNormal2 : NORMAL2;<br>};</p>
+<p>注意：如果我们遗漏了用途索引，就意味着用途索引为零。例如，POSITION和POSITION0是同一样东西。</p>
+<p>   这里decl中的元素0，由用途POSITION和用途索引0标识，它映射到position。decl中的元素1，由用途NORMAL和用途索引0标识，它映射到normal。decl中的元素2，由NORMAL和用途索引1标识，它映射到faceNormal1。decl中的元素3，由用途NORMAL和用途索引2标识，它映射到faceNormal2。</p>
+<p>受支持的顶点着色器输入用途（input usage）是：</p>
+<ul>
+<li>POSITION [n]——位置</li>
+<li>BLENDWEIGHTS [n]——混合权重</li>
+<li>BLENDINDICES [n]——混合索引</li>
+<li>NORMAL [n]——法线向量</li>
+<li>PSIZE[n]——顶点大小</li>
+<li>DIFFUSE [n]——散射颜色</li>
+<li>SPECULAR [n]——镜面颜色</li>
+<li>TEXCOORD [n]——纹理坐标<br>其中，n是一个位于区间[0, 15]的可选整数。</li>
+</ul>
+<p>注意：再重复一遍，这些用途类型中的少数未在本书中提及，如：BLENDWEIGHTS, TANGENT, BINORMAL, BLENDINDICES, 和TESSFACTOR。</p>
+<p>   此外，对于输出结构，我们必须指定每个成员是用来做什么的。例如，数据成员应该被作为位置向量、颜色、纹理坐标等对待吗？图形卡没主意，除非你强制的告诉它。这也需要通过语法的语义来完成：<br>struct VS_OUTPUT<br>{<br>     vector position  : POSITION;<br>     vector diffuse   : COLOR0;<br>     vector specular  : COLOR1;<br>};</p>
+<p>受支持的顶点着色器输出用途是：</p>
+<ul>
+<li>POSITION—位置</li>
+<li>PSIZE—顶点大小</li>
+<li>FOG—雾混合值</li>
+<li>COLOR [n]—顶点颜色。注意：可以有多个顶点颜色被输出，并且这些颜色可以被混合在一起以产生最终的颜色。</li>
+<li>TEXCOORD [n]—顶点纹理坐标。注意：多个顶点纹理坐标可以被输出。<br>其中，n是一个位于区间[0, 15]的可选整数。</li>
+</ul>
+<p>17.3使用顶点着色器的步骤<br>下面的列表概括了创建和使用顶点着色器的必须步骤：</p>
+<ol>
+<li>编写并编译顶点着色器</li>
+<li>创建一个IDirect3DVertexShader9接口以引用已编译的着色器代码上的顶点着色器。</li>
+<li>用IDirect3DDevice9:: SetVertexShader方法使用这个顶点着色器。</li>
+</ol>
+<p>当然，在我们做完这些之后，我们还得销毁这个顶点着色器。下面的各小节将更详细的迈入这些步骤。</p>
+<p>17.3.1 编写并编译顶点着色器<br>   首先，我们必须编写一个顶点着色器程序。在本书中的HLSL一章中，我们已经编写了我们的着色器（译者注：参见我翻译的译文第一章中各节）。一旦着色器代码写好之后，我们就使用D3DXCompileShaderFromFile函数编译这个着色器，如16.2.2节所述。回忆一下，这个函数返回一个ID3DXBuffer指针，它包含已编译的着色器代码。</p>
+<p>17.3.2 创建顶点着色器<br>   一旦我们拥有了编译好的着色器代码，我们就能够获得一个IDirect3DVertexShader9接口的指针，它代表一个顶点着色器——通过使用下面的方法：<br>HRESULT IDirect3DDevice9::CreateVertexShader(<br>     const DWORD <em>pFunction,<br>     IDirect3DVertexShader9*</em> ppShader<br>);<br>pFunction——已编译着色器代码的指针<br>ppShader——返回一个IDirect3DVertexShader9接口的指针</p>
+<p>例如，假设变量shader是一个包含已编译的，着色器代码的ID3DXBuffer指针。然后要获得一个IDirect3DVertexShader9接口，我们可以写：<br>IDirect3DVertexShader9<em> ToonShader = 0;<br>hr = Device-&gt;CreateVertexShader(<br>           (DWORD</em>)shader-&gt;GetBufferPointer(),<br>           &amp;ToonShader);<br>注意：重申一遍，D3DXCompileShaderFromFile是一个函数，它将返回已编译着色器的代码（shader）。</p>
+<p>17.3.3 建立顶点着色器<br>   在我们获得了一个代表我们的顶点着色器的IDirect3DVertexShader9接口的指针之后，我们就能够使用下面的方法使用它：<br>HRESULT IDirect3DDevice9::SetVertexShader(<br>     IDirect3DVertexShader9* pShader<br>);<br>这个方法仅接受一个参数，我们在其中传递一个想要使用的顶点着色器的指针。要使用这个我们在17.3.2节创建的着色器，我们可以写：Device-&gt;SetVertexShader(ToonShader);</p>
+<p>17.3.4 销毁顶点着色器<br>   和所有的Direc3D接口一样，要清除他们，我们就必须在用完它们之后调用其的Release方法。仍然以我们在17.3.2节创建的顶点着色器为例，我们写：<br>d3d::Release<idirect3dvertexshader9*>(ToonShader);</idirect3dvertexshader9*></p>
+<p>17.4样例应用程序：散射光照<br>   作为创建并使用顶点着色器的热身，我们写一个顶点着色器，它用一个方向（平行）光对每个顶点进行标准的散射光照。简而言之，散射光照根据顶点法线和光线向量（它的点朝向光源方向）的角度计算顶点接收到的光线的数量。角度越小，则顶点接收到的光线就越多；而角度越大，则顶点接收到的光线就越少。如果角度大于等于90度，顶点就接收不到光线了。</p>
+<p>我们以检阅着色器代码作为开始：<br>// File: diffuse.txt<br>// Desc: Vertex shader that does diffuse lighting.<br>// Global variables we use to hold the view matrix, projection matrix,<br>// ambient material, diffuse material, and the light vector that<br>// describes the direction to the light source. These variables are<br>// initialized from the application.</p>
+<p>matrix ViewMatrix;<br>matrix ViewProjMatrix;<br>vector AmbientMtrl;<br>vector DiffuseMtrl;<br>vector LightDirection;</p>
+<p>// 环境光强度，漫射光强度<br>// 这些变量定义在着色器代码中<br>vector DiffuseLightIntensity = {0.0f, 0.0f, 1.0f, 1.0f};<br>vector AmbientLightIntensity = {0.0f, 0.0f, 0.2f, 1.0f};</p>
+<p>// Input and Output structures.<br>struct VS_INPUT<br>{<br>     vector position : POSITION;<br>     vector normal   : NORMAL;<br>};</p>
+<p>struct VS_OUTPUT<br>{<br>     vector position : POSITION;<br>     vector diffuse  : COLOR;<br>};</p>
+<p>//Main<br>VS_OUTPUT Main(VS_INPUT input)<br>{<br>     // zero out all members of the output instance.<br>     VS_OUTPUT output = (VS_OUTPUT)0;</p>
+<pre><code> // 变换位置到齐次坐标空间，保存到output.position成员中
+ output.position = mul(input.position, ViewProjMatrix);
+
+ // 变换光和法线到视图空间，设置w分量为0，是因为变换的向量不是点 
+ LightDirection.w = 0.0f;
+ input.normal.w  = 0.0f;
+ LightDirection   = mul(LightDirection, ViewMatrix);
+ input.normal    = mul(input.normal, ViewMatrix);
+
+ // 计算光与法线夹角的余弦
+ float s = dot(LightDirection, input.normal); 
+
+ // 回忆一下，如果法线和光的夹角大于90度，则表面接收不到光。
+ if( s &lt; 0.0f )
+     s = 0.0f;
+
+ // 环境光反射是执行一个叉积（环境材质向量与环境光强度向量），
+ // 漫射光反射是执行一个叉积（漫射材质向量与漫射光强度向量，
+ // 更进一步讲，我们测量着色器的颜色，基于顶点从光源处接收到多少光
+ //环境光和漫射光综合起来，决定一个顶点的最终颜色
+ output.diffuse = (AmbientMtrl * AmbientLightIntensity) +
+                  ((DiffuseMtrl * DiffuseLightIntensity) * s);
+ return output;
+</code></pre><p>}</p>
+<p>   既然我们已经看到了实际的顶点着色器的代码，那么就让我们改变方式来看看应用程序的代码。这个应用程序有下列相关的全局变量：<br>IDirect3DVertexShader9<em> DiffuseShader = 0;<br>ID3DXConstantTable</em> DiffuseConstTable = 0;<br>ID3DXMesh* Teapot               = 0;<br>D3DXHANDLE ViewMatrixHandle     = 0;<br>D3DXHANDLE ViewProjMatrixHandle = 0;<br>D3DXHANDLE AmbientMtrlHandle    = 0;<br>D3DXHANDLE DiffuseMtrlHandle    = 0;<br>D3DXHANDLE LightDirHandle       = 0;<br>D3DXMATRIX Proj;<br>   有代表顶点着色器及其常量表的变量，有茶壶网格的变量，接着是一组D3DXHANDLE，其名字描述了他们引用的变量：</p>
+<p>Setup函数执行下列任务：</p>
+<ul>
+<li>创建茶壶网格</li>
+<li>编译顶点着色器</li>
+<li>根据已编译代码创建顶点着色器</li>
+<li>通过常量表获取着色器程序中的几个变量的句柄</li>
+<li>通过常量表初始化着色器的这几个变量</li>
+</ul>
+<p>注意：对于本应用程序，我们的顶点结构不需要任何自由顶点格式没有的额外的分量。因此，在本例中，我们使用一个自由顶点格式来代替顶点声明。回想一下，自由顶点格式描述最终在内部被转换为一个顶点声明。<br>bool Setup()<br>{<br>     HRESULT hr = 0;</p>
+<pre><code> // Create geometry:
+ D3DXCreateTeapot(Device, &amp;Teapot, 0); 
+
+ // Compile shader
+ ID3DXBuffer* shader      = 0;
+ ID3DXBuffer* errorBuffer = 0;
+
+ hr = D3DXCompileShaderFromFile(
+      &quot;diffuse.txt&quot;,
+      0,
+      0,
+      &quot;Main&quot;, // entry point function name
+      &quot;vs_1_1&quot;,
+      D3DXSHADER_DEBUG,
+      &amp;shader,
+      &amp;errorBuffer,
+      &amp;DiffuseConstTable);
+
+ // output any error messages
+ if( errorBuffer )
+ {
+    ::MessageBox(0, (char*)errorBuffer-&gt;GetBufferPointer(), 0, 0);
+    d3d::Release&lt;ID3DXBuffer*&gt;(errorBuffer);
+ }
+
+ if(FAILED(hr))
+ {
+    ::MessageBox(0, &quot;D3DXCompileShaderFromFile() - FAILED&quot;, 0, 0);
+    return false;
+ }
+
+ // Create shader
+ hr = Device-&gt;CreateVertexShader(
+      (DWORD*)shader-&gt;GetBufferPointer(),
+      &amp;DiffuseShader);
+
+  if(FAILED(hr))
+ {
+    ::MessageBox(0, &quot;CreateVertexShader - FAILED&quot;, 0, 0);
+    return false;
+ }
+
+ d3d::Release&lt;ID3DXBuffer*&gt;(shader);
+
+ // Get Handles
+ LightDirHandle    = DiffuseConstTable-&gt;GetConstantByName(0, &quot;LightDirection&quot;);
+ ViewMatrixHandle = DiffuseConstTable-&gt;GetConstantByName(0, &quot;ViewMatrix&quot;);
+ ViewProjMatrixHandle = DiffuseConstTable-&gt;GetConstantByName(0, &quot;ViewProjMatrix&quot;);
+ AmbientMtrlHandle = DiffuseConstTable-&gt;GetConstantByName(0, &quot;AmbientMtrl&quot;);
+ DiffuseMtrlHandle = DiffuseConstTable-&gt;GetConstantByName(0, &quot;DiffuseMtrl&quot;);
+
+
+ // Set shader constants:
+ // Light direction:
+ D3DXVECTOR4 directionToLight(-0.57f, 0.57f, -0.57f, 0.0f);
+ DiffuseConstTable-&gt;SetVector(Device, LightDirHandle,  &amp;directionToLight); 
+
+ // Materials:
+ D3DXVECTOR4 ambientMtrl(0.0f, 0.0f, 1.0f, 1.0f);
+ D3DXVECTOR4 diffuseMtrl(0.0f, 0.0f, 1.0f, 1.0f);
+ DiffuseConstTable-&gt;SetVector(Device,AmbientMtrlHandle,&amp;ambientMtrl);
+ DiffuseConstTable-&gt;SetVector(Device,DiffuseMtrlHandle,&amp;diffuseMtrl);
+
+ DiffuseConstTable-&gt;SetDefaults(Device);
+
+ // Compute projection matrix.
+ D3DXMatrixPerspectiveFovLH(
+   &amp;Proj, D3DX PI * 0.25f,
+   (float)Width / (float)Height, 1.0f, 1000.0f);
+
+ return true;
+</code></pre><p>}</p>
+<p>   Display函数非常简单。它检测用户输入（译者注：这里指的是用户输入的传入着色器程序的变量），并相应的更新视图矩阵。但是，因为我们在着色器中执行这个视图矩阵变换，所以我们还必须更新着色器中的视图矩阵变量。我们用常量表完成这件事情。<br>bool Display(float timeDelta)<br>{<br>     if( Device )<br>     {<br>          // Update view matrix code snipped…<br>          D3DXMATRIX V;<br>          D3DXMatrixLookAtLH(&amp;V, &amp;position, &amp;target, &amp;up);<br>          DiffuseConstTable-&gt;SetMatrix(Device, ViewMatrixHandle, &amp;V);<br>          D3DXMATRIX ViewProj =V *Proj;</p>
+<pre><code>      DiffuseConstTable-&gt;SetMatrix(Device, ViewProjMatrixHandle,
+                                  &amp;ViewProj);
+
+      // Render
+      Device-&gt;Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+                    0xffffffff, 1.0f, 0);
+      Device-&gt;BeginScene();
+      Device-&gt;SetVertexShader(DiffuseShader);
+      Teapot-&gt;DrawSubset(0);
+      Device-&gt;EndScene();
+      Device-&gt;Present(0, 0, 0, 0);
+ }
+ return true;
+</code></pre><p>}</p>
+<p>同样注意，就在DrawSubset调用之前，我们允许了这个我们希望使用的顶点着色器。<br>清理也需要被完成；我们简单的释放了这个已分配的接口：<br>void Cleanup()<br>{<br>     d3d::Release<id3dxmesh*>(Teapot);<br>     d3d::Release<idirect3dvertexshader9*>(DiffuseShader);<br>     d3d::Release<id3dxconstanttable*>(DiffuseConstTable);<br>}</id3dxconstanttable*></idirect3dvertexshader9*></id3dxmesh*></p>
+<p>17.5 卡通渲染<br>   作为第二个顶点着色器的例子，让我们编写两个顶点着色器，它们以卡通风格的绘画方式对网格着色（shade）并画轮廓（outline）。图17.2展示了这一点：</p>
+<p>图17.2：（a）使用卡通着色法着色的对象（注意着色间的尖锐过渡）。（b）增强卡通效果，轮廓边（silhouette edge）被勾出。（c）使用标准散射光照着色的对象</p>
+<p>注意：卡通渲染是一种特定类型的非写实渲染（non-photorealistic rendering），有时被称作风格化渲染（stylistic rendering）。</p>
+<p>   虽然卡通渲染不适用于所有游戏，例如激烈的第一人称射击游戏，但是它仍然可以增强一些希望表现卡通感觉类型游戏的气氛。此外，卡通渲染是漂亮的，并易于实现。让我们好好的演示一个顶点着色器。</p>
+<p>我们将卡通渲染分为两步：</p>
+<ol>
+<li>卡通绘画的特点是：在一个顶点到下一个顶点的强烈转换时，有少量的阴影强度级别；我们看一下这个卡通阴影（cartoon shading）。在图17.2（a）中，我们看到网络着色使用了三种阴影强度（亮、中、暗），而且其间的过渡是不平滑的——不像图17.2（c），其明暗过渡是平滑的。</li>
+<li>卡通绘图的主要特点是：在其外框上勾画轮廓，如图17.2（b）所示。<br>这两个步骤都需要其各自的顶点着色器。</li>
+</ol>
+<p>17.5.1 卡通着色<br>   要实现卡通着色，我们采用Lander在2000年3月发表在Game Developer Magazine的文章“Shades of Disney: Opaquing a 3D World”中所描述的方法。它像这样工作：我们创建一个带强度级别的灰度纹理，它包含我们需要的不同的着色强度。图17.3显示了我们在样例程序中使用的这个纹理。</p>
+<p>图 17.3：用来保存着色强度的着色纹理。注意观察不连续的着色间过渡和纹理着色强度必须从左到右增加。<br>   然后在顶点着色器中，我们执行标准散射点积运算（standard diffuse calculation dot product）来确定顶点法线N和光线向量L之间角度的余弦，用以确定顶点接收到多少光线：s=L·N</p>
+<p>   如果s＜0，就表示光线向量和顶点法线之间的角度大于90度，也就表示该表面接收不到光线。因此，如果s＜0，我们就让s＝0。所以s ∈ [0, 1]。</p>
+<p>   现在，在通常的散射光照模型中，我们使用s来标记颜色向量。这样，顶点颜色的明暗取决于接收到的光照的数量：diffuseColor = s(r, g, b, a)<br>   但是，这将会导致从亮到暗之间平滑的着色。这是与我们期望的卡通着色相反的。我们想要一种在几个不同着色器间突然转换颜色的效果（对卡通渲染来说，在2至4种着色器工作起来还是挺不错的）。</p>
+<p>   不使用s来标记颜色向量，我们将使用s作为早先提到的强度纹理的u纹理坐标——如图17.3。<br>注意：标量（scalar）s必定是一个有效的纹理坐标，因为s ∈ [0, 1]，这是通常的纹理坐标区间。</p>
+<p>   按这种方式，顶点不会被平滑着色，而是间断的。例如，强度纹理可能被分成3种着色，如图17.4所示：</p>
+<p>图17.4：那么，s ∈ [0, 0.33]的值使用shader0着色，s ∈ [ 0.33，0.66]的值使用shader1着色，s ∈ [0.66,1]的值使用shader2着色。当然，从这些着色的一种到另一种的过渡是不平滑的，这就赋予了我们期望的效果。</p>
+<p>注意：我们还为卡通着色关闭了纹理过滤，因为这种过滤会试图使着色过渡变平滑。这对于我们要求的不连续过渡是多余的。</p>
+<p>17.5.2 卡通着色的顶点着色器代码<br>   我们现在介绍卡通着色的顶点着色器。这个着色器的主要任务只是根据s=L·N计算并设置纹理坐标。注意观察输出结构，我们已经增加了一个数据成员来存储已被计算过的纹理坐标。同时还需注意，我们仍然输出顶点颜色，虽然我们不修改它，不过当颜色被与强度纹理组合起来的时候，它呈现为被着色的。<br>// File: toon.txt<br>// Desc: Vertex shader that lights geometry so it appears to be<br>// drawn in a cartoon style.</p>
+<p>// Globals<br>extern matrix WorldViewMatrix;<br>extern matrix WorldViewProjMatrix;<br>extern vector Color;<br>extern vector LightDirection;<br>static vector Black = {0.0f, 0.0f, 0.0f, 0.0f};</p>
+<p>// Structures<br>struct VS_INPUT<br>{<br>     vector position : POSITION;<br>     vector normal   : NORMAL;<br>};</p>
+<p>struct VS_OUTPUT<br>{<br>     vector position : POSITION;<br>     float2 uvCoords : TEXCOORD;<br>     vector diffuse  : COLOR;<br>};</p>
+<p>// Main<br>VS_OUTPUT Main(VS_INPUT input)<br>{<br>      // zero out each member in output<br>　　　VS_OUTPUT output = (VS_OUTPUT)0;<br>　　　<br>      // transform vertex position to homogenous clip space<br>　　　output.position = mul(input.position, WorldViewProjMatrix);<br>　　　<br>      // Transform lights and normals to view space.  Set w<br>      // components to zero since we’re transforming vectors.<br>      // Assume there are no scalings in the world<br>      // matrix as well.<br>      LightDirection.w = 0.0f;<br>      input.normal.w   = 0.0f;<br>      LightDirection   = mul(LightDirection, WorldViewMatrix);<br>      input.normal     = mul(input.normal, WorldViewMatrix);</p>
+<pre><code>  // Compute the 1D texture coordinate for toon rendering.
+</code></pre><p>　　　float u = dot(LightDirection, input.normal);<br>　　　<br>      // Clamp to zero if u is negative because u<br>      // negative implies the angle between the light<br>      // and normal is greater than 90 degrees.  And<br>      // if that is true then the surface receives no light.<br>      if(u &lt; 0.0f)<br>         u = 0.0f;</p>
+<pre><code>  // Set other tex coord to middle.
+  float v = 0.5f;
+  output.uvCoords.x = u;
+  output.uvCoords.y = v;
+
+  // save color
+</code></pre><p>　　　output.diffuse = Color;<br>　　　<br>      return output;<br>}</p>
+<p>两点注解：</p>
+<ul>
+<li>我们假设世界矩阵没有执行任何缩放。因为如果它执行，它就会弄乱乘以它的顶点的长度和方向。</li>
+<li>我们总是设置v纹理坐标为纹理的中点。这意味着我们仅使用纹理中一条单一的线，那就是说我们可以使用1D强度纹理来代替2D的那个纹理。不管怎样，1D和2D纹理都能工作。本例中，我们使用了2D纹理而不是1D纹理，这是没有什么特别的原因的。</li>
+</ul>
+<p>17.5.3轮廓勾勒<br>要完成卡通效果，我们还需要勾勒（outline）轮廓边（silhouette edge）。这比卡通着色稍微复杂一点。</p>
+<p>17.5.3.1 边的表示法<br>我们将一个网格的一条边表示为一个四元组（构建自2个三角形）——参见图17.5。</p>
+<p>图 17.5：表示边的四元组</p>
+<p>   我们选择四元组有两个原因：我们可以通过调整四元组的维容易的改变边的厚度，并且我们可以渲染退化的四元组来隐藏某些边，也即非轮廓边。在Direct3D中，我们从两个三角形来构建一个四元组。退化四元组（degenerate quad）是从两个退化三角形构建而来的四元组。退化三角形（degenerate triangle）是一个面积为零的三角形，或者换句话说，是一个三点位于一线上的三角形。如果我们传入一个退化三角形到渲染管线，则该三角形显示为空。这是很有用的，因为如果我们希望隐藏特定三角形，我们可以简单的退化它而不需要实际的从三角形列表（顶点缓冲）移除它。回想一下，我们只需要显示轮廓边——而不是网格的每一条边。</p>
+<p>   当我们首先创建一条边的时候，我们指定其四个顶点，并使其退化，这意味着边将会被隐藏（渲染时不显示）。</p>
+<p>图17.6：由两个三角形共用边描述的退化四元组</p>
+<p>   注意图17.6中的两个顶点v0和v1，我们设置其顶点法线向量为零向量。然后当我们将边的顶点送入顶点着色器的时候，顶点着色器将会检测顶点是否位于轮廓边上；如果是，则顶点着色器将按顶点法线的方向偏移顶点位置的标量。观察法线向量为零的顶点，它不会被偏移。</p>
+<p>因此，我们最终以一个非退化四元组（non-degenerate quad）来表示轮廓边，如图17.7所示。</p>
+<p>图17.7：位于轮廓边上的顶点v2和v3被按照其各自的顶点法线n2和n3进行偏移。观察顶点v0和v1仍然保持在其固定位置，因为其顶点法线等于零向量，因此对于它们来说没有偏移发生。按这种方式，四元组成功的重新生成来表示轮廓边。</p>
+<p>备注：如果我们没有设置顶点v0和v1的顶点法线为零向量，那么那些顶点就同样会被偏移。但是如果偏移描述轮廓边的所有四个顶点，那么我们仅是平移了该退化四元组。通过保持顶点v0和v1固定并仅仅偏移顶点v2和v3，我们重新生成了四元组。</p>
+<p>17.5.3.2 轮廓边测试<br>   若两个三角面face0和face1在视图方向上与两个不同方向的面共享同一条边，则该边为轮廓边。也就是说，如果一个面是前面（front facing）而另一个面是后面（back facing），那么这条边就是一条轮廓边。图17.8给出了一个轮廓边和一个非轮廓边的例子。</p>
+<p>图17.8：在（a）中，由v0 和v1定义的共享边的一个面是前面，而共享边另一个面是背面，因此该边是轮廓边。在（b）中，由v0 和v1定义的这两个共享边面都是前面，因此该边不是轮廓边。</p>
+<p>   接下来，为了检测一个顶点是否在轮廓边上，我们必须以每个顶点为基础了解face0 和 face1的法线向量。我们的边的顶点数据结构反映如下：<br>struct VS_INPUT<br>{<br>     vector position    : POSITION;<br>     vector normal      : NORMAL0;<br>     vector faceNormal1 : NORMAL1;<br>     vector faceNormal2 : NORMAL2;<br>};</p>
+<p>   前两个分量很直接，但让我们看看两个额外的法线向量，它们是faceNormal1和faceNormal2。这些向量描述了两个三角面的面法线，共享边的顶点位于这两个面的共享边上，这两个面是face0和face1。</p>
+<p>   实际检测顶点是否在共享边上的数学如下。假设我们在视图空间中，令v为一原点指向检测顶点的向量——图17.8，令n0为face0的面法线且n1为face0的面法线，若下面的不等式为真，则顶点位于轮廓边上：<br>（1）（v·n0）（v·n1）＜0</p>
+<p>   若两点积符号相异，则不等式为真，使得不等式左边为负。回想一下点积的性质：两个点积的符号相异，这意味着一个三角面是前面而另一个是后面。</p>
+<p>   现在，考虑一条边只有一个三角形共享它的情况，如图17.9，其法线将会被存储在faceNormal1中。</p>
+<p>图 17.9：顶点v0和v1定义的边只有一个三角面共享它</p>
+<p>   我们定义这种边总为轮廓边。要确保顶点着色器将这种边作为轮廓边处理，我们要让faceNormal2 = -faceNormal1。因此，反向的面法线和不等式（1）为真，表示该边为一轮廓边。</p>
+<p>17.5.3.3 边的生成<br>   生成网格的边是微不足道的；我们简单的遍历网格的每个三角面并为三角面上每条边计算一个四元组（退化的，如图17.6所示）。<br>注意：每个三角面有三条边，因为每个三角形有三条边。</p>
+<p>   对于每条边上的顶点，我们同样需要知道共享边的两个三角面。一个面是边所在的三角形。例如，如果要计算第1个面的一条边，那么第1个面共享该边。共享该边的另一个面可以使用网格的邻接信息找到。<br>17.5.4 轮廓边顶点着色器代码<br>   我们现在呈现渲染轮廓边的顶点着色器代码。这个着色器的主要任务就是确定传入的顶点是否在轮廓边上。如果是，顶点着色器就以一定的值，按顶点法线的方向偏移顶点。<br>// File: outline.txt<br>// Desc: Vertex shader renders silhouette edges.</p>
+<p>// Globals</p>
+<p>extern matrix WorldViewMatrix;<br>extern matrix ProjMatrix;<br>static vector Black = {0.0f, 0.0f, 0.0f, 0.0f};</p>
+<p>// Structures<br>struct VS_INPUT<br>{<br>     vector position : POSITION;<br>     vector normal : NORMAL0;<br>     vector faceNormal1 : NORMAL1;<br>     vector faceNormal2 : NORMAL2;<br>};<br>struct VS_OUTPUT<br>{<br>     vector position : POSITION;<br>     vector diffuse : COLOR;<br>};</p>
+<p>// Main<br>VS_OUTPUT Main(VS_INPUT input)<br>{<br>      // zero out each member in output<br>      VS_OUTPUT output = (VS_OUTPUT)0; </p>
+<pre><code>  // transform position to view space
+  input.position = mul(input.position, WorldViewMatrix); 
+
+  // Compute a vector in the direction of the vertex
+  // from the eye. Recall the eye is at the origin
+</code></pre><p>　　　// in view space - eye is just camera position.<br>      vector eyeToVertex = input.position; </p>
+<pre><code>  // transform normals to view space.  Set w
+  // components to zero since we&#39;re transforming vectors.
+  // Assume there are no scalings in the world
+  // matrix as well.
+  input.normal.w      = 0.0f;
+  input.faceNormal1.w = 0.0f;
+  input.faceNormal2.w = 0.0f;
+  input.normal      = mul(input.normal,      WorldViewMatrix);
+  input.faceNormal1 = mul(input.faceNormal1, WorldViewMatrix);
+  input.faceNormal2 = mul(input.faceNormal2, WorldViewMatrix); 
+
+  // compute the cosine of the angles between
+  // the eyeToVertex vector and the face normals.
+  float dot0 = dot(eyeToVertex, input.faceNormal1);
+  float dot1 = dot(eyeToVertex, input.faceNormal2);
+
+  // if cosines are different signs (positive/negative)
+  // then we are on a silhouette edge. Do the signs
+  // differ?
+  if( (dot0 * dot1) &lt; 0.0f )
+  {
+       // yes, then this vertex is on a silhouette edge,
+       // offset the vertex position by some scalar in the
+       // direction of the vertex normal.
+       input.position += 0.1f * input.normal;
+  }
+
+  // transform to homogeneous clip space
+  output.position = mul(input.position, ProjMatrix);
+
+  // set outline color
+  output.diffuse = Black; 
+
+  return output;
+</code></pre><p>}</p>
+<p>17.6 摘要</p>
+<ul>
+<li>使用顶点着色器，我们可以替换固定功能管线的变换和光照阶段。通过用我们自己的程序（顶点着色器）替换此固定处理，我们可以在图形效果方面获得我们能够达到的极大的自由性。</li>
+<li>顶点声明用于描述顶点格式。它们和自由顶点格式相似，但是更加自由并允许我们描述FVF不能描述的顶点格式。注意，如果顶点可以用FVF描述，我们仍然可以使用它们；不管怎样，在内部它们被转换为顶点声明。</li>
+<li>对于输入，用途语义指定了顶点分量如何被从顶点声明映射到HLSL程序中的变量。对于输出，用途语义指定了顶点分量是用来做什么的（例如：位置、颜色、纹理坐标，等等）。</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/Intorduction-to-the-High-Level-Shading-Language/" rel="next" title="高级着色器语言入门(Introduction to the High-Level Shading Language)">
+                <i class="fa fa-chevron-left"></i> 高级着色器语言入门(Introduction to the High-Level Shading Language)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/Introduction-to-Pixel-Shaders/" rel="prev" title="第十八章 像素着色器入门(Introduction to Pixel Shaders)">
+                第十八章 像素着色器入门(Introduction to Pixel Shaders) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

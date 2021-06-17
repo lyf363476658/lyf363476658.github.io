@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="在这一章里我们描述高级着色器语言（High-Level Shading Language ，简称HLSL），在下三章里我们用它去编写顶点和像素着色器。简单的说，在我们写的程序里顶点和像素是很小的对象，它们由GPU来执行，是固定功能管线的一部分。用我们自己写的着色器程序替换一部分固定功能管线，在绘制效果上我们获得很大的灵活性。我们不再局限于预定义的”固定”操作。   为了编写着色器程序，我们需">
+<meta name="keywords" content="Direct3D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级着色器语言入门(Introduction to the High-Level Shading Language)">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/Intorduction-to-the-High-Level-Shading-Language/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="在这一章里我们描述高级着色器语言（High-Level Shading Language ，简称HLSL），在下三章里我们用它去编写顶点和像素着色器。简单的说，在我们写的程序里顶点和像素是很小的对象，它们由GPU来执行，是固定功能管线的一部分。用我们自己写的着色器程序替换一部分固定功能管线，在绘制效果上我们获得很大的灵活性。我们不再局限于预定义的”固定”操作。   为了编写着色器程序，我们需">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.898Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高级着色器语言入门(Introduction to the High-Level Shading Language)">
+<meta name="twitter:description" content="在这一章里我们描述高级着色器语言（High-Level Shading Language ，简称HLSL），在下三章里我们用它去编写顶点和像素着色器。简单的说，在我们写的程序里顶点和像素是很小的对象，它们由GPU来执行，是固定功能管线的一部分。用我们自己写的着色器程序替换一部分固定功能管线，在绘制效果上我们获得很大的灵活性。我们不再局限于预定义的”固定”操作。   为了编写着色器程序，我们需">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/Intorduction-to-the-High-Level-Shading-Language/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>高级着色器语言入门(Introduction to the High-Level Shading Language) | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Intorduction-to-the-High-Level-Shading-Language/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">高级着色器语言入门(Introduction to the High-Level Shading Language)
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/Intorduction-to-the-High-Level-Shading-Language/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Intorduction-to-the-High-Level-Shading-Language/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>   在这一章里我们描述高级着色器语言（High-Level Shading Language ，简称HLSL），在下三章里我们用它去编写顶点和像素着色器。简单的说，在我们写的程序里顶点和像素是很小的对象，它们由GPU来执行，是固定功能管线的一部分。用我们自己写的着色器程序替换一部分固定功能管线，在绘制效果上我们获得很大的灵活性。我们不再局限于预定义的”固定”操作。<br>   为了编写着色器程序，我们需要一种语言。 在DirectX 8.x,中，着色器是用低级着色器汇编语言编写的。幸运的是，我们不必再用汇编语言来写着色器了，DirectX 9支持一种高级着色器语言来xyna写。用HLSL在汇编语言来写着色器程序与使用高级语言有同样的优势，像C++，它超越了汇编语言，即：</p>
+<ul>
+<li>增加生产力—用高级语言比用低级语言写程序更快、更容易。 我们可以花费更多的时间关注于算法而不是代码。</li>
+<li>增加可读性—用高级语言写的程序更易读，这意味着用高级语言编程更易于调试和维护。</li>
+<li>大多数情况下，编译器产生的汇编代码比手写有效率。</li>
+<li>使用HLSL 编译器，我们可以编译我们的代码到任何可用shader版本，使用汇编语言我们将不得不为每个需要的版本移植代码。</li>
+</ul>
+<p>HLSL 同C和C++语法很类似, 所以缩短了学习曲线。<br>   最后，如果你的显卡不支持顶点和像素着色器的话，为了执行着色器的例子程序你将需要转换REF设备。使用REF设备意味着着色器例子运行的会很慢，但它至少能显示结果，让我们去检查是否代码可以被执行。</p>
+<p>提示：顶点shaders可以用软件来模拟 ―― D3DCREATE_SOFTWARE_VERTEX-PROCESSING。16.1 </p>
+<p>目标</p>
+<ul>
+<li>学习如何定、编译一个HLSL 着色器程序。</li>
+<li>学习如何将程序中的数据传送到着色器程序。</li>
+<li><p>熟悉语法、类型，和HLSL的内建函数。</p>
+<h1 id="编写HLSL着色器"><a href="#编写HLSL着色器" class="headerlink" title="编写HLSL着色器"></a>编写HLSL着色器</h1><p>我们可以在程序源文件中用字符串直接编写HLSL着色器代码，然而更方便、更模块化的方法是把它与程序代码分离出来。因此，我们在记事本中编写着色器并保存成一般的ASCII文本文件，然后可以用D3DXCompileShaderFromFile函数(section 16.2.2)来编译它们。<br>作为介绍，下面是用HLSL编写的一个简单的顶点着色器，用记事本生成并保存成文本文件“Transform.txt”。全部工程都在标题为Transform的目录下，顶点着色器用组合视图和投影矩阵转换顶点，并设置顶点漫射光为蓝色。</p>
+<p> 注意：这是一个顶点着色器的例子，不必关心顶点着色器做了什么，这是下一章包含的内容，现在的目标是熟悉HLSL编程的语法和格式。<br>// File: transform.txt<br>// Author: Frank D. Luna (C) All Rights Reserved<br>// System: AMD Athlon 1800+ XP, 512 DDR, Geforce 3, Windows XP,<br>// MSVC++ 7.0</p>
+</li>
+</ul>
+<p>// Desc: 顶点着色器用组合视图和投影矩阵转换顶点，并设置顶点漫射光为蓝色.</p>
+<p>//全局变量<br>//用来保存视图和投影的组合矩阵，在程序中初始化变量<br>matrix ViewProjMatrix;</p>
+<p>// 初始化颜色变量（蓝色）<br>vector Blue = {0.0f, 0.0f, 1.0f, 1.0f};</p>
+<p>// 结构<br>// Input结构用来描述输入到着色器的顶点，这个Input顶点只包含一个位置成员<br>struct VS_INPUT<br>{<br>     vector position  : POSITION;<br>};</p>
+<p>//Output结构用来描述从着色器输出的顶点，这个Output顶点包含位置和颜色成员<br>struct VS_OUTPUT<br>{<br>     vector position : POSITION;<br>     vector diffuse  : COLOR;<br>};</p>
+<p>//主入口点，这个main函数接收一个Input顶点的拷贝作为参数，返回一个Output顶点的拷贝<br>VS_OUTPUT Main(VS_INPUT input)<br>{<br>     // 将output结构所有成员初始化<br>     VS_OUTPUT output = (VS_OUTPUT)0;<br>     // 将位置变换到投影空间<br>     output.position  = mul(input.position, ViewProjMatrix);<br>     // 设置顶点颜色<br>     output.diffuse = Blue;<br>     //Output the projected and colored vertex.<br>     return output;<br>}</p>
+<p>16.1.1 全局变量<br>首先是2个全局变量：<br>matrix ViewProjMatrix;<br>vector Blue = {0.0f, 0.0f, 1.0f, 1.0f};<br>   第1个变量ViewProjMatrix是矩阵类型，它是一个在HLSL 内创建的4×4的矩阵类型。这个变量保存视图与投影的组合矩阵，它描述两者的变换。使用这种方法我们只要做一个向量和矩阵的乘法（而不是二个）。注意，在着色器源代码的任何地方都没有初始化这个变量，因为它是我们在应用程序的源代码里设置的，而不是在着色器中。从应用程序向着色器程序通讯是常用的操作，例子在16.2.1节。<br>   第二个变量Blue是built-in（内建）类型的4D向量，我们简单的将它初始化成蓝色，它是个RGBA的颜色向量。</p>
+<p>16.1.2 输入和输出结构<br>   在全局变量定义之后，定义2个特殊的结构，我们调用输入和输出结构。对于顶点着色器而言，这些结构定义了顶点的数据，分别是：<br>struct VS_INPUT<br>{<br>     vector position : POSITION;<br>};</p>
+<p>struct VS_OUTPUT<br>{<br>     vector position : POSITION;<br>     vector diffuse  : COLOR;<br>};<br>注意：给像素着色器的结构定义输入和输出像素数据。</p>
+<p>   在例子中，INPUT 顶点着色器只包含位置成员（POSITION），OUTPUT顶点着色器包含位置和颜色成员（POSITION and COLOR）。<br>   特殊的冒号是一种语义，用于是声明变量。这与vertex结构中的自由顶点格式（FVF）相似。例如，在VS_INPUT中有成员：vector position : POSITION;<br>   “: COLOR”是说顶点的漫射光是用VS_OUTPUT结构的COLOR成员来说明的。在下一章中对于顶点和像素着色器中向量的标识符用法，我们将会有更多的讨论。<br>   注意：从底层来说，着色器变量的语义和语法同硬件寄存器是相关联的。即，input变量与input寄存器关联，output变量与output寄存器关联。例如，VS_INPUT中的position成员与顶点input的position寄存器相关联。同样，diffuse与顶点的output 的color寄存器关联。</p>
+<p>16.1.3 函数的入口点<br>   在C++程序中，每个HLSL程序有一个入口点。在我们的着色器例子中，我们调用入口点函数main。然而名字不是强制的。入口点函数名可以是任何有效的函数名，入口点函数必须有一个input结构参数，它通过input顶点进入着色器。入口点函数必须返回一个output结构实例，在着色器中使用output操作顶点。<br>VS_OUTPUT Main(VS_INPUT input)<br>{</p>
+<p>   注意：实际上，使用input、output结构不是强制的。例如，有时你将会看到使用类似下面的语法，特别是在像素着色器中：<br>float4 Main(in float2 base : TEXCOORD0,<br>            in float2 spot : TEXCOORD1,<br>            in float2 text : TEXCOORD2) : COLOR<br>{<br>…<br>}</p>
+<p>   例子中，输入到着色器中的参数是3个纹理坐标。着色器输出（返回）一个颜色，COLOR语句在函数的声明以后。这种定义是类似于：<br>struct INPUT<br>{<br>     float2 base : TEXCOORD0;<br>     float2 spot : TEXCOORD1;<br>     float2 text : TEXCOORD2;<br>};</p>
+<p>struct OUTPUT<br>{<br>     float4 c : COLOR;<br>};</p>
+<p>OUTPUT Main(INPUT input)<br>{<br>…<br>}</p>
+<p>   输入点函数负责根据给定的input顶点计算output顶点。例子中的着色器简单的变换input顶点到视图空间和投影空间，设置顶点颜色为蓝色，并返回结果顶点。首先我们定义VS_OUTPUT的实例并初始化所有成员为0。<br>VS_OUTPUT output = (VS_OUTPUT)0; // zero out all members<br>   然后着色器变换input顶点位置用ViewProjMatrix变量，使用mul 函数。它是一个built-in（内建）函数，实现向量与矩阵相乘，或矩阵与矩阵相乘。我们保存结果变换的向量（在output实例的position成员中）。<br>// 变换后为投影空间的位置<br>output.position = mul(input.position, ViewProjMatrix);<br>   然后设置output的成员diffuse的颜色为蓝色：<br>// 设置顶点颜色<br>output.diffuse = Blue;<br>   最后返回结果向量：<br>return output;<br>}<br>16.2 编译HLSL 着色器<br>16.2.1 常量表<br>   每个着色器有一个常量表，用来保存它的变量。D3DX库通过ID3DXConstantTable接口，提供给应用程序访问着色器的常量表。通过这个接口我们能够在应用程序中设置着色器源代码中的变量。<br>   我们现在描述一个被节选了的ID3DXConstantTable接口的方法列表的实现，全部的列表请查阅Direct3D文档。<br>16.2.1.1 取得常量句柄<br>   为了在应用程序中设置着色器中的一个特定变量，需要有一种方法去引用它，我们能够在应用程序中用D3DXHANDLE引用一个在着色器中的变量，下面的方法返回一个着色器中的变量的D3DXHANDLE，使用时，需要传递一个变量的名字作为参数：<br>D3DXHANDLE ID3DXConstantTable::GetConstantByName(<br>     D3DXHANDLE hConstant, // scope of constant<br>     LPCSTR pName          // name of constant<br>);</p>
+<ul>
+<li>Hconstant——我们要取得的父结构中变量句柄的D3DXHANDLE标识。例如，如果我们想获得一个特定数据结构中单一数据成员的句柄，我们可以传递结构实例的句柄。如果我们获得一个顶级变量的句柄，给这个参数设为0。</li>
+<li>PName——我们想获得的句柄的着色器代码中的变量的名字。</li>
+</ul>
+<p>例如，如果在着色器中变量的名字为ViewProjMatrix，并且这是顶级变量，我们这么写：<br>// 取得着色器中ViewProjMatrix变量的句柄<br>D3DXHANDLE h0;<br>h0 = ConstTable-&gt;GetConstantByName(0, “ViewProjMatrix”);</p>
+<p>16.2.1.2 设置常量<br>   一旦应用程序有了一个D3DXHANDLE，要引用着色器代码中的具体变量，我们可以在应用程序中使用ID3DXConstantTable::SetXXX方法设置变量。如果我们想设置一个向量数组类型的变量，方法名是SetVectorArray。<br>   ID3DXConstantTable::SetXXX的一般语法是：<br>HRESULT ID3DXConstantTable::SetXXX(<br>     LPDIRECT3DDEVICE9 pDevice,<br>     D3DXHANDLE hConstant,<br>     XXX value<br>);</p>
+<ul>
+<li>PDevice：常量表所关联的设备的指针。</li>
+<li>HConstant：我们正在设置的变量句柄的引用。</li>
+<li><p>Value：我们要把变量设置成的值，XXX是我们设置的要替换的变量类型名，对于有些类型（bool, int, float），传递变量值的COPY，另外一些类型（vectors, matrices, structures），传递值的指针。</p>
+<p> 下面列表描述了我们能用ID3DXConstantTable接口设置的类型列表。这里假定我们有一个有效的设备，和一个有效句柄。<br>SetBool—Used to set a Boolean value. Sample call:<br>bool b = true;<br>ConstTable-&gt;SetBool(Device, handle, b);</p>
+</li>
+</ul>
+<p>SetBoolArray—Used to set a Boolean array. Sample call:<br>bool b[3] = {true, false, true};<br>ConstTable-&gt;SetBoolArray(Device, handle, b, 3);</p>
+<p>SetFloat—Used to set a float. Sample call:<br>float f = 3.14f;<br>ConstTable-&gt;SetFloat(Device, handle, f);</p>
+<p>SetFloatArray—Used to set a float array. Sample call:<br>float f[2] = {1.0f, 2.0f};<br>ConstTable-&gt;SetFloatArray(Device, handle, f, 2);</p>
+<p>SetInt—Used to set an integer. Sample call:<br>int x = 4;<br>ConstTable-&gt;SetInt(Device, handle, x);</p>
+<p>SetIntArray—Used to set an integer array. Sample call:<br>int x[4] = {1, 2, 3, 4};<br>ConstTable-&gt;SetIntArray(Device, handle, x, 4);</p>
+<p>SetMatrix—Used to set a 4 × 4 matrix. Sample call:<br>D3DXMATRIX M(…);<br>ConstTable-&gt;SetMatrix(Device, handle, &amp;M);</p>
+<p>SetMatrixArray—Used to set a 4 × 4 matrix array. Sample call:<br>D3DXMATRIX M[4];<br>// …Initialize matrices<br>ConstTable-&gt;SetMatrixArray(Device, handle, M, 4);</p>
+<p>SetMatrixPointerArray—Used to set an array of 4 × 4 matrix pointers. Sample call:<br>D3DXMATRIX* M[4];<br>// …Allocate and initialize matrix pointers<br>ConstTable-&gt;SetMatrixPointerArray(Device, handle, M, 4);</p>
+<p>SetMatrixTranspose—Used to set a transposed 4 × 4 matrix. Sample call:<br>D3DXMATRIX M(…);<br>D3DXMatrixTranspose(&amp;M, &amp;M);<br>ConstTable-&gt;SetMatrixTranspose(Device, handle, &amp;M);</p>
+<p>SetMatrixTransposeArray—Used to set an array of 4 × 4 transposed matrices. Sample call:<br>D3DXMATRIX M[4];<br>// …Initialize matrices and transpose them.<br>ConstTable-&gt;SetMatrixTransposeArray(Device, handle, M, 4);</p>
+<p>SetMatrixTransposePointerArray—Used to set an array of pointers to 4 × 4 transposed matrices. Sample call:<br>D3DXMATRIX* M[4];<br>// …Allocate,initialize matrix pointers and transpose them.<br>ConstTable-&gt;SetMatrixTransposePointerArray(Device, handle, M, 4);</p>
+<p>SetVector—Used to set a variable of type D3DXVECTOR4. Sample call:<br>D3DXVECTOR4 v(1.0f, 2.0f, 3.0f, 4.0f);<br>ConstTable-&gt;SetVector(Device, handle, &amp;v);</p>
+<p>SetVectorArray—Used to set a variable that is a vector array. Sample call:<br>D3DXVECTOR4 v[3];<br>// …Initialize vectors<br>ConstTable-&gt;SetVectorArray(Device, handle, v, 3);</p>
+<p>SetValue—Used to set an arbitrarily sized type, such as a structure. In the sample call, we use SetValue to set a D3DXMATRIX:<br>D3DXMATRIX M(…);<br>ConstTable-&gt;SetValue(Device, handle, (void*)&amp;M, sizeof(M));</p>
+<p>16.2.1.3 设置常量默认值<br>   下一个方法就是设置常量的默认值，这些默认值在声明时初始化。这个方法应该在应用程序建立（setup）期间被一次性调用（called once）。<br>   HRESULT ID3DXConstantTable::SetDefaults(<br>        LPDIRECT3DDEVICE9 pDevice<br>   );<br>   pDevice——关联到常量表的设备的指针。</p>
+<p>16.2.2 编译HLSL着色器<br>   我们可以编译一个着色器——用我们已保存的着色器的文本文件——使用下列函数：<br>   HRESULT D3DXCompileShaderFromFile(<br>        LPCSTR               pSrcFile,<br>        CONST D3DXMACRO<em>     pDefines,<br>        LPD3DXINCLUDE        pInclude,<br>        LPCSTR               pFunctionName,<br>        LPCSTR               pTarget,<br>        DWORD                Flags,<br>        LPD3DXBUFFER</em>        ppShader,<br>        LPD3DXBUFFER<em>        ppErrorMsgs,<br>        LPD3DXCONSTANTTABLE</em> ppConstantTable<br>   );</p>
+<ul>
+<li>pSrcFile——要编译的包含着色器源代码的文本文件的文件名</li>
+<li>pDefines——参数可选，本书中指定为空。</li>
+<li>pInclude——ID3DXInclude接口指针。这个接口被设计成由应用程序实现，所以我们可以重载默认include的行为。通常，默认行为就可以了，而且我们可以通过将其指定为空忽略此参数。</li>
+<li>pFunctionName——指定入口点函数名的字符串。例如，如果着色器的入口点函数叫做Main，我们可以给此参数传递“Main”。</li>
+<li><p>pTarget——指定要编译成的HLSL着色器源文件的版本的字符串。有效的顶点着色器版本是：vs_1_1, vs_2_0, vs_2_sw。有效的像素着色器版本是2.0，我们可以给此参数传递vs_2_0。</p>
+<p> 备注：有编译不同版本着色器的能力，是HLSL与汇编语言比的主要优势。用HLSL我们只需为需要的目标简单的重新编译，便可快速移植着色器到不同的版本。使用汇编，我们可能需要手动移植代码。</p>
+</li>
+<li>Flags——可选的编译标记，指定为0标识没有标记。有效的选项是：</li>
+<li>D3DXSHADER_DEBUG——通知编译器写入调试信息</li>
+<li>D3DXSHADER_SKIPVALIDATION——通知编译器不要做任何代码检查。此项仅用于你已知着色器能够工作时</li>
+<li>D3DXSHADER_SKIPOPTIMIZATION——通知编译器不要执行任何代码优化。实践中，这个选项应该仅用于调试，因为这种情况下你不希望编译器以任何方式修改代码。</li>
+<li>ppShader——返回已编译的着色器代码的ID3DXBuffer指针。这个已编译过的着色器代码将作为另一个实际创建顶点/像素着色器函数的参数</li>
+<li>ppErrorMsgs——返回包含错误码和错误消息字符串的ID3DXBuffer指针</li>
+<li><p>ppConstantTable——返回包含此着色器常量表数据的ID3DXConstantTable指针</p>
+<p> 这里是一个调用D3DXCompileShaderFromFile的例子：<br> // Compile shader</p>
+<p> ID3DXConstantTable<em> TransformConstantTable = 0;<br> ID3DXBuffer</em> shader      = 0;<br> ID3DXBuffer* errorBuffer = 0;</p>
+<p> hr = D3DXCompileShaderFromFile(</p>
+<pre><code>  &quot;transform.txt&quot;,      // shader filename
+  0,
+  0,
+  &quot;Main&quot;,               // entry point function name
+  &quot;vs 2 0&quot;,             // shader version to compile to
+  D3DXSHADER_DEBUG,     // debug compile
+  &amp;shader,
+  &amp;errorBuffer,
+  &amp;TransformConstantTable);
+</code></pre><p> // output any error messages<br> if( errorBuffer )<br> {</p>
+<pre><code>  ::MessageBox(0, (char*)errorBuffer-&gt;GetBufferPointer(), 0, 0);
+  d3d::Release&lt;ID3DXBuffer*&gt;(errorBuffer);
+</code></pre><p> }</p>
+<p> if (FAILED (hr))<br> {</p>
+<pre><code>  ::MessageBox(0, &quot;D3DXCreateEffectFromFile() - FAILED&quot;, 0, 0);
+  return false;
+</code></pre><p> }</p>
+</li>
+</ul>
+<p>16.3 变量类型<br>   注意：除了下列各小节中描述的类型外，HLSL还有一些内建的对象类型（如：纹理对象）。但是，由于这些对象类型主要用于效果框架，我们将对其延迟到第19章讨论。</p>
+<p>16.3.1 数值类型<br>HLSL支持下列数值类型（scalar type）：</p>
+<ul>
+<li>bool—True or false value. Note that HLSL provides the true and false keywords.</li>
+<li>int—32-bit signed integer</li>
+<li>half—16-bit floating-point number</li>
+<li>float—32-bit floating-point number</li>
+<li>double—64-bit floating-point number<br> 注意：一些平台不支持int, half, and double类型，这时我们使用 float类型模拟。</li>
+</ul>
+<p>16.3.2 向量类型<br>HLSL有下列内建的向量类型（vector type）：</p>
+<ul>
+<li>vector——各分量为float类型的4D向量</li>
+<li><p>vector<t, n>——一个n维向量，其每个分量都为T类型。n维必须在1到4之间。这里是一个2D double向量的例子：<br>vector<double, 2> vec2;</double,></t,></p>
+<p> 我们可以使用数组下标的语法访问向量的一个分量。例如，要设置向量vec的第i个分量，我们可以写成：<br>vec[i] = 2.0f;</p>
+<p> 此外，我们可以像访问结构的成员一样访问向量vec的一个分量，使用已定义的分量名x，y，z，w，r，g，b和a。<br>vec.x = vec.r = 1.0f;<br>vec.y = vec.g = 2.0f;<br>vec.z = vec.b = 3.0f;</p>
+</li>
+</ul>
+<p>vec.w = vec.a = 4.0f;</p>
+<p>   名称为r，g，b和a的分量分别对应x，y，z和w的分量。当使用向量来表示颜色时，RGBA符号是更适合的，因为它加强了向量所表示的颜色。</p>
+<p>   作为选择，我们可以使用其它一些预定义类型，分别用来代表2D，3D和4D向量的类型：<br>float2 vec2;<br>float3 vec3;<br>float4 vec4;</p>
+<p>   考虑向量u = (ux, uy, uz, uw)，假设我们要拷贝u的所有分量到一个像v = (ux, uy, uy, uw)这样的向量v。最直接的方法可能是逐个从u往v拷贝每个分量。但不管怎样，HLSL提供了一种特殊的语法做这些无序的拷贝，它叫做“鸡尾酒”（swizzles）：<br>vector u = {l.0f, 2.0f, 3.0f, 4.0f};<br>vector v = {0.0f, 0.0f, 5.0f, 6.0f};<br>v = u.xyyw; // v = {1.0f, 2.0f, 2.0f, 4.0f}</p>
+<p>拷贝数组时，我们不必拷贝每个分量。例如，我们可以仅拷贝x和y分量，代码段举例如下：<br>vector u = {1.0f, 2.0f, 3.0f, 4.0f};<br>vector v = {0.0f, 0.0f, 5.0f, 6.0f};<br>v.xy = u; // v = {l.0f, 2.0f, 5.0f, 6.0f}</p>
+<p>16.3.3 矩阵类型<br>HLSL有下列内建矩阵类型：</p>
+<ul>
+<li>matrix——一个4×4矩阵，其各项类型为float</li>
+<li>matrix<t, m, n>——一个m×n矩阵，其每个成员为类型T。矩阵维数m和n必须在1至4之间。</t,></li>
+</ul>
+<p>这里是一个2×2整型矩阵的例子：<br>matrix<int, 2 2,> m2x2;</int,></p>
+<p>作为选择，我们可以定义一个m×n矩阵，其m和n在1至4之间，使用下列语法：<br>floatmxn matmxn;<br>实例：<br>float2x2 mat2x2;<br>float3x3 mat3x3;<br>float4x4 mat4x4;<br>float2x4 mat2x4;<br>注意：类型不必是float类型——我们可以使用其它类型。举例来说，我们可以用整型，写成这样：<br>int2x2 i2x2;<br>int2x2 i3x3;<br>int2x2 i2x4;</p>
+<p>我们可以用二维数组的下标语法访问矩阵中的项。例如，要设置矩阵M的第i，j个项，我们可以写成：<br>M[i] [j] = value;</p>
+<p>此外，我们可以像访问结构的成员那样访问矩阵M的项。下列条目已定义：<br>以1为基数的：<br>M._11 = M._12 = M._13 = M._14 = 0.0f;<br>M._21 = M._22 = M._23 = M._24 = 0.0f;<br>M._31 = M._32 = M._33 = M._34 = 0.0f;<br>M._41 = M._42 = M._43 = M._44 = 0.0f;</p>
+<p>以0为基数的：<br>M._m00 = M._m01 = M._m02 = M._m03 = 0.0f;<br>M._m10 = M._m11 = M._m12 = M._m13 = 0.0f;<br>M._m20 = M._m21 = M._m22 = M._m23 = 0.0f;<br>M._m30 = M._m31 = M._m32 = M._m33 = 0.0f;</p>
+<p>有时，我们想要访问矩阵中一个特定的行。我们可以用一维数组的下标语法来做。例如，要引用矩阵M中第i行的向量，我们可以写：<br>vector ithRow = M[i]; // get the ith row vector in M</p>
+<p>注意：可以使用两种语法在HLSL中初始化变量：<br>vector u = {0.6f, 0.3f, 1.0f, 1.0f};<br>vector v = {1.0f, 5.0f, 0.2f, 1.0f};</p>
+<p>也可以，等价的，使用构造风格的语法：<br>vector u = vector(0.6f, 0.3f, 1.0f, 1.0f);<br>vector v = vector(1.0f, 5.0f, 0.2f, 1.0f);</p>
+<p>其它一些例子:<br>float2x2 f2x2 = float2x2(1.0f, 2.0f, 3.0f, 4.0f);<br>int2x2 m = {1, 2, 3, 4};<br>int n = int(5);<br>int a = {5};<br>float3 x = float3(0, 0, 0);</p>
+<p>16.3.4 数组<br>我们可以用类似C++的语法声明特定类型的一个数组。例如：<br>float  M[4][4];<br>half   p[4];<br>vector v[12];</p>
+<p>16.3.5 结构<br>结构的定义和在C++里一样。但是，HLSL里的结构不能有成员函数。这是一个HLSL里的结构的例子：<br>struct MyStruct<br>{<br>     matrix T;<br>     vector n;<br>     float  f;<br>     int    x;<br>     bool   b;<br>};<br>MyStruct s; // instantiate<br>s.f = 5.0f; // member access</p>
+<p>16.3.6 typedef关键字<br>   HLSL的typedef关键字功能和C++里的完全一样。例如，我们可以给类型vector<float, 3>用下面的语法命名：<br>typedef vector<float, 3> point;<br>然后，不用写成：<br>vector<float, 3> myPoint;<br>……我们只需这样写：<br>point myPoint;</float,></float,></float,></p>
+<p>这里是另外两个例子，它展示了如何对常量和数组类型使用typedef关键字：<br>typedef const float CFLOAT;<br>typedef float point2[2];</p>
+<p>1.3.7 变量前缀<br>下列关键字可以做变量声明的前缀：</p>
+<ul>
+<li><p>static——如果带static关键字前缀，那它是全局变量。就表示它不是暴露于着色器之外的。换句话说，它是着色器局部的。如果一个局部变量以static关键字为前缀，它就和C++中static局部变量有相同的行为。也就是说，该变量在函数首次执行时被一次性初始化，然后在所有函数调用中维持其值。如果变量没有被初始化，它就自动初始化为0。static int x = 5;</p>
+</li>
+<li><p>uniform——如果变量以uniform关键字为前缀，就意味着此变量在着色器外面被初始化，比如被C++应用程序初始化，然后再输入进着色器。</p>
+</li>
+<li><p>extern——如果变量以extern关键字为前缀，就意味着该变量可在着色器外被访问，比如被C++应用程序。仅全局变量可以以extern关键字为前缀。不是static的全局变量默认就是extern。</p>
+</li>
+<li><p>shared——如果变量以shared关键字为前缀，就提示效果框架（参见19章）：变量将在多个效果间被共享。仅全局变量可以以shared为前缀。</p>
+</li>
+<li><p>volatile——如果变量以volatile关键字为前缀，就提示效果框架（参见19章）：变量将被时常修改。仅全局变量可以以volatile为前缀。</p>
+</li>
+<li><p>const——HLSL中的const关键字和C++里的意思一样。也就是说，如果变量以const为前缀，那此变量就是常量，并且不能被改变。const float pi = 3.14f;<br>16.4关键字、语句和强制转换<br>16.4.1 关键字<br>为便于参考，这里给出一个HLSL定义的关键字列表：<br>asm        bool        compile       const          decl         do<br>double      else        extern         false          float         for<br>half        if           in            inline         inout         int<br>matrix      out         pass           pixelshader    return        sampler<br>shared      static       string          struct         technique     texture<br>true        typedef     uniform        vector         vertexshader   void<br>volatile     while</p>
+</li>
+</ul>
+<p>下面的集合显示了被保留并且未使用但是将来可能成为关键字的标识符：<br>auto            break        case           catch         char          class<br>const_cast       continue      default         delete        dynamic cast   enum<br>explicit         friend         goto           long         mutable       namespace<br>new            operator       private         protected     public         register<br>reinterpret_cast   short         signed          sizeof        static_cast     switch<br>template         this          throw          try           typename     union<br>unsigned         using        virtual </p>
+<p>16.4.2 基本程序流程<br>HLSL支持很多与C++相似的选择、重复、和一般程序流程语句。这些语句的语法和C++极为相似。<br>return语句：<br>return (expression);<br>if和if…else语句：<br>if( condition )<br>{<br>     statement(s);<br>}</p>
+<p>if( condition )<br>{<br>     statement(s);<br>}<br>else<br>{<br>     statement(s);<br>}</p>
+<p>for语句：<br>for(initial; condition; increment)<br>{<br>     statement(s);<br>}</p>
+<p>while语句：<br>while( condition )<br>{<br>     statement(s);<br>}</p>
+<p>do…while语句：<br>do<br>{<br>     statement(s);<br>}while( condition );</p>
+<p>16.4.3 强制转换（casting）<br>   HLSL支持一种非常自由的强制转换设计。HLSL中强制转换的语法和C程序语言中的一样。例如要把float转换到matrix，我们写：<br>float f = 5.0f;<br>matrix m = (matrix)f;</p>
+<p>   从本书的例子中，你就能推断出这个转换语法的意思。但是，如果想要得到更详细的受支持的转换的信息，那么在DirectX SDK里，Content（内容）标签页下，看DirectX Graphics\Reference\Shader Reference\High Level Shading Language\Type就可以了。</p>
+<p>16.5 操作符<br>   HLSL支持很多类似C++的操作符。除了很少一些底下注释的例外以外，他们的用法和C++里的完全一样。下表列出了HLSL的操作符：<br>[]<br>?<br>&gt;<br>&lt;<br>&lt; =</p>
+<blockquote>
+<p>=<br>! =<br>= =<br>!<br>&amp;&amp;<br>?<br>?:<br>+</p>
+<ul>
+<li>=<br>-</li>
+</ul>
+<ul>
+<li>=<br><em>
+</em>=<br>/<br>/=<br>%<br>%=</li>
+</ul>
+<h2 id><a href="#" class="headerlink" title="+ +"></a>+ +</h2><p>=<br>()<br>‘</p>
+</blockquote>
+<p>   虽然操作符的行为和C++很相似，但是也有一些差异。第一，求模%运算符对整型和浮点型都起作用。为了使用求模操作符，左边的值和右边的值都必须有相同的正负号（如：左边和右边必须都是正或者负）。</p>
+<p>   第二，要注意HLSL操作是以每个分量为基础的。这是由于实际上向量和矩阵是语言内建的，并且这些类型是由若干个分量组成。通过将这些操作施加在分量级别之上，我们可以像使用数值类型一样完成诸如向量/矩阵的加法，减法和相等测试这些操作（），见下例：</p>
+<p>注意：操作符的行为正如对数值操作一样（也就是说，按一般C++的方式）。<br>vector u = {1.0f, 0.0f, -3.0f, 1.0f};<br>vector v = {-4.0f, 2.0f, 1.0f, 0.0f};<br>// adds corresponding components<br>vector sum = u + v; // sum = (-3.0f, 2.0f, -2.0f, 1.0f)</p>
+<p>增量一个向量就是增量其每个分量：<br>// before increment: sum = (-3.0f, 2.0f, -2.0f, 1.0f)<br>sum++; // after increment: sum = (-2.0f, 3.0f, -1.0f, 2.0f)</p>
+<p>向量相乘也是按分量的：<br>vector u = {1.0f, 0.0f, -3.0f, 1.0f};<br>vector v = {-4.0f, 2.0f, 1.0f, 0.0f};</p>
+<p>// multiply corresponding components<br>vector sum = u * v; // product = (-4.0f, 0.0f, -3.0f, 0.0f)</p>
+<p>比较操作也是按分量进行的，并且返回一个每个分量都为bool类型的向量或者数组。作为结果的“bool”向量包含了每个分量比较的结果。例如：<br>vector u = { 1.0f, 0.0f, -3.0f, 1.0f};<br>vector v = {-4.0f, 0.0f, 1.0f, 1.0f};<br>vector b = (u == v); // b = (false, true, false, true)</p>
+<p>最后，我们以讨论二元操作的变量提升（promotion）作为结束：</p>
+<ul>
+<li>对于二元操作，如果（操作符的）左边和右边维数不同，则维数较少的一边提升（强制转换）到具有和维数较大的一边相同的维数。例如，如果x的类型为float，而y的类型为float3，在表达式(x + y)中变量x被提升到float3，并且计算出来的表达式的值的类型也为float3。提升使用已定义的转换完成。注意，若转换未定义则提升也是未定义的。例如，我们不能转换float2到float3，因为没有定义这个转换。</li>
+<li>对于二元操作，如果左边和右边类型不同，那么较低精度的类型（the lower type resolution）被提升（强制转换）到具有同类型的较高精度的类型（the higher type resolution）。例如，如果x类型为int，y类型为half，则表达式(x + y)中的变量x被提升到half，并且计算出来的表达式的值的类型也为half。</li>
+</ul>
+<p>16.6 用户定义函数<br>HLSL中的函数有下例属性：</p>
+<ul>
+<li>函数使用类似C++的语法</li>
+<li>参数总是按值传递</li>
+<li>递归不被支持</li>
+<li>函数总是inline的</li>
+</ul>
+<p>此外，函数还加上了一些用于其上的额外的关键字。例如，考虑一个写在HLSL中的下面这个函数：<br>bool foo(in const bool b,   // input bool<br>         out int r1,        // output int<br>         inout float r2)    // input/output float<br>{<br>     if( b )               // test input value<br>     {<br>          r1 = 5;          // output a value through r1<br>     }<br>     else<br>     {<br>          r1 = 1;          // output a value through r1<br>     }</p>
+<pre><code> // since r2 is inout we can use it as an input
+ // value and also output a value through it
+ r2 = r2 * r2 * r2;
+
+ return true;
+</code></pre><p>}</p>
+<p>函数几乎和C++函数是一样的，除了in，out和inout关键字：</p>
+<ul>
+<li>in——指定型参（argument，特指传递给实参的变量）应该在函数开始前被拷贝给实参。传入参数不必强制指定，因为实参默认是in的。例如，下面两段是等价的：<br>float square(in float x)<br>{<br>   return x * x;<br>}</li>
+</ul>
+<p>也可以不强制指定in：<br>float square(float x)<br>{<br>     return x * x;<br>}</p>
+<ul>
+<li><p>out——指定实参应该在函数返回时被拷贝给型参。这样可以通过参数返回值。out关键字是必须的，因为HLSL不允许传递一个引用或一个指针。我们要注意：如果实参标记为out，在函数开始前，型参就不拷贝给实参。换句话说，out实参仅可以被用于输出数据——它不能用于输入。<br>void square(in float x, out float y)<br>{<br>   y = x * x;<br>}<br>这里，我们输入了要被乘方的数x，并且通过参数y返回了x的乘方。</p>
+</li>
+<li><p>inout——这是一个指示实参既用于输入又用于输出的快捷方法。如果要使用实参同时用作输入和输出，就指定inout。<br>void square(inout float x)<br>{<br>   x = x * x;<br>}<br>这里，我们输入了要被乘方的数x，同时又通过x返回了的x的乘方。</p>
+</li>
+</ul>
+<p>16.7内建函数<br>   HLSL有一个丰富的内建函数的集合，它们对3D图形来说非常有用。下表是一个删减了的列表。在下两章中，我们会使用这些函数中的一些进行实践。而现在，熟悉它们就够了。</p>
+<p>注意：要得到更多的参考，可以参看DirectX文档中内建HLSL函数的完整列表，在Content页下，然后到DirectX Graphics\Reference\Shader Reference\High Level Shader Language\Intrinsic Functions。</p>
+<p>译者注：以下表格中，//<variable>//表示变量variable的模（例如向量的绝对值）。<br>函数<br>描述<br>abs(x)<br>返回 |x|<br>ceil(x)<br>返回 ≥ x 的最小整数<br>clamp(x, a, b)<br>clamp(x, a, b)<br>clamp(x, a, b)<br>clamp(x, a, b)<br>cross(u, v)<br>返回 u × v（叉积）<br>degrees(x)<br>转换 x 从弧度到角度<br>determinant(M)<br>返回矩阵M的行列式det(M)<br>distance(u, v)<br>返回u点和v点之间的距离||v - u||<br>dot(u, v)<br>返回 u · v（点积）<br>floor(x)<br>返回 ≤ x 的最大整数<br>length(v)<br>返回 ||v||<br>lerp(u, v, t)<br>在u和v之间线性插值，根据参数 t ? [0, 1 ]<br>log(x)<br>返回 ln(x)<br>log10(x)<br>返回 log10(x)<br>log2(x)<br>返回 log2(x)<br>max(x, y)<br>如果x ≥ y，则返回 x；否则返回 y<br>min(x, y)<br>如果 x ≤ y，返回x；否则返回 y<br>mul(M, N)<br>返回矩阵乘积 MN. 注意：矩阵乘积必须是已定义的. 如果M是一个向量，它被作为一个行向量，则向量－矩阵（vector-matrix）乘法是已定义的。类似的,如果N 是一个向量，他被作为一个列向量，则矩阵－向量（matrix-vector）乘法是已定义的<br>normalize(v)<br>返回 v/∥v∥<br>pow(b, n)<br>返回 bn<br>radians(x)<br>转换 x 从 角度 到 弧度<br>reflect(v, n)<br>给定向量v和表面法线n，计算其反射向量<br>refract(v,n, eta)<br>给定向量v、表面法线n和两种材质的两个索引的比率eta，计算其折射向量. 翻看一下物理书中Snell的规则或者在互联网上搜索一下关于refraction（反射）的信息<br>rsqrt(x)<br>返回x的平方根的倒数<br>saturate(x)<br>返回clamp(x, 0.0, 1.0)<br>sin(x)<br>返回x的正弦,其中x单位为弧度<br>返回x的正弦,其中x单位为弧度<br>返回x的正弦和余弦，其中x单位为弧度<br>sqrt(x)<br>返回x的平方根<br>tan(x)<br>返回x的正切,其中 x 单位为弧度<br>transpose(M)<br>返回MT的转置</variable></p>
+<p>   大多数函数已经重载以使其可以对所有内建类型有意义。例如，abs对所有数值类型有意义，所以它为所有这些数值类型进行了重载。又例如，叉积的叉乘仅对3D向量有意义，所以它对所有类型的3D向量（比如：int，float，double的3D向量）进行了重载。另一方面，线性插值——lerp，对于数值、2D、3D和4D向量有意义，因此重载了这些类型。</p>
+<p>注意：如果你传递进去一个非数值类型到一个（要求）数值类型的函数，也就是一个仅能对数值类型进行操作的函数（比如：cos(x)），那么这个函数会对传进去的每个分量进行操作。例如，你写：<br>floats v = float3 (0.0f, 0.0f, 0.0f);<br>v = cos(v);</p>
+<p>那么函数将会对每个分量进行操作：v=(cos(x),cos(y),cos(z))。<br>下例展示了这些固有的函数可能被调用的方式：<br>float x = sin(1.0f);       // sine of 1.0f radian.<br>float y = sqrt(4.0f);      // square root of 4.</p>
+<p>vector u = {1.0f, 2.0f, -3.0f, 0.0f};<br>vector v = {3.0f, -1.0f, 0.0f, 2.0f};<br>float  s = dot(u, v);      // compute dot product of u and v.</p>
+<p>float3 i = {1.0f, 0.0f, 0.0f};<br>float3 j = {0.0f, 1.0f, 0.0f};<br>float3 k = cross(i, j);    // compute cross product of i and j.</p>
+<p>matrix<float, 2 2,> M = {1.0f, 2.0f, 3.0f, 4.0f};<br>matrix<float, 2 2,> T = transpose(M); // compute transpose</float,></float,></p>
+<p>16.8 摘要</p>
+<ul>
+<li>我们在ASCII文本文件中编写了HLSL程序，并且在我们的应用程序中使用D3DXCompileShaderFromFile函数编译了它们。</li>
+<li>ID3DXConstantTable接口允许我们在应用程序中对着色器程序中的变量进行设置。这种通信是必须的，因为被着色器使用的变量可以按一帧一帧的变化而改变。例如，如果应用程序中的视图矩阵发生了改变，我们需要使用新的视图矩阵更新着色器的视图矩阵变量。我们可以用ID3DXConstantTable完成这种更新。</li>
+<li>对于每个着色器，我们必须定义一个输入和一个输出结构，这些结构分别描述了着色器中输入和输出数据的格式。</li>
+<li>每个着色器有一个入口点函数，它有一个输入结构参数用于传递数据进着色器。此外，每个着色器返回一个输出结构的实例，它用于从着色器输出数据。</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Direct3D/" rel="tag"># Direct3D</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/Picking/" rel="next" title="第十五章 选取(Picking)">
+                <i class="fa fa-chevron-left"></i> 第十五章 选取(Picking)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/Introduction-to-Vertex-Shaders/" rel="prev" title="Introduction-to-Vertex-Shaders">
+                Introduction-to-Vertex-Shaders <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编写HLSL着色器"><span class="nav-number">1.</span> <span class="nav-text">编写HLSL着色器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.1.</span> <span class="nav-text">+ +</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

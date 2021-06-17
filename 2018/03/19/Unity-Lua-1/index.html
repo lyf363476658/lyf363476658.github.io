@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="逻辑使用脚本来做的好处：  使用脚本语言的动态特性，客户端可以做Hotfix,服务器可以做Refresh，无论在运营还是开发期这一特性都很有用； 脚本语言在虚拟机运行，有效控制崩溃率 上手难度低缺点是运行效率低，但是之前看的LuaJit的效率只是略低于c（有待验证),动态语言容易出一些运行时错误（一般是语法错误），但是调试难度在真机下相对容易一些lua的集成在目前维护的这个项目集成了uLua(感觉">
+<meta name="keywords" content="lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity-Lua">
+<meta property="og:url" content="http://zentia.github.io/2018/03/19/Unity-Lua-1/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="逻辑使用脚本来做的好处：  使用脚本语言的动态特性，客户端可以做Hotfix,服务器可以做Refresh，无论在运营还是开发期这一特性都很有用； 脚本语言在虚拟机运行，有效控制崩溃率 上手难度低缺点是运行效率低，但是之前看的LuaJit的效率只是略低于c（有待验证),动态语言容易出一些运行时错误（一般是语法错误），但是调试难度在真机下相对容易一些lua的集成在目前维护的这个项目集成了uLua(感觉">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.031Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity-Lua">
+<meta name="twitter:description" content="逻辑使用脚本来做的好处：  使用脚本语言的动态特性，客户端可以做Hotfix,服务器可以做Refresh，无论在运营还是开发期这一特性都很有用； 脚本语言在虚拟机运行，有效控制崩溃率 上手难度低缺点是运行效率低，但是之前看的LuaJit的效率只是略低于c（有待验证),动态语言容易出一些运行时错误（一般是语法错误），但是调试难度在真机下相对容易一些lua的集成在目前维护的这个项目集成了uLua(感觉">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2018/03/19/Unity-Lua-1/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unity-Lua | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/19/Unity-Lua-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity-Lua
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2018/03/19/Unity-Lua-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/03/19/Unity-Lua-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>逻辑使用脚本来做的好处：</p>
+<ul>
+<li>使用脚本语言的动态特性，客户端可以做Hotfix,服务器可以做Refresh，无论在运营还是开发期这一特性都很有用；</li>
+<li>脚本语言在虚拟机运行，有效控制崩溃率</li>
+<li>上手难度低<br>缺点是运行效率低，但是之前看的LuaJit的效率只是略低于c（有待验证),动态语言容易出一些运行时错误（一般是语法错误），但是调试难度在真机下相对容易一些<br>lua的集成在目前维护的这个项目集成了uLua(感觉算是toLua的前身吧)和sLua(腾讯的SDK集成的).具体性能对比自己就不测试了，（懒）<br>在这里可以看到<a href="http://link.zhihu.com/?target=http%3A//qiankanglai.me/2016/07/31/unity-lua/" target="_blank" rel="noopener">http://link.zhihu.com/?target=http%3A//qiankanglai.me/2016/07/31/unity-lua/</a><h1 id="性能差异的可能原因之一"><a href="#性能差异的可能原因之一" class="headerlink" title="性能差异的可能原因之一"></a>性能差异的可能原因之一</h1>个人感觉ToLua在属性操作方面性能较好，而Vectore的向量操作，因为可能会有Lua层的优化，即在Lua层完全实现了对应的操作（vector.bytes),因此需要针对源码进行详细的对比。至于性能差异的原因，我没有从Lua虚拟机的实现部分分析，只是查看两种生成的Warp后的接口进行一个简单的猜想。<br>选取同一个接口进行对比，UnityEngine.Animator的GetFloat接口，ToLua的实现如下：<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))</span>]</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">GetFloat</span>(<span class="params">IntPtr L</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> count = LuaDLL.lua_gettop(L);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (count == <span class="number">2</span> &amp;&amp; TypeChecker.CheckTypes(L, <span class="number">1</span>, <span class="keyword">typeof</span>(UnityEngine.Animator), <span class="keyword">typeof</span>(<span class="keyword">int</span>)))</span><br><span class="line">        &#123;</span><br><span class="line">            UnityEngine.Animator obj = (UnityEngine.Animator)ToLua.ToObject(L, <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">int</span> arg0 = (<span class="keyword">int</span>)LuaDLL.lua_tonumber(L, <span class="number">2</span>);</span><br><span class="line">            <span class="keyword">float</span> o = obj.GetFloat(arg0);</span><br><span class="line">            LuaDLL.lua_pushnumber(L, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//此处省略另一个重载接口</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> LuaDLL.luaL_throw(L, <span class="string">"invalid arguments to method: UnityEngine.Animator.GetFloat"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span>(Exception e)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> LuaDLL.toluaL_exception(L, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>SLua生成的代码如下：<br><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))</span>]</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">GetFloat</span>(<span class="params">IntPtr l</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> argc = LuaDLL.lua_gettop(l);</span><br><span class="line">        <span class="keyword">if</span>(matchType(l, argc, <span class="number">2</span>, <span class="keyword">typeof</span>(<span class="keyword">int</span>)))</span><br><span class="line">        &#123;</span><br><span class="line">            UnityEngine.Animator self = (UnityEngine.Animator)checkSelf(l);</span><br><span class="line">            System.Int32 a1;</span><br><span class="line">            checkType(l, <span class="number">2</span>, <span class="keyword">out</span> a1);</span><br><span class="line">            <span class="keyword">var</span> ret = self.GetFloat(a1);</span><br><span class="line">            pushValue(<span class="number">1</span>, <span class="literal">true</span>);</span><br><span class="line">            pushValue(<span class="number">1</span>, ret);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span>(Exception e)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> error(<span class="number">1</span>,e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们注意到，这一函数只需要一个返回值的，但是SLua往栈里pushValue了两个值，然后返回2。SLua使用一个单独的值来表示函数运行的结果，这对于错误可以进行更好的处理，但是多出的压栈和出栈操作有额外的性能消耗。</p>
+<h1 id="导出方式对比"><a href="#导出方式对比" class="headerlink" title="导出方式对比"></a>导出方式对比</h1><p>ToLua导出的使用的是白名单的方式，在CustomeSetting.cs文件中定义的接口才会导出，也提供了导出引擎所有的接口功能；而SLua是以黑名单的方式进行，默认提供的功能是导出了除了黑名单中的所有模块接口，也是了一个导出最简接口的方式。<br>从使用角度来看，SLua黑名单的方式在开发期比较方便，默认会导出所有接口，因此不需要每次想要增加一个已经存在的类Lua接口都要自己定义然后重新导出，发布的时候也可以使用最简接口。维护起来ToLua因为所有的导出类都是我们自己定义的，因此更加清晰明确。<br>鉴于这部分内容有源码可以进行修改 ，因此不是一个核心需要考虑的内容，两种方式各有利弊。</p>
+<h1 id="如何使用Lua语言"><a href="#如何使用Lua语言" class="headerlink" title="如何使用Lua语言"></a>如何使用Lua语言</h1><p>在进行了初步集成后，怎样让开发人员可以更好地使用Lua语言是接下来面临的问题。<br>ToLua对应有一套之前uLua作者开发的<a href="https://github.com/jarjin/LuaFramework_UGUI" target="_blank" rel="noopener">LuaFramework</a>，这一框架集成了脚本打包和二进制脚本读取，UI制作流程等多个功能，但是也如作者自己所有，这一框架最初源自一个示例形式的Demo，因此其中代码有很多部分是和示例写死的绑定的逻辑，比如启动逻辑，Lua二进制脚本的加载需要手动指定等等。<br>相对应的，SLua也有多套已经开源的框架，其中最为完善的<a href="https://github.com/mr-kelly/KSFramework" target="_blank" rel="noopener">KSFramwork</a>，这套框架集成了资源打包，导表，Lua热重载在内的多个功能，而且代码质量初步开起来还不错，因此最后我们决定把KSFramwork中的SLua部分替换成ToLua的部分来结合使用。<br>改造的过程还比较简单，由于该部分使用Lua耦合的只有两块内容，一是UIControler部分，二是LuaBehavior部分，所有的接口都由LuaModule模块提供。因此改造的过程也就比较明确了：<br>1.删除源代码中的SLua部分，接入ToLua的部分；<br>2.使用ToLua重写LuaModule的实现；<br>3.改造LuaUIController，使用新的LuaModule接口实现之前的功能；<br>4.改造LuaBehavior模块；<br>代码删除和LuaModule模块的重新实现都比较简单，着重介绍一下LuaUIController和LuaBehavior模块的改造。</p>
+<h1 id="改造初衷"><a href="#改造初衷" class="headerlink" title="改造初衷"></a>改造初衷</h1><p>之前的KSFramwork还是一个核心逻辑在C#，Lua只承载UI等逻辑的模块，其实目前逻辑也是这样的，但是个人比较同意“轻引擎，重脚本”，引擎可以看作渲染，资源加载，音效等功能的提供者，脚本逻辑负责使用这些功能构建游戏内容。那这样大部分与逻辑相关的控制权就应该从引擎交给脚本来进行。Unity作为一个比较特殊的例子，虽然对于它来说，C#部分已经是脚本了，但是对于希望着重使用Lua脚本的我们来说，因为C#不可更新，因此被视作了引擎部分。<br>最为简单的设计就是当引擎初始化完毕之后，通过一个接口调用把后续的逻辑都交由脚本来控制，大部分与游戏玩法相关的模型加载、声音播放、特效播放、动画等由脚本控制。tick逻辑为了减少调用次数，没帧也由引擎调用注册的一个脚本接口进行统一调用，脚本层自己做分发。</p>
+<h1 id="LuaUIController的改造"><a href="#LuaUIController的改造" class="headerlink" title="LuaUIController的改造"></a>LuaUIController的改造</h1><p>LuaUIController原始的方式是在C#层通过ui模块的名称加载对应的一个lua文件，获取一个lua table 进行缓存，在比如OnInit等需要接口调用的地方查找这个table中对应的函数进行调用。这种方式的界面是由C#层的逻辑来驱动加载和显示的，而且在加载过程要有文件的搜索和检查过程。<br>这样会存在一个问题，就是脚本层的逻辑无法或者很难或者很难去控制界面对象的生命周期。针对资源的生命周期，“谁创建谁管理”的策略不在可以很方便地来明确责任的划分，因此要进行改造。<br>改造的方向很简单，讲界面在家和显示的接口开放到Lua层，然后在创建的时候由lua层传递一个table对象进来，C#中进行缓存，当界面资源异步加载完毕，需要进行接口调用的地方的实现与之前保存一致。这样，界面资源的生命周期全部交由脚本层来管理，在脚本构建一个结构合理功能齐全的UIManager来进行一些功能的封装，就可以满足大部分的需求。</p>
+<h1 id="LuaBehavior的改造"><a href="#LuaBehavior的改造" class="headerlink" title="LuaBehavior的改造"></a>LuaBehavior的改造</h1><p>MonoBehavior是Unity为了方便开发而提供的一个很好的功能，脚本以组件的方式挂接在GameObject身上，就可以在Awake,Start,Update等接口中处理想要的逻辑。为了能够继续使用Unity的这一特性，在Lua层也实现了一个简单的LuaBehavior封装。<br>KSFramwork中的思路非常简单，同样根据名称来把一个LuaBehavior和一个Lua脚本进行绑定，在对应的逻辑中调用与之对应的接口就可以了，比如Awake接口的实现如下：<br><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">Awake</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">string</span>.IsNullOrEmpty(LuaPath))</span><br><span class="line">    &#123;</span><br><span class="line">        Init();</span><br><span class="line">        CallLuaFunction(<span class="string">"Awake"</span>);</span><br><span class="line">    &#125;<span class="comment">//else Null Lua Path, pass Awake!</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>CallLuaFunction的实现也很明确，从缓存的lua table中获取名称为Awake的function进行调用。这种方式没有问题，但是当场景中挂在了LuaBehavior(项目中是LuaComponent)的GameObject很多的时候，每一帧都会有非常多次的update(这个函数就不要暴露了),这个调用从C#层传递到Lua层，有很多额外的性能消耗。<br>前文也提到了，比较好的方式是没帧只有一个C#到Lua层的Update方法调用，然后脚本层自己做分发。因此，针对这一需求，我们使用ToLua#自带的LuaLooper来实现的这一功能。<br>LuaLooper(项目是自己包装的一个luatimer)是全局只创建一个的MonoBehaviour,注意这里只创建一个只由逻辑来决定的，而不是一个单例模式。这里针对单例模式适合场合的讨论不再展开，此处由逻辑来保证只有一个Looper存在是一件比较合理的事情，预留了一些扩展的可能。<br>LuaLooper以时间的方式讲三种Update分发出去：Update,LateUpdate,FixedUpdate,它在自己对应的函数中调用luaState的对应函数来将事件告知脚本，脚本中需要的模块向分发模块注册回调来监听事件,就可以做到每帧只有一次Update调用了。<br>具体的代码实现可以去看ToLua#中的LuaLooper.cs的类实现。<br>-注意 这里有一个小心的点是当事件在脚本层分发的时候，要注意执行时序问题的影响，最好能够保证任意的执行顺序都可以不影响游戏逻辑的结果，否则可能会出现很难查的诡异bug。<br>对于Awake,Start等一次性调用的函数，由于不是频繁的逻辑，因此保留了原始的实现方式，这样可以让Lua层对应的代码实现更加简洁。而使用事件注册的方式，让不需要update逻辑的脚本没有任何额外的性能消耗。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/lua/" rel="tag"># lua</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/18/XCAAFS/" rel="next" title="XCAAFS">
+                <i class="fa fa-chevron-left"></i> XCAAFS
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/19/markdown/" rel="prev" title="Markdown">
+                Markdown <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#性能差异的可能原因之一"><span class="nav-number">1.</span> <span class="nav-text">性能差异的可能原因之一</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#导出方式对比"><span class="nav-number">2.</span> <span class="nav-text">导出方式对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何使用Lua语言"><span class="nav-number">3.</span> <span class="nav-text">如何使用Lua语言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#改造初衷"><span class="nav-number">4.</span> <span class="nav-text">改造初衷</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LuaUIController的改造"><span class="nav-number">5.</span> <span class="nav-text">LuaUIController的改造</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LuaBehavior的改造"><span class="nav-number">6.</span> <span class="nav-text">LuaBehavior的改造</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

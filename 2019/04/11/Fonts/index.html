@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="ID3DXFont在D3DX库中提供了一个ID3DXFont接口，它能被用于在Direct3D应用程序中绘制文字。这个接口是使用GDI来绘制文字的，因此我们能够使用这个接口来执行这个操作。无论如何，因为ID3DXFont使用的是GUI，所以它能够联合字体句柄和格式化字体。 创建一个ID3DXFont　　我们能够使用D3DXCreateFontIndirect函数来创建一个ID3DXFont接口。H">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第九章 字体(Fonts)">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/Fonts/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="ID3DXFont在D3DX库中提供了一个ID3DXFont接口，它能被用于在Direct3D应用程序中绘制文字。这个接口是使用GDI来绘制文字的，因此我们能够使用这个接口来执行这个操作。无论如何，因为ID3DXFont使用的是GUI，所以它能够联合字体句柄和格式化字体。 创建一个ID3DXFont　　我们能够使用D3DXCreateFontIndirect函数来创建一个ID3DXFont接口。H">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.853Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第九章 字体(Fonts)">
+<meta name="twitter:description" content="ID3DXFont在D3DX库中提供了一个ID3DXFont接口，它能被用于在Direct3D应用程序中绘制文字。这个接口是使用GDI来绘制文字的，因此我们能够使用这个接口来执行这个操作。无论如何，因为ID3DXFont使用的是GUI，所以它能够联合字体句柄和格式化字体。 创建一个ID3DXFont　　我们能够使用D3DXCreateFontIndirect函数来创建一个ID3DXFont接口。H">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/Fonts/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>第九章 字体(Fonts) | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Fonts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">第九章 字体(Fonts)
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/Fonts/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Fonts/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ID3DXFont"><a href="#ID3DXFont" class="headerlink" title="ID3DXFont"></a>ID3DXFont</h1><p>在D3DX库中提供了一个ID3DXFont接口，它能被用于在Direct3D应用程序中绘制文字。这个接口是使用GDI来绘制文字的，因此我们能够使用这个接口来执行这个操作。无论如何，因为ID3DXFont使用的是GUI，所以它能够联合字体句柄和格式化字体。</p>
+<h2 id="创建一个ID3DXFont"><a href="#创建一个ID3DXFont" class="headerlink" title="创建一个ID3DXFont"></a>创建一个ID3DXFont</h2><p>　　我们能够使用D3DXCreateFontIndirect函数来创建一个ID3DXFont接口。<br>HRESULT D3DXCreateFontIndirect(<br>    LPDIRECT3DDEVICE9 pDevice, // device to be associated with the font<br>    CONST LOGFONT<em> pLogFont, // LOGFONT structure describing the font<br>    LPD3DXFONT</em> ppFont // return the created font<br>);<br>　　下面的代码片段显示了怎样使用这个函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">LOGFONT lf;</span><br><span class="line">ZeroMemory(&amp;lf, <span class="keyword">sizeof</span>(LOGFONT));</span><br><span class="line">lf.lfHeight = <span class="number">25</span>; <span class="comment">// in logical units</span></span><br><span class="line">lf.lfWidth = <span class="number">12</span>; <span class="comment">// in logical units</span></span><br><span class="line">lf.lfWeight = <span class="number">500</span>; <span class="comment">// boldness, range 0(light) - 1000(bold)</span></span><br><span class="line">lf.lfItalic = <span class="literal">false</span>;</span><br><span class="line">lf.lfUnderline = <span class="literal">false</span>;</span><br><span class="line">lf.lfStrikeOut = <span class="literal">false</span>;</span><br><span class="line">lf.lfCharSet = DEFAULT_CHARSET;</span><br><span class="line"><span class="built_in">strcpy</span>(lf.lfFaceName, <span class="string">"Times New Roman"</span>); <span class="comment">// font style</span></span><br><span class="line">ID3DXFont* font = <span class="number">0</span>;</span><br><span class="line">D3DXCreateFontIndirect(Device, &amp;lf, &amp;font);</span><br><span class="line">　　我们必须填充一个LOGFONT结构来描述想创建的字体类型。</span><br><span class="line">　　注意：你也能够使用D3DXCreateFont函数来获得一个ID3DXFont接口指针。</span><br><span class="line"><span class="number">9.1</span><span class="number">.2</span>绘制文本</span><br><span class="line">　　一旦我们获得了ID3DXFont接口指针，绘制文本就是很简单的事情了，我们只要调用ID3DXFont::DrawText方法就可以实现了。</span><br><span class="line">INT ID3DXFont::DrawText(</span><br><span class="line">    LPCSTR pString,</span><br><span class="line">    INT Count,</span><br><span class="line">    LPRECT pRect,</span><br><span class="line">    DWORD Format,</span><br><span class="line">    D3DCOLOR Color</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>pString — 指向要绘制的文字。</li>
+<li>Count — 字符串中特征字符的数量。假如字符是以null结束的字符串则可将其指定为-1。</li>
+<li>pRect — 指向一个RECT结构，它定义一个文字被绘制在屏幕上的范围。</li>
+<li>Format — 可选参数，指定文字怎样被格式化；要获得更详细的信息请查看SDK文档。</li>
+<li>Color — 文字的颜色。<br>　　例子：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Font-&gt;DrawText(</span><br><span class="line">    <span class="string">"Hello World"</span>, <span class="comment">// String to draw.</span></span><br><span class="line">    <span class="number">-1</span>, <span class="comment">// Null terminating string.</span></span><br><span class="line">    &amp;rect, <span class="comment">// Rectangle to draw the string in.</span></span><br><span class="line">    DT_TOP | DT_LEFT, <span class="comment">// Draw in top-left corner of rect.</span></span><br><span class="line">     <span class="number">0xff000000</span></span><br><span class="line">     ); <span class="comment">// Black.</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>9.1.3计算每秒的渲染帧数<br>　　这一章的ID3DXFont和Cfont例子是计算和显示每秒渲染的帧数（FPS）。这一部分说明怎样计算FPS。<br>　　首先，我们定义如下三个全局变量：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DWORD FrameCnt; <span class="comment">// The number of frames that have occurred.</span></span><br><span class="line"><span class="keyword">float</span> TimeElapsed; <span class="comment">// The time that has elapsed so far.</span></span><br><span class="line"><span class="keyword">float</span> FPS; <span class="comment">// The frames rendered per second.</span></span><br></pre></td></tr></table></figure></p>
+<p>　　我们计算每一秒的FPS；它给我们一个很好的平均。另外，在同一秒中内只保存一个FPS，这给了我们足够时间来读取它，在它再一次改变之前。<br>　　因此每一帧我们增加FrameCnt并且把从上一帧到现在流逝的时间写进TimeElapsed：<br>FrameCnt++;<br>TimeElapsed += timeDelta;<br>这里timeDelta是两帧之间的时间。<br>　　    在一秒种结束以后，我们能够用下面的公式来计算FPS：<br>FPS = (float)FrameCnt / TimeElapsed;<br>我们从新设置FrameCnt和TimeElapsed为计算下一秒的FPS做准备。下面就是合在一起的代码：<br>void CalcFPS(float timeDelta)<br>{<br>    FrameCnt++;<br>    TimeElapsed += timeDelta;<br>    if(TimeElapsed &gt;= 1.0f)<br>    {<br>        FPS = (float)FrameCnt / TimeElapsed;<br>        TimeElapsed = 0.0f;<br>        FrameCnt = 0;<br>    }<br>}<br>9.2 CD3DFont<br>　　DirectX SDK给我们提供了一些很有用的代码，它们在你的DXSDK目录下的\Samples\C++\Commond下。CD3DFont类代码是使用纹理三角形和Direct3D。因为CD3DFont使用Direct3D代替GDI来渲染， 这比ID3DXFont快的多。然而，CD3DFont不能够联合字体句柄和格式化ID3DXFont。假如你追求速度和只需要一些简单的字体，CD3DFont类就能满足你的要求了。<br>　　使用CD3DFont类，你需要添加下列文件到你的程序中：d3dfont.h, d3dfont.cpp, d3dutil.h, d3dutil.cpp, dxutil.h和dxutil.cpp。这些文件可以在刚才所说目录下的Include和Src目录下。<br>9.2.1创建一个CD3DFont<br>　　为了创建一个CD3DFont实例，我们只需要简单地象一般的C++对象那样实例化就可以了；下面是它的构造原型：<br>CD3DFont(const TCHAR* strFontName, DWORD dwHeight, DWORD dwFlags=0L);</p>
+<ul>
+<li>strFontName — 以null结束的字符串，它指定字体类型。</li>
+<li>dwHeight — 字体的高度。</li>
+<li>dwFlags — 可选参数；你能设置该参数为0或者用下面参数；D3DFONT_BOLD, D3DFONT_ITALIC, D3DFONT_ZENABLE。<br>　　实例化一个CD3DFont对象以后，我们必须调用下面的方法来初始化字体：<br>Font = new CD3DFont(“Times New Roman”, 16, 0); // instantiate<br>Font-&gt;InitDeviceObjects( Device );<br>Font-&gt;RestoreDeviceObjects();<br>9.2.2绘制文本<br>　　现在我们已经创建和初始化了一个CD3DFont对象，这已经为绘制文字做好了准备。绘制文字是使用下面的方法：<br>HRESULT CD3DFont::DrawText(FLOAT x, FLOAT y, DWORD dwColor,<br>  const TCHAR* strText, DWORD dwFlags=0L);</li>
+<li>x — 文字在屏幕上开始绘制的x坐标。</li>
+<li>y —文字在屏幕上开始绘制的y坐标。 </li>
+<li>dwColor — 文字的颜色。</li>
+<li>strText — 要绘制的文字。</li>
+<li>dwFlags — 可选参数；你能设置该参数为0或者用下面参数；D3DFONT_CENTERED, D3DFONT_TWOSIDED, D3DFONT_FILTERED。<br>　　例子：<br>   Font-&gt;DrawText(20, 20, 0xff000000, “Hello, World”);<br>9.2.3 清除<br>　　在删除一个CD3DFont对象之前，我们必须首先调用一些清除程序，就象下面列举的代码片段：<br>Font-&gt;InvalidateDeviceObjects();<br>Font-&gt;DeleteDeviceObjects();<br>delete Font;<br>9.3 D3DXCreateText<br>　　最后的函数是被用来创建一个3D 文字网格。图9.1显示了本章FontMes3D实例渲染的3D文字网格。</li>
+</ul>
+<p>图9.1<br>　　该函数的原型是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">D3DXCreateText</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    LPDIRECT3DDEVICE9 pDevice,</span></span></span><br><span class="line"><span class="function"><span class="params">    HDC hDC,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPCTSTR pText,</span></span></span><br><span class="line"><span class="function"><span class="params">    FLOAT Deviation,</span></span></span><br><span class="line"><span class="function"><span class="params">    FLOAT Extrusion,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPD3DXMESH* ppMesh,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPD3DXBUFFER* ppAdjacency,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPGLYPHMETRICSFLOAT pGlyphMetrics</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>这个函数如果调用成功则返回D3D_OK。</p>
+<ul>
+<li>pDevice — 和mesh关联的device。</li>
+<li>hDC — 我们将要用来产生mesh的包含描述字体的设备环境句柄。 </li>
+<li>pText — 指向以null结束的字符串的指针，此字符串是用来指定创建什么文字mesh。</li>
+<li>Deviation — 字型轮廓段数间距。该值必须大于等于0。当它为0时，段数等于字体原始设计单位（该值越接近0，那么字体就越光滑）。</li>
+<li>Extrusion — 文字在z轴方向的深度。</li>
+<li>ppMesh — 返回创建的mesh。</li>
+<li>ppAdjacency — 返回创建mesh的相关信息。假如你不需要它可以将其指定为null。</li>
+<li>pGlyphMetrics — 一个指向LPGLYPHMETRICSFLOAT结构数组的指针，它包含了字型米数据。假如你不关心此数据，你可以把它设置为0。<br>　　 下面的示例代码展示的是使用这个函数来创建一个文字3D 网格模型。<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Obtain a handle to a device context.</span></span><br><span class="line">HDC hdc = CreateCompatibleDC( <span class="number">0</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">// Fill out a LOGFONT structure that describes the font’s properties.</span></span><br><span class="line">LOGFONT lf;</span><br><span class="line">ZeroMemory(&amp;lf, <span class="keyword">sizeof</span>(LOGFONT));</span><br><span class="line"></span><br><span class="line">lf.lfHeight = <span class="number">25</span>; <span class="comment">// in logical units</span></span><br><span class="line">lf.lfWidth = <span class="number">12</span>; <span class="comment">// in logical units</span></span><br><span class="line">lf.lfWeight = <span class="number">500</span>; <span class="comment">// boldness, range 0(light) - 1000(bold)</span></span><br><span class="line">lf.lfItalic = <span class="literal">false</span>;</span><br><span class="line">lf.lfUnderline = <span class="literal">false</span>;</span><br><span class="line">lf.lfStrikeOut = <span class="literal">false</span>;</span><br><span class="line">lf.lfCharSet = DEFAULT_CHARSET;</span><br><span class="line"><span class="built_in">strcpy</span>(lf.lfFaceName, <span class="string">"Times New Roman"</span>); <span class="comment">// font style</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a font and select that font with the device context.</span></span><br><span class="line">HFONT hFont;</span><br><span class="line">HFONT hFontOld;</span><br><span class="line">hFont = CreateFontIndirect(&amp;lf);</span><br><span class="line">hFontOld = (HFONT)SelectObject(hdc, hFont);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create the 3D mesh of text.</span></span><br><span class="line">ID3DXMesh* Text = <span class="number">0</span>;</span><br><span class="line">D3DXCreateText(_device, hdc, <span class="string">"Direct3D"</span>, <span class="number">0.001f</span>, <span class="number">0.4f</span>, &amp;Text, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Reselect the old font, and free resources.</span></span><br><span class="line">SelectObject(hdc, hFontOld);</span><br><span class="line">DeleteObject( hFont );</span><br><span class="line">DeleteDC( hdc );</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>现在你便能简单地调用mesh的DrawSubset方法来渲染一个3D文字：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Text-&gt;DrawSubset(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/Stenciling/" rel="next" title="模版(Stenciling)">
+                <i class="fa fa-chevron-left"></i> 模版(Stenciling)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/Meshes-Part-I/" rel="prev" title="第十章 网格模型I(Meshes Part I)">
+                第十章 网格模型I(Meshes Part I) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ID3DXFont"><span class="nav-number">1.</span> <span class="nav-text">ID3DXFont</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个ID3DXFont"><span class="nav-number">1.1.</span> <span class="nav-text">创建一个ID3DXFont</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

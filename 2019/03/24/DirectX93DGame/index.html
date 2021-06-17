@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="三维空间中的向量　　几何学中，我们用有向线段表示向量，如图1。向量的两个属性是他的长度和他的顶点所指的方向。因此，可以用向量来模拟既有大小又有方向的物理模型。例如，以后我们要实现的粒子系统。我们用向量来模拟粒子的速度和加速度。在3D计算机图形学中我们用向量不仅仅模拟方向。例如我们常常想知道光线的照射方向，以及在3D世界中的摄象机。向量为在3维空间中表示方向的提供了方便。　　　　　　向量与位置无关。">
+<meta name="keywords" content="计算机图形学,Direct3D 9">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DirectX 9 3D游戏设计入门">
+<meta property="og:url" content="http://zentia.github.io/2019/03/24/DirectX93DGame/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="三维空间中的向量　　几何学中，我们用有向线段表示向量，如图1。向量的两个属性是他的长度和他的顶点所指的方向。因此，可以用向量来模拟既有大小又有方向的物理模型。例如，以后我们要实现的粒子系统。我们用向量来模拟粒子的速度和加速度。在3D计算机图形学中我们用向量不仅仅模拟方向。例如我们常常想知道光线的照射方向，以及在3D世界中的摄象机。向量为在3维空间中表示方向的提供了方便。　　　　　　向量与位置无关。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/1.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/2.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/3.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/4.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/5.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/5.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/7.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/10.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/14.jpg">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/11.jpg">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/1-2.jpg">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/1-3.jpg">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/2.6.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/2.7.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/2.8.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/2.13.png">
+<meta property="og:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/2.17.jpg">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.838Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DirectX 9 3D游戏设计入门">
+<meta name="twitter:description" content="三维空间中的向量　　几何学中，我们用有向线段表示向量，如图1。向量的两个属性是他的长度和他的顶点所指的方向。因此，可以用向量来模拟既有大小又有方向的物理模型。例如，以后我们要实现的粒子系统。我们用向量来模拟粒子的速度和加速度。在3D计算机图形学中我们用向量不仅仅模拟方向。例如我们常常想知道光线的照射方向，以及在3D世界中的摄象机。向量为在3维空间中表示方向的提供了方便。　　　　　　向量与位置无关。">
+<meta name="twitter:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/03/24/DirectX93DGame/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>DirectX 9 3D游戏设计入门 | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/03/24/DirectX93DGame/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">DirectX 9 3D游戏设计入门
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/03/24/DirectX93DGame/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/03/24/DirectX93DGame/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="三维空间中的向量"><a href="#三维空间中的向量" class="headerlink" title="三维空间中的向量"></a>三维空间中的向量</h1><p>　　几何学中，我们用有向线段表示向量，如图1。向量的两个属性是他的长度和他的顶点所指的方向。因此，可以用向量来模拟既有大小又有方向的物理模型。例如，以后我们要实现的粒子系统。我们用向量来模拟粒子的速度和加速度。在3D计算机图形学中我们用向量不仅仅模拟方向。例如我们常常想知道光线的照射方向，以及在3D世界中的摄象机。向量为在3维空间中表示方向的提供了方便。<br>　　<br>　　<img src="/2019/03/24/DirectX93DGame/1.png"><br>　　向量与位置无关。有同样长度和方向的两个向量是相等的，即使他们在不同的位置。观察彼此平行的两个向量，例如在图1中u和v是相等的。<br>　　我们继续学习左手坐标系。图2显示的是左手坐标系和右手坐标系。两者不同的是Z轴的方向。在左手坐标系中Z轴是向书的里面去的，而右手坐标系是向书的外边去的。<br>　　　　<img src="/2019/03/24/DirectX93DGame/2.png"><br>　　图2<br>　　因为向量的位置不能改变它的性质，我们可以把所有向量平移使他们的尾部和坐标系的原点重合。因此，当一个向量在标准位置我们能通过头点来描述向量。图3显示的是图1中的向量在标准位置的样子。<br>　　<img src="/2019/03/24/DirectX93DGame/3.png"><br>　　图3<br>　　我们通常用小写字母表示一个向量，但有时也用大写字母。如2、3和4维向量分别是：<br>　　　　　u = (ux, uy),<br>　　　　　N = (Nx, Ny, Nz),<br>　　　　　c = (cx, cy, cz, cw)。<br>　　我们现在介绍4个特殊的3D向量，就象图4显示的。首先是都由含有0的零向量；它被表示成加粗的0 = (0, 0, 0)。接下来3个特殊的向量标准基向量。它们被叫做i, j和k向量，分别沿着坐标系的x轴,y轴和z轴，并且有1的单位长：i = (1, 0, 0), j = (0, 1, 0), and k = (0, 0, 1)。<br>注意：只有1个单位长度的向量叫做单位向量（模长为1的向量）。<br>　　<img src="/2019/03/24/DirectX93DGame/4.png"><br>　　图4<br>在D3DX库中，我们能用D3DXVECTOR3类表示3维空间中的向量。它的定义是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">D3DXVECTOR3</span> :</span> <span class="keyword">public</span> D3DVECTOR</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    D3DXVECTOR3() &#123;&#125;;</span><br><span class="line">    D3DXVECTOR3( CONST FLOAT * );</span><br><span class="line">    D3DXVECTOR3( CONST D3DVECTOR&amp; );</span><br><span class="line">    D3DXVECTOR3( CONST D3DXFLOAT16 * );</span><br><span class="line">    D3DXVECTOR3( FLOAT x, FLOAT y, FLOAT z );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// casting</span></span><br><span class="line">    <span class="keyword">operator</span> FLOAT* ();</span><br><span class="line">    <span class="keyword">operator</span> CONST FLOAT* () <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assignment operators</span></span><br><span class="line">    D3DXVECTOR3&amp; <span class="keyword">operator</span> += ( CONST D3DXVECTOR3&amp; );</span><br><span class="line">    D3DXVECTOR3&amp; <span class="keyword">operator</span> -= ( CONST D3DXVECTOR3&amp; );</span><br><span class="line">    D3DXVECTOR3&amp; <span class="keyword">operator</span> *= ( FLOAT );</span><br><span class="line">    D3DXVECTOR3&amp; <span class="keyword">operator</span> /= ( FLOAT );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// unary operators</span></span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> + () <span class="keyword">const</span>;</span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> - () <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// binary operators</span></span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> + ( CONST D3DXVECTOR3&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> - ( CONST D3DXVECTOR3&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> * ( FLOAT ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> / ( FLOAT ) <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">friend</span> D3DXVECTOR3 <span class="keyword">operator</span> * ( FLOAT, CONST struct D3DXVECTOR3&amp; );</span><br><span class="line"></span><br><span class="line">    BOOL <span class="keyword">operator</span> == ( CONST D3DXVECTOR3&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    BOOL <span class="keyword">operator</span> != ( CONST D3DXVECTOR3&amp; ) <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line">&#125; D3DXVECTOR3, *LPD3DXVECTOR3;</span><br></pre></td></tr></table></figure></p>
+<p>注意D3DXVECTOR3是从D3DVECTOR继承的。它的定义是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">D3DVECTOR</span> &#123;</span></span><br><span class="line">    <span class="keyword">float</span> x, y, z;</span><br><span class="line">&#125; D3DVECTOR;</span><br></pre></td></tr></table></figure></p>
+<p>　　向量有它们自己的算法，就像你在D3DXVECTOR3定义中看到的数学运算。现在你不需要知道它们怎么使用。以后介绍这些向量运算以及一些有用的函数和关于向量的重要的详细资料。<br>注意：在3D图形程序中，虽然我们主要关心3D向量，但有时也会用到2D和4D向量。在D3DX库中提供了D3DXVECTOR2和D3DXVECTOR4类来分别表现2D和4D向量。不同维数的向量有着和3D向量一样的性质，也就是它们描述大小和方向，仅仅是在不同的维数中。所有这些向量的数学运算对于不同维数向量都有效只是有一个除外，就是向量积。这些运算我们可通过论述3D向量扩展到2D, 4D甚至n维向量。</p>
+<h2 id="向量相等"><a href="#向量相等" class="headerlink" title="向量相等"></a>向量相等</h2><p>　　几何学上，有同样方向和长度的两个向量相等。数学上，我们说有同样维数和分量的向量相等。例如：如果ux = vx, uy = vy, 且 uz = vz.那么(ux, uy, uz) = (vx, vy, vz)。在代码中我们能够用“==”判断两个向量相等。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR <span class="title">u</span><span class="params">(<span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR <span class="title">v</span><span class="params">(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>)</span></span>;</span><br><span class="line"><span class="keyword">if</span>( u == v ) <span class="keyword">return</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></p>
+<p>同样的，我们也能用“！=”判断两个向量不相等。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>( u != v ) <span class="keyword">return</span> <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></p>
+<p>注意：当比较浮点数时，必须注意。因为浮点数不是精确的，我们认为相等的两个浮点数是有细微差别的；因此，我们测试它们近似相等。我们定义一个常数EPSILON，把它当作非常小的“buffer”。假如两个数和EPSILON相差很小我们说它们近似相等。换句话说，EPSILON让浮点数有一定的精度。接下来的实例函数是怎样用EPSILON比较两个浮点数相等。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Equals</span><span class="params">(<span class="keyword">float</span> lhs, <span class="keyword">float</span> rhs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// if lhs == rhs their difference should be zero</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fabs</span>(lhs - rhs) &lt; EPSILON ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>   当我们用D3DXVECTOR3类时不必担心，因为它已经帮我们处理了，但是在一般情况下适当注意比较两个浮点数是很重要的。</p>
+<h2 id="计算向量大小（向量的模）"><a href="#计算向量大小（向量的模）" class="headerlink" title="计算向量大小（向量的模）"></a>计算向量大小（向量的模）</h2><p>　　几何学上，向量的大小是有向线段的长度。知道向量的分量，利用下面的公式我们就能计算出向量的大小。</p>
+<p><font size="4">$||u||=\sqrt{u_{x}^2+u_{y}^2+u_{z}^2}$</font><br>‖u‖表示向量u的长度。例如：计算向量u = (1, 2, 3)和v = (1, 1)的大小。<br>根据公式（1），我们得到：<br>　　<font size="4">$||u||=\sqrt{1^2+2^2+3^2} = \sqrt{1+4+9}=\sqrt{14}$</font><br>　　<br>我们利用D3DX库中下面的函数便能计算向量的大小。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FLOAT <span class="title">D3DXVec3Length</span><span class="params">( <span class="comment">// Returns the magnitude.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV <span class="comment">// The vector to compute the length of.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">1.0f</span>, <span class="number">2.0f</span>, <span class="number">3.0f</span>)</span></span>;</span><br><span class="line"><span class="keyword">float</span> magnitude = D3DXVec3Length( &amp;v ); <span class="comment">// = sqrt(14)</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="标准化向量"><a href="#标准化向量" class="headerlink" title="标准化向量"></a>标准化向量</h2><p>　　<font color="red">标准化向量是让向量的大小等于1，即被叫作单位向量。</font>我们能利用向量大小以及各个分量把一个向量标准化，就像这样：<br>　　$\hat{u} ={u \over ||u||} = {({u_x \over ||u||}, {u_y \over ||u||}, {u_z \over ||u||})}$<br>我们这样表示单位向量$\hat{u}$。如：标准化向量u = (1, 2, 3) 和 v = (1, 1)。<br>解答方法：根据(2)和(3)我们得到‖u‖=√14 和 ‖v‖=√2,因此：<br>　　<br>我们利用D3DX库中下面的函数能标准化向量。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 *<span class="title">D3DXVec3Normalize</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    D3DXVECTOR3* pOut, <span class="comment">// Result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    CONST D3DXVECTOR3* pV <span class="comment">// The vector to normalize.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>注意：这个函数返回一个指针，因此它可以作为一个参数传递给另一个函数。大数情况下，除非另作说明，D3DX数学函数返回的结果是一个指针。但不是所有函数都这样。</p>
+<h2 id="向量相加"><a href="#向量相加" class="headerlink" title="向量相加"></a>向量相加</h2><p>　　我们能够通过分别把两个向量的各个分量相加得到向量之和，注意在相加之前必须保证它们有相同的维数。<br>$u + v = ({u_x + v_x, u_y + v_y, u_z + v_z})$<br>图5显示的是几何学上的向量相加。<br><img src="/2019/03/24/DirectX93DGame/5.png" title="图5"></p>
+<p>两个向量相加的代码，我们使用重载的加法操作符：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 <span class="title">u</span><span class="params">(<span class="number">2.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">5.0f</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// (2.0 + 0.0,  0.0 + (-1.0),  1.0 + 5.0)</span></span><br><span class="line">D3DXVECTOR3 sum = u + v; <span class="comment">// = (2.0f, -1.0f, 6.0f)</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="向量相减"><a href="#向量相减" class="headerlink" title="向量相减"></a>向量相减</h2><p>　　和加法类似，通过分别把两个向量的各个分量相减得到向量之差。再次重声两个向量必须是相同维数。<br>　　$u + v = ({u_x - v_x, u_y - v_y, u_z - v_z})$<br>图6显示的是几何学上的向量相减。<br><img src="/2019/03/24/DirectX93DGame/5.png" title="图6"><br>两个向量相减的代码，我们使用重载的减法操作符：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 <span class="title">u</span><span class="params">(<span class="number">2.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">5.0f</span>)</span></span>;</span><br><span class="line">D3DXVECTOR3 difference = u - v; <span class="comment">// = (2.0f, 1.0f, -4.0f)</span></span><br></pre></td></tr></table></figure></p>
+<p>　　图6显示，向量减法得到一个从v向量终点到u向量终点的向量。假如我们解释u和v的分量，我们能用向量相减找到从一个点到另一个点的向量。这是非常方便的操作，因为我们常常想找到从一个点到另一个点的方向向量。</p>
+<h2 id="标量与向量的乘积"><a href="#标量与向量的乘积" class="headerlink" title="标量与向量的乘积"></a>标量与向量的乘积</h2><p>我们能用一个标量与向量相乘，就象名字暗示的一样，向量按比例变化。这种运算不会改变向量的方向，除非标量是负数，这种情况向量方向相反。<br>　　$ku=(ku_x,ku_y,ku_z)$<br>D3DXVECTOR3类提供了向量与标量乘法的操作符。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 <span class="title">u</span><span class="params">(<span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>)</span></span>;</span><br><span class="line">D3DXVECTOR3 scaledVec = u * <span class="number">10.0f</span>; <span class="comment">// = (10.0f, 10.0f, -10.0f)</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="点积"><a href="#点积" class="headerlink" title="点积"></a>点积</h2><p>　　数学上定义点积是两个向量的乘积。按下面等式计算：<br>　　$u \cdot v = u_{x}v_x+u_{y}v_y+u_{z}v_z = S$<br>　　上面的等式不能很明显的体现几何上的意义。利用余弦定律，我们能够发现它们的关系。<br>　　u · v =|u||v|cosθ，表示两个向量的点积是它们的模和夹角的余弦之积。因此，如果u和v都是单位向量，那么u·v就是它们夹角的余弦。<br>一些点积中有用的特性<br>　　■　假如u · v = 0，那么u⊥v。<br>　　■　假如u · v &gt; 0，那么两个向量的角度θ小于90度。<br>　　■　假如u · v &lt; 0，那么两个向量的角度θ大于90度。<br>　　我们使用下面的D3DX函数计算两个向量的点积：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FLOAT <span class="title">D3DXVec3Dot</span><span class="params">( <span class="comment">// Returns the result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV1, <span class="comment">// Left sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV2 <span class="comment">// Right sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">u</span><span class="params">(<span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">3.0f</span>, <span class="number">2.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="comment">// 1.0*3.0 + -1.0*2.0 + 0.0*1.0</span></span><br><span class="line"><span class="comment">// = 3.0 + -2.0</span></span><br><span class="line"><span class="keyword">float</span> dot = D3DXVec3Dot( &amp;u, &amp;v ); <span class="comment">// = 1.0</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="叉积"><a href="#叉积" class="headerlink" title="叉积"></a>叉积</h2><p>　　第二种乘法在向量数学中叫叉积。<strong>不像点积，结果值是一个标量，叉积的结果值是另一个向量。</strong>通过把两个向量u和v相乘得到另一的向量p，向量p垂直于u和v。也就是说向量p垂直于u并且垂直于u。<br>十字相乘就像这样计算：<br>$p=u \times v=[(u_{y}v_z-u_{z}v_{y}),(u_{z}v_x-u_{x}v_{z}),(u_{x}v_y-u_{y}v_{x})]$<br>$p_x = (u_{y}v_z-u_{z}v_{y})$<br>$p_y = (u_{z}v_x-u_{x}v_{z})$<br>$p_z = (u_{x}v_y-u_{y}v_{x})$<br>　　<br>如：发现j = k×i = (0, 0, 1)×(1, 0, 0) 并且j同时垂直于k和i.<br>因此，j = (0, 1, 0)。回忆一下上节的标题“叉积”，是说如果u · v = 0，那么u⊥v。同样的如果j · k = 0并且j · i = 0那么我们便能知道j既垂直于k又垂直于i的。<br>我们使用下面的D3DX函数计算两个向量的叉积：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 *<span class="title">D3DXVec3Cross</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    D3DXVECTOR3* pOut, <span class="comment">// Result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    CONST D3DXVECTOR3* pV1, <span class="comment">// Left sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    CONST D3DXVECTOR3* pV2 <span class="comment">// Right sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>　　从下图很明显，向量-p与u和v也都相互垂直。我们执行叉积的命令，确定得到的的结果不管是p或者-p。换句话说，u×v = -(v×u)。这说明叉积是不可交换的。你能通过左手法则确定叉积返回的向量。按照第一个向量指向第二个向量弯曲你的左手，这时拇指所指的方向就是向量所指的方向。<br><img src="/2019/03/24/DirectX93DGame/7.png" title="图7">　</p>
+<h2 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h2><p>在这一部分我们关注的焦点是数学中的矩阵。它们在3D图形学中的应用将在下一部分讲解。<br>一个m×n的矩阵是由m行和n列的数字组成的矩阵列。行和列的数字就是这个矩阵的维数。我们通过写在下方的数字识别矩阵清单，数字中的第一个表示行第二个表示列。例如下边的M是3×3矩阵，B是2×4矩阵, C是3×2矩阵。<br>$M=\begin{bmatrix} m_{11} &amp; m_{12} &amp; m_{13} \\ m_{21} &amp; m_{22} &amp; m_{23} \\ m_{31} &amp; m_{32} &amp; m_{33} \\\end{bmatrix}$ $B=\begin{bmatrix} b_{11} &amp; b_{12} &amp; b_{13} b_{14} \\ b_{21} &amp; b_{22} &amp; b_{23} b_{24} \\\end{bmatrix}$ $C=\begin{bmatrix} c_{11} &amp; c_{12} \\ c_{21} &amp; c_{22} \\c_{31} &amp; c_{32} \\\end{bmatrix}$<br>我们使用加粗的大写字母表示矩阵。有时一个矩阵只包含一行或者一列。我们用行矩阵和列矩阵这个特殊的名称来称呼。例如下边就是行和列矩阵：<br>$V = \begin{bmatrix} v_{1} &amp; v_{2} &amp; v_{3} v_{4} \\\end{bmatrix}$ $U = \begin{bmatrix} u_{x} \\ v_{y} \\ v_{z} \\\end{bmatrix}$<br>当使用行或列矩阵时，我们只用一个下标，有时我们还用字母表示。</p>
+<h2 id="相等、数乘矩阵以及相加"><a href="#相等、数乘矩阵以及相加" class="headerlink" title="相等、数乘矩阵以及相加"></a>相等、数乘矩阵以及相加</h2><p>这部分我们将用到下边4个矩阵：<br>　　$A = \begin{bmatrix} 1 &amp; 5 &amp; -2 3 \\\end{bmatrix}$ $B = \begin{bmatrix} 6 &amp; 2 &amp; 5 -8 \\\end{bmatrix}$ $C = \begin{bmatrix} 1 &amp; 5 &amp; -2 3 \\\end{bmatrix}$ $D = \begin{bmatrix} 1 &amp; 2 &amp; -1 &amp; 3 \\ -6 &amp; 3 &amp; 0 &amp; 0 \\\end{bmatrix}$<br>　■假如两个矩阵维数和成员都相同那么它们就相等。例如，A = C 因为A和C有同样的维数并且他们的成员都相等。A≠B同时A≠D因为他们的成员或者维数是不相同的。<br>　■我们能通过标量与矩阵的每个成员相乘得到标量与矩阵相乘。如矩阵D与k相乘：<br>　　$kD = \begin{bmatrix} k(1) &amp; k(2) &amp; k(-1) &amp; k(3) \\ k(-6) &amp; k(3) &amp; k(0) &amp; k(0) \\\end{bmatrix}$<br>假如k = 2,那么：<br>　　$kD = 2D = \begin{bmatrix} 2(1) &amp; 2(2) &amp; 2(-1) &amp; 2(3) \\ 2(-6) &amp; 2(3) &amp; 2(0) &amp; 2(0) \\\end{bmatrix} = \begin{bmatrix} 2 &amp; 4 &amp; -2 &amp; 6 \\ -12 &amp; 6 &amp; 0 &amp; 0 \\\end{bmatrix}$<br>　■当两个矩阵的维数相同时才能把它们相加。和是把两个矩阵相应的成员相加得到。如：<br>　　$A+B=\begin{bmatrix} 1 &amp; 5 \\ -2 &amp; 2(3) &amp; 2(0) &amp; 2(0) \\\end{bmatrix} + \begin{bmatrix} 2(1) &amp; 2(2) &amp; 2(-1) &amp; 2(3) \\ 2(-6) &amp; 2(3) &amp; 2(0) &amp; 2(0) \\\end{bmatrix}$<br>　■矩阵有加法当然也就有减法，前提是有相同的维数。矩阵减法如图所示：</p>
+<h2 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h2><p>　　矩阵相乘在3D计算机图形学中是非常重要的运算。通过矩阵相乘，我们能变换向量并且，将不同向量转换到一起。变换是下一节的内容。<br>　　为了得到矩阵之积AB，A的列数必须等于B的行数。假如这个条件不满足，就不能相乘。考虑下边两个矩阵，A 和 B，分别是2×3 和 3×3，如：<br>　　<br>　　我们看乘积AB是可以计算的，因为A的列数等于B的行数。注意乘积BA,它们是不能计算的，因为B的列数不等于A的行数。由此说明：一般情况下矩阵乘法不满足乘法交换律（也就是, AB≠BA）。我们说“一般不可交换”因为有一些矩阵乘法的实例还是可以的。<br>　　知道了矩阵乘法的计算方法，现在我们就能给出精确的定义：假如A是一个m×n的矩阵，B是一个n×p的矩阵，那么它们之积AB可计算并且是一个m×p 的矩阵C, C的成员ij 等于A的第i个与B的第j个相乘：<br>　　<br>例如，求解：<br>　　<br>　　我们检查知道乘法是可计算的，因为A的列数等于B的行数。也知道计算的结果是一个2×2的矩阵。根据公式（4），我们得到：<br>　　<br>作为练习，检查AB≠BA。<br>更一般的例子：
+　　</p>
+<h2 id="单位矩阵"><a href="#单位矩阵" class="headerlink" title="单位矩阵"></a>单位矩阵</h2><p>　　有一种特殊矩阵叫做单位矩阵。单位矩阵是除了对角（左上到右下）以外所有成员都是0，对角都是1的方矩阵。例如，下边是2×2, 3×3, 和 4×4的单位矩阵：</p>
+<p>单位矩阵有如下特性：<br>MI = IM=M<br>即，用单位矩阵乘以矩阵不会改变矩阵。此外，这是一个特例：用单位矩阵进行乘法运算满足乘法交换律。单位矩阵可以看作矩阵运算中的数字“1”。</p>
+<p>例如：验证2×2矩阵M与单位矩阵相乘得到的结果是M。</p>
+<h2 id="逆转"><a href="#逆转" class="headerlink" title="逆转"></a>逆转</h2><p>下面列举了关于逆矩阵的重要信息。</p>
+<ul>
+<li>只有正方形的矩阵（方阵）才能求逆，因此当我们说矩阵求逆，那么它就是方矩阵。</li>
+<li>n×n矩阵M的逆矩阵是一个n×n矩阵表示为M–1</li>
+<li>不是每个方矩阵都有逆矩阵</li>
+<li><p>矩阵和他的逆矩阵相乘得到一个单位矩阵：M M–1 = M–1M = I。注意当我们进行这样的操作时矩阵是可交换的。<br> 逆矩阵用来解决与其他矩阵相等是非常有用的。例如，考虑等式p’= pR 并且假设我们知道p’和R想求p。首先找到R–1，一旦求得R–1，我们便能求出p，就象这样：</p>
+<p> 求逆矩阵的方法已经超出了本书的范围，但是这在任何一本线性代数书上都有讲解。在“基本变换”一节我们给出一个特定矩阵的逆矩阵。在“D3DX 矩阵”部分我们将学习一个为我们求逆矩阵的D3DX函数。<br>　　我们介绍几个有用的推论：(AB) –1 = B–1 A–1。这个性质前提是：假定A和B都能求逆并且它们都是有相同维数的方矩阵。<br>矩阵的转置<br>　　矩阵的转置是相互交换矩阵的行和列。因而，m×n的矩阵的转置是一个n×m的矩阵。我们把矩阵M的转置记作MT。<br>例如：求下面两个矩阵的转置：<br>　　<br>　　重声一下，转置是交换矩阵的行和列。<br>因此：
+　　</p>
+<h2 id="D3DX-矩阵"><a href="#D3DX-矩阵" class="headerlink" title="D3DX 矩阵"></a>D3DX 矩阵</h2><p>　　当设计Direct3D应用程序时，使用4×4矩阵和1×4行矩阵（向量）是有代表性的。注意使用这两种矩阵意味着可以进行下列定义的矩阵乘法。</p>
+</li>
+<li>向量-矩阵乘法。即，假如1×4的单行矩阵V，和4×4的矩阵T，那么积VT可计算并且返回的结果是一个1×4的单行矩阵（向量）。</li>
+<li>矩阵-矩阵乘法。即，假如4×4的矩阵T，和4×4的矩阵R，那么积TR和RT可计算并且两者返回的结果都是一个4×4的矩阵。注意因为矩阵乘法不满足交换律所以TR和RT不一定相等。<br>　　在D3DX中表示1×4的行矩阵（向量），我们用D3DXVECTOR3和D3DXVECTOR4向量类。当然D3DXVECTOR3只有3个成员，不是4个。然而，第4个成员缺省是1或0（在下一部分有更多信息）。<br>　　在D3DX中表示4×4的矩阵，我们用D3DXMATRIX类，定义如下：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">D3DXMATRIX</span> :</span> <span class="keyword">public</span> D3DMATRIX &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    D3DXMATRIX() &#123;&#125;;</span><br><span class="line">    D3DXMATRIX( CONST FLOAT * );</span><br><span class="line">    D3DXMATRIX( CONST D3DMATRIX&amp; );</span><br><span class="line">    D3DXMATRIX( FLOAT _11, FLOAT _12, FLOAT _13, FLOAT _14,</span><br><span class="line">                FLOAT _21, FLOAT _22, FLOAT _23, FLOAT _24,</span><br><span class="line">                FLOAT _31, FLOAT _32, FLOAT _33, FLOAT _34,</span><br><span class="line">                FLOAT _41, FLOAT _42, FLOAT _43, FLOAT _44 );</span><br><span class="line">    <span class="comment">// access grants</span></span><br><span class="line">    <span class="function">FLOAT&amp; <span class="title">operator</span> <span class="params">()</span> <span class="params">( UINT Row, UINT Col )</span></span>;</span><br><span class="line">    <span class="function">FLOAT  <span class="title">operator</span> <span class="params">()</span> <span class="params">( UINT Row, UINT Col )</span> <span class="keyword">const</span></span>;</span><br><span class="line">    <span class="comment">// casting operators</span></span><br><span class="line">    <span class="keyword">operator</span> FLOAT* ();</span><br><span class="line">    <span class="keyword">operator</span> CONST FLOAT* () <span class="keyword">const</span>;</span><br><span class="line">    <span class="comment">// assignment operators</span></span><br><span class="line">    D3DXMATRIX&amp; <span class="keyword">operator</span> *= ( CONST D3DXMATRIX&amp; );</span><br><span class="line">    D3DXMATRIX&amp; <span class="keyword">operator</span> += ( CONST D3DXMATRIX&amp; );</span><br><span class="line">    D3DXMATRIX&amp; <span class="keyword">operator</span> -= ( CONST D3DXMATRIX&amp; );</span><br><span class="line">    D3DXMATRIX&amp; <span class="keyword">operator</span> *= ( FLOAT );</span><br><span class="line">    D3DXMATRIX&amp; <span class="keyword">operator</span> /= ( FLOAT );</span><br><span class="line">    <span class="comment">// unary operators</span></span><br><span class="line">    D3DXMATRIX <span class="keyword">operator</span> + () <span class="keyword">const</span>;</span><br><span class="line">    D3DXMATRIX <span class="keyword">operator</span> - () <span class="keyword">const</span>;</span><br><span class="line">    <span class="comment">// binary operators</span></span><br><span class="line">    D3DXMATRIX <span class="keyword">operator</span> * ( CONST D3DXMATRIX&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXMATRIX <span class="keyword">operator</span> + ( CONST D3DXMATRIX&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXMATRIX <span class="keyword">operator</span> - ( CONST D3DXMATRIX&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXMATRIX <span class="keyword">operator</span> * ( FLOAT ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXMATRIX <span class="keyword">operator</span> / ( FLOAT ) <span class="keyword">const</span>;</span><br><span class="line">    <span class="keyword">friend</span> D3DXMATRIX <span class="keyword">operator</span> * ( FLOAT, CONST D3DXMATRIX&amp; );</span><br><span class="line">    BOOL <span class="keyword">operator</span> == ( CONST D3DXMATRIX&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    BOOL <span class="keyword">operator</span> != ( CONST D3DXMATRIX&amp; ) <span class="keyword">const</span>;</span><br><span class="line">&#125; D3DXMATRIX, *LPD3DXMATRIX;</span><br></pre></td></tr></table></figure>
+<p>D3DXMATRIX类是从单数结构D3DMATRIX继承的复数形式。D3DMATRIX的定义是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">D3DMATRIX</span> &#123;</span></span><br><span class="line">    <span class="keyword">union</span> &#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="keyword">float</span>        _11, _12, _13, _14;</span><br><span class="line">            <span class="keyword">float</span>        _21, _22, _23, _24;</span><br><span class="line">            <span class="keyword">float</span>        _31, _32, _33, _34;</span><br><span class="line">            <span class="keyword">float</span>        _41, _42, _43, _44;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">float</span> m[<span class="number">4</span>][<span class="number">4</span>];</span><br><span class="line">    &#125;;</span><br><span class="line">&#125; D3DMATRIX;</span><br></pre></td></tr></table></figure></p>
+<p>　　观察D3DXMATRIX类发现有很多有用的运算符，比如对矩阵检测相等，矩阵相加和矩阵相减，标量与矩阵相乘，铸造（casting），以及非常重要的两个D3DXMATRIXs相乘。因为矩阵相乘是非常重要的，我们给出一段实例代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX <span class="title">A</span><span class="params">(…)</span></span>; <span class="comment">// initialize A</span></span><br><span class="line"><span class="function">D3DXMATRIX <span class="title">B</span><span class="params">(…)</span></span>; <span class="comment">// initialize B</span></span><br><span class="line">D3DXMATRIX C = A * B; <span class="comment">// C = AB</span></span><br></pre></td></tr></table></figure></p>
+<p>   D3DXMATRIX类另一个重要的运算符是小括号，它允许我们非常方便的为矩阵成员赋值。注意当使用小括号时我们的下标就象C语言数组下标一样是从0开始的。例如，为一个矩阵的ij = 11 赋值，我们写成：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D3DXMATRIX M;</span><br><span class="line">M(<span class="number">0</span>, <span class="number">0</span>) = <span class="number">5.0f</span>; <span class="comment">// Set entry ij = 11 to 5.0f.</span></span><br></pre></td></tr></table></figure></p>
+<p>   D3DX库也提供下列有用的函数：将D3DXMATRIX转化为单位矩阵，转置D3DXMATRIX矩阵以及求逆矩阵。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixIdentity</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX *pout <span class="comment">// 将矩阵转换为单位矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line">D3DXMATRIX M;</span><br><span class="line">D3DXMatrixIdentity( &amp;M ); <span class="comment">// M = 单位矩阵</span></span><br><span class="line"></span><br><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixTranspose</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX *pOut, <span class="comment">// 输出的转置矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXMATRIX *pM <span class="comment">// 原矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXMATRIX <span class="title">A</span><span class="params">(...)</span></span>; <span class="comment">// 初始化矩阵A</span></span><br><span class="line">D3DXMATRIX B;</span><br><span class="line">D3DXMatrixTranspose( &amp;B, &amp;A ); <span class="comment">// B = 输出的转置矩阵</span></span><br></pre></td></tr></table></figure></p>
+<p>   假如我们将不能求逆的矩阵用求逆函数，那么函数将会返回null.同样的，这本书我们忽视第二个参数，并且总是把它设置为0。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixInverse</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX *pOut, <span class="comment">// 输出的逆矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT *pDeterminant, <span class="comment">// 除非是必需的，一般设为0</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXMATRIX *pM <span class="comment">// 原矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXMATRIX <span class="title">A</span><span class="params">(...)</span></span>; <span class="comment">// 初始化矩阵</span></span><br><span class="line">D3DXMATRIX B;</span><br><span class="line">D3DXMatrixInverse( &amp;B, <span class="number">0</span>, &amp;A ); <span class="comment">// B = A的逆矩阵</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="基本变换"><a href="#基本变换" class="headerlink" title="基本变换　　"></a>基本变换　　</h2><p>当用Direct3D编程时，我们使用4×4矩阵来进行矩阵变换。用它的原因是：我们设置一个4×4矩阵X是为了更精确的描述矩阵变换。同样我们设置一个相匹配的点或者把向量的分量放置到一个1×4的行矩阵V中。VX的乘积返回一个新的向量V’。例如：让X沿着x轴平移10个单位同时V = [2, 6, –3, 1]，乘积VX = V’= [12, 6, –3, 1]。<br>　　有一些东西需要阐明。我们使用4×4矩阵是因为这样的大小能表现我们需要的所有变换。最初看来一个3×3的好象更适合3D。然而这里有很多种我们喜欢用的变换是不能用一个3×3的矩阵来表示的，比如平移、投影、反射。我们使用向量-矩阵相乘来工作，因此我们至少要通过一个矩阵乘法来完成相应的变化。增大到4×4的矩阵后，它允许我们用一个矩阵描述更多的变换，并且向量-矩阵乘法是可行的。</p>
+<p>　　我们说过把一个相匹配的点或者一个向量的成员放置到一个1×4的行矩阵中。但是点和向量是3D的！为什么我们要用一个1×4的行矩阵呢？我们必需把3D点/向量增大为4D的单行矩阵，是为了符合向量与矩阵的乘法定义，而1×3的单行矩阵和4×4的矩阵相乘是不允许的。<br>　　那么，我们怎么使用第四个成员（我们用w来表示）呢？当我们把一个点放置到一个1×4的行矩阵中时，我们设置w为1。允许对点进行适当的平移。因为向量和位置无关，所以向量的平移没有被定义，如果试图这样做会返回一个无意义的向量。为了防止对向量进行平移，当在把一个向量放置到一个1×4行矩阵中时我们把w设置为0。例如：<br>把点p = (p1, p2, p3)放置到一个单行矩阵中就象这样：<br>[p1, p2, p3, 1]，<br>同样把向量v = (v1, v2, v3) 放置到一个单行矩阵中就象这样：<br>[v1, v2, v3, 0]。<br>　　<br>注意：我们设置w = 1是为了让点可以被恰当的移动，同样我们设置w = 0是为了防止向量被平移。当我们检查矩阵实际平移时这是一个非常清晰的模型。<br>　　有时一个矩阵变换时我们改变向量成员w的值，即w≠0 且 w≠1。考虑下边例子：<br>　　$p = \begin{bmatrix} p_1 &amp; p_2 &amp; p_3 &amp; 1 \\\end{bmatrix} \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\\end{bmatrix} = \begin{bmatrix} p_1, p_2, p_3, p_3 \\\end{bmatrix} = p`$<br>　　因为p3≠0 且 p3≠1。<br>　　我们注意w =p3。当w≠0 且 w≠1时，我们说我们有一个向量在同类空间中，与3维空间中的向量是相对的。我们能通过把向量的每个分量与w相除将同类空间中的向量映射到3维空间中来。例如把同类空间中向量(x, y, z, w) 映射到3维空间中的向量x，我们这样做：<br>　　${x \over w}, {y \over w}, {z \over w}, {w \over w}$<br>　　在3D图形程序设计中，从齐次坐标空间映射到3D空间时使用<strong>投影透视</strong>。<br>矩阵平移</p>
+<p>图8<br>    我们能通过与下面的矩阵相乘把向量(x, y, z, 1)沿x轴移动px个单位，沿y轴移动py 个单位，沿z轴移动pz个单位：</p>
+<p>将矩阵平移的D3DX函数是：<br>D3DXMATRIX <em>D3DXMatrixTranslation(<br>    D3DXMATRIX</em> pOut, // 返回平移后的矩阵.<br>    FLOAT x, // x轴移动的单位<br>    FLOAT y, // y轴移动的单位<br>    FLOAT z // z轴移动的单位<br>);<br>　　练习：让T(p)做为一个平移变换矩阵，v = [v1, v2, v3, 0]是也个任意向量。验证vT(p) = v（即，假如w = 0，验证通过平移不会改变向量）。<br>　　平移矩阵求逆只需要简单的将向量p取反即可：</p>
+<h2 id="矩阵旋转"><a href="#矩阵旋转" class="headerlink" title="矩阵旋转"></a>矩阵旋转</h2><p>图9<br>    我们能用下面的矩阵把一个向量围绕x,y 和z轴旋转δ弧度。注意：当我们俯视绕轴原点时，角度是指顺时针方向的角度。</p>
+<p>将矩阵饶着x轴旋转的D3DX函数是：<br>D3DXMATRIX <em>D3DXMatrixRotationX(<br>    D3DXMATRIX</em> pOut, // 返回旋转后的矩阵<br>    FLOAT Angle // Angle是旋转的弧度<br>);</p>
+<p>将矩阵饶着y轴旋转的D3DX函数是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixRotationY</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX* pOut, <span class="comment">// 返回旋转后的矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT Angle <span class="comment">// Angle是旋转的弧度</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>将矩阵饶着z轴旋转的D3DX函数是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixRotationZ</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX* pOut, <span class="comment">// 返回旋转后的矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT Angle <span class="comment">// Angle是旋转的弧度</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>旋转矩阵R的逆矩阵等于它的转置矩阵：RT= R-1。这样的矩阵我们说它们是互相垂直的。<br>矩阵缩放<br><img src="/2019/03/24/DirectX93DGame/10.png"><br>图10<br>　　我们能通过与下面的矩阵相乘把向量沿x轴缩放qx个单位，沿y轴缩放qy 个单位，沿z轴缩放qz个单位：<br>　　$S(q) = \begin{bmartix}q_x &amp; 0 &amp; 0 &amp; 0 \\ 0 q_y &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; q_z 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \\\end{bmartix}$<br>将矩阵缩放的D3DX函数是：<br>D3DXMATRIX <em>D3DXMatrixScaling(<br>    D3DXMATRIX</em> pOut, // 返回缩放后的矩阵<br>    FLOAT sx, // x轴缩放的比例<br>    FLOAT sy, // y轴缩放的比例<br>    FLOAT sz // z轴缩放的比例.<br>);<br>　　缩放矩阵求逆只需要将每个缩放因子取倒即可：<br>　　<br>综合变换<br>    常常我们要对一个向量进行一系列的变换。比如，我们可能先缩放一个向量，然后旋转它，最后把它平移到指定的位置。<br>　　例如：先把向量p = [5, 0, 0, 1] 在所有轴上缩小为原来的1/5，然后沿着y轴旋转π/4，最后把它在x轴上移动1个单位，在y轴上移动2个单位，在z轴上移动3个单位。<br>　　解答：注意我们必须完成缩放，沿y轴旋转，以及移动。我们设缩放、旋转、移动的变换矩阵分别是S, Ry, T，如下：<br>　　<br>　　<br>　　应用缩放，旋转，以及平移一系列变换，我们得到：<br>　　<br>　　我们能用矩阵乘法把几个变换矩阵转换成一个矩阵，它是非常有益的矩阵。比如，重新考虑这部分开始的例子。通过使用矩阵相乘把3个变换矩阵合成一个矩阵。注意我们必须按实际应用的顺序来进行矩阵相乘。<br>　　<br>那么 pQ = [1.707, 2, –3.707, 1]。<br>　　联合变换有提高效率的能力。假如我们需要对一组数量巨大的向量（在3D图形任务中是很普遍的）进行同样的缩放，旋转以及移动变换。替换这一系列的变换，即就象等式(5)中对每一个向量的做法，我们能把所有3个变换转换到一个矩阵中，即就象在等式(6)中的做法。这样我们只需要对每一个向量进行一次乘法就可以实现3种变换。这就减少了大量的向量-矩阵乘法操作。<br>一些向量变换函数<br>　　D3DX库分别提供了下边两个对点和向量的变换函数。D3DXVec3TransformCoord函数变换点同时设置向量第4个成员为1（用于变换点向量）。D3DXVec3TransformNormal函数变换向量并且设置第4个成员为0（用于变换方向向量）。<br>D3DXVECTOR3 <em>D3DXVec3TransformCoord(<br>        D3DXVECTOR3</em> pOut, // 返回的点向量<br>        CONST D3DXVECTOR3<em> pV, // 点向量<br>        CONST D3DXMATRIX</em> pM // 变换矩阵<br>　　);<br>D3DXMATRIX T(…); // 初始化矩阵<br>D3DXVECTOR3 p(…); // 初始化点<br>D3DXVec3TransformCoord( &amp;p, &amp;p, &amp;T); // 变换一个点</p>
+<p>D3DXVECTOR3 <em>WINAPI D3DXVec3TransformNormal(<br>        D3DXVECTOR3 </em>pOut, //返回的方向向量<br>        CONST D3DXVECTOR3 <em>pV, // 方向向量<br>        CONST D3DXMATRIX </em>pM //变换矩阵<br>);<br>D3DXMATRIX T(…); // 初始化变换矩阵<br>D3DXVECTOR3 v(…); // 初始化方向向量<br>D3DXVec3TransformNormal( &amp;v, &amp;v, &amp;T); // 变换方向向量<br>注意：D3DX库也提供D3DXVec3TransformCoordArray和D3DXVec3TransformNormalArray来分别变换一个点数组和向量数组<br>平面<br>   一个平面能通过一个向量n和平面上的一个点p0来描述。这个向量n垂直于平面，它被称为此平面的法向量（如图11）。</p>
+<p>图11</p>
+<p>在图12中我们能够发现平面上任意一点p都满足如下等式。即：假如p、p0都是平面上一点，那么向量（p - p0）垂直于平面的法向量。</p>
+<p>图12<br>　　当我们通过法向量n和平面上一个已知点来描述一个平面时，等式（7）又被写成这样：<br>　　<br>　　这时d = –n·p0。</p>
+<h3 id="D3DX平面"><a href="#D3DX平面" class="headerlink" title="D3DX平面"></a>D3DX平面</h3><p>在代码中描述一个平面：仅仅需要一个法向量n和常数d就可以了。因此我们就使用一个4D向量（我们记录成(n, d)）来实现它。D3DX库中用如下的结构来定义一个平面：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">D3DXPLANE</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    D3DXPLANE() &#123;&#125;</span><br><span class="line">    D3DXPLANE( CONST FLOAT* );</span><br><span class="line">    D3DXPLANE( CONST D3DXFLOAT16* );</span><br><span class="line">    D3DXPLANE( FLOAT a, FLOAT b, FLOAT c, FLOAT d );</span><br><span class="line">    <span class="comment">// casting</span></span><br><span class="line">    <span class="keyword">operator</span> FLOAT* ();</span><br><span class="line">    <span class="keyword">operator</span> CONST FLOAT* () <span class="keyword">const</span>;</span><br><span class="line">    <span class="comment">// unary operators</span></span><br><span class="line">    D3DXPLANE <span class="keyword">operator</span> + () <span class="keyword">const</span>;</span><br><span class="line">    D3DXPLANE <span class="keyword">operator</span> - () <span class="keyword">const</span>;</span><br><span class="line">    <span class="comment">// binary operators</span></span><br><span class="line">    BOOL <span class="keyword">operator</span> == ( CONST D3DXPLANE&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    BOOL <span class="keyword">operator</span> != ( CONST D3DXPLANE&amp; ) <span class="keyword">const</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">//__cplusplus</span></span></span><br><span class="line">    FLOAT a, b, c, d;</span><br><span class="line">&#125; D3DXPLANE, *LPD3DXPLANE;</span><br></pre></td></tr></table></figure></p>
+<p>对照等式（8）可知：这里a, b和c是平面法向量n的成员，d就是那个常数。</p>
+<h3 id="点和平面的空间关系"><a href="#点和平面的空间关系" class="headerlink" title="点和平面的空间关系"></a>点和平面的空间关系</h3><p>我们判定点和平面的关系主要是利用等式(8)来实现。例如，假设平面(n, d)，我们能判定点p和平面的关系：<br>    假如n·p + d = 0，那么点p与平面共面。<br>    假如n·p + d &gt;0，那么点p在平面的前面且在平面的正半空间里。<br>    假如n·p + d &lt;0，那么点p在平面的背面且在平面的负半空间里。</p>
+<p>下边的D3DX函数就是利用n·p + d 来判定点和平面的关系的函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FLOAT <span class="title">D3DXPlaneDotCoord</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXPLANE *pP, <span class="comment">// 平面</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXVECTOR3 *pV <span class="comment">// 点</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="comment">// 测试点相对于平面的位置</span></span><br><span class="line"><span class="function">D3DXPLANE <span class="title">p</span><span class="params">(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">3.0f</span>, <span class="number">5.0f</span>, <span class="number">2.0f</span>)</span></span>;</span><br><span class="line"><span class="keyword">float</span> x = D3DXPlaneDotCoord( &amp;p, &amp;v );</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( x approximately equals <span class="number">0.0f</span> ) <span class="comment">// v在平面.上</span></span><br><span class="line"><span class="keyword">if</span>( x &gt; <span class="number">0</span> ) <span class="comment">// v在正半空间</span></span><br><span class="line"><span class="keyword">if</span>( x &lt; <span class="number">0</span> ) <span class="comment">// v在负半空间</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="创建平面"><a href="#创建平面" class="headerlink" title="创建平面"></a>创建平面</h3><p>我们能通过两种方法创建平面。<br>第一种方法，直接用指定法线和点创建平面。假设法线n和在平面上的已知点p0,我们就能求出d：<br>$n \cdot P_0 + d = 0$<br>$n \cdot P_0 = -d$<br>$-n \cdot P_0 = d$<br>　　<br>D3DX库提供如下函数来完成创建平面的任务：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXPLANE *<span class="title">D3DXPlaneFromPointNormal</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXPLANE* pOut, <span class="comment">// Result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXVECTOR3* pPoint, <span class="comment">// Point on the plane.</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXVECTOR3* pNormal <span class="comment">// The normal of the plane.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>第二种方法，我们能通过在平面上的3个点创立一个平面。<br>假如有点p0, p1, p2，那么我们就能得到平面上的两个向量：<br>$u = p_1 - p_0$<br>$v = p_2 - p_0$<br>因此我们能通过把平面上的两个向量进行十字相乘得到平面的法线。回忆左手坐标系。<br>$n = u \times v$<br>那么–(n·p0) = d.<br>D3DX库提供如下函数来完成通过同一平面上的3个点确定一个平面：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXPLANE *<span class="title">D3DXPlaneFromPoints</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXPLANE* pOut, <span class="comment">// Result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXVECTOR3* pV1, <span class="comment">// Point 1 on the plane.</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXVECTOR3* pV2, <span class="comment">// Point 2 on the plane.</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXVECTOR3* pV3 <span class="comment">// Point 3 on the plane.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="标准化平面"><a href="#标准化平面" class="headerlink" title="标准化平面"></a>标准化平面</h3><p>有时我们可能想标准化一个平面的法向量，即标准化平面。初一想，好象我们只需象标准化其他向量一样标准化平面的法向量就可以了。但是回忆在等式n·p + d = 0中的d = –n·p0。我们明白法向量的长度将影响常数d。因此，假如我们标准化法向量，我们必须重新计算d.注意<br>${d \over ||n||} = -{n \over ||n||} \cdot P_0$<br>　　因此，我们有下边公式来标准化平面(n, d)的法向量：</p>
+<p>我们能用下面的D3DX函数来标准化一个平面：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXPLANE *<span class="title">D3DXPlaneNormalize</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXPLANE *pOut, <span class="comment">// Resulting normalized plane.</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXPLANE *pP <span class="comment">// Input plane.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>变换平面<br>我们能够通过如下处理来变换一个面（n, d），就象一个4D向量通过乘以它渴望得到变换的变换矩阵的逆矩阵一样来达到变换目的。注意平面的法向量必须首先被标准化。<br>我们能用下面的D3DX函数来完成操作：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXPLANE *<span class="title">D3DXPlaneTransform</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXPLANE *pOut, <span class="comment">// Result</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXPLANE *pP, <span class="comment">// Input plane.</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXMATRIX *pM <span class="comment">// Transformation matrix.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>示例代码：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX <span class="title">T</span><span class="params">(...)</span></span>; <span class="comment">// Init. T to a desired transformation.</span></span><br><span class="line">D3DXMATRIX inverseOfT;</span><br><span class="line">D3DXMATRIX inverseTransposeOfT;</span><br><span class="line">D3DXMatrixInverse( &amp;inverseOfT, <span class="number">0</span>, &amp;T );</span><br><span class="line">D3DXMatrixTranspose( &amp;inverseTransposeOfT, &amp;inverseOfT );</span><br><span class="line"><span class="function">D3DXPLANE <span class="title">p</span><span class="params">(...)</span></span>; <span class="comment">// Init. Plane.</span></span><br><span class="line">D3DXPlaneNormalize( &amp;p, &amp;p ); <span class="comment">// make sure normal is normalized.</span></span><br><span class="line">D3DXPlaneTransform( &amp;p, &amp;p, &amp;inverseTransposeOfT );</span><br></pre></td></tr></table></figure></p>
+<p>点到平面上最近的点<br>　　假如我们在空间中有一个点p并且想找到在平面( n, d)上的与p最接近一个点q。注意如果平面的法向量是单位长度，这将简化问题。</p>
+<p>图13<br>　　从图13我们能看出q = p + (–k_n)，k是有符号之分的从点p到平面的距离，也就是点p和q之间的有向距离。假如平面的法向量n是单位长度，那么n·p + d 就是从平面到点p有向距离.</p>
+<h3 id="射线"><a href="#射线" class="headerlink" title="射线"></a>射线</h3><p>　　一条射线能用一个起点和方向来描述。射线的参数方程是：<br>　　$p(t)=p_{0} + tu$<br>　　<img src="/2019/03/24/DirectX93DGame/14.jpg"><br>　　图14<br>　　p0 是射线的起点，u是射线的方向，t是参数。通过赋予不同的t值，我们能计算出在射线上不同的点。要描述一条射线，参数t范围就必须在[0, ∞)之间。实际上，假如我们让t∈(–∞, ∞),那么我们就能得到一条3维空间直线。</p>
+<h3 id="线-面相交"><a href="#线-面相交" class="headerlink" title="线/面相交"></a>线/面相交</h3><p>　　假设一条射线p(t) = p0 + tu 和 一个平面n·p + d = 0，我们想知道射线是否与平面相交，以及相交的交点信息（如果相交的话）。照这样做，我们把射线代入平面方程并且求满足平面方程的参数t，解答出来的参数就是相交的点。</p>
+<p>　　<br>　　假如t 不在[0, ∞)之间，那么射线与平面不相交。<br>　　假如t 在[0, ∞)之间，那么射线与平面相交。且把参数代入射线方程就能找到交点：
+　　</p>
+<h1 id="初始化Direct3D-Direct3D-Initialization"><a href="#初始化Direct3D-Direct3D-Initialization" class="headerlink" title="初始化Direct3D (Direct3D Initialization)"></a>初始化Direct3D (Direct3D Initialization)</h1><h2 id="Direct3D概述"><a href="#Direct3D概述" class="headerlink" title="Direct3D概述"></a>Direct3D概述</h2><p>　　Direct3D是一种底层图形API，它能让我们利用3D硬件加速来渲染3D世界。我们可以把Direct3D看作是应用程序和图形设备之间的中介。例如通知图形设备清空屏幕，应用程序将调用Direct3D的IDirect3DDevice9::Clear方法。图1.1显示了应用程序、Direct3D和图形设备之间的关系。<br>　　<img src="/2019/03/24/DirectX93DGame/11.jpg" title="图1.1"><br>　　图1.1中Direct3D所表示的是Direct3D中已定义的，供程序员使用的Direct3D接口和函数的集合。这些接口和函数代表了当前版本的Direct3D所支持的全部特性。注意：仅仅因为Direct3D支持某种特性，并不意味着你所使用的图形硬件（显卡）也能支持它。<br>　　如图1.1所示，在Direct3D和图形设备之间有一层中介——叫做硬件抽象层（HAL，Hardware Abstraction Layer）。Direct3D不能直接作用于图形设备，因为现在市面上的显卡种类实在是太多了并且每种显卡都有不同的性能和处理事件的方式。例如，两种不同的显卡实现清屏的方式也可能是不同的。因此，Direct3D要求设备制造商实现HAL。HAL是一组指示设备执行某种操作的特殊设备代码的集合。用这种方法，Direct3D避免了必须去了解某个设备的特殊细节，使它能够独立于硬件设备。<br>　　设备制造商在HAL中实现他们的产品所支持的所有特性。HAL将不会实现那些Direct3D支持但硬件产品不支持的特性。调用一个HAL中没有实现的Direct3D的函数将会出错，除非它是顶点处理操作，因为这个功能可以由软件模拟来实现。因此当使用某些仅由市面上少数显卡所支持的高级特性时，必须检测一下设备是否支持。（设备的功能将在1.3.8节中讲解）</p>
+<h3 id="REF设备"><a href="#REF设备" class="headerlink" title="REF设备"></a>REF设备</h3><p>　　你也许想把一些你的设备不支持的Direct3D函数写入程序。为了达到这个目的，Direct3D提供了REF设备,它用软件模拟了所有的Direct3D API。这允许你写并测试那些你的显卡不支持的Direct3D特性的代码。例如在本书的第四部分，某些人的显卡可能会不支持顶点和像素着色器。如果你的显卡不支持着色器，你仍然能够使用RE设备测试示例代码。懂得RE设备仅仅是为了发展，这是很重要的。它只会和DirectX SDK一起被装载，而不会发布给最终用户。 另外，RE设备实在是太慢了，除了测试以外它没有任何利用价值。</p>
+<h3 id="D3DDEVTYPE"><a href="#D3DDEVTYPE" class="headerlink" title="D3DDEVTYPE"></a>D3DDEVTYPE</h3><p>　　在代码中，我们用D3DDEVTYPE_HAL来定义HAL设备，它是D3DDEVTYPE枚举类型的一个成员。同样的，REF设备则由D3DDEVTYPE_REF来定义，它也属于D3DDEVTYPE枚举类型。记住这些类型很重要，因为在创建设备的时候我们需要指定我们将要使用的类型。</p>
+<h2 id="COM"><a href="#COM" class="headerlink" title="COM"></a>COM</h2><p>　　组件对象模型（COM, Component Object Model）是一种能使DirectX独立于编程语言和具有向下兼容性的技术。我们通常把COM对象作为一个接口，你可以把它当作达到某种目的的C++类来使用它。当使用C++写DirectX程序的时候，COM的大部分细节对我们来说是透明。但是有一件事，我们必须知道，那就是我们通过某个特殊的COM接口的函数或指针获得了另一个COM接口指针，而不是通过C++的新关键字来创建它。当我们使用完某个接口后，调用它的Release方法比直接Delete它更好。COM对象具有它们自己的内存管理。<br>　　对COM来说还有很多细节可以了解，但是掌握这些细节对于我们有效的使用DirectX不是必须的。<br>注意：COM接口都具有前缀大写字母“I”，例如表示一个表面的COM接口叫做IDirect3DSurface9。</p>
+<h2 id="一些准备工作"><a href="#一些准备工作" class="headerlink" title="一些准备工作"></a>一些准备工作</h2><p>　　Direct3D的初始化过程要求我们对图形学基础知识和Direct3D类型有一定了解。本节将介绍这些知识和类型，以确保下一节能把焦点集中在讨论Direct3D的初始化上。</p>
+<h3 id="表面"><a href="#表面" class="headerlink" title="表面"></a>表面</h3><p>　　表面是一个像素点阵，在Direct3D中主要用来存储2D图形数据。图1.2指明了表面的一些成分。由图可以看出表面数据就像一个矩阵，像素数据实际上存储在线性数组里面。<br>　　<img src="/2019/03/24/DirectX93DGame/1-2.jpg" title="图1.2"><br>表面的Width和Height是按像素计算的。Pitch以字节为单位。而且Pitch有可能比Width大且依赖于低层硬件，所以不能单纯的认为Pitch = Width * sizeof (pixelFormat)。<br>　　在代码中，我们可以使用IDirect3DSurface9接口来描述表面。这个接口提供若干方法来直接读写表面数据并且还有一个方法用来返回表面信息。IDirect3DSurface9中最重要的方法是：</p>
+<ul>
+<li>LockRect——使用这个方法，我们将获得一个指向表面内存的指针，然后，通过一系列指针运算，我们可以对表面上任一个像素点进行读、写操作。</li>
+<li>UnlockRect——当你调用了LockRect和完成了对表面内存的访问后，你必须调用这个方法给表面解锁。</li>
+<li>GetDesc——这个方法将通过填充D3DSURFACE_DESC结构来返回表面的描述信息。<br>最初锁定表面和改写每一像素看来稍微有点迷茫。下面的代码表示锁定表面并将每一像素染成红色：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 假定_surface是一个指向IDirect3DSurface9接口的指针</span></span><br><span class="line"><span class="comment">// 假定每个像素为：32-bit的像素格式</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得表面描述</span></span><br><span class="line">D3DSURFACE_DESC surfaceDesc;</span><br><span class="line">_surface-&gt;GetDesc(&amp;surfaceDesc);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得被锁定表面的像素数据的指针</span></span><br><span class="line">D3DLOCKED_RECT lockedRect;</span><br><span class="line">_surface-&gt;LockRect(</span><br><span class="line">        &amp;lockedRect, <span class="comment">// 指向被锁定表面的数据</span></span><br><span class="line">        <span class="number">0</span>, <span class="comment">// 0表示锁定全部表面</span></span><br><span class="line">        <span class="number">0</span>); <span class="comment">// 0表示没有指定锁定标记</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 遍例表面上的每个像素，将它们设为红色</span></span><br><span class="line">DWORD* imageData = (DWORD*)lockedRect.pBits;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; surfaceDesc.Height; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; surfaceDesc.Width; j++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 取得纹理索引, 注意我们用pitch 除以4是因为pitch的单位是像素，</span></span><br><span class="line">        <span class="comment">// 并且一个DWORD类型占为4 bytes空间</span></span><br><span class="line">        <span class="keyword">int</span> index = i * lockedRect.Pitch / <span class="number">4</span> + j;</span><br><span class="line">        imageData[index] = <span class="number">0xffff0000</span>; <span class="comment">// 每个像素设为红色</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">_surface-&gt;UnlockRect();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>程序中D3DLOCKED_RECT结构的定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">D3DLOCKED_RECT</span> &#123;</span></span><br><span class="line">    INT Pitch; <span class="comment">// 表面深度</span></span><br><span class="line">    <span class="keyword">void</span> *pBits; <span class="comment">// 指向表面开始处的内存</span></span><br><span class="line">&#125; D3DLOCKED_RECT;</span><br></pre></td></tr></table></figure></p>
+<p>在这里有一些关于表面锁定代码的一些说明。32-bit像素格式这个设定很重要，我们把bits转换成DWORDs。这让我们能把每一个DWORD视为表示一个像素。</p>
+<h3 id="Multisampling"><a href="#Multisampling" class="headerlink" title="Multisampling"></a>Multisampling</h3><p>由于使用像素矩阵来表示图像，在显示时会出现锯齿状，Multisampling就是使其变得平滑的技术。它的一种最普通的用法即为——全屏抗锯齿。<br><img src="/2019/03/24/DirectX93DGame/1-3.jpg" title="图1.3">　　<br><code>D3DMULTISAMPLE_TYPE</code>枚举类型使我们可以指定全屏抗锯齿的质量等级：</p>
+<ul>
+<li><code>D3DMULTISAMPLE_NONE</code>——不使用全屏抗锯齿。</li>
+<li><code>D3DMULTISAMPLE_1_SAMPLE…D3DMULTISAPLE_16_SAMPLE</code>——设定1-16级的等级。</li>
+</ul>
+<p>本书的示例程序中没有使用全屏抗锯齿的功能，因为它大大的降低了程序运行速度。如果你实在很想使用它的话，要记住使用IDirect3D9::CheckDeviceMultisampleType来检测你的显卡是否支持。</p>
+<h3 id="像素格式"><a href="#像素格式" class="headerlink" title="像素格式"></a>像素格式</h3><p>当我们创建一个表面或纹理时，经常需要指定这些Direct3D资源的像素格式。它是由D3DFORMAT枚举类型的一个成员来定义的。这里例举一部分：</p>
+<ul>
+<li>D3DFMT_R8G8B8——表示一个24位像素，从左开始，8位分配给红色，8位分配给绿色，8位分配给蓝色。</li>
+<li>D3DFMT_X8R8G8B8——表示一个32位像素，从左开始，8位不用，8位分配给红色，8位分配给绿色，8位分配给蓝色。</li>
+<li>D3DFMT_A8R8G8B8——表示一个32位像素，从左开始，8位为ALPHA通道，8位分配给红色，8位分配给绿色，8位分配给蓝色。</li>
+<li>D3DFMT_A16B16G16R16F——表示一个64位浮点像素，从左开始，16位为ALPHA通道，16位分配给蓝色，16位分配给绿色，16位分配给红色。</li>
+<li>D3DFMT_A32B32G32R32F——表示一个128位浮点像素，从左开始，32位为ALPHA通道，32位分配给蓝色，32位分配给绿色，32位分配给红色。<br>想了解全部的像素格式请查看SDK文档中的D3DFORMAT部分。<br>注意：这前三种格式（D3DFMT_R8G8B8、D3DFMT_X8R8G8B8、D3DFMT_A8R8G8B8）是最常用并为大部分显卡所支持。但浮点像素格式或其它一些类型的支持并不是很广泛，在使用它们前请先检测你的显卡，看是否支持。</li>
+</ul>
+<h3 id="内存池"><a href="#内存池" class="headerlink" title="内存池"></a>内存池</h3><p>表面和其它一些Direct3D资源被放在多种内存池中。内存池的种类由D3DPOOL枚举类型的一个成员来指定。可用到的内存池有下列几种：</p>
+<ul>
+<li>D3DPOOL_DEFAULT——表示Direct3D将根据资源的类型和用途把它们放在最合适的地方。这有可能是显存、AGP内存或者系统内存中。值得注意的是，这种内存池中的资源必须要在IDirect3DDevice9::Reset被调用之前消毁掉，并且再次使用时必须重新初始化。</li>
+<li>D3DPOOL_MANAGED——资源将由Direct3D管理并且按设备的需要来指定放在显存还是放在AGP内存中。当应用程序访问和改变资源时它先把这些资源拷贝到系统内存中，当需要时Direct3D会自动把它们拷贝到显存里。</li>
+<li>D3DPOOL_SYSTEMMEM——指定资源放在系统内存中。</li>
+<li>D3DPOOL_SCRATCH——指定资源放在系统内存中，它与D3DPOOL_SYSTEMMEM不同之处在于使用这些资源不必受图形设备的限制。因此，参数使图形设备不能访问该内存池的资源，但资源可以相互拷贝。<br>1.3.5 交换链和页面切换<br>　　Direct3D通常创建2~3个表面组成一个集合，即为交换链，通常由IDirect3DSwapChain接口来表示。我们不必去了解它更详细的细节。我们也很少去管理它，通常Direct3D会自己去管理。所以我们只要大概的了解一下它就可以了。<br>　　交换链以及页面切换技巧被用在使两帧动画之间过度更平滑。图1.4展示的是一个有两个绘制表面的交换链。</li>
+</ul>
+<p>图1.4<br>   如图1.4，在Front Buffer中的表面将用来在屏幕上显示。显示器不能即时显示Front Buffer中表示的图像；通常情况下，它是每六十分之一秒刷新显示一次，即刷新率为60赫兹。应用程序的帧率经常与监视器的刷新率不同步（比如应用程序的渲染帧速度可能比显示器的刷新速度快）。然而，我们不能在显示器显示完成当前帧之前就更新有下一帧动画的Front Buffer内容，但是我们又不想让程序停止渲染而去等待显示器显示。因此，我们渲染另一个屏幕表面Back Buffer。当监视器将Front Buffer显示出来后，Front Buffer就被放到交换链的末端，即变成图中的Back Buffer，而Back Buffer就会变成交换链中的Front Buffer。这个过程就叫做presenting。图1.5表示了交换的整个过程。</p>
+<p>图1.5<br>　　因此，我们绘图代码的结构就会像下面这样：<br>1． Render to back buffer<br>2． Present the back buffer<br>3． Goto (1)<br>1.3.6 深度缓冲<br>　　深度缓冲也是一个表面，但它不是用来存储图像数据的，而是用来记录像素的深度信息。它将确定哪一个像素最后被绘制出来。所以，如果要绘制640<em>480分辨率的图片，那么就会有640</em>480个深度值。<br>　　<br>　　图1.6<br>图1.6展示了一个简单的场景，在这个场景里，一个物体把将另一个物体的一部分遮住了。为了使Direct3D能确定物体的前后关系并正确的绘制出来，我们使用一种深度缓冲，又叫做z-buffering的技术。<br>　　深度缓冲为每一个像素计算深度值，并进行深度测试。通过深度测试，我们可以比较出哪个像素离照相机更近，并将它画出来。这样就可以只绘制最靠近照相机的像素，被遮住的像素就不会被画出来。<br>　　深度缓冲的格式决定着深度测试的精确性。一个24位的深度缓冲比16位的深度缓冲更精确。通常，应用程序在24位深度缓冲下就能工作的很好，但是Direct3D也同时支持32位的深度缓冲。</p>
+<ul>
+<li>D3DFMT_D32——表示32位深度缓冲</li>
+<li>D3DFMT_D24S8——表示24位深度缓冲并保留8位模版缓冲（stencil buffer）</li>
+<li>D3DFMT_D24X8——表示24位深度缓冲</li>
+<li>D3DFMT_D24X4S4——表示24位深度缓冲并保留4位模版缓冲</li>
+<li>D3DFMT_D16——表示16位深度缓冲</li>
+</ul>
+<p>注意：关于模版缓冲的问题将在第八章详细说明。<br>1.3.7 顶点处理<br>　　顶点是3D图形学的基础，它能够通过两种不同的方法被处理，一种是软件方式（software vertex processing），一种是硬件方式（hardware vertex processing），前者总是被支持且永远可用，后者必须要显卡硬件支持顶点处理才可用。<br>　　使用硬件顶点处理总是首选，因为它比软件方式更快，而且不占用CPU资源，这意味CPU至少可以有更多的空闲时间进行别的计算。<br>注意：如果一块显卡支持硬件顶点处理的话，也就是说它也支持硬件几何转换和光源计算。<br>1.3.8 设备能力<br>　　Direct3D支持的每一项特性都对应于D3DCAPS9结构的一个数据成员。初始化一个D3DCAPS9实例应该以你的设备实际支持特性为基础。因此，在我们的应用程序里，我们能够通过检测D3DCAPS9结构中相对应的某一成员来检测设备是否支持这一特性。<br>　　下面将举例说明，假设我们想要检测显卡是否支持硬件顶点处理（换句话说，就是显卡是否支持硬件几何转换和光源计算）。通过查阅SDK中的D3DCAPS9结构，可以得知数据成员D3DCAPS9::DevCaps中的D3DDEVCAPS_HWTRANSFORMANDLIGHT位表示硬件是否支持硬件顶点处理即硬件几何变换和光源计算。程序如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> supportsHardwareVertexProcessing;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果为真，意味着硬件设备支持它</span></span><br><span class="line"><span class="keyword">if</span>( caps.DevCaps &amp; D3DDEVCAPS_HWTRANSFORMANDLIGHT )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 支持</span></span><br><span class="line">    supportsHardwareVertexProcessing = <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 不支持</span></span><br><span class="line">    hardwareSupportsVertexProcessing = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意：DevCaps即为“device capabilities”<br>　　　下一节将学习怎样根据硬件的实际情况来初始化D3DCAPS9<br>      我们建议你阅读SDK中关于D3DCAPS9的结构，它完整的列出了Direct3D支持的特性。<br>1.4 初始化Direct3D<br>   下面几点说明怎样初始化Direct3D。根据下边的步骤你能初始化Direct3D：<br>1． 获得一个IDirect3D9接口指针。这个接口用于获得物理设备的信息和创建一个IDirect3DDevice9接口，它是一个代表我们显示3D图形的物理设备的C++对象。<br>2． 检查设备能力（D3DCAPS9），搞清楚主显卡是否支持硬件顶点处理。我们需要知道假如它能支持，我们就能创建IDirect3DDevice9接口。<br>3． 初始化一个D3DPRESENT_PARAMETERS结构实例，这个结构包含了许多数据成员允许我们指定将要创建的IDirect3DDevice9接口的特性。<br>4． 创建一个基于已经初始化好的D3DPRESENT_PARAMETERS结构的IDirect3DDevice9对象。它是一个代表我们显示3D图形的物理设备的C++对象。<br>请注意，本书使用主显示设备绘制3D图形，如果你的机子只有一块显卡，那它就是主显示设备。如果你有多个显卡，那么你当前使用的显卡将会成为主显示设备（如：用来显示Windows桌面的显卡）。<br>1.4.1获得IDirect3D9接口<br>　　Direct3D的初始化是从获得一个IDirect3D9接口指针开始的。使用一个专门的Direct3D函数来完成这个工作是非常容易的，代码如下：<br>IDirect3D9<em> _d3d9;<br>_d3d9 = Direct3DCreate9(D3D_SDK_VERSION);<br>   Direct3DCreate9的唯一一个参数总是D3D_SDK_VERSION，这可以保证应用程序通过正确的头文件被生成。如果函数调用失败，那么它将返回一个空指针。<br>   IDirect3D9对象通常有两个用途：设备列举和创建IDirect3DDevice9对象。设备列举即为查明系统中显示设备的技术特性，显示模式、格式，以及其它每一种显卡各自支持的特性。创建代表物理设备的IDirect3DDevice9对象，我们需要利用这个物理设备的显示模式结构和格式来创建它。为了找到一个工作配置，我们必须使用IDirect3D9的列举方法。<br>　　然而，设备列举实在太慢了，为了使Direct3D运行得尽可能快，我们通常不使用这个测试，除了下一节所谈到的一项测试。为了安全跳过它，我们可以选择总是被所有显卡都支持的“安全”配置。<br>1.4.2 检测硬件顶点处理<br>　　当我们创建一个IDirect3DDevice9对象来表示主显示设备时，必须要设定其顶点处理的类型。如果可以的话，当然要选用硬件顶点处理，但是由于并非所有显卡都支持硬件顶点处理，因此我们必须首先检查显卡是否支持。<br>　　首先我们要根据主显示设备的技术特性来初始化D3DCAPS9实例。可以使用如下方法：<br>HRESULT IDirect3D9::GetDeviceCaps(<br>    UINT Adapter,<br>    D3DDEVTYPE DeviceType,<br>    D3DCAPS9 </em>pCaps<br>);</p>
+<ul>
+<li>Adapter——指定要获得哪个显示适配器的特性</li>
+<li>DeviceType——指定设备类型（硬件设备（D3DDEVTYPE_HAL），软件设备（D3DDEVTYPE_REF））</li>
+<li>PCaps——返回一个已初始化的D3DCAPS9结构</li>
+</ul>
+<p>　　然后，我们就可以象1.3.8部分那样检测显卡的能力了。下面就是代码片段：<br>// 填充主显示设备的能力（D3DCAPS9结构）<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">D3DCAPS9 caps;</span><br><span class="line">d3d9-&gt;GetDeviceCaps(</span><br><span class="line">    D3DADAPTER_DEFAULT, <span class="comment">// 主显示设备</span></span><br><span class="line">    deviceType, <span class="comment">// 设备类型，一般是D3DDEVTYPE_HAL.</span></span><br><span class="line">    &amp;caps); <span class="comment">// 返回填充后的D3DCAPS9 结构，包含主显示设备的能力</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 是否可以使用硬件顶点处理?</span></span><br><span class="line"><span class="keyword">int</span> vp = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">if</span>( caps.DevCaps &amp; D3DDEVCAPS_HWTRANSFORMANDLIGHT )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 是，支持硬件顶点处理</span></span><br><span class="line">    vp = D3DCREATE_HARDWARE_VERTEXPROCESSING;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 不，只能用软件顶点处理</span></span><br><span class="line">    vp = D3DCREATE_SOFTWARE_VERTEXPROCESSING;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>观察代码，我们使用变量vp来存储顶点处理类型。这是因为在稍后创建IDirect3DDevice9对象时要求指定其顶点处理的类型。<br>注意：标识符D3DCREATE_HARDWARE_VERTEXPROCESSING和D3DCREATE_SOFTWARE_VERTEXPROCESSING是预定义的值，它们分别代表硬件顶点处理和软件顶点处理。</p>
+<p>技巧：若我们开发有一些新的，高级特性的程序，在使用前我们总是先检查硬件是否支持这些特性。<br>注意：如果一个应用程序在你的机子上不能运行，说明它用到的一些特性可能你的显卡并不支持，可以试试把设备类型换成REF。<br>1.4.3 填充D3DPRESENT_PARAMETERS结构<br>初始化过程的下一步是填充一个D3DPRESENT_PARAMETERS结构的实例。这个结构用于设定我们将要创建的IDirect3DDevice9对象的一些特性，它的定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">D3DPRESENT_PARAMETERS_</span> &#123;</span></span><br><span class="line">    UINT BackBufferWidth;</span><br><span class="line">    UINT BackBufferHeight;</span><br><span class="line">    D3DFORMAT BackBufferFormat;</span><br><span class="line">    UINT BackBufferCount;</span><br><span class="line">    D3DMULTISAMPLE_TYPE MultiSampleType;</span><br><span class="line">    DWORD MultiSampleQuality;</span><br><span class="line">    D3DSWAPEFFECT SwapEffect;</span><br><span class="line">    HWND hDeviceWindow;</span><br><span class="line">    BOOL Windowed;</span><br><span class="line">    BOOL EnableAutoDepthStencil;</span><br><span class="line">    D3DFORMAT AutoDepthStencilFormat;</span><br><span class="line">    DWORD Flags;</span><br><span class="line">    UINT FullScreen_RefreshRateInHz;</span><br><span class="line">    UINT PresentationInterval;</span><br><span class="line">&#125; D3DPRESENT_PARAMETERS;</span><br></pre></td></tr></table></figure></p>
+<p>下面介绍其比较重要的数据成员，至于更详细的信息，请查阅SDK：<br>BackBufferWidth——后备缓冲表面的宽度（以像素为单位）<br>BackBufferHeight——后备缓冲表面的高度（以像素为单位）<br>BackBufferFormat——后备缓冲表面的像素格式（如：32位像素格式为D3DFMT——A8R8G8B8）<br>BackBufferCount——后备缓冲表面的数量，通常设为“1”，即只有一个后备表面<br>MultiSampleType——全屏抗锯齿的类型，详情请看SDK<br>MultiSampleQuality——全屏抗锯齿的质量等级，详情看SDK<br>SwapEffect——指定表面在交换链中是如何被交换的，取D3DSWAPEFFECT枚举类型中的一个成员。其中D3DSWAPEFFECT_DISCARD是最有效的<br>hDeviceWindow——与设备相关的窗口句柄，你想在哪个窗口绘制就写那个窗口的句柄<br>Windowed——BOOL型，设为true则为窗口模式，false则为全屏模式<br>EnableAutoDepthStencil——设为true，D3D将自动创建深度/模版缓冲<br>AutoDepthStencilFormat——深度/模版缓冲的格式<br>Flags——一些附加特性，设为0或D3DPRESENTFLAG类型的一个成员。下列两个最常用的标志<br>全部的标志请查阅SDK：<br>　　D3DPRESENTFLAG_LOCKABLE_BACKBUFFER——设定后备表面能够被锁定，这会降低应用程序的性能<br>　　D3DPRESENTFLAG_DISCARD_DEPTHSTENCIL——深度/模版缓冲在调用IDirect3DDevice9::present方法后将被删除，这有利于提升程序性能<br>FullScreen_RefreshRateInHz——刷新率，设定D3DPRESENT_RATE_DEFAULT使用默认刷新率<br>PresentationInterval——属于D3DPRESENT成员，又有两个常用标志，其余请查SDK：<br>         D3DPRESENT_INTERVAL_IMMEDIATE——立即交换<br>         D3DPRESENT_INTERVAL_DEFAULT——D3D选择交换速度，通常等于刷新率<br>填充示例如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">D3DPRESENT_PARAMETERS d3dpp;</span><br><span class="line">d3dpp.BackBufferWidth = <span class="number">800</span>;</span><br><span class="line">d3dpp.BackBufferHeight = <span class="number">600</span>;</span><br><span class="line">d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8; <span class="comment">//像素格式</span></span><br><span class="line">d3dpp.BackBufferCount = <span class="number">1</span>;</span><br><span class="line">d3dpp.MultiSampleType = D3DMULTISAMPLE_NONE;</span><br><span class="line">d3dpp.MultiSampleQuality = <span class="number">0</span>;</span><br><span class="line">d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;</span><br><span class="line">d3dpp.hDeviceWindow = hwnd;</span><br><span class="line">d3dpp.Windowed = <span class="literal">false</span>; <span class="comment">// fullscreen</span></span><br><span class="line">d3dpp.EnableAutoDepthStencil = <span class="literal">true</span>;</span><br><span class="line">d3dpp.AutoDepthStencilFormat = D3DFMT_D24S8; <span class="comment">// depth format</span></span><br><span class="line">d3dpp.Flags = <span class="number">0</span>;</span><br><span class="line">d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;</span><br><span class="line">d3dpp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-4-4-创建IDirect3DDevice9对象"><a href="#1-4-4-创建IDirect3DDevice9对象" class="headerlink" title="1.4.4 创建IDirect3DDevice9对象"></a>1.4.4 创建IDirect3DDevice9对象</h3><p>　　在填充完了D3DPRESENT_PARAMETERS结构后，我们就可以用下面的方法创建一个IDirect3DDevice9对象了：<br>HRESULT IDirect3D9::CreateDevice(<br>    UINT Adapter,<br>    D3DDEVTYPE DeviceType,<br>    HWND hFocusWindow,<br>    DWORD BehaviorFlags,<br>    D3DPRESENT_PARAMETERS <em>pPresentationParameters,<br>    IDirect3DDevice9*</em> ppReturnedDeviceInterface<br>);</p>
+<ul>
+<li>Adapter——指定对象要表示的物理显示设备</li>
+<li>DeviceType——设备类型，前面说过</li>
+<li>hFocusWindow——同我们在前面d3dpp.hDeviceWindow的相同</li>
+<li>BehaviorFlags——设定为D3DCREATE_SOFTWARE_VERTEXPROCESSING或者D3DCREATE_HARDWARE_VERTEXPROCESSING</li>
+<li>pPresentationParameters——指定一个已经初始化好的D3DPRESENT_PARAMETERS实例</li>
+<li>ppReturnedDeviceInterface——返回创建的设备<br>例子：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">IDirect3DDevice9* device = <span class="number">0</span>;</span><br><span class="line">hr = d3d9-&gt;CreateDevice(</span><br><span class="line">    D3DADAPTER_DEFAULT, <span class="comment">// primary adapter</span></span><br><span class="line">    D3DDEVTYPE_HAL, <span class="comment">// device type</span></span><br><span class="line">    hwnd, <span class="comment">// window associated with device</span></span><br><span class="line">    D3DCREATE_HARDWARE_VERTEXPROCESSING, <span class="comment">// vertex processing type</span></span><br><span class="line">    &amp;d3dpp, <span class="comment">// present parameters</span></span><br><span class="line">    &amp;device); <span class="comment">// returned created device</span></span><br><span class="line"><span class="keyword">if</span>( FAILED(hr) )</span><br><span class="line">&#123;</span><br><span class="line">    ::MessageBox(<span class="number">0</span>, <span class="string">"CreateDevice() - FAILED"</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>1.5 初始化Direct3D实例<br>在本章的例程中，初始化了一个Direct3D应用程序并用黑色填充显示窗口（如图1.7）。</p>
+<p>图1.7<br>   本书所有的应用程序都包含了d3dUtility.h和d3dUtility.cpp这两个文件，它们所包含的函数实现了所有Direct3D应用程序都要去做的一些常见的功能。例如：创建一个窗口、初始化Direct3D、进入程序的消息循环等。将这些功能封装在函数中能使示例程序更加突出该章的主题。另外，在我们学习本书的过程中还会在这两个文件中加上一些通用的代码。</p>
+<h2 id="1-5-1-d3dUtility-h-cpp"><a href="#1-5-1-d3dUtility-h-cpp" class="headerlink" title="1.5.1 d3dUtility.h/cpp"></a>1.5.1 d3dUtility.h/cpp</h2><p>　　在开始本章的例程之前，让我们先熟悉一下d3dUtility.h/cpp所提供的函数。d3dUtility.h如下：<br>// 包含主要的Direct3DX头文件，这将包含我们需要的另外的Direct3D头文件<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;d3dx9.h&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> d3d</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">InitD3D</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">		HINSTANCE hInstance, <span class="comment">// [in] 应用程序实例</span></span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="comment">// [in] Back buffer尺寸</span></span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">bool</span> windowed, <span class="comment">// [in] 是否全屏</span></span></span></span><br><span class="line"><span class="function"><span class="params">		D3DDEVTYPE deviceType, <span class="comment">// [in] HAL 或 REF</span></span></span></span><br><span class="line"><span class="function"><span class="params">		IDirect3DDevice9** device)</span></span>; <span class="comment">// [out] 创建的设备</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">EnterMsgLoop</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">		<span class="keyword">bool</span> (*ptr_display)(<span class="keyword">float</span> timeDelta))</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">LRESULT CALLBACK <span class="title">WndProc</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">		HWND hwnd,</span></span></span><br><span class="line"><span class="function"><span class="params">		UINT msg,</span></span></span><br><span class="line"><span class="function"><span class="params">		WPARAM wParam,</span></span></span><br><span class="line"><span class="function"><span class="params">		LPARAM lParam)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">void</span> <span class="title">Release</span>(<span class="title">T</span> <span class="title">t</span>)</span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">        <span class="keyword">if</span>( t )</span><br><span class="line">        &#123;</span><br><span class="line">            t-&gt;Release();</span><br><span class="line">            t = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt; <span class="title">void</span> <span class="title">Delete</span>(<span class="title">T</span> <span class="title">t</span>)</span></span><br><span class="line"><span class="class">	&#123;</span></span><br><span class="line">        <span class="keyword">if</span>( t )</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span> t;</span><br><span class="line">            t = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>InitD3D——初始化一个应用程序主窗口并进行Direct3D的初始化。如果成功，则输出IDirect3DDevice9接口指针。从它的参数我们可以发现，我们能够设置窗口的大小和以窗口模式运行还是全屏模式运行。要知道它实现的细节，请看示例代码。<br>EnterMsgLoop——这个函数封装了应用程序的消息循环。它需要输入一个显示函数的函数指针，显示函数为程序中绘制图形的代码块，这样做是为了使显示函数能够在空闲的时候被调用并显示场景，它的实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> d3d::EnterMsgLoop( <span class="keyword">bool</span> (*ptr_display)(<span class="keyword">float</span> timeDelta) )</span><br><span class="line">&#123;</span><br><span class="line">    MSG msg;</span><br><span class="line">    ::ZeroMemory(&amp;msg, <span class="keyword">sizeof</span>(MSG));</span><br><span class="line">　　<span class="keyword">static</span> <span class="keyword">float</span> lastTime = (<span class="keyword">float</span>)timeGetTime();</span><br><span class="line"> </span><br><span class="line">   	<span class="keyword">while</span>(msg.message != WM_QUIT)</span><br><span class="line">   	&#123;</span><br><span class="line">        <span class="keyword">if</span>(::PeekMessage(&amp;msg, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, PM_REMOVE))</span><br><span class="line">        &#123;</span><br><span class="line">            ::TranslateMessage(&amp;msg);</span><br><span class="line">            ::DispatchMessage(&amp;msg);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">             <span class="keyword">float</span> currTime = (<span class="keyword">float</span>)timeGetTime();</span><br><span class="line">             <span class="keyword">float</span> timeDelta = (currTime - lastTime)*<span class="number">0.001f</span>;</span><br><span class="line">             ptr_display(timeDelta); <span class="comment">// call display function</span></span><br><span class="line">             lastTime = currTime;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> msg.wParam;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>与“time”有关的代码用于计算每次调用显示函数的时间间隔，即是每帧的时间。<br>Release——这个模版函数能方便的释放COM接口并将它们的值设为NULL<br>Delete——这个模版函数能方便的删除一个对象并将指向其的指针设为NULL<br>WndProc——应用程序主窗口的回调函数<br>1.5.2 实例框架<br>　　通过实例框架，我们形成了一种通用的方法去构造本书的示例程序。每一个例程都含有三个函数的实现，当然这不包括回调函数和WinMain主函数。这三个函数用特定的代码实现特定的功能。这三个函数是：</p>
+<ul>
+<li>bool Setup()——在这个函数里，我们将准备一切该程序需要用到的东西，包括资源的分配，检查设备能力，设置应用程序的状态</li>
+<li>void Clearup()——这个函数将释放Setup()中分配的资源，如分配的内存。</li>
+<li>bool Display(float timeDelta)——这个函数包含所有与我们绘图和显示有关的代码。参数timeDelta为每一帧的间隔时间，用来控制每秒的帧数。<br>1.5.3 D3D Init实例<br>　　这个示例程序将创建并初始化一个Direct3D应用程序，并用黑色填充屏幕。注意，我们使用了通用函数简化了初始化过程。<br>　　首先，我们要包含d3dUtility.h头文件，并为设备声明一个全局变量：<h1 id="include-“d3dUtility-h”"><a href="#include-“d3dUtility-h”" class="headerlink" title="include “d3dUtility.h”"></a>include “d3dUtility.h”</h1></li>
+</ul>
+<p>IDirect3DDevice9* Device = 0;<br>　　然后实现我们的框架函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Setup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Cleanup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　在这个程序中，我们不需要使用任何资源或触发任何事件，所以这两个函数都为空。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Display</span><span class="params">(<span class="keyword">float</span> timeDelta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( Device )</span><br><span class="line">    &#123;</span><br><span class="line">　　　　Device-&gt;Clear(<span class="number">0</span>, <span class="number">0</span>, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, </span><br><span class="line">　　　　　<span class="number">0x00000000</span>, <span class="number">1.0f</span>, <span class="number">0</span>);</span><br><span class="line">        Device-&gt;Present(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>); <span class="comment">// 页面切换</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>　　Display方法调用了IDirect3DDevice::Clear方法，分别用黑色和1.0填充后备表面和深度/模版缓冲。如果应用程序不停止的话，我们会一直执行这个操作。IDirect3DDevice::Clear声明如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">HRESULT IDirect3DDevice9::Clear(</span><br><span class="line">    DWORD Count,</span><br><span class="line">    <span class="keyword">const</span> D3DRECT* pRects,</span><br><span class="line">    DWORD Flags,</span><br><span class="line">    D3DCOLOR Color,</span><br><span class="line">    <span class="keyword">float</span> Z,</span><br><span class="line">    DWORD Stencil</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>Count——pRects组中的矩形的个数</li>
+<li>pRects——将要清除的屏幕矩形的数组，这使我们可以清除屏幕的某一部分</li>
+<li>Flags——指定在哪些表面上执行清除表面的操作<pre><code>   D3DCLEAR_TARGET——目的表面，通常为后备表面
+   D3DCLEAR_ZBUFFER——深度缓冲
+   D3DCLEAR_STENCIL——模版缓冲
+</code></pre></li>
+<li>Color——使用什么颜色填充清除的表面</li>
+<li>Z——设置深度缓冲的值</li>
+<li>Stencil——设置模版缓冲的值<br> 屏幕被填充后，要调用IDirecte3DDevice9::Present方法进行后备表面的交换。</li>
+</ul>
+<p>Windows 回调函数为一组事件集，即，我们可按ESC键让程序退出。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">LRESULT CALLBACK d3d::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">switch</span>( msg )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> WM_DESTROY:</span><br><span class="line">        ::PostQuitMessage(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> WM_KEYDOWN:</span><br><span class="line">        <span class="keyword">if</span>( wParam == VK_ESCAPE )</span><br><span class="line">            ::DestroyWindow(hwnd);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ::DefWindowProc(hwnd, msg, wParam, lParam);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后，WinMain按如下步骤运行：</p>
+<ol>
+<li>初始化主显示窗口和Direct3D</li>
+<li>调用Setup进行程序的准备工作</li>
+<li>使用Display函数作为参数进入消息循环</li>
+<li>清除应用程序最后释放IDirecte3DDevice9对象<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> WINAPI <span class="title">WinMain</span><span class="params">(HINSTANCE hinstance,	HINSTANCE prevInstance,	PSTR cmdLine,<span class="keyword">int</span> showCmd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!d3d::InitD3D(hinstance,	<span class="number">800</span>, <span class="number">600</span>, <span class="literal">true</span>, D3DDEVTYPE_HAL, &amp;Device))</span><br><span class="line">    &#123;</span><br><span class="line">        ::MessageBox(<span class="number">0</span>, <span class="string">"InitD3D() - FAILED"</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!Setup())</span><br><span class="line">    &#123;</span><br><span class="line">        ::MessageBox(<span class="number">0</span>, <span class="string">"Setup() - FAILED"</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    d3d::EnterMsgLoop( Display );</span><br><span class="line"></span><br><span class="line">    Cleanup();</span><br><span class="line"></span><br><span class="line">    Device-&gt;Release();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>就像你所看到的，我们的例程的模板结构是相当简洁的：有效的操作窗口函数、 Direct3D的初始化过程。这本书中的大部分程序，都是通过执行Setup, Cleanup, 和Display这三个函数来实现。</p>
+<p>注意：不要忘了在你的工程中加入d3d9.lib、d3dx9.lib、winmm.lib 这三个库！</p>
+<p>第二章 渲染管线<br>(The Rendering Pipeline)<br>　　本章的主题是渲染管线。它是用来创建为3D世界进行几何描述的2D图形并设定一个虚拟照相机确定这个世界中哪一部分将被透视投影到屏幕上。<br>　　<br>　　图2.1<br>目标</p>
+<ul>
+<li>要弄清楚我们怎样在Direct3D中表示3D物体</li>
+<li>学习怎样模拟虚拟照相机</li>
+<li>弄懂渲染管线——这个过程是用几何学来表现3D场景和用它来产生2D图象。<br>2.1表现模型<br>　　一个场景是多个物体或模型的集合。一个物体可以用三角形网格（triangle mesh）来近似表示，如图2.2所示。由三角形网格建立一个物体，我们称之为建模。3D世界中最基本的图元就是三角形，但是Direct3D也支持点图元和线图元但我们都不常用到。不过在学到第14章的粒子系统的时候，将会用到点图元。</li>
+</ul>
+<p>图2.2<br>   一个多边形的两边相交的点叫做顶点。为了描述一个三角形，我们通常指定三个点的位置来对应三角形的三个顶点（如图2.3），这样我们就能够很明确的表示出这个三角形了。</p>
+<p>图2.3<br>2.1.1 顶点格式<br>　　我们以前定义的点在数学上来说是正确的，但是当我们在Direct3D环境中使用它的时候就会觉得很不完善。这是因为在Direct3D中的顶点包含了许多附加的属性，而不再单纯的只有空间位置的信息了。例如：一个顶点可以有颜色和法线向量属性（这两个属性分别在第四章和第五章介绍）。Direct3D让我们可以灵活的构造自己的顶点格式。换句话说，我们可以自己定义顶点的成员。<br>　　为了创建一个自定义的顶点结构，我们首先要创建一个包含能存放我们选择的顶点数据的结构。例如，下面我们举出两种不同顶点数据类型的例子，一种包含了位置和颜色信息，第二种则包含了位置，法线向量，纹理坐标信息（“纹理”见第六章）。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ColorVertex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">float</span> _x, _y, _z; <span class="comment">// 位置</span></span><br><span class="line">    DWORD _color; <span class="comment">// 颜色</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">NormalTexVertex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">float</span> _x, _y, _z; <span class="comment">// 位置</span></span><br><span class="line">    <span class="keyword">float</span> _nx, _ny, _nz; <span class="comment">// 法线向量</span></span><br><span class="line">    <span class="keyword">float</span> _u, _v; <span class="comment">// 纹理坐标</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>   一旦我们有了完整的顶点格式，我们就要使用灵活顶点格式（FVF）的组合标志来描述它。例如第一个顶点结构，我们要使用如下的顶点格式：</p>
+<h1 id="define-FVF-COLOR-D3DFVF-XYZ-D3DFVF-DIFFUSE"><a href="#define-FVF-COLOR-D3DFVF-XYZ-D3DFVF-DIFFUSE" class="headerlink" title="define FVF_COLOR (D3DFVF_XYZ | D3DFVF_DIFFUSE)"></a>define FVF_COLOR (D3DFVF_XYZ | D3DFVF_DIFFUSE)</h1><p>   上面的顶点结构表明它包含位置和颜色属性。</p>
+<p>   而第二种结构则要使用：</p>
+<h1 id="define-FVF-NORMAL-TEX-D3DFVF-XYZ-D3DFVF-NORMAL-D3DFVF-TEX1"><a href="#define-FVF-NORMAL-TEX-D3DFVF-XYZ-D3DFVF-NORMAL-D3DFVF-TEX1" class="headerlink" title="define FVF_NORMAL_TEX (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1)"></a>define FVF_NORMAL_TEX (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1)</h1><p>   上面的顶点结构表明它包含了位置，法线向量，纹理坐标的属性（这些常量是D3D内置的）。</p>
+<p>　　有一点要注意，你的标志的顺序必须要和你的顶点结构的顺序一一对应。如果想知道所有的D3DFVF标志，请查阅SDK文档。<br>2.1.2 三角形<br>　　三角形是构建3D物体的基本图形。为了构造物体，我们创建了三角形列表（triangle list）来描述物体的形状和轮廓。三角形列包含了我们将要画的每一个三角形的数据信息。例如为了构造一个矩形，我们把它分成两个三角形，如图2.4所示，最后指定每个三角形的顶点。<br>　　<br>　　图2.4<br>Vertex rect[6] = {v0, v1, v2, // 三角形0<br>                v0, v2, v3}; // 三角形1<br>注意：指定三角形顶点的顺序是很重要的，将会按一定顺序环绕排列，这会在2.3.4节学习相关的内容。<br>2.1.3 索引<br>　　3D物体中的三角形经常会有许多共用顶点。如图2.4所表示的矩形。虽然现在仅有两个点被重复使用，但是当要表现一个更精细更复杂的模型的时候，重复的顶点数将会变得很大。例如图2.5所示的立方体，仅有八个顶点，但是当用三角形列表示它的时候，所有的点都被重复使用。</p>
+<p>图2.5<br>　　为了解决这个问题，我们引入索引（indices）这个概念。它的工作方式是：我们创建一个顶点列表和一个索引列表（index list）。顶点列表包含所有不重复的顶点，索引列中则用顶点列中定义的值来表示每一个三角形的构造方式。回到那个矩形的示例上来，它的顶点列表的构造方式如下：<br>Vertex vertexList[4] = {v0, v1, v2, v3};</p>
+<p>   索引列表则定义顶点列中的顶点是如何构造这两个三角形的：<br>WORD indexList[6] = {0, 1, 2, //三角形0<br>                0, 2, 3}; //三角形1<br>   也就是说，用顶点列表中的0（vertexList[0]）、1（vertexList[1]）和2（vertexList[2]）顶点构成三角形0；用顶点列表中的0（vertexList[0]）、2（vertexList[2]）和3（vertexList[3]）顶点构成三角形1。</p>
+<h2 id="2-2虚拟照相机"><a href="#2-2虚拟照相机" class="headerlink" title="2.2虚拟照相机"></a>2.2虚拟照相机</h2><p>　　照相机确定3D世界中的哪部分是可见的，因而需要将哪部分转换为2D图形。在3D世界中照相机被放置和定向，并且定义其可视体，图2.6展示了我们的照相机模型。<br>　　<img src="/2019/03/24/DirectX93DGame/2.6.png"><br>　　图2.6<br>　　可视体是由可视角度和前裁剪面（Near Plane）与后裁剪面（Far Plane）定义的一个平截头体。之所以要选择平截头体构造可视体，是因为我们的显示器都是矩形的。在可视体中不能被看见的物体都会被删除，删除这种数据的过程就叫做“裁剪”。<br>　　投影窗口（Projection Window）是可视体内的3D几何图形投影生成的用来显示3D场景的2D图像的2D区域。重要的是要知道，我们使用min=(-1,-1)和max=(1,1)来定义投影窗口的大小。<br>　　为了简化本书接下来的部分绘制，我们使前裁剪面与投影窗口在同一平面上。并且，注意Direct3D中定义的投影平面（即投影窗口所在的平面）是Z = 1的平面。</p>
+<h2 id="2-3-渲染管线"><a href="#2-3-渲染管线" class="headerlink" title="2.3 渲染管线"></a>2.3 渲染管线</h2><p>一旦我们描述几何学上的3D场景和设置了虚拟照相机，我们要把这个场景转换成2D图象显示在显示器上。这一系列必须完成的操作就叫做渲染管线。图2.7展示了一个简化的渲染管线，随后将详细解释图中的每一部分。<br>　　<img src="/2019/03/24/DirectX93DGame/2.7.png"><br>　　图2.7<br>渲染管线中的许多级都是从一个坐标系到另一个坐标的几何变换。这些变换都通过矩阵变换来实现。Direct3D为我们进行变换计算并且如果显卡支持硬件变换的话那就更有利了。使用Direct3D进行矩阵变换，我们唯一要做的事就是提供从一个系统变换到另一个系统的变换矩阵就可以了。我们使用IDirect3DDevice9::SetTranform方法提供变换矩阵。它输入一个表示变换类型的参数和一个变换矩阵。如图2.7所示，为了进行一个从自身坐标系到世界坐标系的变换，我们可以这样写：<br><code>Device-&gt;SetTransform(D3DTS_WORLD, &amp;worldMatrix);</code></p>
+<h3 id="2-3-1自身坐标系（Local-Space）"><a href="#2-3-1自身坐标系（Local-Space）" class="headerlink" title="2.3.1自身坐标系（Local Space）"></a>2.3.1自身坐标系（Local Space）</h3><p>　自身坐标系又叫做建模空间，这是我们定义物体的三角形列的坐标系。自身坐标系简化了建模的过程。在物体自己的坐标系中建模比在世界坐标系中直接建模更容易。例如，在自身坐标系中建模不像在世界坐标系中要考虑本物体相对于其他物体的位置、大小、方向关系。<br>　　<img src="/2019/03/24/DirectX93DGame/2.8.png"><br>　　图2.8<br>2.3.2世界坐标系（World Space）<br>　　一旦我们构造了各种模型，它们都在自己的自身坐标系中，但是我们需要把它们都放到同一个世界坐标系中。物体从自身坐标系到世界坐标系中的换叫做世界变换。世界变换通常是用平移、旋转、缩放操作来设置模型在世界坐标系中的位置、大小、方向。世界变换就是通过各物体在世界坐标系中的位置、大小和方向等相互之间的关系来建立所有物体。<br>　　<br>　　图2.9<br>   世界变换由一个矩阵表示，并且在Direct3D中调用IDirect3DDevice9::SetTransform方法设置它，记住将转换类型设为D3DTS_WORLD。例如我们要在世界坐标系中放置一个立方体定位在（-3，2，6）和一个球体定位在（5，0，-2），我们可以这样写程序：<br>//创建立方体的世界矩阵（一个平移矩阵）<br>D3DXMATRIX cubeWorldMatrix;<br>D3DXMatrixTranslation(&amp;cubeWorldMatrix, -3.0f, 2.0f, 6.0f);</p>
+<p>//创建球体的世界矩阵（一个平移矩阵）<br>D3DXMATRIX sphereWorldMatrix;<br>D3DXMatrixTranslation(&amp;sphereWorldMatrix, 5.0f, 0.0f, -2.0f);</p>
+<p>// 变换立方体，然后绘制它<br>Device-&gt;SetTransform(D3DTS_WORLD, &amp;cubeWorldMatrix);<br>drawCube(); // draw the cube</p>
+<p>// 因为球体使用一个不同的世界变换，我们必须更改世界矩阵为球体的～，<br>// 如果不更改，球体将绘制在上一个世界矩阵的位置上（立方体的世界矩阵）<br>Device-&gt;SetTransform(D3DTS_WORLD, &amp;sphereWorldMatrix);<br>drawSphere(); // 绘制球体<br>   这是个非常简单的实例，没有用到矩阵的旋转和缩放。但是一般很多物体都需要进行这些变换，不过这个例子也还是展示了世界变换是怎样进行的。<br>2.3.3视图坐标系（View Space）<br>　　世界坐标系中的几何图与照相机是相对于世界坐标系而定义的，如图2.10所示。然而在世界坐标系中当照相机是任意放置和定向时，投影和其它一些操作会变得困难或低效。为了使事情变得更简单，我们将照相机平移变换到世界坐标系的源点并把它的方向旋转至朝向Z轴的正方向，当然，世界坐标系中的所有物体都将随着照相机的变换而做相同的变换。这个变换就叫做视图坐标系变换（view space transformation）。<br>　　<br>　　图2.10<br>   视图坐标的变换矩阵可以通过如下的D3DX函数计算得到：<br>D3DXMATRIX <em>D3DXMatrixLookAtLH(<br>    D3DXMATRIX</em> pOut, // 指向返回的视图矩阵<br>    CONST D3DXVECTOR3<em> pEye, // 照相机在世界坐标系的位置<br>    CONST D3DXVECTOR3</em> pAt, // 照相机在世界坐标系的目标点<br>    CONST D3DXVECTOR3* pUp // 世界坐标系的上方向(0, 1, 0)<br>);<br>   pEye参数指定照相机在世界坐标系中的位置，pAt参数指定照相机所观察的世界坐标系中的一个目标点，pUp参数指定3D世界中的上方向，通常设Y轴正方向为上方向，即取值为（0，1，0）。<br>　　例如：假设我们要把照相机放在点（5，3，-10），并且目标点为世界坐标系的中点（0，0，0），我们可以这样获得视图坐标系变换矩阵：<br>D3DXVECTOR3 position(5.0f, 3.0f, –10.0f);<br>D3DXVECTOR3 targetPoint(0.0f, 0.0f, 0.0f);<br>D3DXVECTOR3 worldUp(0.0f, 1.0f, 0.0f);</p>
+<p>D3DXMATRIX V;<br>D3DXMatrixLookAtLH(&amp;V, &amp;position, &amp;targetPoint, &amp;worldUp);<br>   视图坐标系变换也是通过IDirect3DDevice9::SetTransform来实现的，只是要将变换类型设为D3DTS_VIEW，如下所示：<br>Device-&gt;SetTransform(D3DTS_VIEW, &amp;V);<br>2.3.4背面拣选（Backface Culling）<br>　　一个多边形有两个表面，我们将一个标为正面，一个为背面。通常，后表面总是不可见的，这是因为场景中大多数物体是密封的。例如盒子、圆柱体、箱子、characters等，并且我们也不能把照相机放入物体的内部。因此照相机永不可能看到多边形的背面。这是很重要的，如果我们能看背面，那么背面拣选就不可能工作。<br>　　图2.11表示了一个物体在视图坐标系中的正面。一个多边形的边都是面向照相机叫正面多边形，而一个多边形的边都背对照相机叫背面多边形。<br>　　<br>　　图2.11<br>   由图2.11可知，正面多边形挡住了在它后面的背面多边形，Direct3D将通过拣选（即删除多余的处理过程）背面多边形来提高效率，这种方法就叫背面拣选。图2.12展示了背面拣选之后的多边形，从照相机的观察点来看，仍将绘制相同的场景到后备表面，那些被遮住的部分无论如何都永远不会被看见的。</p>
+<p>　　图2.12<br>   当然，为了完成这项工作，Direct3D需要知道哪个多边形是正面，哪个是背面。Direct3D中默认顶点以顺时针方向（在观察坐标系中）形成的三角形为正面，以逆时针方向形成的三角形为背面。<br>如果我们不想使用默认的拣选状态，我们可以通过改变D3DRS_CULLMODE来改变渲染状态：<br>Device-&gt;SetRenderState(D3DRS_CULLMODE, Value);<br>Value可以是如下一个值：</p>
+<ul>
+<li>D3DCULL_NONE——完全不使用背面拣选</li>
+<li>D3DCULL_CW——拣选顺时针方向环绕的三角形</li>
+<li>D3DCULL_CCW——拣选逆时针方向环绕的三角形，这是默认值。</li>
+</ul>
+<h3 id="2-3-5光源（Lighting）"><a href="#2-3-5光源（Lighting）" class="headerlink" title="2.3.5光源（Lighting）"></a>2.3.5光源（Lighting）</h3><p>　　光源定义在世界坐标系中然后被变换到视图坐标系中。视图坐标系中光源给物体施加的光照大大增加了场景中物体的真实性，至于光照的相关函数的细节将会在第五章学习。在本书的第四部分，我们将使用可编程管线实现自己的光照。</p>
+<h3 id="2-3-6裁剪（Clipping）"><a href="#2-3-6裁剪（Clipping）" class="headerlink" title="2.3.6裁剪（Clipping）"></a>2.3.6裁剪（Clipping）</h3><p>我们拣选那些超出了可视体范围的几何图形的过程就叫做裁剪。这会出现三种情况：</p>
+<ul>
+<li>完全包含——三角形完全在可视体内，这会保持不变，并进入下一级</li>
+<li>完全在外——三角形完全在可视体外部，这将被拣选</li>
+<li>部分在内（部分在外）——三角形一部分在可视体内，一部分在可视体外，则三角形将被分成两部分，可视体内的部分被保留，可视体之外的则被拣选</li>
+</ul>
+<p>图2.13展示了上面三种情况：<br><img src="/2019/03/24/DirectX93DGame/2.13.png"><br>　　图2.13</p>
+<h3 id="2-3-7投影（Projection）"><a href="#2-3-7投影（Projection）" class="headerlink" title="2.3.7投影（Projection）"></a>2.3.7投影（Projection）</h3><p>视图坐标系的主要任务就是将3D场景转化为2D图像表示。这种从n维转换成n-1维的过程就叫做投影。投影的方法有很多种，但是我们只对一种特殊的投影感兴趣，那就是透视投影。因为透视投影可以使离照相机越远的物体投影到屏幕上后就越小，这可以使我们把3D场景更真实的转化为2D图像。图2.14展示了一个3D空间中的点是如何通过透视投影到投影窗口上去的。</p>
+<p>　　图2.14<br>   投影变换的实质就是定义可视体，并将可视体内的几何图形投影到投影窗口上去。投影矩阵的计算太复杂了，这里我们不会给出推导过程，而是使用如下的Direct3D函数通过给出平截头体的参数来求出投影矩阵。</p>
+<p>　　图2.15<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixPerspectiveFovLH</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX* pOut, <span class="comment">// 返回的投影矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT fovY, <span class="comment">// 用弧度表示的视野角度vertical field of view angle in radians</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT Aspect, <span class="comment">// 宽高比</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT zn, <span class="comment">// 前裁剪面距离</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT zf <span class="comment">// 后裁剪面距离</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>　　（fovY定义镜头垂直观察范围，以弧度为单位。对于这个参数，下面是我的理解：如果定义为D3DX_PI/4（90度角），那么就是表示以摄像机的观察方向为平分线，上方45度角和下方45度角就是摄像机所能看到的垂直范围了。嗯，可以想象一下自己的眼睛，如果可以把自己眼睛的fovY值设为D3DX_PI/2（180度角），那么我们就可以不用抬头就看得见头顶的东西了。如果设为D3DX_PI的话。。。我先编译一下试试（building…）。哈哈，结果啥也看不见。很难想象如果自己能同时看到所有方向的物体，那么将是一个怎样的画面啊）<br>　　Aspect参数为投影平面的宽高比例值，由于最后都为转换到屏幕上，所以这个比例一般设为屏幕分辨率的宽和高的比值（见2.3.8节）。如果投影窗口是个正方形，而我们的显示屏一般都是长方形的，这样转换后就会引起拉伸变形。</p>
+<p>　　我们还是通过调用IDirect3DDevice9::SetTranform方法来进行投影变换，当然，要把第一个投影类型的参数设为D3DTS_PROJECTION。下面的例子基于一个90度视角、前裁剪面距离为1、后裁剪面距离为1000的平截头体创建投影矩阵：<br>D3DXMATRIX proj;<br>D3DXMatrixPerspectiveFovLH(<br>    &amp;proj, PI * 0.5f, (float)width / (float)height, 1.0, 1000.0f);<br>Device-&gt;SetTransform(D3DTS_PROJECTION, &amp;proj);<br>2.3.8视口变换（Viewport Transform）<br>　　视口变换主要是转换投影窗口到显示屏幕上。通常一个游戏的视口就是整个显示屏，但是当我们以窗口模式运行的时候，也有可能只占屏幕的一部分或在客户区内。视口矩形是由它所在窗口的坐标系来描述的，如图2.16。<br>　　<br>　　图2.16<br>　　在Direct3D中，视口矩形通过D3DVIEWPORT9结构来表示。它的定义如下：<br>typedef struct _D3DVIEWPORT9 {<br>    DWORD X;<br>    DWORD Y;<br>    DWORD Width;<br>    DWORD Height;<br>    DWORD MinZ;<br>    DWORD MaxZ;<br>} D3DVIEWPORT9;<br>   前四个参数定义了视口矩形与其所在窗口的关系。MinZ成员指定最小深度缓冲值，MaxZ指定最大深度缓冲值。Direct3D使用的深度缓冲的范围是0~1，所以如果不想做什么特殊效果的话，将它们分别设成相应的值就可以了。<br>　　一旦我们填充完D3DVIEWPORT9结构后，就可以如下设视口：<br>D3DVIEWPORT9 vp{ 0, 0, 640, 480, 0, 1 };<br>Device-&gt;SetViewport(&amp;vp);<br>这样，Direct3D就会自动为我们处理视口变换。现在还是给出视口变换矩阵作为参考：</p>
+<h3 id="光栅化（Rasterization）"><a href="#光栅化（Rasterization）" class="headerlink" title="光栅化（Rasterization）"></a>光栅化（Rasterization）</h3><p>在把三角形每个顶点转换到屏幕上以后，我们就画了一个2D三角形。光栅化是计算需要显示的每个三角形中每个点颜色值（如图2.17）。<br><img src="/2019/03/24/DirectX93DGame/2.17.jpg"><br>图2.17<br>光栅化过程是非常繁重的计算，它应该通过硬件图形处理来完成。它的处理结果就是把2D图象显示在显示器上。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
+          
+            <a href="/tags/Direct3D-9/" rel="tag"># Direct3D 9</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/23/map/" rel="next" title="图">
+                <i class="fa fa-chevron-left"></i> 图
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/24/AssetBundlesIntro/" rel="prev" title="AssetBundles">
+                AssetBundles <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#三维空间中的向量"><span class="nav-number">1.</span> <span class="nav-text">三维空间中的向量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相等"><span class="nav-number">1.1.</span> <span class="nav-text">向量相等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算向量大小（向量的模）"><span class="nav-number">1.2.</span> <span class="nav-text">计算向量大小（向量的模）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准化向量"><span class="nav-number">1.3.</span> <span class="nav-text">标准化向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相加"><span class="nav-number">1.4.</span> <span class="nav-text">向量相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相减"><span class="nav-number">1.5.</span> <span class="nav-text">向量相减</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标量与向量的乘积"><span class="nav-number">1.6.</span> <span class="nav-text">标量与向量的乘积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点积"><span class="nav-number">1.7.</span> <span class="nav-text">点积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#叉积"><span class="nav-number">1.8.</span> <span class="nav-text">叉积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵"><span class="nav-number">1.9.</span> <span class="nav-text">矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相等、数乘矩阵以及相加"><span class="nav-number">1.10.</span> <span class="nav-text">相等、数乘矩阵以及相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乘法"><span class="nav-number">1.11.</span> <span class="nav-text">乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单位矩阵"><span class="nav-number">1.12.</span> <span class="nav-text">单位矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逆转"><span class="nav-number">1.13.</span> <span class="nav-text">逆转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#D3DX-矩阵"><span class="nav-number">1.14.</span> <span class="nav-text">D3DX 矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本变换"><span class="nav-number">1.15.</span> <span class="nav-text">基本变换　　</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵旋转"><span class="nav-number">1.16.</span> <span class="nav-text">矩阵旋转</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#D3DX平面"><span class="nav-number">1.16.1.</span> <span class="nav-text">D3DX平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点和平面的空间关系"><span class="nav-number">1.16.2.</span> <span class="nav-text">点和平面的空间关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建平面"><span class="nav-number">1.16.3.</span> <span class="nav-text">创建平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化平面"><span class="nav-number">1.16.4.</span> <span class="nav-text">标准化平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#射线"><span class="nav-number">1.16.5.</span> <span class="nav-text">射线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线-面相交"><span class="nav-number">1.16.6.</span> <span class="nav-text">线/面相交</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化Direct3D-Direct3D-Initialization"><span class="nav-number">2.</span> <span class="nav-text">初始化Direct3D (Direct3D Initialization)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Direct3D概述"><span class="nav-number">2.1.</span> <span class="nav-text">Direct3D概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#REF设备"><span class="nav-number">2.1.1.</span> <span class="nav-text">REF设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D3DDEVTYPE"><span class="nav-number">2.1.2.</span> <span class="nav-text">D3DDEVTYPE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#COM"><span class="nav-number">2.2.</span> <span class="nav-text">COM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些准备工作"><span class="nav-number">2.3.</span> <span class="nav-text">一些准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#表面"><span class="nav-number">2.3.1.</span> <span class="nav-text">表面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multisampling"><span class="nav-number">2.3.2.</span> <span class="nav-text">Multisampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#像素格式"><span class="nav-number">2.3.3.</span> <span class="nav-text">像素格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存池"><span class="nav-number">2.3.4.</span> <span class="nav-text">内存池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-4-创建IDirect3DDevice9对象"><span class="nav-number">2.3.5.</span> <span class="nav-text">1.4.4 创建IDirect3DDevice9对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-1-d3dUtility-h-cpp"><span class="nav-number">2.4.</span> <span class="nav-text">1.5.1 d3dUtility.h/cpp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include-“d3dUtility-h”"><span class="nav-number">3.</span> <span class="nav-text">include “d3dUtility.h”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-FVF-COLOR-D3DFVF-XYZ-D3DFVF-DIFFUSE"><span class="nav-number">4.</span> <span class="nav-text">define FVF_COLOR (D3DFVF_XYZ | D3DFVF_DIFFUSE)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-FVF-NORMAL-TEX-D3DFVF-XYZ-D3DFVF-NORMAL-D3DFVF-TEX1"><span class="nav-number">5.</span> <span class="nav-text">define FVF_NORMAL_TEX (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2虚拟照相机"><span class="nav-number">5.1.</span> <span class="nav-text">2.2虚拟照相机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-渲染管线"><span class="nav-number">5.2.</span> <span class="nav-text">2.3 渲染管线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1自身坐标系（Local-Space）"><span class="nav-number">5.2.1.</span> <span class="nav-text">2.3.1自身坐标系（Local Space）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-5光源（Lighting）"><span class="nav-number">5.2.2.</span> <span class="nav-text">2.3.5光源（Lighting）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-6裁剪（Clipping）"><span class="nav-number">5.2.3.</span> <span class="nav-text">2.3.6裁剪（Clipping）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-7投影（Projection）"><span class="nav-number">5.2.4.</span> <span class="nav-text">2.3.7投影（Projection）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#光栅化（Rasterization）"><span class="nav-number">5.2.5.</span> <span class="nav-text">光栅化（Rasterization）</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Direct3D使用一个纹理坐标系统，它是由用水平方向的u轴和竖直方向v轴构成。由u,v坐标决定纹理上的元素，它被叫做texel。注意v轴是向下的（如图6.2）。　　　　图6.2同样，注意规格化的坐标间隔，[0，1]，它被使用是因为它给Direct3D一个固定的范围用于在不同尺寸的纹理上工作。对每一个3D三角形，我们都希望在给它贴图的纹理上定义一个用相应的三角形。（如图6.3）。　　　　图6.3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第六章 纹理(Texturing)">
+<meta property="og:url" content="http://zentia.github.io/2019/04/11/Texturing/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="Direct3D使用一个纹理坐标系统，它是由用水平方向的u轴和竖直方向v轴构成。由u,v坐标决定纹理上的元素，它被叫做texel。注意v轴是向下的（如图6.2）。　　　　图6.2同样，注意规格化的坐标间隔，[0，1]，它被使用是因为它给Direct3D一个固定的范围用于在不同尺寸的纹理上工作。对每一个3D三角形，我们都希望在给它贴图的纹理上定义一个用相应的三角形。（如图6.3）。　　　　图6.3">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:38.019Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第六章 纹理(Texturing)">
+<meta name="twitter:description" content="Direct3D使用一个纹理坐标系统，它是由用水平方向的u轴和竖直方向v轴构成。由u,v坐标决定纹理上的元素，它被叫做texel。注意v轴是向下的（如图6.2）。　　　　图6.2同样，注意规格化的坐标间隔，[0，1]，它被使用是因为它给Direct3D一个固定的范围用于在不同尺寸的纹理上工作。对每一个3D三角形，我们都希望在给它贴图的纹理上定义一个用相应的三角形。（如图6.3）。　　　　图6.3">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/04/11/Texturing/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>第六章 纹理(Texturing) | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Texturing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">第六章 纹理(Texturing)
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/04/11/Texturing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Texturing/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Direct3D使用一个纹理坐标系统，它是由用水平方向的u轴和竖直方向v轴构成。由u,v坐标决定纹理上的元素，它被叫做texel。注意v轴是向下的（如图6.2）。<br>　　<br>　　图6.2<br>同样，注意规格化的坐标间隔，[0，1]，它被使用是因为它给Direct3D一个固定的范围用于在不同尺寸的纹理上工作。<br>对每一个3D三角形，我们都希望在给它贴图的纹理上定义一个用相应的三角形。（如图6.3）。<br>　　<br>　　图6.3<br>　　  我们再一次修改原来的顶点结构，添加一个用于在纹理上定位的纹理坐标。<br>struct Vertex<br>{<br>    float _x, _y, _z;<br>    float _nx, _ny, _nz;<br>    float _u, _v; // texture coordinates<br>    static const DWORD FVF;<br>};<br>const DWORD Vertex::FVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1;<br>　　我们在顶点格式中添加了一个D3DFVF_TEX1，它是说我们的顶点结构中包含了一个纹理坐标。<br>　　现在每个三角形都通过顶点的三个对象来建立，同时也通过纹理坐标定义了一个相应的纹理三角形。<br>6.2创建并赋予材质<br>　　纹理数据通常是从存储在磁盘中的图片文件中读取的，且被读进IDirect3DTexture9对象中。我们能够使用下面的D3DX函数完成这项工作：<br>HRESULT D3DXCreateTextureFromFile(<br>    LPDIRECT3DDEVICE9 pDevice, // device to create the texture<br>    LPCSTR pSrcFile, // filename of image to load<br>    LPDIRECT3DTEXTURE9<em> ppTexture // ptr to receive the created texture<br>);<br>这个函数能够读取下面图片格式中的任意一种：BMP,DDS,DIB,JPG,PNG,TGA。<br>　　例如，用一个名为stonewall.bmp的图片创建一个纹理，我们将按照下面的例子来写：<br>IDirect3Dtexture9</em> _stonewall;<br>D3DXCreateTextureFromFile(_device, “stonewall.bmp”, &amp;_stonewall);<br>　　设置当前纹理，我们使用下面的方法：<br>HRESULT IDirect3DDevice9::SetTexture(<br>    DWORD Stage, // A value in the range 0-7 identifying the texture<br>                // stage – see note on Texture Stages<br>    IDirect3DBaseTexture9* pTexture // ptr to the texture to set<br>);<br>　　例子：<br>Device-&gt;SetTexture(0, _stonewall);<br>注意：在Direct3D中，你能够设置八个纹理，它们能够组合起来创建更多细节的图象。这又被叫做多重纹理。在本书的第四部分以前我们不会使用多重纹理；因此现在我们总是设置stage为0。<br>　　为了销毁一个纹理，我们设置pTexture为0。例如，假如不想用一个纹理来渲染物体，那么我们就这样写：<br>Device-&gt;SetTexture(0, 0);<br>renderObjectWithoutTexture();<br>假如场景中有使用不同纹理的三角形，我们就必须添加与下面类似的一些代码：<br>Device-&gt;SetTexture(0, _tex0);<br>drawTrisUsingTex0();</p>
+<p>Device-&gt;SetTexture(0, _tex1);<br>drawTrisUsingTex1();<br>6.3过滤器<br>    就象以前提及的，纹理被映射到屏幕中的三角形上。通常纹理三角形和屏幕三角形是不一样大的。当纹理三角形比屏幕三角形小时，纹理三角形会被适当放大。当纹理三角形比屏幕三角形大时，纹理三角形会被适当缩小。这两种情况，变形都将会出现。过滤（Filtering）是一种Direct3D用它来帮助这些变形变的平滑的技术。<br>    Direct3D提供了三种不同的过滤器；每种都提供了一个不同的品质级别。越好的品质越慢，因此你必须在品质与速度之间取得一个平衡。纹理过滤器是用IDirect3DDevice9::SetSamplerState方法来设置的。</p>
+<ul>
+<li>Nearest point sampling——这是默认的过滤方法且返回最差的效果，但是它的计算是最快的。下面的代码就是设置Nearest point sampling作为缩小放大的过滤器：<br>Device-&gt;SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);<br>Device-&gt;SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);</li>
+<li>Linear filtering——这种过滤产生还算比较好的效果，在今天的硬件上处理它还是非常快的。它是被推荐使用的。下面的代码就是设置Linear filtering作为缩小放大的过滤器。<br>Device-&gt;SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);<br>Device-&gt;SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);</li>
+<li>Anisotropic filtering——这种过滤产生最好的效果，但是处理时间也是最长的。下面的代码就是设置Anisotropic filtering作为缩小放大的过滤器。<br>Device-&gt;SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_ANISOTROPIC);<br>Device-&gt;SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_ANISOTROPIC);<br>当使用Anisotropic filtering时，我们必须设置D3DSAMP_MAXANISOTROPY等级，它决定处理的质量。该值越高处理的效果越好。检查D3DCAPS9结构确认你的显卡是否支持此功能。下面的代码设置该值为4：<br>Device-&gt;SetSamplerState(0, D3DSAMP_MAXANISOTROPY, 4);<br>6.4 Mipmaps<br>　　就象6.3节所说的，在屏幕上的三角形和纹理三角形通常是不一样大的。为了使这个大小差异变小，我们为纹理创建mipmaps链。也就是说将一个纹理创建成连续的变小的纹理，但是对它们等级进行定制过滤，因此对我们来说保存细节是很重要的（如图6.4）。<br>　　<br>　　图6.4<br>6.4.1 Mipmaps过滤器<br>  mipmap过滤器是被用来控制Direct3D使用mipmaps的。设置mipmap过滤器，你可以这样写：<br>Device-&gt;SetSamplerState(0, D3DSAMP_MIPFILTER, Filter);<br>在Filter处你能用下面三个选项中的一个：</li>
+<li>D3DTEXF_NONE——不使用mipmap。</li>
+<li>D3DTEXF_POINT——通过使用这个过滤器，Direct3D将选择与屏幕三角形大小最接近的mipmap等级。一旦等级选定了，Direct3D就将按照指定的过滤器进行缩小和放大过滤。</li>
+<li>D3DTEXF_LINEAR——通过使用这个过滤器，Direct3D将选择两个最接近的mipmap等级，缩小和放大过滤每个等级，然后线性联合计算它们两个等级来得到最终的颜色值。<br>6.4.2 Direct3D中使用Mipmaps<br>  在Direct3D中使用Mipmaps是很简单的。假如你的显卡支持Mipmaps，那么使用D3DXCreateTextureFromFile将为你产生一个Mipmap链。Direct3D自动选择与屏幕三角形最匹配的Mipmap。因此Mipmap有非常广泛的应用，且它能被自动设置。<br>6.5 寻址模式<br>  以前，我们规定纹理坐标必须指定在[0，1]之间。从技术上来说这是不正确的；他们能够超出这个范围。纹理坐标也可以在[0，1]的范围之外，它通过Direct3D的寻址模式来定义。这里有四种寻址模式：环绕纹理寻址模式、边框颜色纹理寻址模式、截取纹理寻址模式、镜像纹理寻址模式，这里分别给出了它们的示意图6.5，6.6，6.7，6.8。</li>
+</ul>
+<p>图6.5（环绕）                          图6.6（边框）</p>
+<p>图6.7（截取）                          图6.8（镜像）<br>在这些图片中，纹理坐标通过（0,0）（0,3）（3,0）（3,3）顶点来定义。在u轴和v轴上方块又被分成子块放进3×3的矩阵中。假如，你想让纹理按5×5的方格来平铺，你就应该指定环绕纹理寻址模式并且纹理坐标因该设置为（0,0）（0,5）（5,0）（5,5）。<br>    下面的代码片段列举的是怎样设置这四种寻址模式：<br>// set wrap address mode<br>if( ::GetAsyncKeyState(‘W’) &amp; 0x8000f )<br>{<br>    Device-&gt;SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_WRAP);<br>    Device-&gt;SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_WRAP);<br>}<br>// set border color address mode<br>if( ::GetAsyncKeyState(‘B’) &amp; 0x8000f )<br>{<br>    Device-&gt;SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_BORDER);<br>    Device-&gt;SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_BORDER);<br>    Device-&gt;SetSamplerState(0, D3DSAMP_BORDERCOLOR, 0x000000ff);<br>}<br>// set clamp address mode<br>if( ::GetAsyncKeyState(‘C’) &amp; 0x8000f )<br>{<br>    Device-&gt;SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_CLAMP);<br>    Device-&gt;SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_CLAMP);<br>}<br>// set mirror address mode<br>if( ::GetAsyncKeyState(‘M’) &amp; 0x8000f )<br>{<br>    Device-&gt;SetSamplerState(0, D3DSAMP_ADDRESSU, D3DTADDRESS_MIRROR);<br>    Device-&gt;SetSamplerState(0, D3DSAMP_ADDRESSV, D3DTADDRESS_MIRROR);<br>}<br>6.6实例程序：有纹理的方块<br>    这个例子是怎样为方块加上纹理以及设置一个纹理过滤器（如图6.9）。假如你的显卡支持，通过D3DXCreateTextureFromFile函数一个mipmap链将被自动创建。</p>
+<p>图6.9<br>注意：还提供了其他两个例子大家就自己看看了。<br>为一个场景增加纹理的必要步骤是：</p>
+<ol>
+<li>用纹理坐标指定的，创建物体的顶点。</li>
+<li>用D3DXCreateTextureFromFile函数读取一个纹理到IDirect3DTexture9接口中。</li>
+<li>设置缩小倍数，放大倍数以及mipmap过滤器。</li>
+<li>在你绘制一个物体前，用IDirect3DDevice9::SetTexture设置与物体关联的纹理。<br>我们先定义几个全局变量；一个是顶点缓存，它存储方块的顶点。另外一个是我们为方块映射的纹理：<br>IDirect3DVertexBuffer9<em> Quad = 0;<br>IDirect3DTexture9</em>      Tex  = 0;<br>Setup程序是很容易读懂的；我们用已经定义了纹理坐标的两个三角形创建一个方块。然后把文件dx5_logo.bmp读进IDirect3DTexture9接口中。接着使用SetTexture方法赋予纹理。最后设置缩小和放大过滤器进行线性过滤，我们也可以设置mipmap过滤器来进行D3DTEXF_POINT: <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Setup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Create the quad vertex buffer and fill it with the</span></span><br><span class="line">    <span class="comment">// quad geoemtry.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    Device-&gt;CreateVertexBuffer(</span><br><span class="line">        <span class="number">6</span> * <span class="keyword">sizeof</span>(Vertex), </span><br><span class="line">        D3DUSAGE_WRITEONLY,</span><br><span class="line">        Vertex::FVF,</span><br><span class="line">        D3DPOOL_MANAGED,</span><br><span class="line">        &amp;Quad,</span><br><span class="line">        <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    Vertex* v;</span><br><span class="line">    Quad-&gt;Lock(<span class="number">0</span>, <span class="number">0</span>, (<span class="keyword">void</span>**)&amp;v, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// quad built from two triangles, note texture coordinates:</span></span><br><span class="line">    v[<span class="number">0</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.25f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">    v[<span class="number">1</span>] = Vertex(<span class="number">-1.0f</span>,  <span class="number">1.0f</span>, <span class="number">1.25f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">    v[<span class="number">2</span>] = Vertex( <span class="number">1.0f</span>,  <span class="number">1.0f</span>, <span class="number">1.25f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line"></span><br><span class="line">    v[<span class="number">3</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.25f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">    v[<span class="number">4</span>] = Vertex( <span class="number">1.0f</span>,  <span class="number">1.0f</span>, <span class="number">1.25f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">    v[<span class="number">5</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.25f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line"></span><br><span class="line">    Quad-&gt;Unlock();</span><br><span class="line"></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Create the texture and set filters.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    D3DXCreateTextureFromFile(</span><br><span class="line">        Device,</span><br><span class="line">        <span class="string">"dx5_logo.bmp"</span>,</span><br><span class="line">        &amp;Tex);</span><br><span class="line"></span><br><span class="line">    Device-&gt;SetTexture(<span class="number">0</span>, Tex);</span><br><span class="line"></span><br><span class="line">    Device-&gt;SetSamplerState(<span class="number">0</span>, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);</span><br><span class="line">    Device-&gt;SetSamplerState(<span class="number">0</span>, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);</span><br><span class="line">    Device-&gt;SetSamplerState(<span class="number">0</span>, D3DSAMP_MIPFILTER, D3DTEXF_POINT);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Don't use lighting for this sample.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    Device-&gt;SetRenderState(D3DRS_LIGHTING, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Set the projection matrix.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    D3DXMATRIX proj;</span><br><span class="line">    D3DXMatrixPerspectiveFovLH(</span><br><span class="line">            &amp;proj,</span><br><span class="line">            D3DX_PI * <span class="number">0.5f</span>, <span class="comment">// 90 - degree</span></span><br><span class="line">            (<span class="keyword">float</span>)Width / (<span class="keyword">float</span>)Height,</span><br><span class="line">            <span class="number">1.0f</span>,</span><br><span class="line">            <span class="number">1000.0f</span>);</span><br><span class="line">    Device-&gt;SetTransform(D3DTS_PROJECTION, &amp;proj);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>我们现在可以渲染方块了，且通常已经为它赋予了纹理：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Display</span><span class="params">(<span class="keyword">float</span> timeDelta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( Device )</span><br><span class="line">    &#123;</span><br><span class="line">        Device-&gt;Clear(<span class="number">0</span>, <span class="number">0</span>, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, <span class="number">0xffffffff</span>, <span class="number">1.0f</span>, <span class="number">0</span>);</span><br><span class="line">        Device-&gt;BeginScene();</span><br><span class="line"></span><br><span class="line">        Device-&gt;SetStreamSource(<span class="number">0</span>, Quad, <span class="number">0</span>, <span class="keyword">sizeof</span>(Vertex));</span><br><span class="line">        Device-&gt;SetFVF(Vertex::FVF);</span><br><span class="line">        Device-&gt;DrawPrimitive(D3DPT_TRIANGLELIST, <span class="number">0</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        Device-&gt;EndScene();</span><br><span class="line">        Device-&gt;Present(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/Lighting/" rel="next" title="第五章 灯光(Lighting)">
+                <i class="fa fa-chevron-left"></i> 第五章 灯光(Lighting)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/Blending/" rel="prev" title="第七章 混合(Blending)">
+                第七章 混合(Blending) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+      for (i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style>
+
+    
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>

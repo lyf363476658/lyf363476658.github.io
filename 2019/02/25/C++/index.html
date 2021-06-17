@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: 'W8FJT5MTZU',
+      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
+      indexName: 'hexo',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="虚函数 对于一个class，产生一堆指向virtual functions的指针，虚函数表指针通常放在对象实例的最前面的位置。编译报错的时候没有vtable，表示该纯虚函数没有实现。 每一个对象添加一个指针，指向相关的virtual table。这个指针被称作虚函数表指针。  C/C++中static关键字作用总结先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++">
+<meta property="og:url" content="http://zentia.github.io/2019/02/25/C++/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="虚函数 对于一个class，产生一堆指向virtual functions的指针，虚函数表指针通常放在对象实例的最前面的位置。编译报错的时候没有vtable，表示该纯虚函数没有实现。 每一个对象添加一个指针，指向相关的virtual table。这个指针被称作虚函数表指针。  C/C++中static关键字作用总结先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-06-17T02:39:37.827Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++">
+<meta name="twitter:description" content="虚函数 对于一个class，产生一堆指向virtual functions的指针，虚函数表指针通常放在对象实例的最前面的位置。编译报错的时候没有vtable，表示该纯虚函数没有实现。 每一个对象添加一个指针，指向相关的virtual table。这个指针被称作虚函数表指针。  C/C++中static关键字作用总结先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）">
+
+
+
+
+
+
+  <link rel="canonical" href="http://zentia.github.io/2019/02/25/C++/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>C++ | liyanfeng</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liyanfeng</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+    <div class="reading-progress-bar"></div>
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/02/25/C++/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">C++
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/02/25/C++/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/25/C++/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon" title="阅读次数">
+            <i class="fa fa-eye"></i>
+            
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="虚函数"><a href="#虚函数" class="headerlink" title="虚函数"></a>虚函数</h1><ul>
+<li>对于一个class，产生一堆指向virtual functions的指针，虚函数表指针通常放在对象实例的最前面的位置。编译报错的时候没有vtable，表示该纯虚函数没有实现。</li>
+<li>每一个对象添加一个指针，指向相关的virtual table。这个指针被称作虚函数表指针。</li>
+</ul>
+<h1 id="C-C-中static关键字作用总结"><a href="#C-C-中static关键字作用总结" class="headerlink" title="C/C++中static关键字作用总结"></a>C/C++中static关键字作用总结</h1><h2 id="先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）"><a href="#先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）" class="headerlink" title="先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）"></a>先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）</h2><p>当同事编译多个文件时，所有未加static前缀的全局变量和函数都具有全局可见性。<br>举例来说明。同时编译两个源文件，一个是a.c，另一个是main.c。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//a.c</span></span><br><span class="line"><span class="keyword">char</span> a = <span class="string">'A'</span>; <span class="comment">// global variable</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">msg</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hello\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// main.c</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">extern</span> <span class="keyword">char</span> a; <span class="comment">// extern variable must be declared before use</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%c"</span>, a);</span><br><span class="line">    (<span class="keyword">void</span>)msg();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>程序运行结果是：<br>A Hello<br>为什么在a.c中定义的全局变量a和函数msg能在main.c中使用？前面说过，所有未加static前缀的全局变量和函数都具有全局可见性，其它的源文件也能访问。此例中，a是全局变量，msg是函数，并且都没有加static前缀，因此对于另外的源文件main.c是可见的。<br>如果加了static，就会对其它源文件隐藏。例如在a和msg的定义前加上了static，main.c就看不到它们了。利用这一特性可以再不同的文件中定义同名函数和同名变量，而不必担心命名冲突。static可以用作函数和变量的前缀，对于函数来讲，static的作用仅限于隐藏。</p>
+<h2 id="static的第二个作用是保持内容的持久。（static变量中的记忆功能和全局生存期）"><a href="#static的第二个作用是保持内容的持久。（static变量中的记忆功能和全局生存期）" class="headerlink" title="static的第二个作用是保持内容的持久。（static变量中的记忆功能和全局生存期）"></a>static的第二个作用是保持内容的持久。（static变量中的记忆功能和全局生存期）</h2><p>存储在静态数据区的变量会在程序刚开始运行时就完成初始化，也是唯一的一次初始化。共有两种变量存储在静态存储区：全局变量和static变量，只不过和全局变量比起来，static可以控制变量的可见范围，说到底static还是用来隐藏的，虽然这种用法不常见<br>PS：如果作为static局部变量在函数内定义，它的生存期为整个源程序，但是其作用域仍与自动变量相同，只能定义该变量的函数内使用该变量。退出该函数后，尽管该变量还继续存在，但不能使用它。</p>
+<p>程序举例：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">10</span>; <span class="comment">//在第一次进入这个函数的时候，变量a被初始化为10！并接着自减1，以后每次进入该函数，a就不会再次被初始化了，仅进行自减1的操作；在static发明前，要达到同样的功能，则只能使用全局变量；</span></span><br><span class="line">    <span class="keyword">return</span> count--;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> count = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"global\t\tlocal static\n"</span>);</span><br><span class="line">    <span class="keyword">for</span>(;count&lt;=<span class="number">10</span>;++count)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\t\t%d\n"</span>,count,fun());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>基于以上两点可以得出一个结论：把局部变量改变为静态变量后是改变了它的存储方式即改变了它的生存期。把全局变量改变为静态变量后是改变了它的作用域，限制了它的使用范围。因此static这个说明符在不同的地方所起的作用是不同的。</p>
+<h2 id="static的第三个作用是默认初始化为0（static变量）"><a href="#static的第三个作用是默认初始化为0（static变量）" class="headerlink" title="static的第三个作用是默认初始化为0（static变量）"></a>static的第三个作用是默认初始化为0（static变量）</h2><p>其实全局变量也具备这一属性，因为全局变量也存储在静态数据区。在静态数据区，内存中所有的字节默认值都是0x00，某些时候这一特点可以减少程序员的工作量。比如初始化一个稀疏举证，我们可以一个一个地把所有元素都置0，然后把不是0的几个元素赋值。如果定义成静态的，就省去了一开始置0的操作。再比如把一个字符数组当字符串来用，但又觉得每次在字符数组末尾加’\0’；太麻烦。如果把字符串定义成静态的，就省去了这个麻烦，因为那里本来就是’\0’;</p>
+<p>最后对static的三条作用做一句话总结。首先static的最主要功能是隐藏，其次因为static变量存放在静态存储区，所以它具备持久性和默认值0。</p>
+<h2 id="static的第四个作用：C-中的类成员声明static（有些地方与以上作用重叠）"><a href="#static的第四个作用：C-中的类成员声明static（有些地方与以上作用重叠）" class="headerlink" title="static的第四个作用：C++中的类成员声明static（有些地方与以上作用重叠）"></a>static的第四个作用：C++中的类成员声明static（有些地方与以上作用重叠）</h2><p>在类中声明static变量或者函数时，初始化时使用作用域运算符来标明它所属类，因此，静态数据成员是类的成员，而不是对象的成员，这样就出现以下作用：<br>（1）类的静态成员函数是属于整个类而非类的对象，所以它没有this指针，这就导致了它仅能访问类的静态数据和静态成员函数。<br>（2）不能将静态成员函数定义为虚函数。<br>（3）由于静态成员声明于类中，操作于其外，所以对其取地址操作，就多少有些特殊，变量地址是指向其数据类型的指针，函数地址类型是一个”nonmember函数指针”。<br>（4）由于静态成员函数没有this指针，所以就差不多等同于nonmember函数，结果就产生了一个意想不到的好处：成为一个callback函数，使得我们得以将C++和C-based XWindow系统结合，同时也成功的应用于线程函数身上。（这条没遇见过）<br>（5）static并没有增加程序的时空开销，相反它还缩短了子类对父类静态成员的访问时间，节省了子类的内存空间。<br>（6）静态数据成员在&lt;定义或说明&gt;时前面加关键字static。<br>（7）静态数据成员是静态存储的，所以必须对它进行初始化。（程序员手动初始化，否则编译时一般不会报错，但是Link时会报错误）<br>（8）静态成员初始化与一般数据成员初始化不同：<br>初始化在类体外进行，而前面不加static，以免与一般静态变量或对象相混淆；<br>初始化时不加该成员的访问权限控制符private,public等；<br>初始化时使用作用域来标明它所属类；<br>所以我们得出静态数据成员初始化的格式：<br>&lt;数据类型&gt; &lt;类名&gt;::&lt;静态数据成员名&gt;=&lt;值&gt;<br>（9）为了防止父类的影响，可以在子类定一个与父类相同的静态变量，以屏蔽父类的影响。这里有一点需要注意：我们说静态成员为父类和子类共享，但我们有重复定义了静态成员，这会不会引起错误呢？不会，我们的编译器采用了一种绝妙的手法：name-mangling用以生成唯一的标志。</p>
+<h1 id="C-智能指针"><a href="#C-智能指针" class="headerlink" title="C++智能指针"></a>C++智能指针</h1><h2 id="shared-ptr"><a href="#shared-ptr" class="headerlink" title="shared_ptr"></a>shared_ptr</h2><p>shared_ptr使用引用计数，每一个shared_ptr的拷贝都指向相同的内存。</p>
+<h2 id="weak-ptr"><a href="#weak-ptr" class="headerlink" title="weak_ptr"></a>weak_ptr</h2><p>weak_ptr没有共享资源，它的构造不会引起指针引用计数的增加</p>
+<h2 id="unique-ptr"><a href="#unique-ptr" class="headerlink" title="unique_ptr"></a>unique_ptr</h2><p>“唯一”拥有其所指对象，同一时刻只能有一个unique_ptr指向给定对象</p>
+<h1 id="虚函数-1"><a href="#虚函数-1" class="headerlink" title="虚函数"></a>虚函数</h1><p>通过一张虚函数表（Virtual Table）来实现<br>sizeof不统计虚函数表</p>
+<h1 id="C-C-内存对齐"><a href="#C-C-内存对齐" class="headerlink" title="C/C++内存对齐"></a>C/C++内存对齐</h1><h2 id="什么是内存对齐"><a href="#什么是内存对齐" class="headerlink" title="什么是内存对齐"></a>什么是内存对齐</h2><p>32位系统下，int占4byte，char占1byte，那么将它们放到一个结构体中实际上占8byte，这就是内存对齐导致的。</p>
+<h1 id="inline"><a href="#inline" class="headerlink" title="inline"></a>inline</h1><h2 id="什么是内联函数？"><a href="#什么是内联函数？" class="headerlink" title="什么是内联函数？"></a>什么是内联函数？</h2><p>内联函数是指那些定义在类体内部的成员函数，即该函数的函数体放在类体内。<br>一般来说，inline适用的函数有两种，一种是类内定义的成员函数，另一种是类内声明，类外定义的成员函数，对于这两种情况inline的使用有一些不同；</p>
+<h2 id="内联函数的优缺点："><a href="#内联函数的优缺点：" class="headerlink" title="内联函数的优缺点："></a>内联函数的优缺点：</h2><p>优点：<br>1.inline定义的类的内联函数，函数的代码被放入符号表中，在使用时直接进行替换，（像宏一样展开），没有了调用的开销，效率也很高。<br>2.inline也是真正的函数，编辑器在调用一个内联函数时，会首先检查它的参数的类型，保证调用正确。然后进行一系列的相关检查，就像对待任何一个正在的函数一样。这样就消除了它的隐患和局限性。（宏替换不会检查参数类型，安全隐患较大）<br>缺点：<br>1.内联函数具有一定的局限性，inline函数的函数体一般来说不能太大，如果太大，一般的编译器会放弃内联方式，而采用普通的方式调用函数。（换句话说，你使用内联函数，只不过是向编译器提出一个申请，编译器可以拒绝你的申请），这样，内联和普通函数执行效率一样了。<br>2.inline对编译器来说只是一种简易，编译器可以选择忽略这个建议。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>1.内联函数不能宝库欧复杂的控制语句，如循环语句和switch语句；</p>
+<h1 id="接口（抽象类）"><a href="#接口（抽象类）" class="headerlink" title="接口（抽象类）"></a>接口（抽象类）</h1><p>接口描述了类的行为和功能，而不需要完成类的特定实现。</p>
+<h1 id="视C-为一个语言联邦"><a href="#视C-为一个语言联邦" class="headerlink" title="视C++为一个语言联邦"></a>视C++为一个语言联邦</h1><ol>
+<li>C语言</li>
+<li>面向对象</li>
+<li>C++模版</li>
+<li>STL容器</li>
+</ol>
+<h1 id="尽量用const，enum，inline替换-define"><a href="#尽量用const，enum，inline替换-define" class="headerlink" title="尽量用const，enum，inline替换#define"></a>尽量用const，enum，inline替换#define</h1><ol>
+<li>const的好处：define直接常量替换，出现编译错误不易定位（不知道常量是哪个变量，这个其实还好，工程规范点的都不存在这个问题）；define没有作用域，const有作用域提供了封装性（这个同上，不过这两点都是人为的避开了）</li>
+<li>enum的好处：提供了封装性，编译器肯定不会分配额外的内存空间（其实const也不会，难道define会？至于封装性，undef，所以这么多年了，虽然说避免，但是工程上用的还是比较多的）</li>
+<li>inline的好处：define宏函数容易造成误用</li>
+</ol>
+<p>宏实现工厂设计模式</p>
+<ol>
+<li>需要一个全局map用于存储类的信息以及创建实例的函数</li>
+<li>需要调用全局对象的构造函数用于注册</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">// ConsoleApplication1.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#include &quot;pch.h&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;map&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">typedef void *(*register_fun)();</span><br><span class="line"></span><br><span class="line">class CCFactory</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    static void *NewInstance(string class_name)</span><br><span class="line">    &#123;</span><br><span class="line">        auto it = map_.find(class_name);</span><br><span class="line">        if (it == map_.end())</span><br><span class="line">        &#123;</span><br><span class="line">            return NULL;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            return it-&gt;second();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    static void Register(string class_name, register_fun func)</span><br><span class="line">    &#123;</span><br><span class="line">        map_[class_name] = func;</span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    static map&lt;string, register_fun&gt; map_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">map&lt;string, register_fun&gt; CCFactory::map_; // 体外初始化</span><br><span class="line"></span><br><span class="line">#define REGISTER_CLASS(class_name); \</span><br><span class="line">    CCFactory::Register(#class_name, []()-&gt;void *&#123;return (new class_name);&#125;);</span><br><span class="line"></span><br><span class="line">class Product</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    virtual void Say() = 0;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class Register : public Product // 注册者，就是产品，虽然不喜欢设计模式这坨东西，但是研究起来还是挺好玩的</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    void Say()</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; &quot;Say What?\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void Init()</span><br><span class="line">&#123;</span><br><span class="line">    REGISTER_CLASS(Register);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Release()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    Init();</span><br><span class="line">    Register* a = (Register*)CCFactory::NewInstance(&quot;Register&quot;);</span><br><span class="line">    a-&gt;Say();</span><br><span class="line">    Release();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没写完，但是感觉做个池还是挺好玩的。</p>
+<h1 id="尽可能使用const"><a href="#尽可能使用const" class="headerlink" title="尽可能使用const"></a>尽可能使用const</h1><ol>
+<li>const定义接口，防止误用</li>
+<li>const成员函数，代表这个成员函数承诺不会改变对象值（const成员只能调用const成员函数(加-fpermissive编译选项就可以了)，非const成员可以调用所有成员函数）</li>
+</ol>
+<h1 id="确定对象使用前被初始化"><a href="#确定对象使用前被初始化" class="headerlink" title="确定对象使用前被初始化"></a>确定对象使用前被初始化</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">// ConsoleApplication1.cpp : 此文件包含 &quot;main&quot; 函数。程序执行将在此处开始并结束。</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">#include &quot;pch.h&quot;</span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;map&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">typedef void *(*register_fun)();</span><br><span class="line"></span><br><span class="line">class CCFactory</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    static void *NewInstance(string class_name)</span><br><span class="line">    &#123;</span><br><span class="line">        auto it = map_.find(class_name);</span><br><span class="line">        if (it == map_.end())</span><br><span class="line">        &#123;</span><br><span class="line">            return NULL;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            return it-&gt;second();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    static void Register(string class_name, register_fun func)</span><br><span class="line">    &#123;</span><br><span class="line">        map_[class_name] = func;</span><br><span class="line">    &#125;</span><br><span class="line">private:</span><br><span class="line">    static map&lt;string, register_fun&gt; map_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">map&lt;string, register_fun&gt; CCFactory::map_; // 体外初始化</span><br><span class="line"></span><br><span class="line">#define REGISTER_CLASS(class_name); \</span><br><span class="line">    CCFactory::Register(#class_name, []()-&gt;void *&#123;return (new class_name(#class_name));&#125;);</span><br><span class="line"></span><br><span class="line">class Product</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    virtual void Say() = 0;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class Register : public Product // 注册者，就是产品，虽然不喜欢设计模式这坨东西，但是研究起来还是挺好玩的</span><br><span class="line">&#123;</span><br><span class="line">public:</span><br><span class="line">    void Say()</span><br><span class="line">    &#123;</span><br><span class="line">        std::cout &lt;&lt; name.c_str() &lt;&lt; &quot;: Say What?\n&quot;;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    void Run() const // 表明这个函数不会对类对象的数据成员（准确地说是非静态数据成员）作任何改变</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    int b;</span><br><span class="line">    const string name; // 必须在初始化的时候赋值</span><br><span class="line">    Register(string _y) : name(_y)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">void Init()</span><br><span class="line">&#123;</span><br><span class="line">    REGISTER_CLASS(Register);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void Release()</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    Init();</span><br><span class="line">    Register* a = (Register*)CCFactory::NewInstance(&quot;Register&quot;);</span><br><span class="line">    a-&gt;Say();</span><br><span class="line">    Release();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="构造、析构、赋值运算"><a href="#构造、析构、赋值运算" class="headerlink" title="构造、析构、赋值运算"></a>构造、析构、赋值运算</h1><p>如果类中没有定义，程序却调用了，编译器会产生一些函数</p>
+<ol>
+<li>一个default的构造函数</li>
+<li>一个copy构造函数</li>
+<li>一个copy assignment 操作符</li>
+<li>一个析构函数(non virtual)</li>
+</ol>
+<ul>
+<li>如果自己构造了带参数的构造函数，编译器不会产生default构造函数</li>
+<li>base class如果把拷贝构造函数或者复制操作符设置为private，不会产生这两个函数</li>
+<li>含有引用成员变量或者const成员变量不产生复制操作符</li>
+</ul>
+<h1 id="若不想使用编译器自动生成的函数，就该明确拒绝"><a href="#若不想使用编译器自动生成的函数，就该明确拒绝" class="headerlink" title="若不想使用编译器自动生成的函数，就该明确拒绝"></a>若不想使用编译器自动生成的函数，就该明确拒绝</h1><p>将默认生成的函数声明为private，或者C++ 11新特性”=delete”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class UncopyTable</span><br><span class="line">&#123;</span><br><span class="line">private:</span><br><span class="line">    UncopyTable(const UncopyTable&amp;);</span><br><span class="line">    UncopyTable&amp; operator=(const UncopyTable&amp;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<h1 id="静态类型"><a href="#静态类型" class="headerlink" title="静态类型"></a>静态类型</h1><p>上下文无关，在编译时就可以确定其类型。</p>
+<h1 id="动态类型"><a href="#动态类型" class="headerlink" title="动态类型"></a>动态类型</h1><p>基类指针指向的对象在编译的时候无法确定</p>
+<h1 id="动态绑定与静态绑定"><a href="#动态绑定与静态绑定" class="headerlink" title="动态绑定与静态绑定"></a>动态绑定与静态绑定</h1><p>静态绑定：编译时绑定，通过对象调用<br>动态绑定：运行时绑定，通过地址实现</p>
+<p>要触发动态绑定，需满足两个条件</p>
+<ol>
+<li>只有虚函数才能惊醒动态绑定，非虚函数不能进行动态绑定</li>
+<li>必须通过基类类型的引用或指针进行函数调用</li>
+</ol>
+<h1 id="为多态基类声明virtual析构函数"><a href="#为多态基类声明virtual析构函数" class="headerlink" title="为多态基类声明virtual析构函数"></a>为多态基类声明virtual析构函数</h1><ol>
+<li>给多态基类应该主动声明virtual析构函数</li>
+<li>非多态基类，没有virtual函数，不要声明virtual析构函数</li>
+</ol>
+<h1 id="复制对象时勿忘其每个成分"><a href="#复制对象时勿忘其每个成分" class="headerlink" title="复制对象时勿忘其每个成分"></a>复制对象时勿忘其每个成分</h1><ol>
+<li>实现拷贝构造函数和赋值操作符的时候，调用base的相关函数</li>
+<li>可以让拷贝构造函数和赋值操作符调用一个共同的函数，比如Init</li>
+</ol>
+<h1 id="资源管理"><a href="#资源管理" class="headerlink" title="资源管理"></a>资源管理</h1><h2 id="以对象管理资源"><a href="#以对象管理资源" class="headerlink" title="以对象管理资源"></a>以对象管理资源</h2><ol>
+<li>为了防止资源泄漏，请使用RAII对象，在构造函数里面获得资源，在析构函数里面释放资源</li>
+<li>shared_ptr，unique_lock都是RAII对象</li>
+</ol>
+<h2 id="在资源管理类小心copy行为"><a href="#在资源管理类小心copy行为" class="headerlink" title="在资源管理类小心copy行为"></a>在资源管理类小心copy行为</h2><ul>
+<li>常见的RAII对象copy行为<ul>
+<li>禁止copy</li>
+<li>引用计数</li>
+<li>深度赋值</li>
+<li>转移资源拥有权</li>
+</ul>
+</li>
+</ul>
+<h1 id="头文件搜索目录"><a href="#头文件搜索目录" class="headerlink" title="头文件搜索目录"></a>头文件搜索目录</h1><pre><code>#include &quot;headfile.h&quot;
+</code></pre><p>搜索顺序为：</p>
+<ol>
+<li>当前目录</li>
+<li>-I指定目录</li>
+<li>gcc的环境变量CPLUS_INCLUDE_PATH（C程序使用的是C_INCLUDE_PATH）</li>
+<li>gcc内定目录<br>/usr/include<br>/usr/local/include<br>/usr/lib/gcc/x86_64-redhat-linux/4.1.1/include</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/09/fiction/" rel="next" title="序章">
+                <i class="fa fa-chevron-left"></i> 序章
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/25/QuickSort/" rel="prev" title="排序">
+                排序 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">liyanfeng</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">326</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">52</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#虚函数"><span class="nav-number">1.</span> <span class="nav-text">虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-C-中static关键字作用总结"><span class="nav-number">2.</span> <span class="nav-text">C/C++中static关键字作用总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）"><span class="nav-number">2.1.</span> <span class="nav-text">先来介绍它的第一条也是最重要的一条：隐藏。（static函数，static变量均可）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#static的第二个作用是保持内容的持久。（static变量中的记忆功能和全局生存期）"><span class="nav-number">2.2.</span> <span class="nav-text">static的第二个作用是保持内容的持久。（static变量中的记忆功能和全局生存期）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#static的第三个作用是默认初始化为0（static变量）"><span class="nav-number">2.3.</span> <span class="nav-text">static的第三个作用是默认初始化为0（static变量）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#static的第四个作用：C-中的类成员声明static（有些地方与以上作用重叠）"><span class="nav-number">2.4.</span> <span class="nav-text">static的第四个作用：C++中的类成员声明static（有些地方与以上作用重叠）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-智能指针"><span class="nav-number">3.</span> <span class="nav-text">C++智能指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#shared-ptr"><span class="nav-number">3.1.</span> <span class="nav-text">shared_ptr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#weak-ptr"><span class="nav-number">3.2.</span> <span class="nav-text">weak_ptr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unique-ptr"><span class="nav-number">3.3.</span> <span class="nav-text">unique_ptr</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#虚函数-1"><span class="nav-number">4.</span> <span class="nav-text">虚函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-C-内存对齐"><span class="nav-number">5.</span> <span class="nav-text">C/C++内存对齐</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是内存对齐"><span class="nav-number">5.1.</span> <span class="nav-text">什么是内存对齐</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#inline"><span class="nav-number">6.</span> <span class="nav-text">inline</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是内联函数？"><span class="nav-number">6.1.</span> <span class="nav-text">什么是内联函数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内联函数的优缺点："><span class="nav-number">6.2.</span> <span class="nav-text">内联函数的优缺点：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意事项"><span class="nav-number">6.3.</span> <span class="nav-text">注意事项</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#接口（抽象类）"><span class="nav-number">7.</span> <span class="nav-text">接口（抽象类）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#视C-为一个语言联邦"><span class="nav-number">8.</span> <span class="nav-text">视C++为一个语言联邦</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#尽量用const，enum，inline替换-define"><span class="nav-number">9.</span> <span class="nav-text">尽量用const，enum，inline替换#define</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#尽可能使用const"><span class="nav-number">10.</span> <span class="nav-text">尽可能使用const</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#确定对象使用前被初始化"><span class="nav-number">11.</span> <span class="nav-text">确定对象使用前被初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构造、析构、赋值运算"><span class="nav-number">12.</span> <span class="nav-text">构造、析构、赋值运算</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#若不想使用编译器自动生成的函数，就该明确拒绝"><span class="nav-number">13.</span> <span class="nav-text">若不想使用编译器自动生成的函数，就该明确拒绝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静态类型"><span class="nav-number">14.</span> <span class="nav-text">静态类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态类型"><span class="nav-number">15.</span> <span class="nav-text">动态类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#动态绑定与静态绑定"><span class="nav-number">16.</span> <span class="nav-text">动态绑定与静态绑定</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为多态基类声明virtual析构函数"><span class="nav-number">17.</span> <span class="nav-text">为多态基类声明virtual析构函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复制对象时勿忘其每个成分"><span class="nav-number">18.</span> <span class="nav-text">复制对象时勿忘其每个成分</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#资源管理"><span class="nav-number">19.</span> <span class="nav-text">资源管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#以对象管理资源"><span class="nav-number">19.1.</span> <span class="nav-text">以对象管理资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在资源管理类小心copy行为"><span class="nav-number">19.2.</span> <span class="nav-text">在资源管理类小心copy行为</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#头文件搜索目录"><span class="nav-number">20.</span> <span class="nav-text">头文件搜索目录</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script src="/lib/three/three.min.js"></script>
+
+  
+  <script src="/lib/three/three-waves.min.js"></script>
+
+  
+  <script src="/lib/reading_progress/reading_progress.js"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
+
+
+  
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
+    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      
+        background-color: #eee;
+        background-image: linear-gradient(#fcfcfc, #eee);
+        border: 1px solid #d5d5d5;
+        border-radius: 3px;
+      
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      
+        right: 4px;
+        top: 8px;
+      
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1;
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; // Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.readOnly = true;
+        ta.value = code;
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, code.length);
+        ta.readOnly = false;
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); // For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+</body>
+</html>
