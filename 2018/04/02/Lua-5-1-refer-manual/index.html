@@ -1,145 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-
-
-
-
-
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-    
-    
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
-  
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.0.1">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '7.0.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
-    fancybox: true,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'W8FJT5MTZU',
-      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
-      indexName: 'hexo',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zentia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"W8FJT5MTZU","apiKey":"f4ca7ae2408d2e27ffc8269ad8d34273","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
   <meta name="description" content="Lua 是一个扩展式程序设计语言，它被设计成支持通用的过程式编程，并有相关数据描述的设施。 Lua 也能对面向对象编程，函数式编程，数据驱动式编程提供很好的支持。 它可以作为一个强大、轻量的脚本语言，供任何需要的程序使用。 Lua 以一个用 clean C 写成的库形式提供。（所谓 Clean C ，指的 ANSI C 和 C++ 中共通的一个子集）作为一个扩展式语言，Lua 没有 “main”">
 <meta name="keywords" content="Lua">
@@ -154,18 +33,16 @@
 <meta name="twitter:title" content="Lua参考手册上半部分">
 <meta name="twitter:description" content="Lua 是一个扩展式程序设计语言，它被设计成支持通用的过程式编程，并有相关数据描述的设施。 Lua 也能对面向对象编程，函数式编程，数据驱动式编程提供很好的支持。 它可以作为一个强大、轻量的脚本语言，供任何需要的程序使用。 Lua 以一个用 clean C 写成的库形式提供。（所谓 Clean C ，指的 ANSI C 和 C++ 中共通的一个子集）作为一个扩展式语言，Lua 没有 “main”">
 
+<link rel="canonical" href="http://zentia.github.io/2018/04/02/Lua-5-1-refer-manual/">
 
 
-
-
-
-  <link rel="canonical" href="http://zentia.github.io/2018/04/02/Lua-5-1-refer-manual/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -177,15 +54,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -194,9 +64,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -210,150 +79,53 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta custom-logo">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">liyanfeng</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-    
-    
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liyanfeng</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
 
+
 <nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
+  </ul>
 </nav>
 
-
-
-  
 
 
 
@@ -361,132 +133,75 @@
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
-          <div id="content" class="content">
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  
-    <div class="reading-progress-bar"></div>
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/02/Lua-5-1-refer-manual/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">Lua参考手册上半部分
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          Lua参考手册上半部分
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a></span>
+              <span class="post-meta-item-text">发表于</span>
 
-                
-                
-              
+              <time title="创建时间：2018-04-02 10:42:38" itemprop="dateCreated datePublished" datetime="2018-04-02T10:42:38+08:00">2018-04-02</time>
             </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2018/04/02/Lua-5-1-refer-manual/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/04/02/Lua-5-1-refer-manual/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
               </span>
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon" title="阅读次数">
-            <i class="fa fa-eye"></i>
-            
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a>
+                </span>
             </span>
-          
-
-          
 
           
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <p>Lua 是一个扩展式程序设计语言，它被设计成支持通用的过程式编程，并有相关数据描述的设施。 Lua 也能对面向对象编程，函数式编程，数据驱动式编程提供很好的支持。 它可以作为一个强大、轻量的脚本语言，供任何需要的程序使用。 Lua 以一个用 clean C 写成的库形式提供。（所谓 Clean C ，指的 ANSI C 和 C++ 中共通的一个子集）<br>作为一个扩展式语言，Lua 没有 “main” 程序的概念：它只能 嵌入 一个宿主程序中工作，这个宿主程序被称作 embedding program 或简称为 host 。 宿主程序可以通过调用函数执行一小段 Lua 代码，可以读写 Lua 变量，可以注入 C 函数让 Lua 代码调用。 这些扩展的 C 函数，可以大大的扩展了 Lua 可以处理事务的领域，这样就可以订制出各种语言， 而它们共享一个统一的句法格式的框架。 Lua 的官方发布版就包含了一个叫做 lua 的简单的宿主程序，它用 Lua 库提供了一个保证独立的 Lua 解释器。<br>Lua 是一个自由软件，它的使用许可决定了对它的使用过程一般没有任何保证。 这份手册中描述的东西的实现，可以在 Lua 的官方网站 www.lua.org 找到，<br>跟其它的许多参考手册一样，这份文档有些地方比较枯燥。 关于 Lua 的设计想法的探讨，可以看看 Lua 网站上提供的技术论文。 有关用 Lua 编程的细节介绍，可以读一下 Roberto 的书，Programming in Lua (Second Edition) 。</p>
@@ -503,7 +218,7 @@ repeat    return    then      true      until     while
  ==    ~=    &lt;=    &gt;=    &lt;     &gt;     =
  (     )     {     }     [     ]
  ;     :     ,     .     ..    ...
-</code></pre><p>字符串既可以用一对单引号引起，也可以是双引号，里面还可以包含类似 C 的转义符： ‘\a’ （响铃）， ‘\b’ （退格）， ‘\f’ （表单）， ‘\n’ （换行）， ‘\r’ （回车）， ‘\t’ （横向制表）， ‘\v’ （纵向制表）， ‘\\’ （反斜杠）， ‘\”‘ （双引号）， 以及 ‘\’’ （单引号)。 而且，如果在一个反斜杠后跟了一个真正的换行符，其结果就是在字符串中产生一个换行符。 我们还可以用反斜杠加数字的形式 \ddd 来描述一个字符。这里， ddd 是一串最多三位的十进制数字。（注意，如果需要在这种描述方法后接一个是数字的字符， 那么反斜杠后必须写满三个数字。）Lua 中的字符串可以包含任何 8 位的值。包括用 ‘\0’ 表示的零。<br>只有在你需要把不同的引号、换行、反斜杠、或是零结束符这些字符置入字符串时， 你才必须使用转义符。别的任何字符都可以直接写在文本里。（一些控制符可以会影响文件系统造成某些问题， 但是不会引起 Lua 的任何问题。）<br>字符串还可以用一种长括号括起来的方式定义。 我们把两个正的方括号间插入 n 个等号定义为第 n 级正长括号。 就是说，0 级正的长括号写作 [[ ， 一级正的长括号写作 [=[ ，如此等等。 反的长扩展也作类似定义； 举个例子，4 级反的长括号写作 ]====] 。 一个长字符串可以由任何一级的正的长括号开始，而由第一个碰到的同级反的长括号结束。 整个词法分析过程将不受分行限制，不处理任何转意符，并且忽略掉任何不同级别的长括号。 这种方式描述的字符串可以包含任何东西，当然特定级别的反长括号除外。<br>另一个约定是，当正的长括号后面立即跟了一个换行符， 这个换行符就不包含在这个字符串内。 举个例子，假设一个系统使用 ASCII 码 （这时，’a’ 编码为 97 ，换行符编码为 10 ，’1’ 编码为 49 ）， 下面五种方式描述了完全相同的字符串：</p>
+</code></pre><p>字符串既可以用一对单引号引起，也可以是双引号，里面还可以包含类似 C 的转义符： ‘\a’ （响铃）， ‘\b’ （退格）， ‘\f’ （表单）， ‘\n’ （换行）， ‘\r’ （回车）， ‘\t’ （横向制表）， ‘\v’ （纵向制表）， ‘\‘ （反斜杠）， ‘\”‘ （双引号）， 以及 ‘\’’ （单引号)。 而且，如果在一个反斜杠后跟了一个真正的换行符，其结果就是在字符串中产生一个换行符。 我们还可以用反斜杠加数字的形式 \ddd 来描述一个字符。这里， ddd 是一串最多三位的十进制数字。（注意，如果需要在这种描述方法后接一个是数字的字符， 那么反斜杠后必须写满三个数字。）Lua 中的字符串可以包含任何 8 位的值。包括用 ‘\0’ 表示的零。<br>只有在你需要把不同的引号、换行、反斜杠、或是零结束符这些字符置入字符串时， 你才必须使用转义符。别的任何字符都可以直接写在文本里。（一些控制符可以会影响文件系统造成某些问题， 但是不会引起 Lua 的任何问题。）<br>字符串还可以用一种长括号括起来的方式定义。 我们把两个正的方括号间插入 n 个等号定义为第 n 级正长括号。 就是说，0 级正的长括号写作 [[ ， 一级正的长括号写作 [=[ ，如此等等。 反的长扩展也作类似定义； 举个例子，4 级反的长括号写作 ]====] 。 一个长字符串可以由任何一级的正的长括号开始，而由第一个碰到的同级反的长括号结束。 整个词法分析过程将不受分行限制，不处理任何转意符，并且忽略掉任何不同级别的长括号。 这种方式描述的字符串可以包含任何东西，当然特定级别的反长括号除外。<br>另一个约定是，当正的长括号后面立即跟了一个换行符， 这个换行符就不包含在这个字符串内。 举个例子，假设一个系统使用 ASCII 码 （这时，’a’ 编码为 97 ，换行符编码为 10 ，’1’ 编码为 49 ）， 下面五种方式描述了完全相同的字符串：</p>
 <pre><code> a = &#39;alo\n123&quot;&#39;
  a = &quot;alo\n123\&quot;&quot;
  a = &#39;\97lo\10\04923&quot;&#39;
@@ -787,7 +502,7 @@ funcname ::= Name {`.´ Name} [`:´ Name]
 <li>Level = 2：指出哪个调用error的函数的函数</li>
 <li>Level = 0：不添加错误位置信息<br>因为 Lua 是一个嵌入式的扩展语言， 所有的 Lua 动作都是从宿主程序的 C 代码调用 Lua 库 （参见 lua_pcall）中的一个函数开始的。 在 Lua 编译或运行的任何时候发生了错误，控制权都会交还给 C ， 而 C 可以来做一些恰当的措施（比如打印出一条错误信息）。<br>Lua 代码可以显式的调用 error 函数来产生一条错误。 如果你需要在 Lua 中捕获发生的错误， 你可以使用 pcall 函数。</li>
 </ul>
-<h3 id="Metatable"><a href="#Metatable" class="headerlink" title="Metatable"></a>Metatable</h3><p>Lua 中的每个值都可以用一个 metatable。 这个 metatable 就是一个原始的 Lua table ， 它用来定义原始值在特定操作下的行为。 你可以通过在 metatable 中的特定域设一些值来改变拥有这个 metatable 的值 的指定操作之行为。 举例来说，当一个非数字的值作加法操作的时候， Lua 会检查它的 metatable 中 “__add” 域中的是否有一个函数。 如果有这么一个函数的话，Lua 调用这个函数来执行一次加法。<br>我们叫 metatable 中的键名为 事件 (event) ，把其中的值叫作 元方法 (metamethod)。 在上个例子中，事件是 “add” 而元方法就是那个执行加法操作的函数。<br>你可以通过 getmetatable 函数来查询到任何一个值的 metatable。<br>你可以通过 setmetatable 函数来替换掉 table 的 metatable 。 你不能从 Lua 中改变其它任何类型的值的 metatable （使用 debug 库例外）； 要这样做的话必须使用 C API 。<br>每个 table 和 userdata 拥有独立的 metatable （当然多个 table 和 userdata 可以共享一个相同的表作它们的 metatable）； 其它所有类型的值，每种类型都分别共享唯一的一个 metatable。 因此，所有的数字一起只有一个 metatable ，所有的字符串也是，等等。<br>一个 metatable 可以控制一个对象做数学运算操作、比较操作、连接操作、取长度操作、取下标操作时的行为， metatable 中还可以定义一个函数，让 userdata 作垃圾收集时调用它。 对于这些操作，Lua 都将其关联上一个被称作事件的指定健。 当 Lua 需要对一个值发起这些操作中的一个时， 它会去检查值中 metatable 中是否有对应事件。 如果有的话，键名对应的值（元方法）将控制 Lua 怎样做这个操作。<br>metatable 可以控制的操作已在下面列出来。 每个操作都用相应的名字区分。 每个操作的键名都是用操作名字加上两个下划线 ‘<strong>‘ 前缀的字符串； 举例来说，”add” 操作的键名就是字符串 “</strong>add”。 这些操作的语义用一个 Lua 函数来描述解释器如何执行更为恰当。<br>这里展示的用 Lua 写的代码仅作解说用； 实际的行为已经硬编码在解释器中，其执行效率要远高于这些模拟代码。 这些用于描述的的代码中用到的函数 （ rawget ， tonumber ，等等。） 都可以在 §5.1 中找到。 特别注意，我们使用这样一个表达式来从给定对象中提取元方法</p>
+<h3 id="Metatable"><a href="#Metatable" class="headerlink" title="Metatable"></a>Metatable</h3><p>Lua 中的每个值都可以用一个 metatable。 这个 metatable 就是一个原始的 Lua table ， 它用来定义原始值在特定操作下的行为。 你可以通过在 metatable 中的特定域设一些值来改变拥有这个 metatable 的值 的指定操作之行为。 举例来说，当一个非数字的值作加法操作的时候， Lua 会检查它的 metatable 中 “_<em>add” 域中的是否有一个函数。 如果有这么一个函数的话，Lua 调用这个函数来执行一次加法。<br>我们叫 metatable 中的键名为 事件 (event) ，把其中的值叫作 元方法 (metamethod)。 在上个例子中，事件是 “add” 而元方法就是那个执行加法操作的函数。<br>你可以通过 getmetatable 函数来查询到任何一个值的 metatable。<br>你可以通过 setmetatable 函数来替换掉 table 的 metatable 。 你不能从 Lua 中改变其它任何类型的值的 metatable （使用 debug 库例外）； 要这样做的话必须使用 C API 。<br>每个 table 和 userdata 拥有独立的 metatable （当然多个 table 和 userdata 可以共享一个相同的表作它们的 metatable）； 其它所有类型的值，每种类型都分别共享唯一的一个 metatable。 因此，所有的数字一起只有一个 metatable ，所有的字符串也是，等等。<br>一个 metatable 可以控制一个对象做数学运算操作、比较操作、连接操作、取长度操作、取下标操作时的行为， metatable 中还可以定义一个函数，让 userdata 作垃圾收集时调用它。 对于这些操作，Lua 都将其关联上一个被称作事件的指定健。 当 Lua 需要对一个值发起这些操作中的一个时， 它会去检查值中 metatable 中是否有对应事件。 如果有的话，键名对应的值（元方法）将控制 Lua 怎样做这个操作。<br>metatable 可以控制的操作已在下面列出来。 每个操作都用相应的名字区分。 每个操作的键名都是用操作名字加上两个下划线 ‘_</em>‘ 前缀的字符串； 举例来说，”add” 操作的键名就是字符串 “__add”。 这些操作的语义用一个 Lua 函数来描述解释器如何执行更为恰当。<br>这里展示的用 Lua 写的代码仅作解说用； 实际的行为已经硬编码在解释器中，其执行效率要远高于这些模拟代码。 这些用于描述的的代码中用到的函数 （ rawget ， tonumber ，等等。） 都可以在 §5.1 中找到。 特别注意，我们使用这样一个表达式来从给定对象中提取元方法</p>
 <pre><code> metatable(obj)[event]
 </code></pre><p>这个应该被解读作</p>
 <pre><code> rawget(getmetatable(obj) or {}, event)
@@ -1171,624 +886,150 @@ size_t lua_rawlen (lua_State *L, int index); -- 5.3
 <h3 id="lua-rawseti"><a href="#lua-rawseti" class="headerlink" title="lua_rawseti"></a>lua_rawseti</h3><pre><code>void lua_rawseti (lua_State *L, int index, int n);
 </code></pre><p>等价于<code>t[n] = v</code>，这里的 t 是指给定索引index 处的一个值， 而 v 是栈顶的值。函数将把这个值弹出栈。 赋值操作是直接的；就是说，不会触发元方法。</p>
 
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Lua/" rel="tag"># Lua</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/04/02/CSharp/" rel="next" title="CSharp">
-                <i class="fa fa-chevron-left"></i> CSharp
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Lua/" rel="tag"># Lua</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/02/Unix/" rel="prev" title="大端模式与小端模式">
-                大端模式与小端模式 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/04/02/CSharp/" rel="prev" title="CSharp">
+      <i class="fa fa-chevron-left"></i> CSharp
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/04/02/Unix/" rel="next" title="大端模式与小端模式">
+      大端模式与小端模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-  </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">liyanfeng</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">326</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">52</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">97</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#error"><span class="nav-number">1.</span> <span class="nav-text">error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Metatable"><span class="nav-number">2.</span> <span class="nav-text">Metatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#newindex"><span class="nav-number">3.</span> <span class="nav-text">newindex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-环境"><span class="nav-number">4.</span> <span class="nav-text">2.9 - 环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-垃圾收集"><span class="nav-number">5.</span> <span class="nav-text">2.10 - 垃圾收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-1-垃圾收集的元方法"><span class="nav-number">6.</span> <span class="nav-text">2.10.1 - 垃圾收集的元方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆栈"><span class="nav-number">7.</span> <span class="nav-text">堆栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆栈尺寸"><span class="nav-number">8.</span> <span class="nav-text">堆栈尺寸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LUA-GLOBALSINDEX"><span class="nav-number">9.</span> <span class="nav-text">LUA_GLOBALSINDEX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-Closure"><span class="nav-number">10.</span> <span class="nav-text">C Closure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LUA-REGISTRYINDEX"><span class="nav-number">11.</span> <span class="nav-text">LUA_REGISTRYINDEX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-中的错误处理"><span class="nav-number">12.</span> <span class="nav-text">C 中的错误处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Alloc"><span class="nav-number">13.</span> <span class="nav-text">lua_Alloc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-atpanic"><span class="nav-number">14.</span> <span class="nav-text">lua_atpanic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-call"><span class="nav-number">15.</span> <span class="nav-text">lua_call</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-CFunction"><span class="nav-number">16.</span> <span class="nav-text">lua_CFunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-checkstack"><span class="nav-number">17.</span> <span class="nav-text">lua_checkstack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-close"><span class="nav-number">18.</span> <span class="nav-text">lua_close</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-concat"><span class="nav-number">19.</span> <span class="nav-text">lua_concat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-cpcall"><span class="nav-number">20.</span> <span class="nav-text">lua_cpcall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-createtable"><span class="nav-number">21.</span> <span class="nav-text">lua_createtable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-dump"><span class="nav-number">22.</span> <span class="nav-text">lua_dump</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-equal"><span class="nav-number">23.</span> <span class="nav-text">lua_equal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-error"><span class="nav-number">24.</span> <span class="nav-text">lua_error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gc"><span class="nav-number">25.</span> <span class="nav-text">lua_gc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getallocf"><span class="nav-number">26.</span> <span class="nav-text">lua_getallocf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getfenv"><span class="nav-number">27.</span> <span class="nav-text">lua_getfenv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getfield"><span class="nav-number">28.</span> <span class="nav-text">lua_getfield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getglobal"><span class="nav-number">29.</span> <span class="nav-text">lua_getglobal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getmetatable"><span class="nav-number">30.</span> <span class="nav-text">lua_getmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gettable"><span class="nav-number">31.</span> <span class="nav-text">lua_gettable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gettop"><span class="nav-number">32.</span> <span class="nav-text">lua_gettop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-insert"><span class="nav-number">33.</span> <span class="nav-text">lua_insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Integer"><span class="nav-number">34.</span> <span class="nav-text">lua_Integer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isboolean"><span class="nav-number">35.</span> <span class="nav-text">lua_isboolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-iscfunction"><span class="nav-number">36.</span> <span class="nav-text">lua_iscfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isfunction"><span class="nav-number">37.</span> <span class="nav-text">lua_isfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-islightuserdata"><span class="nav-number">38.</span> <span class="nav-text">lua_islightuserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isnil"><span class="nav-number">39.</span> <span class="nav-text">lua_isnil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isnumber"><span class="nav-number">40.</span> <span class="nav-text">lua_isnumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isstring"><span class="nav-number">41.</span> <span class="nav-text">lua_isstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-istable"><span class="nav-number">42.</span> <span class="nav-text">lua_istable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isthread"><span class="nav-number">43.</span> <span class="nav-text">lua_isthread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isuserdata"><span class="nav-number">44.</span> <span class="nav-text">lua_isuserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-lessthan"><span class="nav-number">45.</span> <span class="nav-text">lua_lessthan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-load"><span class="nav-number">46.</span> <span class="nav-text">lua_load</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-newstate"><span class="nav-number">47.</span> <span class="nav-text">lua_newstate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-newtable"><span class="nav-number">48.</span> <span class="nav-text">lua_newtable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushglobaltable"><span class="nav-number">49.</span> <span class="nav-text">lua_pushglobaltable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-newthread"><span class="nav-number">50.</span> <span class="nav-text">lua_newthread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-newuserdata"><span class="nav-number">51.</span> <span class="nav-text">lua_newuserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-next"><span class="nav-number">52.</span> <span class="nav-text">lua_next</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Number"><span class="nav-number">53.</span> <span class="nav-text">lua_Number</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-objlen-amp-luaS-rawlen"><span class="nav-number">54.</span> <span class="nav-text">lua_objlen &amp; luaS_rawlen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pcall"><span class="nav-number">55.</span> <span class="nav-text">lua_pcall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pop"><span class="nav-number">56.</span> <span class="nav-text">lua_pop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushboolean"><span class="nav-number">57.</span> <span class="nav-text">lua_pushboolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushcclosure"><span class="nav-number">58.</span> <span class="nav-text">lua_pushcclosure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushcfunction"><span class="nav-number">59.</span> <span class="nav-text">lua_pushcfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushfstring"><span class="nav-number">60.</span> <span class="nav-text">lua_pushfstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushinteger"><span class="nav-number">61.</span> <span class="nav-text">lua_pushinteger</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#lua-pushlightuserdata"><span class="nav-number"></span> <span class="nav-text">lua_pushlightuserdata</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushlstring"><span class="nav-number">1.</span> <span class="nav-text">lua_pushlstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushnil"><span class="nav-number">2.</span> <span class="nav-text">lua_pushnil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushnumber"><span class="nav-number">3.</span> <span class="nav-text">lua_pushnumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushstring"><span class="nav-number">4.</span> <span class="nav-text">lua_pushstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushthread"><span class="nav-number">5.</span> <span class="nav-text">lua_pushthread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushvalue"><span class="nav-number">6.</span> <span class="nav-text">lua_pushvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushvfstring"><span class="nav-number">7.</span> <span class="nav-text">lua_pushvfstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawequal"><span class="nav-number">8.</span> <span class="nav-text">lua_rawequal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawget"><span class="nav-number">9.</span> <span class="nav-text">lua_rawget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawgeti"><span class="nav-number">10.</span> <span class="nav-text">lua_rawgeti</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawset"><span class="nav-number">11.</span> <span class="nav-text">lua_rawset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawseti"><span class="nav-number">12.</span> <span class="nav-text">lua_rawseti</span></a></li></ol></li></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="总访客量">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="总访问量">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#error"><span class="nav-number">1.</span> <span class="nav-text">error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Metatable"><span class="nav-number">2.</span> <span class="nav-text">Metatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#newindex"><span class="nav-number">3.</span> <span class="nav-text">newindex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-9-环境"><span class="nav-number">4.</span> <span class="nav-text">2.9 - 环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-垃圾收集"><span class="nav-number">5.</span> <span class="nav-text">2.10 - 垃圾收集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-10-1-垃圾收集的元方法"><span class="nav-number">6.</span> <span class="nav-text">2.10.1 - 垃圾收集的元方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆栈"><span class="nav-number">7.</span> <span class="nav-text">堆栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#堆栈尺寸"><span class="nav-number">8.</span> <span class="nav-text">堆栈尺寸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LUA-GLOBALSINDEX"><span class="nav-number">9.</span> <span class="nav-text">LUA_GLOBALSINDEX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-Closure"><span class="nav-number">10.</span> <span class="nav-text">C Closure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LUA-REGISTRYINDEX"><span class="nav-number">11.</span> <span class="nav-text">LUA_REGISTRYINDEX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-中的错误处理"><span class="nav-number">12.</span> <span class="nav-text">C 中的错误处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Alloc"><span class="nav-number">13.</span> <span class="nav-text">lua_Alloc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-atpanic"><span class="nav-number">14.</span> <span class="nav-text">lua_atpanic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-call"><span class="nav-number">15.</span> <span class="nav-text">lua_call</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-CFunction"><span class="nav-number">16.</span> <span class="nav-text">lua_CFunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-checkstack"><span class="nav-number">17.</span> <span class="nav-text">lua_checkstack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-close"><span class="nav-number">18.</span> <span class="nav-text">lua_close</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-concat"><span class="nav-number">19.</span> <span class="nav-text">lua_concat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-cpcall"><span class="nav-number">20.</span> <span class="nav-text">lua_cpcall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-createtable"><span class="nav-number">21.</span> <span class="nav-text">lua_createtable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-dump"><span class="nav-number">22.</span> <span class="nav-text">lua_dump</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-equal"><span class="nav-number">23.</span> <span class="nav-text">lua_equal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-error"><span class="nav-number">24.</span> <span class="nav-text">lua_error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gc"><span class="nav-number">25.</span> <span class="nav-text">lua_gc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getallocf"><span class="nav-number">26.</span> <span class="nav-text">lua_getallocf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getfenv"><span class="nav-number">27.</span> <span class="nav-text">lua_getfenv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getfield"><span class="nav-number">28.</span> <span class="nav-text">lua_getfield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getglobal"><span class="nav-number">29.</span> <span class="nav-text">lua_getglobal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getmetatable"><span class="nav-number">30.</span> <span class="nav-text">lua_getmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gettable"><span class="nav-number">31.</span> <span class="nav-text">lua_gettable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gettop"><span class="nav-number">32.</span> <span class="nav-text">lua_gettop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-insert"><span class="nav-number">33.</span> <span class="nav-text">lua_insert</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Integer"><span class="nav-number">34.</span> <span class="nav-text">lua_Integer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isboolean"><span class="nav-number">35.</span> <span class="nav-text">lua_isboolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-iscfunction"><span class="nav-number">36.</span> <span class="nav-text">lua_iscfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isfunction"><span class="nav-number">37.</span> <span class="nav-text">lua_isfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-islightuserdata"><span class="nav-number">38.</span> <span class="nav-text">lua_islightuserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isnil"><span class="nav-number">39.</span> <span class="nav-text">lua_isnil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isnumber"><span class="nav-number">40.</span> <span class="nav-text">lua_isnumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isstring"><span class="nav-number">41.</span> <span class="nav-text">lua_isstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-istable"><span class="nav-number">42.</span> <span class="nav-text">lua_istable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isthread"><span class="nav-number">43.</span> <span class="nav-text">lua_isthread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-isuserdata"><span class="nav-number">44.</span> <span class="nav-text">lua_isuserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-lessthan"><span class="nav-number">45.</span> <span class="nav-text">lua_lessthan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-load"><span class="nav-number">46.</span> <span class="nav-text">lua_load</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-newstate"><span class="nav-number">47.</span> <span class="nav-text">lua_newstate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-newtable"><span class="nav-number">48.</span> <span class="nav-text">lua_newtable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushglobaltable"><span class="nav-number">49.</span> <span class="nav-text">lua_pushglobaltable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-newthread"><span class="nav-number">50.</span> <span class="nav-text">lua_newthread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-newuserdata"><span class="nav-number">51.</span> <span class="nav-text">lua_newuserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-next"><span class="nav-number">52.</span> <span class="nav-text">lua_next</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Number"><span class="nav-number">53.</span> <span class="nav-text">lua_Number</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-objlen-amp-luaS-rawlen"><span class="nav-number">54.</span> <span class="nav-text">lua_objlen &amp; luaS_rawlen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pcall"><span class="nav-number">55.</span> <span class="nav-text">lua_pcall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pop"><span class="nav-number">56.</span> <span class="nav-text">lua_pop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushboolean"><span class="nav-number">57.</span> <span class="nav-text">lua_pushboolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushcclosure"><span class="nav-number">58.</span> <span class="nav-text">lua_pushcclosure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushcfunction"><span class="nav-number">59.</span> <span class="nav-text">lua_pushcfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushfstring"><span class="nav-number">60.</span> <span class="nav-text">lua_pushfstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushinteger"><span class="nav-number">61.</span> <span class="nav-text">lua_pushinteger</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lua-pushlightuserdata"><span class="nav-number"></span> <span class="nav-text">lua_pushlightuserdata</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushlstring"><span class="nav-number">1.</span> <span class="nav-text">lua_pushlstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushnil"><span class="nav-number">2.</span> <span class="nav-text">lua_pushnil</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushnumber"><span class="nav-number">3.</span> <span class="nav-text">lua_pushnumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushstring"><span class="nav-number">4.</span> <span class="nav-text">lua_pushstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushthread"><span class="nav-number">5.</span> <span class="nav-text">lua_pushthread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushvalue"><span class="nav-number">6.</span> <span class="nav-text">lua_pushvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-pushvfstring"><span class="nav-number">7.</span> <span class="nav-text">lua_pushvfstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawequal"><span class="nav-number">8.</span> <span class="nav-text">lua_rawequal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawget"><span class="nav-number">9.</span> <span class="nav-text">lua_rawget</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawgeti"><span class="nav-number">10.</span> <span class="nav-text">lua_rawgeti</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawset"><span class="nav-number">11.</span> <span class="nav-text">lua_rawset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-rawseti"><span class="nav-number">12.</span> <span class="nav-text">lua_rawseti</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liyanfeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
 
 
 
@@ -1797,116 +1038,75 @@ size_t lua_rawlen (lua_State *L, int index); -- 5.3
 
 
 
-
-
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
 
-
-
-  
-    
-    
-  
-  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-  
-  <script src="/lib/reading_progress/reading_progress.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=7.0.1"></script>
-
-  <script src="/js/src/motion.js?v=7.0.1"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
-<script src="/js/src/post-details.js?v=7.0.1"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
-
-
-  
-  
-  
-
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
-
-
-
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-
-<script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail,link';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
   });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
-    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
-    placeholder: 'Just go go',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: false
-  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
 </script>
 
 
@@ -1915,148 +1115,24 @@ size_t lua_rawlen (lua_State *L, int index); -- 5.3
   
 
 
-  
 
 
 
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
 
 
 
+
+
+
+
+
+
+
+    <div id="pjax">
   
 
   
 
-  
-  
-
-  
-  
-
-  
-
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-  
-  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
-  <script>
-  
-    bookmark.scrollToMark('auto', "#更多");
-  
-  </script>
-
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      
-        background-color: #eee;
-        background-image: linear-gradient(#fcfcfc, #eee);
-        border: 1px solid #d5d5d5;
-        border-radius: 3px;
-      
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      
-        right: 4px;
-        top: 8px;
-      
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1;
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; // Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.readOnly = true;
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, code.length);
-        ta.readOnly = false;
-        var result = document.execCommand('copy');
-        
-          if (result) $(this).text('复制成功');
-          else $(this).text('复制失败');
-        
-        ta.blur(); // For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('复制');
-        }, 300);
-      }).append(e);
-    })
-  </script>
-
-
+    </div>
 </body>
 </html>

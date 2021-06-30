@@ -1,145 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-
-
-
-
-
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-    
-    
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
-  
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.0.1">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '7.0.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
-    fancybox: true,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'W8FJT5MTZU',
-      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
-      indexName: 'hexo',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zentia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"W8FJT5MTZU","apiKey":"f4ca7ae2408d2e27ffc8269ad8d34273","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
   <meta name="description" content="Floder:Editor\Mono\Inspector1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909">
 <meta name="keywords" content="UnityCsReference">
@@ -154,18 +33,16 @@
 <meta name="twitter:title" content="CameraEditor">
 <meta name="twitter:description" content="Floder:Editor\Mono\Inspector1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909">
 
+<link rel="canonical" href="http://zentia.github.io/2018/07/11/CameraEditor/">
 
 
-
-
-
-  <link rel="canonical" href="http://zentia.github.io/2018/07/11/CameraEditor/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -177,15 +54,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -194,9 +64,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -210,150 +79,53 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta custom-logo">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">liyanfeng</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-    
-    
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liyanfeng</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
 
+
 <nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
+  </ul>
 </nav>
 
-
-
-  
 
 
 
@@ -361,108 +133,61 @@
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
-          <div id="content" class="content">
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  
-    <div class="reading-progress-bar"></div>
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/11/CameraEditor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">CameraEditor
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          CameraEditor
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2018/07/11/CameraEditor/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/11/CameraEditor/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">发表于</span>
 
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon" title="阅读次数">
-            <i class="fa fa-eye"></i>
-            
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              <time title="创建时间：2018-07-11 19:01:26" itemprop="dateCreated datePublished" datetime="2018-07-11T19:01:26+08:00">2018-07-11</time>
             </span>
-          
-
-          
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -470,603 +195,151 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <p>Floder:Editor\Mono\Inspector<br><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br><span class="line">662</span><br><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br><span class="line">675</span><br><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br><span class="line">688</span><br><span class="line">689</span><br><span class="line">690</span><br><span class="line">691</span><br><span class="line">692</span><br><span class="line">693</span><br><span class="line">694</span><br><span class="line">695</span><br><span class="line">696</span><br><span class="line">697</span><br><span class="line">698</span><br><span class="line">699</span><br><span class="line">700</span><br><span class="line">701</span><br><span class="line">702</span><br><span class="line">703</span><br><span class="line">704</span><br><span class="line">705</span><br><span class="line">706</span><br><span class="line">707</span><br><span class="line">708</span><br><span class="line">709</span><br><span class="line">710</span><br><span class="line">711</span><br><span class="line">712</span><br><span class="line">713</span><br><span class="line">714</span><br><span class="line">715</span><br><span class="line">716</span><br><span class="line">717</span><br><span class="line">718</span><br><span class="line">719</span><br><span class="line">720</span><br><span class="line">721</span><br><span class="line">722</span><br><span class="line">723</span><br><span class="line">724</span><br><span class="line">725</span><br><span class="line">726</span><br><span class="line">727</span><br><span class="line">728</span><br><span class="line">729</span><br><span class="line">730</span><br><span class="line">731</span><br><span class="line">732</span><br><span class="line">733</span><br><span class="line">734</span><br><span class="line">735</span><br><span class="line">736</span><br><span class="line">737</span><br><span class="line">738</span><br><span class="line">739</span><br><span class="line">740</span><br><span class="line">741</span><br><span class="line">742</span><br><span class="line">743</span><br><span class="line">744</span><br><span class="line">745</span><br><span class="line">746</span><br><span class="line">747</span><br><span class="line">748</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unity C# reference source</span></span><br><span class="line"><span class="comment">// Copyright (c) Unity Technologies. For terms of use, see</span></span><br><span class="line"><span class="comment">// https://unity3d.com/legal/licenses/Unity_Reference_Only_License</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.Text;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.Rendering;</span><br><span class="line"><span class="keyword">using</span> AnimatedBool = UnityEditor.AnimatedValues.AnimBool;</span><br><span class="line"><span class="keyword">using</span> UnityEngine.Scripting;</span><br><span class="line"><span class="keyword">using</span> UnityEditor.Modules;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">UnityEditor</span></span><br><span class="line">&#123;</span><br><span class="line">    [<span class="meta">CustomEditor(typeof(Camera))</span>]</span><br><span class="line">    [<span class="meta">CanEditMultipleObjects</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CameraEditor</span> : <span class="title">Editor</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title">Settings</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">private</span> SerializedObject m_SerializedObject;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">Settings</span>(<span class="params">SerializedObject so</span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                m_SerializedObject = so;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Manually entered rendering path names/values, since we want to show them</span></span><br><span class="line">            <span class="comment">// in different order than they appear in the enum.</span></span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> GUIContent[] kCameraRenderPaths =</span><br><span class="line">            &#123;</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"Use Graphics Settings"</span>),</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"Forward"</span>),</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"Deferred"</span>),</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"Legacy Vertex Lit"</span>),</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"Legacy Deferred (light prepass)"</span>)</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="keyword">int</span>[] kCameraRenderPathValues =</span><br><span class="line">            &#123;</span><br><span class="line">                (<span class="keyword">int</span>)RenderingPath.UsePlayerSettings,</span><br><span class="line">                (<span class="keyword">int</span>)RenderingPath.Forward,</span><br><span class="line">                (<span class="keyword">int</span>)RenderingPath.DeferredShading,</span><br><span class="line">                (<span class="keyword">int</span>)RenderingPath.VertexLit,</span><br><span class="line">                (<span class="keyword">int</span>)RenderingPath.DeferredLighting</span><br><span class="line">            &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> SerializedProperty clearFlags &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty backgroundColor &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty normalizedViewPortRect &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty fieldOfView &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty orthographic &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty orthographicSize &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty depth &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty cullingMask &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty renderingPath &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty occlusionCulling &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty targetTexture &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty HDR &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty allowMSAA &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty allowDynamicResolution &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty stereoConvergence &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty stereoSeparation &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty nearClippingPlane &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line">            <span class="keyword">public</span> SerializedProperty farClippingPlane &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> SerializedProperty targetDisplay &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">public</span> SerializedProperty targetEye &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> GUIContent[] kTargetEyes =</span><br><span class="line">            &#123;</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"Both"</span>),</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"Left"</span>),</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"Right"</span>),</span><br><span class="line">                EditorGUIUtility.TrTextContent(<span class="string">"None (Main Display)"</span>),</span><br><span class="line">            &#125;;</span><br><span class="line">            <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> <span class="keyword">int</span>[] kTargetEyeValues = &#123; (<span class="keyword">int</span>)StereoTargetEyeMask.Both, (<span class="keyword">int</span>)StereoTargetEyeMask.Left, (<span class="keyword">int</span>)StereoTargetEyeMask.Right, (<span class="keyword">int</span>)StereoTargetEyeMask.None &#125;;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                clearFlags = m_SerializedObject.FindProperty(<span class="string">"m_ClearFlags"</span>);</span><br><span class="line">                backgroundColor = m_SerializedObject.FindProperty(<span class="string">"m_BackGroundColor"</span>);</span><br><span class="line">                normalizedViewPortRect = m_SerializedObject.FindProperty(<span class="string">"m_NormalizedViewPortRect"</span>);</span><br><span class="line">                nearClippingPlane = m_SerializedObject.FindProperty(<span class="string">"near clip plane"</span>);</span><br><span class="line">                farClippingPlane = m_SerializedObject.FindProperty(<span class="string">"far clip plane"</span>);</span><br><span class="line">                fieldOfView = m_SerializedObject.FindProperty(<span class="string">"field of view"</span>);</span><br><span class="line">                orthographic = m_SerializedObject.FindProperty(<span class="string">"orthographic"</span>);</span><br><span class="line">                orthographicSize = m_SerializedObject.FindProperty(<span class="string">"orthographic size"</span>);</span><br><span class="line">                depth = m_SerializedObject.FindProperty(<span class="string">"m_Depth"</span>);</span><br><span class="line">                cullingMask = m_SerializedObject.FindProperty(<span class="string">"m_CullingMask"</span>);</span><br><span class="line">                renderingPath = m_SerializedObject.FindProperty(<span class="string">"m_RenderingPath"</span>);</span><br><span class="line">                occlusionCulling = m_SerializedObject.FindProperty(<span class="string">"m_OcclusionCulling"</span>);</span><br><span class="line">                targetTexture = m_SerializedObject.FindProperty(<span class="string">"m_TargetTexture"</span>);</span><br><span class="line">                HDR = m_SerializedObject.FindProperty(<span class="string">"m_HDR"</span>);</span><br><span class="line">                allowMSAA = m_SerializedObject.FindProperty(<span class="string">"m_AllowMSAA"</span>);</span><br><span class="line">                allowDynamicResolution = m_SerializedObject.FindProperty(<span class="string">"m_AllowDynamicResolution"</span>);</span><br><span class="line"></span><br><span class="line">                stereoConvergence = m_SerializedObject.FindProperty(<span class="string">"m_StereoConvergence"</span>);</span><br><span class="line">                stereoSeparation = m_SerializedObject.FindProperty(<span class="string">"m_StereoSeparation"</span>);</span><br><span class="line"></span><br><span class="line">                targetDisplay = m_SerializedObject.FindProperty(<span class="string">"m_TargetDisplay"</span>);</span><br><span class="line"></span><br><span class="line">                targetEye = m_SerializedObject.FindProperty(<span class="string">"m_TargetEye"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Update</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                m_SerializedObject.Update();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ApplyModifiedProperties</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                m_SerializedObject.ApplyModifiedProperties();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawClearFlags</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(clearFlags, EditorGUIUtility.TextContent(<span class="string">"Clear Flags|What to display in empty areas of this Camera's view.\n\nChoose Skybox to display a skybox in empty areas, defaulting to a background color if no skybox is found.\n\nChoose Solid Color to display a background color in empty areas.\n\nChoose Depth Only to display nothing in empty areas.\n\nChoose Don't Clear to display whatever was displayed in the previous frame in empty areas."</span>));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawBackgroundColor</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(backgroundColor, EditorGUIUtility.TextContent(<span class="string">"Background|The Camera clears the screen to this color before rendering."</span>));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawCullingMask</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(cullingMask);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawProjection</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                ProjectionType projectionType = orthographic.boolValue ? ProjectionType.Orthographic : ProjectionType.Perspective;</span><br><span class="line">                EditorGUI.BeginChangeCheck();</span><br><span class="line">                EditorGUI.showMixedValue = orthographic.hasMultipleDifferentValues;</span><br><span class="line">                projectionType = (ProjectionType)EditorGUILayout.EnumPopup(EditorGUIUtility.TextContent(<span class="string">"Projection|How the Camera renders perspective.\n\nChoose Perspective to render objects with perspective.\n\nChoose Orthographic to render objects uniformly, with no sense of perspective."</span>), projectionType);</span><br><span class="line">                EditorGUI.showMixedValue = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">if</span> (EditorGUI.EndChangeCheck())</span><br><span class="line">                    orthographic.boolValue = (projectionType == ProjectionType.Orthographic);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (!orthographic.hasMultipleDifferentValues)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (projectionType == ProjectionType.Orthographic)</span><br><span class="line">                        EditorGUILayout.PropertyField(orthographicSize, <span class="keyword">new</span> GUIContent(<span class="string">"Size"</span>));</span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                        EditorGUILayout.Slider(fieldOfView, <span class="number">1f</span>, <span class="number">179f</span>, EditorGUIUtility.TextContent(<span class="string">"Field of View|The width of the Camera’s view angle, measured in degrees along the local Y axis."</span>));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawClippingPlanes</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertiesField(EditorGUI.s_ClipingPlanesLabel, <span class="keyword">new</span>[] &#123;nearClippingPlane, farClippingPlane&#125;, EditorGUI.s_NearAndFarLabels, EditorGUI.kNearFarLabelsWidth);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawNormalizedViewPort</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(normalizedViewPortRect, EditorGUIUtility.TextContent(<span class="string">"Viewport Rect|Four values that indicate where on the screen this camera view will be drawn. Measured in Viewport Coordinates (values 0–1)."</span>));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawDepth</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(depth);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawRenderingPath</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.IntPopup(renderingPath, kCameraRenderPaths, kCameraRenderPathValues, EditorGUIUtility.TempContent(<span class="string">"Rendering Path"</span>));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawTargetTexture</span>(<span class="params"><span class="keyword">bool</span> deferred</span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(targetTexture);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// show warning if we have deferred but manual MSAA set</span></span><br><span class="line">                <span class="comment">// only do this if the m_TargetTexture has the same values across all target cameras</span></span><br><span class="line">                <span class="keyword">if</span> (!targetTexture.hasMultipleDifferentValues)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> targetTexture = <span class="keyword">this</span>.targetTexture.objectReferenceValue <span class="keyword">as</span> RenderTexture;</span><br><span class="line">                    <span class="keyword">if</span> (targetTexture</span><br><span class="line">                        &amp;&amp; targetTexture.antiAliasing &gt; <span class="number">1</span></span><br><span class="line">                        &amp;&amp; deferred)</span><br><span class="line">                    &#123;</span><br><span class="line">                        EditorGUILayout.HelpBox(<span class="string">"Manual MSAA target set with deferred rendering. This will lead to undefined behavior."</span>, MessageType.Warning, <span class="literal">true</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawOcclusionCulling</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(occlusionCulling);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawHDR</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(HDR, EditorGUIUtility.TempContent(<span class="string">"Allow HDR"</span>));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawMSAA</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(allowMSAA);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawDynamicResolution</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.PropertyField(allowDynamicResolution);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawVR</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                <span class="keyword">if</span> (PlayerSettings.virtualRealitySupported)</span><br><span class="line">                &#123;</span><br><span class="line">                    EditorGUILayout.PropertyField(stereoSeparation);</span><br><span class="line">                    EditorGUILayout.PropertyField(stereoConvergence);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawMultiDisplay</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                <span class="keyword">if</span> (ModuleManager.ShouldShowMultiDisplayOption())</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">int</span> prevDisplay = targetDisplay.intValue;</span><br><span class="line">                    EditorGUILayout.Space();</span><br><span class="line">                    EditorGUILayout.IntPopup(targetDisplay, DisplayUtility.GetDisplayNames(), DisplayUtility.GetDisplayIndices(), EditorGUIUtility.TempContent(<span class="string">"Target Display"</span>));</span><br><span class="line">                    <span class="keyword">if</span> (prevDisplay != targetDisplay.intValue)</span><br><span class="line">                        GameView.RepaintAll();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DrawTargetEye</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                EditorGUILayout.IntPopup(targetEye, kTargetEyes, kTargetEyeValues, EditorGUIUtility.TempContent(<span class="string">"Target Eye"</span>));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">class</span> <span class="title">Styles</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">static</span> GUIContent iconRemove = EditorGUIUtility.IconContent(<span class="string">"Toolbar Minus"</span>, <span class="string">"|Remove command buffer"</span>);</span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">static</span> GUIStyle invisibleButton = <span class="string">"InvisibleButton"</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">readonly</span> AnimatedBool m_ShowBGColorOptions = <span class="keyword">new</span> AnimatedBool();</span><br><span class="line">        <span class="keyword">readonly</span> AnimatedBool m_ShowOrthoOptions = <span class="keyword">new</span> AnimatedBool();</span><br><span class="line">        <span class="keyword">readonly</span> AnimatedBool m_ShowTargetEyeOption = <span class="keyword">new</span> AnimatedBool();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Camera camera &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> target <span class="keyword">as</span> Camera; &#125; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">IsDeferredRenderingPath</span>(<span class="params">RenderingPath rp</span>)</span> &#123; <span class="keyword">return</span> rp == RenderingPath.DeferredLighting || rp == RenderingPath.DeferredShading; &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">bool</span> wantDeferredRendering</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">bool</span> isCamDeferred  = IsDeferredRenderingPath(camera.renderingPath);</span><br><span class="line">                <span class="keyword">bool</span> isTierDeferred = IsDeferredRenderingPath(Rendering.EditorGraphicsSettings.GetCurrentTierSettings().renderingPath);</span><br><span class="line">                <span class="keyword">return</span> isCamDeferred || (camera.renderingPath == RenderingPath.UsePlayerSettings &amp;&amp; isTierDeferred);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">enum</span> ProjectionType &#123; Perspective, Orthographic &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Camera m_PreviewCamera;</span><br><span class="line">        <span class="keyword">protected</span> Camera previewCamera</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (m_PreviewCamera == <span class="literal">null</span>)</span><br><span class="line">                    m_PreviewCamera = EditorUtility.CreateGameObjectWithHideFlags(<span class="string">"Preview Camera"</span>, HideFlags.HideAndDontSave, <span class="keyword">typeof</span>(Camera), <span class="keyword">typeof</span>(Skybox)).GetComponent&lt;Camera&gt;();</span><br><span class="line">                m_PreviewCamera.enabled = <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">return</span> m_PreviewCamera;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> RenderTexture m_PreviewTexture;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// should match color in GizmosDrawers.cpp</span></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">readonly</span> Color kGizmoCamera = <span class="keyword">new</span> Color(<span class="number">233f</span> / <span class="number">255f</span>, <span class="number">233f</span> / <span class="number">255f</span>, <span class="number">233f</span> / <span class="number">255f</span>, <span class="number">128f</span> / <span class="number">255f</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">const</span> <span class="keyword">float</span> kPreviewNormalizedSize = <span class="number">0.2f</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">bool</span> m_CommandBuffersShown = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Settings m_Settings;</span><br><span class="line">        <span class="keyword">protected</span> Settings settings</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (m_Settings == <span class="literal">null</span>)</span><br><span class="line">                    m_Settings = <span class="keyword">new</span> Settings(serializedObject);</span><br><span class="line">                <span class="keyword">return</span> m_Settings;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">bool</span> clearFlagsHasMultipleValues</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span> &#123; <span class="keyword">return</span> settings.clearFlags.hasMultipleDifferentValues; &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">bool</span> orthographicHasMultipleValues</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span> &#123; <span class="keyword">return</span> settings.orthographic.hasMultipleDifferentValues; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> targetEyeValue</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">get</span> &#123; <span class="keyword">return</span> settings.targetEye.intValue; &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnEnable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            settings.OnEnable();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> c = (Camera)target;</span><br><span class="line">            m_ShowBGColorOptions.<span class="keyword">value</span> = !clearFlagsHasMultipleValues &amp;&amp; (c.clearFlags == CameraClearFlags.SolidColor || c.clearFlags == CameraClearFlags.Skybox);</span><br><span class="line">            m_ShowOrthoOptions.<span class="keyword">value</span> = c.orthographic;</span><br><span class="line">            m_ShowTargetEyeOption.<span class="keyword">value</span> = targetEyeValue != (<span class="keyword">int</span>)StereoTargetEyeMask.Both || PlayerSettings.virtualRealitySupported;</span><br><span class="line"></span><br><span class="line">            m_ShowBGColorOptions.valueChanged.AddListener(Repaint);</span><br><span class="line">            m_ShowOrthoOptions.valueChanged.AddListener(Repaint);</span><br><span class="line">            m_ShowTargetEyeOption.valueChanged.AddListener(Repaint);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">internal</span> <span class="keyword">void</span> <span class="title">OnDisable</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            m_ShowBGColorOptions.valueChanged.RemoveListener(Repaint);</span><br><span class="line">            m_ShowOrthoOptions.valueChanged.RemoveListener(Repaint);</span><br><span class="line">            m_ShowTargetEyeOption.valueChanged.RemoveListener(Repaint);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">OnDestroy</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (m_PreviewCamera != <span class="literal">null</span>)</span><br><span class="line">                DestroyImmediate(m_PreviewCamera.gameObject, <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DepthTextureModeGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">// Camera's depth texture mode is not serialized data, so can't get to it through</span></span><br><span class="line">            <span class="comment">// serialized property (hence no multi-edit).</span></span><br><span class="line">            <span class="keyword">if</span> (targets.Length != <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            <span class="keyword">var</span> cam = target <span class="keyword">as</span> Camera;</span><br><span class="line">            <span class="keyword">if</span> (cam == <span class="literal">null</span> || cam.depthTextureMode == DepthTextureMode.None)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            List&lt;<span class="keyword">string</span>&gt; buffers = <span class="keyword">new</span> List&lt;<span class="keyword">string</span>&gt;();</span><br><span class="line">            <span class="keyword">if</span> ((cam.depthTextureMode &amp; DepthTextureMode.Depth) != <span class="number">0</span>)</span><br><span class="line">                buffers.Add(<span class="string">"Depth"</span>);</span><br><span class="line">            <span class="keyword">if</span> ((cam.depthTextureMode &amp; DepthTextureMode.DepthNormals) != <span class="number">0</span>)</span><br><span class="line">                buffers.Add(<span class="string">"DepthNormals"</span>);</span><br><span class="line">            <span class="keyword">if</span> ((cam.depthTextureMode &amp; DepthTextureMode.MotionVectors) != <span class="number">0</span>)</span><br><span class="line">                buffers.Add(<span class="string">"MotionVectors"</span>);</span><br><span class="line">            <span class="keyword">if</span> (buffers.Count == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            StringBuilder sb = <span class="keyword">new</span> StringBuilder(<span class="string">"Info: renders "</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; buffers.Count; ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (i != <span class="number">0</span>)</span><br><span class="line">                    sb.Append(<span class="string">" &amp; "</span>);</span><br><span class="line"></span><br><span class="line">                sb.Append(buffers[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            sb.Append(buffers.Count &gt; <span class="number">1</span> ? <span class="string">" textures"</span> : <span class="string">" texture"</span>);</span><br><span class="line">            EditorGUILayout.HelpBox(sb.ToString(), MessageType.None, <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> Rect <span class="title">GetRemoveButtonRect</span>(<span class="params">Rect r</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> buttonSize = Styles.invisibleButton.CalcSize(Styles.iconRemove);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Rect(r.xMax - buttonSize.x, r.y + (<span class="keyword">int</span>)(r.height / <span class="number">2</span> - buttonSize.y / <span class="number">2</span>), buttonSize.x, buttonSize.y);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * Draws the 2D bounds of the camera when in 2D mode.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        [<span class="meta">DrawGizmo(GizmoType.NonSelected)</span>]</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DrawCameraBound</span>(<span class="params">Camera camera, GizmoType gizmoType</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> sv = SceneView.currentDrawingSceneView;</span><br><span class="line">            <span class="keyword">if</span> (sv != <span class="literal">null</span> &amp;&amp; sv.in2DMode)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (camera == Camera.main &amp;&amp; camera.orthographic)</span><br><span class="line">                    CameraEditor.RenderGizmo(camera);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">CommandBufferGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="comment">// Command buffers are not serialized data, so can't get to them through</span></span><br><span class="line">            <span class="comment">// serialized property (hence no multi-edit).</span></span><br><span class="line">            <span class="keyword">if</span> (targets.Length != <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            <span class="keyword">var</span> cam = target <span class="keyword">as</span> Camera;</span><br><span class="line">            <span class="keyword">if</span> (cam == <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            <span class="keyword">int</span> count = cam.commandBufferCount;</span><br><span class="line">            <span class="keyword">if</span> (count == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            m_CommandBuffersShown = GUILayout.Toggle(m_CommandBuffersShown, GUIContent.Temp(count + <span class="string">" command buffers"</span>), EditorStyles.foldout);</span><br><span class="line">            <span class="keyword">if</span> (!m_CommandBuffersShown)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            EditorGUI.indentLevel++;</span><br><span class="line">            <span class="keyword">foreach</span> (<span class="function">CameraEvent ce <span class="title">in</span> (<span class="params">CameraEvent[]</span>)System.Enum.<span class="title">GetValues</span>(<span class="params"><span class="keyword">typeof</span>(CameraEvent</span>)))</span></span><br><span class="line"><span class="function"></span>            &#123;</span><br><span class="line">                CommandBuffer[] cbs = cam.GetCommandBuffers(ce);</span><br><span class="line">                <span class="keyword">foreach</span> (CommandBuffer cb <span class="keyword">in</span> cbs)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">using</span> (<span class="keyword">new</span> GUILayout.HorizontalScope())</span><br><span class="line">                    &#123;</span><br><span class="line">                        <span class="comment">// row with event &amp; command buffer information label</span></span><br><span class="line">                        Rect rowRect = GUILayoutUtility.GetRect(GUIContent.none, EditorStyles.miniLabel);</span><br><span class="line">                        rowRect.xMin += EditorGUI.indent;</span><br><span class="line">                        Rect minusRect = GetRemoveButtonRect(rowRect);</span><br><span class="line">                        rowRect.xMax = minusRect.x;</span><br><span class="line">                        GUI.Label(rowRect, <span class="keyword">string</span>.Format(<span class="string">"&#123;0&#125;: &#123;1&#125; (&#123;2&#125;)"</span>, ce, cb.name, EditorUtility.FormatBytes(cb.sizeInBytes)), EditorStyles.miniLabel);</span><br><span class="line">                        <span class="comment">// and a button to remove it</span></span><br><span class="line">                        <span class="keyword">if</span> (GUI.Button(minusRect, Styles.iconRemove, Styles.invisibleButton))</span><br><span class="line">                        &#123;</span><br><span class="line">                            cam.RemoveCommandBuffer(ce, cb);</span><br><span class="line">                            SceneView.RepaintAll();</span><br><span class="line">                            GameView.RepaintAll();</span><br><span class="line">                            GUIUtility.ExitGUI();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// "remove all" button</span></span><br><span class="line">            <span class="keyword">using</span> (<span class="keyword">new</span> GUILayout.HorizontalScope())</span><br><span class="line">            &#123;</span><br><span class="line">                GUILayout.FlexibleSpace();</span><br><span class="line">                <span class="keyword">if</span> (GUILayout.Button(<span class="string">"Remove all"</span>, EditorStyles.miniButton))</span><br><span class="line">                &#123;</span><br><span class="line">                    cam.RemoveAllCommandBuffers();</span><br><span class="line">                    SceneView.RepaintAll();</span><br><span class="line">                    GameView.RepaintAll();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            EditorGUI.indentLevel--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnInspectorGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            settings.Update();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">var</span> c = (Camera)target;</span><br><span class="line">            m_ShowBGColorOptions.target = !clearFlagsHasMultipleValues &amp;&amp; (c.clearFlags == CameraClearFlags.SolidColor || c.clearFlags == CameraClearFlags.Skybox);</span><br><span class="line">            m_ShowOrthoOptions.target = !orthographicHasMultipleValues &amp;&amp; c.orthographic;</span><br><span class="line">            m_ShowTargetEyeOption.target = targetEyeValue != (<span class="keyword">int</span>)StereoTargetEyeMask.Both || PlayerSettings.virtualRealitySupported;</span><br><span class="line"></span><br><span class="line">            settings.DrawClearFlags();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (EditorGUILayout.BeginFadeGroup(m_ShowBGColorOptions.faded))</span><br><span class="line">                settings.DrawBackgroundColor();</span><br><span class="line">            EditorGUILayout.EndFadeGroup();</span><br><span class="line"></span><br><span class="line">            settings.DrawCullingMask();</span><br><span class="line"></span><br><span class="line">            EditorGUILayout.Space();</span><br><span class="line"></span><br><span class="line">            settings.DrawProjection();</span><br><span class="line"></span><br><span class="line">            settings.DrawClippingPlanes();</span><br><span class="line"></span><br><span class="line">            settings.DrawNormalizedViewPort();</span><br><span class="line"></span><br><span class="line">            EditorGUILayout.Space();</span><br><span class="line">            settings.DrawDepth();</span><br><span class="line">            settings.DrawRenderingPath();</span><br><span class="line">            <span class="keyword">if</span> (m_ShowOrthoOptions.target &amp;&amp; wantDeferredRendering)</span><br><span class="line">                EditorGUILayout.HelpBox(<span class="string">"Deferred rendering does not work with Orthographic camera, will use Forward."</span>,</span><br><span class="line">                    MessageType.Warning, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line">            settings.DrawTargetTexture(wantDeferredRendering);</span><br><span class="line">            settings.DrawOcclusionCulling();</span><br><span class="line">            settings.DrawHDR();</span><br><span class="line">            settings.DrawMSAA();</span><br><span class="line">            settings.DrawDynamicResolution();</span><br><span class="line"></span><br><span class="line">            DisplayCameraWarnings();</span><br><span class="line"></span><br><span class="line">            settings.DrawVR();</span><br><span class="line">            settings.DrawMultiDisplay();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (EditorGUILayout.BeginFadeGroup(m_ShowTargetEyeOption.faded))</span><br><span class="line">                settings.DrawTargetEye();</span><br><span class="line">            EditorGUILayout.EndFadeGroup();</span><br><span class="line"></span><br><span class="line">            DepthTextureModeGUI();</span><br><span class="line">            CommandBufferGUI();</span><br><span class="line"></span><br><span class="line">            serializedObject.ApplyModifiedProperties();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DisplayCameraWarnings</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Camera camera = target <span class="keyword">as</span> Camera;</span><br><span class="line">            <span class="keyword">if</span> (camera != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">string</span>[] warnings = camera.GetCameraBufferWarnings();</span><br><span class="line">                <span class="keyword">if</span> (warnings.Length &gt; <span class="number">0</span>)</span><br><span class="line">                    EditorGUILayout.HelpBox(<span class="keyword">string</span>.Join(<span class="string">"\n\n"</span>, warnings), MessageType.Warning, <span class="literal">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnOverlayGUI</span>(<span class="params">Object target, SceneView sceneView</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (target == <span class="literal">null</span>) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// cache some deep values</span></span><br><span class="line">            <span class="keyword">var</span> c = (Camera)target;</span><br><span class="line"></span><br><span class="line">            Vector2 previewSize = GameView.GetMainGameViewTargetSize();</span><br><span class="line">            <span class="keyword">if</span> (previewSize.x &lt; <span class="number">0f</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Fallback to Scene View of not a valid game view size</span></span><br><span class="line">                previewSize.x = sceneView.position.width;</span><br><span class="line">                previewSize.y = sceneView.position.height;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// Apply normalizedviewport rect of camera</span></span><br><span class="line">            Rect normalizedViewPortRect = c.rect;</span><br><span class="line">            previewSize.x *= Mathf.Max(normalizedViewPortRect.width, <span class="number">0f</span>);</span><br><span class="line">            previewSize.y *= Mathf.Max(normalizedViewPortRect.height, <span class="number">0f</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Prevent using invalid previewSize</span></span><br><span class="line">            <span class="keyword">if</span> (previewSize.x &lt;= <span class="number">0f</span> || previewSize.y &lt;= <span class="number">0f</span>)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">float</span> aspect = previewSize.x / previewSize.y;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Scale down (fit to scene view)</span></span><br><span class="line">            previewSize.y = kPreviewNormalizedSize * sceneView.position.height;</span><br><span class="line">            previewSize.x = previewSize.y * aspect;</span><br><span class="line">            <span class="keyword">if</span> (previewSize.y &gt; sceneView.position.height * <span class="number">0.5f</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                previewSize.y = sceneView.position.height * <span class="number">0.5f</span>;</span><br><span class="line">                previewSize.x = previewSize.y * aspect;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (previewSize.x &gt; sceneView.position.width * <span class="number">0.5f</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                previewSize.x = sceneView.position.width * <span class="number">0.5f</span>;</span><br><span class="line">                previewSize.y = previewSize.x / aspect;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Get and reserve rect</span></span><br><span class="line">            Rect cameraRect = GUILayoutUtility.GetRect(previewSize.x, previewSize.y);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Event.current.type == EventType.Repaint)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// setup camera and render</span></span><br><span class="line">                previewCamera.CopyFrom(c);</span><br><span class="line">                <span class="comment">// also make sure to sync any Skybox component on the preview camera</span></span><br><span class="line">                <span class="keyword">var</span> dstSkybox = previewCamera.GetComponent&lt;Skybox&gt;();</span><br><span class="line">                <span class="keyword">if</span> (dstSkybox)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">var</span> srcSkybox = c.GetComponent&lt;Skybox&gt;();</span><br><span class="line">                    <span class="keyword">if</span> (srcSkybox &amp;&amp; srcSkybox.enabled)</span><br><span class="line">                    &#123;</span><br><span class="line">                        dstSkybox.enabled = <span class="literal">true</span>;</span><br><span class="line">                        dstSkybox.material = srcSkybox.material;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">else</span></span><br><span class="line">                    &#123;</span><br><span class="line">                        dstSkybox.enabled = <span class="literal">false</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> previewTexture = GetPreviewTextureWithSize((<span class="keyword">int</span>)cameraRect.width, (<span class="keyword">int</span>)cameraRect.height);</span><br><span class="line">                previewTexture.antiAliasing = Mathf.Max(<span class="number">1</span>, QualitySettings.antiAliasing);</span><br><span class="line">                previewCamera.targetTexture = previewTexture;</span><br><span class="line">                previewCamera.pixelRect = <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, cameraRect.width, cameraRect.height);</span><br><span class="line"></span><br><span class="line">                Handles.EmitGUIGeometryForCamera(c, previewCamera);</span><br><span class="line"></span><br><span class="line">                GL.sRGBWrite = QualitySettings.activeColorSpace == ColorSpace.Linear;</span><br><span class="line">                previewCamera.Render();</span><br><span class="line">                GL.sRGBWrite = <span class="literal">false</span>;</span><br><span class="line">                Graphics.DrawTexture(cameraRect, previewTexture, <span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>), <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, GUI.color, EditorGUIUtility.GUITextureBlit2SRGBMaterial);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> RenderTexture <span class="title">GetPreviewTextureWithSize</span>(<span class="params"><span class="keyword">int</span> width, <span class="keyword">int</span> height</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (m_PreviewTexture == <span class="literal">null</span> || m_PreviewTexture.width != width || m_PreviewTexture.height != height)</span><br><span class="line">            &#123;</span><br><span class="line">                m_PreviewTexture = <span class="keyword">new</span> RenderTexture(width, height, <span class="number">24</span>, RenderTextureFormat.Default, RenderTextureReadWrite.Linear);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> m_PreviewTexture;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        [<span class="meta">RequiredByNativeCode</span>]</span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">float</span> <span class="title">GetGameViewAspectRatio</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Vector2 gameViewSize = GameView.GetMainGameViewTargetSize();</span><br><span class="line">            <span class="keyword">if</span> (gameViewSize.x &lt; <span class="number">0f</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// Fallback to Scene View of not a valid game view size</span></span><br><span class="line">                gameViewSize.x = Screen.width;</span><br><span class="line">                gameViewSize.y = Screen.height;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> gameViewSize.x / gameViewSize.y;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">float</span> <span class="title">GetFrustumAspectRatio</span>(<span class="params">Camera camera</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Rect normalizedViewPortRect = camera.rect;</span><br><span class="line">            <span class="keyword">if</span> (normalizedViewPortRect.width &lt;= <span class="number">0f</span> || normalizedViewPortRect.height &lt;= <span class="number">0f</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="number">-1f</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">float</span> viewportAspect = normalizedViewPortRect.width / normalizedViewPortRect.height;</span><br><span class="line">            <span class="keyword">return</span> GetGameViewAspectRatio() * viewportAspect;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Returns near- and far-corners in this order: leftBottom, leftTop, rightTop, rightBottom</span></span><br><span class="line">        <span class="comment">// Assumes input arrays are of length 4 (if allocated)</span></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">GetFrustum</span>(<span class="params">Camera camera, Vector3[] near, Vector3[] far, <span class="keyword">out</span> <span class="keyword">float</span> frustumAspect</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            frustumAspect = GetFrustumAspectRatio(camera);</span><br><span class="line">            <span class="keyword">if</span> (frustumAspect &lt; <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (far != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                far[<span class="number">0</span>] = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, camera.farClipPlane); <span class="comment">// leftBottomFar</span></span><br><span class="line">                far[<span class="number">1</span>] = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1</span>, camera.farClipPlane); <span class="comment">// leftTopFar</span></span><br><span class="line">                far[<span class="number">2</span>] = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">1</span>, camera.farClipPlane); <span class="comment">// rightTopFar</span></span><br><span class="line">                far[<span class="number">3</span>] = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">0</span>, camera.farClipPlane); <span class="comment">// rightBottomFar</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i)</span><br><span class="line">                    far[i] = camera.ViewportToWorldPoint(far[i]);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (near != <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                near[<span class="number">0</span>] = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, camera.nearClipPlane); <span class="comment">// leftBottomNear</span></span><br><span class="line">                near[<span class="number">1</span>] = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">1</span>, camera.nearClipPlane); <span class="comment">// leftTopNear</span></span><br><span class="line">                near[<span class="number">2</span>] = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">1</span>, camera.nearClipPlane); <span class="comment">// rightTopNear</span></span><br><span class="line">                near[<span class="number">3</span>] = <span class="keyword">new</span> Vector3(<span class="number">1</span>, <span class="number">0</span>, camera.nearClipPlane); <span class="comment">// rightBottomNear</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i)</span><br><span class="line">                    near[i] = camera.ViewportToWorldPoint(near[i]);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Called from C++ when we need to render a Camera's gizmo</span></span><br><span class="line">        <span class="function"><span class="keyword">internal</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">RenderGizmo</span>(<span class="params">Camera camera</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> near = <span class="keyword">new</span> Vector3[<span class="number">4</span>];</span><br><span class="line">            <span class="keyword">var</span> far = <span class="keyword">new</span> Vector3[<span class="number">4</span>];</span><br><span class="line">            <span class="keyword">float</span> frustumAspect;</span><br><span class="line">            <span class="keyword">if</span> (GetFrustum(camera, near, far, <span class="keyword">out</span> frustumAspect))</span><br><span class="line">            &#123;</span><br><span class="line">                Color orgColor = Handles.color;</span><br><span class="line">                Handles.color = kGizmoCamera;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i)</span><br><span class="line">                &#123;</span><br><span class="line">                    Handles.DrawLine(near[i], near[(i + <span class="number">1</span>) % <span class="number">4</span>]);</span><br><span class="line">                    Handles.DrawLine(far[i], far[(i + <span class="number">1</span>) % <span class="number">4</span>]);</span><br><span class="line">                    Handles.DrawLine(near[i], far[i]);</span><br><span class="line">                &#125;</span><br><span class="line">                Handles.color = orgColor;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">IsViewPortRectValidToRender</span>(<span class="params">Rect normalizedViewPortRect</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">if</span> (normalizedViewPortRect.width &lt;= <span class="number">0f</span> || normalizedViewPortRect.height &lt;= <span class="number">0f</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (normalizedViewPortRect.x &gt;= <span class="number">1f</span> || normalizedViewPortRect.xMax &lt;= <span class="number">0f</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (normalizedViewPortRect.y &gt;= <span class="number">1f</span> || normalizedViewPortRect.yMax &lt;= <span class="number">0f</span>)</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">OnSceneGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            <span class="keyword">var</span> c = (Camera)target;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!IsViewPortRectValidToRender(c.rect))</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            SceneViewOverlay.Window(EditorGUIUtility.TrTextContent(<span class="string">"Camera Preview"</span>), OnOverlayGUI, (<span class="keyword">int</span>)SceneViewOverlay.Ordering.Camera, target, SceneViewOverlay.WindowDisplayOption.OneWindowPerTarget);</span><br><span class="line"></span><br><span class="line">            Color orgHandlesColor = Handles.color;</span><br><span class="line">            Color slidersColor = kGizmoCamera;</span><br><span class="line">            slidersColor.a *= <span class="number">2f</span>;</span><br><span class="line">            Handles.color = slidersColor;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// get the corners of the far clip plane in world space</span></span><br><span class="line">            <span class="keyword">var</span> far = <span class="keyword">new</span> Vector3[<span class="number">4</span>];</span><br><span class="line">            <span class="keyword">float</span> frustumAspect;</span><br><span class="line">            <span class="keyword">if</span> (!GetFrustum(c, <span class="literal">null</span>, far, <span class="keyword">out</span> frustumAspect))</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            Vector3 leftBottomFar = far[<span class="number">0</span>];</span><br><span class="line">            Vector3 leftTopFar = far[<span class="number">1</span>];</span><br><span class="line">            Vector3 rightTopFar = far[<span class="number">2</span>];</span><br><span class="line">            Vector3 rightBottomFar = far[<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">            <span class="comment">// manage our own gui changed state, so we can use it for individual slider changes</span></span><br><span class="line">            <span class="keyword">bool</span> guiChanged = GUI.changed;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// FOV handles</span></span><br><span class="line">            Vector3 farMid = Vector3.Lerp(leftBottomFar, rightTopFar, <span class="number">0.5f</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Top and bottom handles</span></span><br><span class="line">            <span class="keyword">float</span> halfHeight = <span class="number">-1.0f</span>;</span><br><span class="line">            Vector3 changedPosition = MidPointPositionSlider(leftTopFar, rightTopFar, c.transform.up);</span><br><span class="line">            <span class="keyword">if</span> (!GUI.changed)</span><br><span class="line">                changedPosition = MidPointPositionSlider(leftBottomFar, rightBottomFar, -c.transform.up);</span><br><span class="line">            <span class="keyword">if</span> (GUI.changed)</span><br><span class="line">                halfHeight = (changedPosition - farMid).magnitude;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Left and right handles</span></span><br><span class="line">            GUI.changed = <span class="literal">false</span>;</span><br><span class="line">            changedPosition = MidPointPositionSlider(rightBottomFar, rightTopFar, c.transform.right);</span><br><span class="line">            <span class="keyword">if</span> (!GUI.changed)</span><br><span class="line">                changedPosition = MidPointPositionSlider(leftBottomFar, leftTopFar, -c.transform.right);</span><br><span class="line">            <span class="keyword">if</span> (GUI.changed)</span><br><span class="line">                halfHeight = (changedPosition - farMid).magnitude / frustumAspect;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Update camera settings if changed</span></span><br><span class="line">            <span class="keyword">if</span> (halfHeight &gt;= <span class="number">0.0f</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                Undo.RecordObject(c, <span class="string">"Adjust Camera"</span>);</span><br><span class="line">                <span class="keyword">if</span> (c.orthographic)</span><br><span class="line">                &#123;</span><br><span class="line">                    c.orthographicSize = halfHeight;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span></span><br><span class="line">                &#123;</span><br><span class="line">                    Vector3 pos = farMid + c.transform.up * halfHeight;</span><br><span class="line">                    c.fieldOfView = Vector3.Angle(c.transform.forward, (pos - c.transform.position)) * <span class="number">2f</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                guiChanged = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            GUI.changed = guiChanged;</span><br><span class="line">            Handles.color = orgHandlesColor;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Vector3 <span class="title">MidPointPositionSlider</span>(<span class="params">Vector3 position1, Vector3 position2, Vector3 direction</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            Vector3 midPoint = Vector3.Lerp(position1, position2, <span class="number">0.5f</span>);</span><br><span class="line">            <span class="keyword">return</span> Handles.Slider(midPoint, direction, HandleUtility.GetHandleSize(midPoint) * <span class="number">0.03f</span>, Handles.DotHandleCap, <span class="number">0f</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/UnityCsReference/" rel="tag"># UnityCsReference</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/07/09/C++11/" rel="next" title="C++11">
-                <i class="fa fa-chevron-left"></i> C++11
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/UnityCsReference/" rel="tag"># UnityCsReference</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/21/Protocol/" rel="prev" title="Protocol Buffer">
-                Protocol Buffer <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/07/09/C++11/" rel="prev" title="C++11">
+      <i class="fa fa-chevron-left"></i> C++11
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/21/Protocol/" rel="next" title="Protocol Buffer">
+      Protocol Buffer <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-  </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">liyanfeng</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">326</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">52</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">97</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="总访客量">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="总访问量">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liyanfeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
 
 
 
@@ -1075,116 +348,75 @@
 
 
 
-
-
+      </div>
+    </footer>
+  </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
 
-
-
-  
-    
-    
-  
-  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-  
-  <script src="/lib/reading_progress/reading_progress.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=7.0.1"></script>
-
-  <script src="/js/src/motion.js?v=7.0.1"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
-<script src="/js/src/post-details.js?v=7.0.1"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
-
-
-  
-  
-  
-
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
-
-
-
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-
-<script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail,link';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
   });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
-    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
-    placeholder: 'Just go go',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: false
-  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
 </script>
 
 
@@ -1193,148 +425,24 @@
   
 
 
-  
 
 
 
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
 
 
 
+
+
+
+
+
+
+
+    <div id="pjax">
   
 
   
 
-  
-  
-
-  
-  
-
-  
-
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-  
-  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
-  <script>
-  
-    bookmark.scrollToMark('auto', "#更多");
-  
-  </script>
-
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      
-        background-color: #eee;
-        background-image: linear-gradient(#fcfcfc, #eee);
-        border: 1px solid #d5d5d5;
-        border-radius: 3px;
-      
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      
-        right: 4px;
-        top: 8px;
-      
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1;
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; // Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.readOnly = true;
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, code.length);
-        ta.readOnly = false;
-        var result = document.execCommand('copy');
-        
-          if (result) $(this).text('复制成功');
-          else $(this).text('复制失败');
-        
-        ta.blur(); // For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('复制');
-        }, 300);
-      }).append(e);
-    })
-  </script>
-
-
+    </div>
 </body>
 </html>

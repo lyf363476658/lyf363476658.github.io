@@ -1,145 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-
-
-
-
-
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-    
-    
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
-  
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.0.1">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '7.0.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
-    fancybox: true,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'W8FJT5MTZU',
-      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
-      indexName: 'hexo',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zentia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"W8FJT5MTZU","apiKey":"f4ca7ae2408d2e27ffc8269ad8d34273","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
   <meta name="description" content="当前大部分来源是5.1的标准 lua_Readertypedef const char * (*lua_Reader) (lua_State *L, void *data, size_t *size); lua_load 用到的读取器函数， 每次它需要一块新的 chunk 的时候， lua_load 就调用读取器， 每次都会传入一个参数 data 。 读取器需要返回含有新的 chunk 的一块内存">
 <meta name="keywords" content="Lua">
@@ -154,18 +33,16 @@
 <meta name="twitter:title" content="Lua参考手册下半部分">
 <meta name="twitter:description" content="当前大部分来源是5.1的标准 lua_Readertypedef const char * (*lua_Reader) (lua_State *L, void *data, size_t *size); lua_load 用到的读取器函数， 每次它需要一块新的 chunk 的时候， lua_load 就调用读取器， 每次都会传入一个参数 data 。 读取器需要返回含有新的 chunk 的一块内存">
 
+<link rel="canonical" href="http://zentia.github.io/2019/05/24/luarefermanual/">
 
 
-
-
-
-  <link rel="canonical" href="http://zentia.github.io/2019/05/24/luarefermanual/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -177,15 +54,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -194,9 +64,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -210,150 +79,53 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta custom-logo">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">liyanfeng</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-    
-    
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liyanfeng</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
 
+
 <nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
+  </ul>
 </nav>
 
-
-
-  
 
 
 
@@ -361,132 +133,75 @@
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
-          <div id="content" class="content">
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  
-    <div class="reading-progress-bar"></div>
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/24/luarefermanual/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">Lua参考手册下半部分
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          Lua参考手册下半部分
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a></span>
+              <span class="post-meta-item-text">发表于</span>
 
-                
-                
-              
+              <time title="创建时间：2019-05-24 14:28:10" itemprop="dateCreated datePublished" datetime="2019-05-24T14:28:10+08:00">2019-05-24</time>
             </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/05/24/luarefermanual/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/24/luarefermanual/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
               </span>
-            
-          
-
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon" title="阅读次数">
-            <i class="fa fa-eye"></i>
-            
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Lua/" itemprop="url" rel="index"><span itemprop="name">Lua</span></a>
+                </span>
             </span>
-          
-
-          
 
           
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <p>当前大部分来源是5.1的标准</p>
@@ -517,7 +232,7 @@
 </code></pre><p>作一个等价于 t[k] = v的操作，这里t是一个给定有效索引 index 处的值， v 指栈顶的值， 而 k 是栈顶之下的那个值。这个函数会把键和值都从堆栈中弹出。 和在 Lua 中一样，这个函数可能触发 “newindex” 事件的元方法。</p>
 <h3 id="lua-settop"><a href="#lua-settop" class="headerlink" title="lua_settop"></a>lua_settop</h3><pre><code>void lua_settop(lua_State *L, int index);
 </code></pre><p>参数允许传入任何可接受的索引以及0。它将把堆栈的栈顶设为这个索引。如果新的栈顶比原来的大，超出部分的新元素将被填为nil。如果index为0，把栈上所有元素移除。</p>
-<h3 id="lua-State"><a href="#lua-State" class="headerlink" title="lua_State"></a>lua_State</h3><p>typedef struct lua_State lua_State;<br>一个不透明的结构，它保存了整个 Lua 解释器的状态。 Lua 库是完全可重入的： 它没有任何全局变量。 （译注：从 C 语法上来说，也不尽然。例如，在 table 的实现中 用了一个静态全局变量 dummynode_ ，但这在正确使用时并不影响可重入性。 只是万一你错误链接了 lua 库，不小心在同一进程空间中存在两份 lua 库实现的代码的话， 多份 dummynode_ 不同的地址会导致一些问题。） 所有的信息都保存在这个结构中。</p>
+<h3 id="lua-State"><a href="#lua-State" class="headerlink" title="lua_State"></a>lua_State</h3><p>typedef struct lua<em>State lua_State;<br>一个不透明的结构，它保存了整个 Lua 解释器的状态。 Lua 库是完全可重入的： 它没有任何全局变量。 （译注：从 C 语法上来说，也不尽然。例如，在 table 的实现中 用了一个静态全局变量 dummynode</em> ，但这在正确使用时并不影响可重入性。 只是万一你错误链接了 lua 库，不小心在同一进程空间中存在两份 lua 库实现的代码的话， 多份 dummynode_ 不同的地址会导致一些问题。） 所有的信息都保存在这个结构中。</p>
 <p>这个状态机的指针必须作为第一个参数传递给每一个库函数。 lua_newstate 是一个例外， 这个函数会从头创建一个 Lua 状态机。</p>
 <h3 id="lua-status"><a href="#lua-status" class="headerlink" title="lua_status"></a>lua_status</h3><pre><code>int lua_status (lua_State *L);
 </code></pre><p>返回线程 L 的状态。<br>正常的线程状态是 0 。 当线程执行完毕或发生一个错误时，状态值是错误码。 如果线程被挂起，状态为 LUA_YIELD 。</p>
@@ -826,7 +541,7 @@ printf(&quot;%d\n&quot;, ar.linedefined);
  x = string.gsub(&quot;$name%-$version.tar.gz&quot;, &quot;%$(%w+)&quot;, t)
  --&gt; x=&quot;lua-5.1.tar.gz&quot;
 </code></pre><p>string.len (s)<br>Receives a string and returns its length. The empty string “” has length 0. Embedded zeros are counted, so “a\000bc\000” has length 5.<br>string.lower (s)<br>Receives a string and returns a copy of this string with all uppercase letters changed to lowercase. All other characters are left unchanged. The definition of what an uppercase letter is depends on the current locale.<br>string.match (s, pattern [, init])<br>Looks for the first match of pattern in the string s. If it finds one, then match returns the captures from the pattern; otherwise it returns nil. If pattern specifies no captures, then the whole match is returned. A third, optional numerical argument init specifies where to start the search; its default value is 1 and may be negative.<br>string.rep (s, n)<br>Returns a string that is the concatenation of n copies of the string s.<br>string.reverse (s)<br>Returns a string that is the string s reversed.<br>string.sub (s, i [, j])<br>Returns the substring of s that starts at i and continues until j; i and j may be negative. If j is absent, then it is assumed to be equal to -1 (which is the same as the string length). In particular, the call string.sub(s,1,j) returns a prefix of s with length j, and string.sub(s, -i) returns a suffix of s with length i.<br>string.upper (s)<br>Receives a string and returns a copy of this string with all lowercase letters changed to uppercase. All other characters are left unchanged. The definition of what a lowercase letter is depends on the current locale.<br>5.4.1 - Patterns<br>Character Class:<br>A character class is used to represent a set of characters. The following combinations are allowed in describing a character class:</p>
-<p>x: (where x is not one of the magic characters ^$()%.[]*+-?) represents the character x itself.<br>.: (a dot) represents all characters.<br>%a: represents all letters.<br>%c: represents all control characters.<br>%d: represents all digits.<br>%l: represents all lowercase letters.<br>%p: represents all punctuation characters.<br>%s: represents all space characters.<br>%u: represents all uppercase letters.<br>%w: represents all alphanumeric characters.<br>%x: represents all hexadecimal digits.<br>%z: represents the character with representation 0.<br>%x: (where x is any non-alphanumeric character) represents the character x. This is the standard way to escape the magic characters. Any punctuation character (even the non magic) can be preceded by a ‘%’ when used to represent itself in a pattern.<br>[set]: represents the class which is the union of all characters in set. A range of characters may be specified by separating the end characters of the range with a ‘-‘. All classes %x described above may also be used as components in set. All other characters in set represent themselves. For example, [%w_] (or [_%w]) represents all alphanumeric characters plus the underscore, [0-7] represents the octal digits, and [0-7%l%-] represents the octal digits plus the lowercase letters plus the ‘-‘ character.<br>The interaction between ranges and classes is not defined. Therefore, patterns like [%a-z] or [a-%%] have no meaning.</p>
+<p>x: (where x is not one of the magic characters ^$()%.[]*+-?) represents the character x itself.<br>.: (a dot) represents all characters.<br>%a: represents all letters.<br>%c: represents all control characters.<br>%d: represents all digits.<br>%l: represents all lowercase letters.<br>%p: represents all punctuation characters.<br>%s: represents all space characters.<br>%u: represents all uppercase letters.<br>%w: represents all alphanumeric characters.<br>%x: represents all hexadecimal digits.<br>%z: represents the character with representation 0.<br>%x: (where x is any non-alphanumeric character) represents the character x. This is the standard way to escape the magic characters. Any punctuation character (even the non magic) can be preceded by a ‘%’ when used to represent itself in a pattern.<br>[set]: represents the class which is the union of all characters in set. A range of characters may be specified by separating the end characters of the range with a ‘-‘. All classes %x described above may also be used as components in set. All other characters in set represent themselves. For example, [%w<em>] (or [</em>%w]) represents all alphanumeric characters plus the underscore, [0-7] represents the octal digits, and [0-7%l%-] represents the octal digits plus the lowercase letters plus the ‘-‘ character.<br>The interaction between ranges and classes is not defined. Therefore, patterns like [%a-z] or [a-%%] have no meaning.</p>
 <blockquote id="fn_set">
 <sup>set</sup>. represents the complement of set, where set is interpreted as above.<a href="#reffn_set" title="Jump back to footnote [set] in the text."> &#8617;</a>
 </blockquote>
@@ -975,7 +690,7 @@ printf(&quot;%d\n&quot;, ar.linedefined);
 <pre><code> #!/usr/bin/env lua
 </code></pre><p>is a more portable solution.)</p>
 <p>7 - Incompatibilities with the Previous Version<br>Here we list the incompatibilities that you may found when moving a program from Lua 5.0 to Lua 5.1. You can avoid most of the incompatibilities compiling Lua with appropriate options (see file luaconf.h). However, all these compatibility options will be removed in the next version of Lua.</p>
-<p>7.1 - Changes in the Language<br>The vararg system changed from the pseudo-argument arg with a table with the extra arguments to the vararg expression. (See compile-time option LUA_COMPAT_VARARG in luaconf.h.)<br>There was a subtle change in the scope of the implicit variables of the for statement and for the repeat statement.<br>The long string/long comment syntax ([[string]]) does not allow nesting. You can use the new syntax ([=[string]=]) in these cases. (See compile-time option LUA_COMPAT_LSTR in luaconf.h.)<br>7.2 - Changes in the Libraries<br>Function string.gfind was renamed string.gmatch. (See compile-time option LUA_COMPAT_GFIND in luaconf.h.)<br>When string.gsub is called with a function as its third argument, whenever this function returns nil or false the replacement string is the whole match, instead of the empty string.<br>Function table.setn was deprecated. Function table.getn corresponds to the new length operator (#); use the operator instead of the function. (See compile-time option LUA_COMPAT_GETN in luaconf.h.)<br>Function loadlib was renamed package.loadlib. (See compile-time option LUA_COMPAT_LOADLIB in luaconf.h.)<br>Function math.mod was renamed math.fmod. (See compile-time option LUA_COMPAT_MOD in luaconf.h.)<br>Functions table.foreach and table.foreachi are deprecated. You can use a for loop with pairs or ipairs instead.<br>There were substantial changes in function require due to the new module system. However, the new behavior is mostly compatible with the old, but require gets the path from package.path instead of from LUA_PATH.<br>Function collectgarbage has different arguments. Function gcinfo is deprecated; use collectgarbage(“count”) instead.<br>7.3 - Changes in the API<br>The luaopen_* functions (to open libraries) cannot be called directly, like a regular C function. They must be called through Lua, like a Lua function.<br>Function lua_open was replaced by lua_newstate to allow the user to set a memory-allocation function. You can use luaL_newstate from the standard library to create a state with a standard allocation function (based on realloc).<br>Functions luaL_getn and luaL_setn (from the auxiliary library) are deprecated. Use lua_objlen instead of luaL_getn and nothing instead of luaL_setn.<br>Function luaL_openlib was replaced by luaL_register.<br>Function luaL_checkudata now throws an error when the given value is not a userdata of the expected type. (In Lua 5.0 it returned NULL.)<br>8 - The Complete Syntax of Lua<br>Here is the complete syntax of Lua in extended BNF. (It does not describe operator precedences.)</p>
+<p>7.1 - Changes in the Language<br>The vararg system changed from the pseudo-argument arg with a table with the extra arguments to the vararg expression. (See compile-time option LUA<em>COMPAT_VARARG in luaconf.h.)<br>There was a subtle change in the scope of the implicit variables of the for statement and for the repeat statement.<br>The long string/long comment syntax ([[string]]) does not allow nesting. You can use the new syntax ([=[string]=]) in these cases. (See compile-time option LUA_COMPAT_LSTR in luaconf.h.)<br>7.2 - Changes in the Libraries<br>Function string.gfind was renamed string.gmatch. (See compile-time option LUA_COMPAT_GFIND in luaconf.h.)<br>When string.gsub is called with a function as its third argument, whenever this function returns nil or false the replacement string is the whole match, instead of the empty string.<br>Function table.setn was deprecated. Function table.getn corresponds to the new length operator (#); use the operator instead of the function. (See compile-time option LUA_COMPAT_GETN in luaconf.h.)<br>Function loadlib was renamed package.loadlib. (See compile-time option LUA_COMPAT_LOADLIB in luaconf.h.)<br>Function math.mod was renamed math.fmod. (See compile-time option LUA_COMPAT_MOD in luaconf.h.)<br>Functions table.foreach and table.foreachi are deprecated. You can use a for loop with pairs or ipairs instead.<br>There were substantial changes in function require due to the new module system. However, the new behavior is mostly compatible with the old, but require gets the path from package.path instead of from LUA_PATH.<br>Function collectgarbage has different arguments. Function gcinfo is deprecated; use collectgarbage(“count”) instead.<br>7.3 - Changes in the API<br>The luaopen</em>* functions (to open libraries) cannot be called directly, like a regular C function. They must be called through Lua, like a Lua function.<br>Function lua_open was replaced by lua_newstate to allow the user to set a memory-allocation function. You can use luaL_newstate from the standard library to create a state with a standard allocation function (based on realloc).<br>Functions luaL_getn and luaL_setn (from the auxiliary library) are deprecated. Use lua_objlen instead of luaL_getn and nothing instead of luaL_setn.<br>Function luaL_openlib was replaced by luaL_register.<br>Function luaL_checkudata now throws an error when the given value is not a userdata of the expected type. (In Lua 5.0 it returned NULL.)<br>8 - The Complete Syntax of Lua<br>Here is the complete syntax of Lua in extended BNF. (It does not describe operator precedences.)</p>
 <pre><code>chunk ::= {stat [`;´]} [laststat [`;´]]
 
 block ::= chunk
@@ -1033,939 +748,253 @@ binop ::= `+´ | `-´ | `*´ | `/´ | `^´ | `%´ | `..´ |
 
 unop ::= `-´ | not | `#´
 </code></pre>
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Lua/" rel="tag"># Lua</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/05/23/jx3m/" rel="next" title="剑网3口袋版笔记">
-                <i class="fa fa-chevron-left"></i> 剑网3口袋版笔记
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Lua/" rel="tag"># Lua</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/24/csharp-precedence-of-operator/" rel="prev" title="C#运算符优先级">
-                C#运算符优先级 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/23/jx3m/" rel="prev" title="剑网3口袋版笔记">
+      <i class="fa fa-chevron-left"></i> 剑网3口袋版笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/24/csharp-precedence-of-operator/" rel="next" title="C#运算符优先级">
+      C#运算符优先级 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-  </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">liyanfeng</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">326</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">52</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">97</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Reader"><span class="nav-number">1.</span> <span class="nav-text">lua_Reader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-register"><span class="nav-number">2.</span> <span class="nav-text">lua_register</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-remove"><span class="nav-number">3.</span> <span class="nav-text">lua_remove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-replace"><span class="nav-number">4.</span> <span class="nav-text">lua_replace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-resume"><span class="nav-number">5.</span> <span class="nav-text">lua_resume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setallocf"><span class="nav-number">6.</span> <span class="nav-text">lua_setallocf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setfenv"><span class="nav-number">7.</span> <span class="nav-text">lua_setfenv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setfield"><span class="nav-number">8.</span> <span class="nav-text">lua_setfield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setglobal"><span class="nav-number">9.</span> <span class="nav-text">lua_setglobal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setmetatable"><span class="nav-number">10.</span> <span class="nav-text">lua_setmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-settable"><span class="nav-number">11.</span> <span class="nav-text">lua_settable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-settop"><span class="nav-number">12.</span> <span class="nav-text">lua_settop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-State"><span class="nav-number">13.</span> <span class="nav-text">lua_State</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-status"><span class="nav-number">14.</span> <span class="nav-text">lua_status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-toboolean"><span class="nav-number">15.</span> <span class="nav-text">lua_toboolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tocfunction"><span class="nav-number">16.</span> <span class="nav-text">lua_tocfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tointeger"><span class="nav-number">17.</span> <span class="nav-text">lua_tointeger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tolstring"><span class="nav-number">18.</span> <span class="nav-text">lua_tolstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tonumber"><span class="nav-number">19.</span> <span class="nav-text">lua_tonumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-topointer"><span class="nav-number">20.</span> <span class="nav-text">lua_topointer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tostring"><span class="nav-number">21.</span> <span class="nav-text">lua_tostring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tothread"><span class="nav-number">22.</span> <span class="nav-text">lua_tothread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-touserdata"><span class="nav-number">23.</span> <span class="nav-text">lua_touserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-type"><span class="nav-number">24.</span> <span class="nav-text">lua_type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-typename"><span class="nav-number">25.</span> <span class="nav-text">lua_typename</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Writer"><span class="nav-number">26.</span> <span class="nav-text">lua_Writer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-xmove"><span class="nav-number">27.</span> <span class="nav-text">lua_xmove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-yield"><span class="nav-number">28.</span> <span class="nav-text">lua_yield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Debug"><span class="nav-number">29.</span> <span class="nav-text">lua_Debug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethook"><span class="nav-number">30.</span> <span class="nav-text">lua_gethook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethookcount"><span class="nav-number">31.</span> <span class="nav-text">lua_gethookcount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethookmask"><span class="nav-number">32.</span> <span class="nav-text">lua_gethookmask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getinfo"><span class="nav-number">33.</span> <span class="nav-text">lua_getinfo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getlocal"><span class="nav-number">34.</span> <span class="nav-text">lua_getlocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getstack"><span class="nav-number">35.</span> <span class="nav-text">lua_getstack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getupvalue"><span class="nav-number">36.</span> <span class="nav-text">lua_getupvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Hook"><span class="nav-number">37.</span> <span class="nav-text">lua_Hook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-sethook"><span class="nav-number">38.</span> <span class="nav-text">lua_sethook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setlocal"><span class="nav-number">39.</span> <span class="nav-text">lua_setlocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setupvalue"><span class="nav-number">40.</span> <span class="nav-text">lua_setupvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addchar"><span class="nav-number">41.</span> <span class="nav-text">luaL_addchar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addlstring"><span class="nav-number">42.</span> <span class="nav-text">luaL_addlstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addsize"><span class="nav-number">43.</span> <span class="nav-text">luaL_addsize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addstring"><span class="nav-number">44.</span> <span class="nav-text">luaL_addstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addvalue"><span class="nav-number">45.</span> <span class="nav-text">luaL_addvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-argcheck"><span class="nav-number">46.</span> <span class="nav-text">luaL_argcheck</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-argerror"><span class="nav-number">47.</span> <span class="nav-text">luaL_argerror</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-Buffer"><span class="nav-number">48.</span> <span class="nav-text">luaL_Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-buffinit"><span class="nav-number">49.</span> <span class="nav-text">luaL_buffinit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-callmeta"><span class="nav-number">50.</span> <span class="nav-text">luaL_callmeta</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkany"><span class="nav-number">51.</span> <span class="nav-text">luaL_checkany</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkint"><span class="nav-number">52.</span> <span class="nav-text">luaL_checkint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkinteger"><span class="nav-number">53.</span> <span class="nav-text">luaL_checkinteger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checklong"><span class="nav-number">54.</span> <span class="nav-text">luaL_checklong</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checklstring"><span class="nav-number">55.</span> <span class="nav-text">luaL_checklstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkoption"><span class="nav-number">56.</span> <span class="nav-text">luaL_checkoption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-error"><span class="nav-number">57.</span> <span class="nav-text">luaL_error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-getmetafield"><span class="nav-number">58.</span> <span class="nav-text">luaL_getmetafield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-getmetatable"><span class="nav-number">59.</span> <span class="nav-text">luaL_getmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-gsub"><span class="nav-number">60.</span> <span class="nav-text">luaL_gsub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadbuffer"><span class="nav-number">61.</span> <span class="nav-text">luaL_loadbuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadfile"><span class="nav-number">62.</span> <span class="nav-text">luaL_loadfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadstring"><span class="nav-number">63.</span> <span class="nav-text">luaL_loadstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-newmetatable"><span class="nav-number">64.</span> <span class="nav-text">luaL_newmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-newstate"><span class="nav-number">65.</span> <span class="nav-text">luaL_newstate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-openlibs"><span class="nav-number">66.</span> <span class="nav-text">luaL_openlibs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optinteger"><span class="nav-number">67.</span> <span class="nav-text">luaL_optinteger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optlong"><span class="nav-number">68.</span> <span class="nav-text">luaL_optlong</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optlstring"><span class="nav-number">69.</span> <span class="nav-text">luaL_optlstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optnumber"><span class="nav-number">70.</span> <span class="nav-text">luaL_optnumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optstring"><span class="nav-number">71.</span> <span class="nav-text">luaL_optstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-prepbuffer"><span class="nav-number">72.</span> <span class="nav-text">luaL_prepbuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-pushresult"><span class="nav-number">73.</span> <span class="nav-text">luaL_pushresult</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-ref"><span class="nav-number">74.</span> <span class="nav-text">luaL_ref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-Reg"><span class="nav-number">75.</span> <span class="nav-text">luaL_Reg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-register"><span class="nav-number">76.</span> <span class="nav-text">luaL_register</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-typename"><span class="nav-number">77.</span> <span class="nav-text">luaL_typename</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-unref"><span class="nav-number">78.</span> <span class="nav-text">luaL_unref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-where"><span class="nav-number">79.</span> <span class="nav-text">luaL_where</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#assert-v-message"><span class="nav-number">80.</span> <span class="nav-text">assert (v [, message])</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pairs-t"><span class="nav-number">81.</span> <span class="nav-text">pairs (t)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pcall-f-arg1-···"><span class="nav-number">82.</span> <span class="nav-text">pcall (f, arg1, ···)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#print-···"><span class="nav-number">83.</span> <span class="nav-text">print (···)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coroutine-Manipulation"><span class="nav-number">84.</span> <span class="nav-text">Coroutine Manipulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Modules"><span class="nav-number">85.</span> <span class="nav-text">Modules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#require-modname"><span class="nav-number">86.</span> <span class="nav-text">require (modname)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#math-floor-x"><span class="nav-number">87.</span> <span class="nav-text">math.floor (x)</span></a></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="总访客量">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="总访问量">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+          
   
-
-
-
-  
-    
-    
-  
-  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-  
-  <script src="/lib/reading_progress/reading_progress.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=7.0.1"></script>
-
-  <script src="/js/src/motion.js?v=7.0.1"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
-<script src="/js/src/post-details.js?v=7.0.1"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
-
-
-  
-  
-  
-
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
-
-
-
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-
-<script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail,link';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
-    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
-    placeholder: 'Just go go',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: false
-  });
-</script>
-
-
-
-
-  
-
-
-  
-
-
-
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-  
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
-        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
-      }
-    });
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-      for (i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<style>
-.MathJax_Display {
-  overflow-x: scroll;
-  overflow-y: hidden;
-}
-</style>
-
-    
-  
-
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-  
-  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
-  <script>
-  
-    bookmark.scrollToMark('auto', "#更多");
-  
-  </script>
-
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      
-        background-color: #eee;
-        background-image: linear-gradient(#fcfcfc, #eee);
-        border: 1px solid #d5d5d5;
-        border-radius: 3px;
-      
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      
-        right: 4px;
-        top: 8px;
-      
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1;
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; // Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.readOnly = true;
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, code.length);
-        ta.readOnly = false;
-        var result = document.execCommand('copy');
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Reader"><span class="nav-number">1.</span> <span class="nav-text">lua_Reader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-register"><span class="nav-number">2.</span> <span class="nav-text">lua_register</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-remove"><span class="nav-number">3.</span> <span class="nav-text">lua_remove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-replace"><span class="nav-number">4.</span> <span class="nav-text">lua_replace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-resume"><span class="nav-number">5.</span> <span class="nav-text">lua_resume</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setallocf"><span class="nav-number">6.</span> <span class="nav-text">lua_setallocf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setfenv"><span class="nav-number">7.</span> <span class="nav-text">lua_setfenv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setfield"><span class="nav-number">8.</span> <span class="nav-text">lua_setfield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setglobal"><span class="nav-number">9.</span> <span class="nav-text">lua_setglobal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setmetatable"><span class="nav-number">10.</span> <span class="nav-text">lua_setmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-settable"><span class="nav-number">11.</span> <span class="nav-text">lua_settable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-settop"><span class="nav-number">12.</span> <span class="nav-text">lua_settop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-State"><span class="nav-number">13.</span> <span class="nav-text">lua_State</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-status"><span class="nav-number">14.</span> <span class="nav-text">lua_status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-toboolean"><span class="nav-number">15.</span> <span class="nav-text">lua_toboolean</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tocfunction"><span class="nav-number">16.</span> <span class="nav-text">lua_tocfunction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tointeger"><span class="nav-number">17.</span> <span class="nav-text">lua_tointeger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tolstring"><span class="nav-number">18.</span> <span class="nav-text">lua_tolstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tonumber"><span class="nav-number">19.</span> <span class="nav-text">lua_tonumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-topointer"><span class="nav-number">20.</span> <span class="nav-text">lua_topointer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tostring"><span class="nav-number">21.</span> <span class="nav-text">lua_tostring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-tothread"><span class="nav-number">22.</span> <span class="nav-text">lua_tothread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-touserdata"><span class="nav-number">23.</span> <span class="nav-text">lua_touserdata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-type"><span class="nav-number">24.</span> <span class="nav-text">lua_type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-typename"><span class="nav-number">25.</span> <span class="nav-text">lua_typename</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Writer"><span class="nav-number">26.</span> <span class="nav-text">lua_Writer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-xmove"><span class="nav-number">27.</span> <span class="nav-text">lua_xmove</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-yield"><span class="nav-number">28.</span> <span class="nav-text">lua_yield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Debug"><span class="nav-number">29.</span> <span class="nav-text">lua_Debug</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethook"><span class="nav-number">30.</span> <span class="nav-text">lua_gethook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethookcount"><span class="nav-number">31.</span> <span class="nav-text">lua_gethookcount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-gethookmask"><span class="nav-number">32.</span> <span class="nav-text">lua_gethookmask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getinfo"><span class="nav-number">33.</span> <span class="nav-text">lua_getinfo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getlocal"><span class="nav-number">34.</span> <span class="nav-text">lua_getlocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getstack"><span class="nav-number">35.</span> <span class="nav-text">lua_getstack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-getupvalue"><span class="nav-number">36.</span> <span class="nav-text">lua_getupvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-Hook"><span class="nav-number">37.</span> <span class="nav-text">lua_Hook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-sethook"><span class="nav-number">38.</span> <span class="nav-text">lua_sethook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setlocal"><span class="nav-number">39.</span> <span class="nav-text">lua_setlocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lua-setupvalue"><span class="nav-number">40.</span> <span class="nav-text">lua_setupvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addchar"><span class="nav-number">41.</span> <span class="nav-text">luaL_addchar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addlstring"><span class="nav-number">42.</span> <span class="nav-text">luaL_addlstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addsize"><span class="nav-number">43.</span> <span class="nav-text">luaL_addsize</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addstring"><span class="nav-number">44.</span> <span class="nav-text">luaL_addstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-addvalue"><span class="nav-number">45.</span> <span class="nav-text">luaL_addvalue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-argcheck"><span class="nav-number">46.</span> <span class="nav-text">luaL_argcheck</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-argerror"><span class="nav-number">47.</span> <span class="nav-text">luaL_argerror</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-Buffer"><span class="nav-number">48.</span> <span class="nav-text">luaL_Buffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-buffinit"><span class="nav-number">49.</span> <span class="nav-text">luaL_buffinit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-callmeta"><span class="nav-number">50.</span> <span class="nav-text">luaL_callmeta</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkany"><span class="nav-number">51.</span> <span class="nav-text">luaL_checkany</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkint"><span class="nav-number">52.</span> <span class="nav-text">luaL_checkint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkinteger"><span class="nav-number">53.</span> <span class="nav-text">luaL_checkinteger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checklong"><span class="nav-number">54.</span> <span class="nav-text">luaL_checklong</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checklstring"><span class="nav-number">55.</span> <span class="nav-text">luaL_checklstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-checkoption"><span class="nav-number">56.</span> <span class="nav-text">luaL_checkoption</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-error"><span class="nav-number">57.</span> <span class="nav-text">luaL_error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-getmetafield"><span class="nav-number">58.</span> <span class="nav-text">luaL_getmetafield</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-getmetatable"><span class="nav-number">59.</span> <span class="nav-text">luaL_getmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-gsub"><span class="nav-number">60.</span> <span class="nav-text">luaL_gsub</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadbuffer"><span class="nav-number">61.</span> <span class="nav-text">luaL_loadbuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadfile"><span class="nav-number">62.</span> <span class="nav-text">luaL_loadfile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-loadstring"><span class="nav-number">63.</span> <span class="nav-text">luaL_loadstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-newmetatable"><span class="nav-number">64.</span> <span class="nav-text">luaL_newmetatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-newstate"><span class="nav-number">65.</span> <span class="nav-text">luaL_newstate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-openlibs"><span class="nav-number">66.</span> <span class="nav-text">luaL_openlibs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optinteger"><span class="nav-number">67.</span> <span class="nav-text">luaL_optinteger</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optlong"><span class="nav-number">68.</span> <span class="nav-text">luaL_optlong</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optlstring"><span class="nav-number">69.</span> <span class="nav-text">luaL_optlstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optnumber"><span class="nav-number">70.</span> <span class="nav-text">luaL_optnumber</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-optstring"><span class="nav-number">71.</span> <span class="nav-text">luaL_optstring</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-prepbuffer"><span class="nav-number">72.</span> <span class="nav-text">luaL_prepbuffer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-pushresult"><span class="nav-number">73.</span> <span class="nav-text">luaL_pushresult</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-ref"><span class="nav-number">74.</span> <span class="nav-text">luaL_ref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-Reg"><span class="nav-number">75.</span> <span class="nav-text">luaL_Reg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-register"><span class="nav-number">76.</span> <span class="nav-text">luaL_register</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-typename"><span class="nav-number">77.</span> <span class="nav-text">luaL_typename</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-unref"><span class="nav-number">78.</span> <span class="nav-text">luaL_unref</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#luaL-where"><span class="nav-number">79.</span> <span class="nav-text">luaL_where</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#assert-v-message"><span class="nav-number">80.</span> <span class="nav-text">assert (v [, message])</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pairs-t"><span class="nav-number">81.</span> <span class="nav-text">pairs (t)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pcall-f-arg1-···"><span class="nav-number">82.</span> <span class="nav-text">pcall (f, arg1, ···)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#print-···"><span class="nav-number">83.</span> <span class="nav-text">print (···)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coroutine-Manipulation"><span class="nav-number">84.</span> <span class="nav-text">Coroutine Manipulation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Modules"><span class="nav-number">85.</span> <span class="nav-text">Modules</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#require-modname"><span class="nav-number">86.</span> <span class="nav-text">require (modname)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#math-floor-x"><span class="nav-number">87.</span> <span class="nav-text">math.floor (x)</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liyanfeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
         
-          if (result) $(this).text('复制成功');
-          else $(this).text('复制失败');
+          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
         
-        ta.blur(); // For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('复制');
-        }, 300);
-      }).append(e);
-    })
-  </script>
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
 
 
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
 </body>
 </html>

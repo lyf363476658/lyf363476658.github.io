@@ -1,145 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-
-
-
-
-
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-    
-    
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
-  
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.0.1">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '7.0.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
-    fancybox: true,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'W8FJT5MTZU',
-      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
-      indexName: 'hexo',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zentia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"W8FJT5MTZU","apiKey":"f4ca7ae2408d2e27ffc8269ad8d34273","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
   <meta name="description" content="光与物质光与物质：基于物理的渲染与着色理论光是一种复杂的现象，它同时展现出波与粒子两种特性。于是，为了描述光的表现特性，人们建立了各种模型。作为材质艺术家，我们感兴趣的是光线模型（Light Ray Model）因为它描述了光与物质的交互作用。对我们来说，理解光线如何与物质表面交互非常重要，因为我们的工作是创作描述物体表面的材质。我们创作出的纹理与材质再虚拟世界中与光交互，对光线表现特效理解的越多">
 <meta name="keywords" content="计算机图形学,游戏引擎,游戏开发">
@@ -184,18 +63,16 @@
 <meta name="twitter:description" content="光与物质光与物质：基于物理的渲染与着色理论光是一种复杂的现象，它同时展现出波与粒子两种特性。于是，为了描述光的表现特性，人们建立了各种模型。作为材质艺术家，我们感兴趣的是光线模型（Light Ray Model）因为它描述了光与物质的交互作用。对我们来说，理解光线如何与物质表面交互非常重要，因为我们的工作是创作描述物体表面的材质。我们创作出的纹理与材质再虚拟世界中与光交互，对光线表现特效理解的越多">
 <meta name="twitter:image" content="http://zentia.github.io/2018/05/14/PBR-Guide-Vol1/1.jpg">
 
+<link rel="canonical" href="http://zentia.github.io/2018/05/14/PBR-Guide-Vol1/">
 
 
-
-
-
-  <link rel="canonical" href="http://zentia.github.io/2018/05/14/PBR-Guide-Vol1/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -207,15 +84,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -224,9 +94,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -240,150 +109,53 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta custom-logo">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">liyanfeng</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-    
-    
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liyanfeng</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
 
+
 <nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
+  </ul>
 </nav>
 
-
-
-  
 
 
 
@@ -391,116 +163,66 @@
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
-          <div id="content" class="content">
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  
-    <div class="reading-progress-bar"></div>
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/05/14/PBR-Guide-Vol1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">【基于物理的渲染（PBR）白皮书】（一）开篇：PBR核心知识体系总结与概览
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          【基于物理的渲染（PBR）白皮书】（一）开篇：PBR核心知识体系总结与概览
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2018/05/14/PBR-Guide-Vol1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2018/05/14/PBR-Guide-Vol1/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">发表于</span>
 
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon" title="阅读次数">
-            <i class="fa fa-eye"></i>
-            
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              <time title="创建时间：2018-05-14 19:46:49" itemprop="dateCreated datePublished" datetime="2018-05-14T19:46:49+08:00">2018-05-14</time>
             </span>
-          
-
-          
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
 
           
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <h3 id="光与物质"><a href="#光与物质" class="headerlink" title="光与物质"></a>光与物质</h3><p>光与物质：基于物理的渲染与着色理论<br>光是一种复杂的现象，它同时展现出波与粒子两种特性。于是，为了描述光的表现特性，人们建立了各种模型。<br>作为材质艺术家，我们感兴趣的是光线模型（Light Ray Model）因为它描述了光与物质的交互作用。<br>对我们来说，理解光线如何与物质表面交互非常重要，因为我们的工作是创作描述物体表面的材质。<br>我们创作出的纹理与材质再虚拟世界中与光交互，对光线表现特效理解的越多，创作出的材质就会更好。<br>再这篇指南中，我们会讨论物理理论，而基于物理的渲染(physically-based rendering)(PBR)模型正是建立在其上的。<br>我们从光线开始，逐步讲解PBR中的关键点。</p>
@@ -547,7 +269,7 @@
 </ul>
 <p>渲染方程的物理基础是能量守恒定律。在一个特定的位置和方向，出射光$L_o$是自发光$L_e$与反射光线之和，反射光线本身是各个方向的入射光Li之和诚意表面反射率及入射角。</p>
 <p>这个方程金国交叉点将出射光线与入射光线联系在一起，它代表了场景中全部的光线传输。所有更加完善的算法都可以看作是这个方程的特殊形式的解。</p>
-<p>某一点p的渲染方程，可以表示为：<br>$L_o=L_e + $<font size="5">$\int_\Omega $</font>${f_r\cdot L_i \cdot (w_i\cdot n)\cdot dw_i}$<br>其中：</p>
+<p>某一点p的渲染方程，可以表示为：<br>$L<em>o=L_e + $<font size="5">$\int</font></em>\Omega $&lt;/font&gt;${f_r\cdot L_i \cdot (w_i\cdot n)\cdot dw_i}$<br>其中：</p>
 <ul>
 <li>$L_o$是p点的出射光亮度。</li>
 <li>$L_e$是p点的发出的光亮度。</li>
@@ -557,7 +279,7 @@
 <li><font size="5">$\int_\Omega $</font>$…dw_i$是入射方向半球积分（可以理解为无穷小的累加和）。</li>
 </ul>
 <img src="/2018/05/14/PBR-Guide-Vol1/13.jpg">
-<p>而在实时渲染中，我们常用的反射方程（The Reflctance Equation），则是渲染方程的简化的版本，或者说是一个特例：<br>$L_o=L_e + $<font size="5">$\int_\Omega $</font>${f_r\cdot L_i \cdot (w_i\cdot n)\cdot dw_i}$<br>同样，其中：</p>
+<p>而在实时渲染中，我们常用的反射方程（The Reflctance Equation），则是渲染方程的简化的版本，或者说是一个特例：<br>$L<em>o=L_e + $<font size="5">$\int</font></em>\Omega $&lt;/font&gt;${f_r\cdot L_i \cdot (w_i\cdot n)\cdot dw_i}$<br>同样，其中：</p>
 <ul>
 <li>$L_o$是p点的出射光亮度。</li>
 <li>$f_r$是p点入射方向到出射方向光的反射比例，即BxDF，一般为BRDF。</li>
@@ -691,8 +413,8 @@
 <p>重要性采样（Importance Sample）即通过现有的一些已知条件（分布函数），想办法集中于被积函数分布可能性较高的区域（重要的区域）进行采样，进而可高效和准确的计算。</p>
 <h2 id="6-1-分解求和近似（Split-Sum-Approximation）"><a href="#6-1-分解求和近似（Split-Sum-Approximation）" class="headerlink" title="6.1 分解求和近似（Split Sum Approximation）"></a>6.1 分解求和近似（Split Sum Approximation）</h2><p>基于重要性采样的思路，将蒙特卡洛积分公式代入渲染方程可得：<br><img src="/2018/05/14/PBR-Guide-Vol1/26.jpg"></p>
 <p>$$</p>
-<h3 id="6-3-1-流派1：2D-LUT"><a href="#6-3-1-流派1：2D-LUT" class="headerlink" title="6.3.1 流派1：2D LUT"></a>6.3.1 流派1：2D LUT</h3><p>UE4在[Real Shading in Unreal Engine 4,2013]中提出，第二个求和项，使用Schlick近似后，$F_0$可以从积分中分出来：<br>$\int_\Omega{L_i(l)f(l,v)cos\theta_l\cdot dl} = F_0\int_\Omega{f(l,v)\over F(v,h)}(1-(1-v\cdot h)^5)cos\theta_ldl+\int_\Omega{f(l,v)\over F(v,h)}(1-v\cdot h)^5cos\theta_ldl$<br>上式留下了两个输入(Roughness和$cos\theta$v)和两个输出(缩放和向$F_0$的偏差(a scale and bias to $F_0$))，即把上述方程看成是$F_0 \cdot Scale + Offset$的形式。我们预先计算此函数的结果并将其存储在2D查找纹理(LUT,look-up texture)中。<br><img src="/2018/05/14/PBR-Guide-Vol1/26.jpg"><br>这张红绿色的贴图，输入roughtness、$cos\theta$，输出环境BRDF镜面反射的强度。是关于roughness、$cos\theta$与环境BRDF镜面反射强度的固有映射关系。可以离线预计算。<br>具体的取出方式为：</p>
-<p><font size="5">${1\over N}\sum_{k=1}^N {f(l_k,v)cos\theta_{l_k}\over p(l_k,v)}=LUT.r * F_0 + LUT.g$</font><br>即UE4是通过把Fresnel公式的F0提出来，组成F0*Scale+Offset的方式，再将Scale和Offset的索引存到一张2D LUT上。靠roughness和NdotV进行查找。</p>
+<h3 id="6-3-1-流派1：2D-LUT"><a href="#6-3-1-流派1：2D-LUT" class="headerlink" title="6.3.1 流派1：2D LUT"></a>6.3.1 流派1：2D LUT</h3><p>UE4在[Real Shading in Unreal Engine 4,2013]中提出，第二个求和项，使用Schlick近似后，$F<em>0$可以从积分中分出来：<br>$\int</em>\Omega{L<em>i(l)f(l,v)cos\theta_l\cdot dl} = F_0\int</em>\Omega{f(l,v)\over F(v,h)}(1-(1-v\cdot h)^5)cos\theta<em>ldl+\int</em>\Omega{f(l,v)\over F(v,h)}(1-v\cdot h)^5cos\theta_ldl$<br>上式留下了两个输入(Roughness和$cos\theta$v)和两个输出(缩放和向$F_0$的偏差(a scale and bias to $F_0$))，即把上述方程看成是$F_0 \cdot Scale + Offset$的形式。我们预先计算此函数的结果并将其存储在2D查找纹理(LUT,look-up texture)中。<br><img src="/2018/05/14/PBR-Guide-Vol1/26.jpg"><br>这张红绿色的贴图，输入roughtness、$cos\theta$，输出环境BRDF镜面反射的强度。是关于roughness、$cos\theta$与环境BRDF镜面反射强度的固有映射关系。可以离线预计算。<br>具体的取出方式为：</p>
+<p><font size="5">${1\over N}\sum<em>{k=1}^N {f(l_k,v)cos\theta</em>{l_k}\over p(l_k,v)}=LUT.r * F_0 + LUT.g$</font><br>即UE4是通过把Fresnel公式的F0提出来，组成F0*Scale+Offset的方式，再将Scale和Offset的索引存到一张2D LUT上。靠roughness和NdotV进行查找。</p>
 <h3 id="6-3-2-流派2：解析拟合"><a href="#6-3-2-流派2：解析拟合" class="headerlink" title="6.3.2 流派2：解析拟合"></a>6.3.2 流派2：解析拟合</h3><p>COD: Black Ops 2的做法，是通过数学工具Mathematica(<a href="http://www.wolfram.com/mathematica/)中的数值积分拟合出曲线，即将UE4离线计算的这张2D" target="_blank" rel="noopener">http://www.wolfram.com/mathematica/)中的数值积分拟合出曲线，即将UE4离线计算的这张2D</a> LUT用如下函数进行了拟合：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">float3 <span class="title">EnvironmentBRDF</span><span class="params">(<span class="keyword">float</span> g, <span class="keyword">float</span> NoV, float3 rf0)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   float4 t = float4(<span class="number">1</span>/<span class="number">0.96</span>, <span class="number">0.475</span>, (<span class="number">0.0275</span> - <span class="number">0.25</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h1 id="七、离线渲染相关（Offline-Rendering-Related）"><a href="#七、离线渲染相关（Offline-Rendering-Related）" class="headerlink" title="七、离线渲染相关（Offline Rendering Related）"></a>七、离线渲染相关（Offline Rendering Related）</h1><p>虽然我们目前主要关注的是实时渲染（实时光栅图形学相关，暂时不关注实时光线追踪）领域，但很多时候，实时渲染也需要涉及到预计算，尤其是IBL相关的预计算，所以或多或少会用到离线渲染相关的知识。所以PBR核心知识体系的第七部分是离线渲染相关的主题。<br><img src="/2018/05/14/PBR-Guide-Vol1/27.jpg"><br>以下是与实时渲染结合相对紧密的离线渲染的核心主题以及概括总结（主要是统计学与概览相关）：</p>
 <ul>
@@ -748,943 +470,255 @@
 </li>
 </ul>
 
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
-          
-            <a href="/tags/游戏引擎/" rel="tag"># 游戏引擎</a>
-          
-            <a href="/tags/游戏开发/" rel="tag"># 游戏开发</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/05/14/d3d11/" rel="next" title="Direct3D 11">
-                <i class="fa fa-chevron-left"></i> Direct3D 11
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
+              <a href="/tags/游戏引擎/" rel="tag"># 游戏引擎</a>
+              <a href="/tags/游戏开发/" rel="tag"># 游戏开发</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/16/3d-math-base-graph-game-develop/" rel="prev" title="3D数学：图形与游戏开发">
-                3D数学：图形与游戏开发 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/05/14/d3d11/" rel="prev" title="Direct3D 11">
+      <i class="fa fa-chevron-left"></i> Direct3D 11
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/16/3d-math-base-graph-game-develop/" rel="next" title="3D数学：图形与游戏开发">
+      3D数学：图形与游戏开发 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-  </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">liyanfeng</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">326</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">52</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">97</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#光与物质"><span class="nav-number">1.</span> <span class="nav-text">光与物质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#光线"><span class="nav-number">2.</span> <span class="nav-text">光线</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#系列文章前言"><span class="nav-number"></span> <span class="nav-text">系列文章前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PBR知识体系概览"><span class="nav-number"></span> <span class="nav-text">PBR知识体系概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PBR核心理论与渲染原理"><span class="nav-number"></span> <span class="nav-text">PBR核心理论与渲染原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#光与非光学平坦表面的交互原理"><span class="nav-number"></span> <span class="nav-text">光与非光学平坦表面的交互原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漫反射和次表面散射本质相同"><span class="nav-number"></span> <span class="nav-text">漫反射和次表面散射本质相同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、PBR的范畴（Scope-of-PBR）"><span class="nav-number"></span> <span class="nav-text">一、PBR的范畴（Scope of PBR）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、渲染方程与BxDF"><span class="nav-number"></span> <span class="nav-text">二、渲染方程与BxDF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1渲染方程与反射方程"><span class="nav-number">1.</span> <span class="nav-text">2.1渲染方程与反射方程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-BxDF"><span class="nav-number"></span> <span class="nav-text">2.2 BxDF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-BRDF的分类"><span class="nav-number"></span> <span class="nav-text">2.3 BRDF的分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、迪士尼原则的BxDF（Disney-Principled-BxDF）"><span class="nav-number"></span> <span class="nav-text">三、迪士尼原则的BxDF（Disney Principled BxDF）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-迪士尼原则的BRDF（Disney-Principled-BRDF）"><span class="nav-number"></span> <span class="nav-text">3.1 迪士尼原则的BRDF（Disney Principled BRDF）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-Disney-Principled-BRDF核心理念"><span class="nav-number">1.</span> <span class="nav-text">3.1.1 Disney Principled BRDF核心理念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-Disney-Principled-BRDF参数"><span class="nav-number">2.</span> <span class="nav-text">3.1.2 Disney Principled BRDF参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-迪士尼原则的BSDF（Disney-Principled-BSDF）"><span class="nav-number"></span> <span class="nav-text">3.2 迪士尼原则的BSDF（Disney Principled BSDF）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、漫反射BRDF模型（Diffuse-BRDF）"><span class="nav-number"></span> <span class="nav-text">四、漫反射BRDF模型（Diffuse BRDF）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、镜面反射BRDF模型（Specular-BRDF）"><span class="nav-number"></span> <span class="nav-text">五、镜面反射BRDF模型（Specular BRDF）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-从物理现象到BRDF"><span class="nav-number"></span> <span class="nav-text">5.1 从物理现象到BRDF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-Specular-D"><span class="nav-number"></span> <span class="nav-text">5.2 Specular D</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-Specular-F"><span class="nav-number"></span> <span class="nav-text">5.3 Specular F</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-Specular-G"><span class="nav-number"></span> <span class="nav-text">5.4 Specular G</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、基于物理的环境光照（Physically-Based-Environment-Lighting）"><span class="nav-number"></span> <span class="nav-text">六、基于物理的环境光照（Physically Based Environment Lighting）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-分解求和近似（Split-Sum-Approximation）"><span class="nav-number"></span> <span class="nav-text">6.1 分解求和近似（Split Sum Approximation）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-1-流派1：2D-LUT"><span class="nav-number">1.</span> <span class="nav-text">6.3.1 流派1：2D LUT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-2-流派2：解析拟合"><span class="nav-number">2.</span> <span class="nav-text">6.3.2 流派2：解析拟合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、离线渲染相关（Offline-Rendering-Related）"><span class="nav-number"></span> <span class="nav-text">七、离线渲染相关（Offline Rendering Related）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、进阶渲染主题（Advanced-Rendering-Topics）"><span class="nav-number"></span> <span class="nav-text">八、进阶渲染主题（Advanced Rendering Topics）</span></a></li></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="总访客量">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="总访问量">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+          
   
-
-
-
-  
-    
-    
-  
-  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-  
-  <script src="/lib/reading_progress/reading_progress.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=7.0.1"></script>
-
-  <script src="/js/src/motion.js?v=7.0.1"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
-<script src="/js/src/post-details.js?v=7.0.1"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
-
-
-  
-  
-  
-
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
-
-
-
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-
-<script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail,link';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
-    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
-    placeholder: 'Just go go',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: false
-  });
-</script>
-
-
-
-
-  
-
-
-  
-
-
-
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-  
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
-        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
-      }
-    });
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-      for (i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<style>
-.MathJax_Display {
-  overflow-x: scroll;
-  overflow-y: hidden;
-}
-</style>
-
-    
-  
-
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-  
-  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
-  <script>
-  
-    bookmark.scrollToMark('auto', "#更多");
-  
-  </script>
-
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      
-        background-color: #eee;
-        background-image: linear-gradient(#fcfcfc, #eee);
-        border: 1px solid #d5d5d5;
-        border-radius: 3px;
-      
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      
-        right: 4px;
-        top: 8px;
-      
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1;
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; // Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.readOnly = true;
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, code.length);
-        ta.readOnly = false;
-        var result = document.execCommand('copy');
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#光与物质"><span class="nav-number">1.</span> <span class="nav-text">光与物质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#光线"><span class="nav-number">2.</span> <span class="nav-text">光线</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系列文章前言"><span class="nav-number"></span> <span class="nav-text">系列文章前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PBR知识体系概览"><span class="nav-number"></span> <span class="nav-text">PBR知识体系概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#PBR核心理论与渲染原理"><span class="nav-number"></span> <span class="nav-text">PBR核心理论与渲染原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#光与非光学平坦表面的交互原理"><span class="nav-number"></span> <span class="nav-text">光与非光学平坦表面的交互原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#漫反射和次表面散射本质相同"><span class="nav-number"></span> <span class="nav-text">漫反射和次表面散射本质相同</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、PBR的范畴（Scope-of-PBR）"><span class="nav-number"></span> <span class="nav-text">一、PBR的范畴（Scope of PBR）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、渲染方程与BxDF"><span class="nav-number"></span> <span class="nav-text">二、渲染方程与BxDF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1渲染方程与反射方程"><span class="nav-number">1.</span> <span class="nav-text">2.1渲染方程与反射方程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-BxDF"><span class="nav-number"></span> <span class="nav-text">2.2 BxDF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-BRDF的分类"><span class="nav-number"></span> <span class="nav-text">2.3 BRDF的分类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、迪士尼原则的BxDF（Disney-Principled-BxDF）"><span class="nav-number"></span> <span class="nav-text">三、迪士尼原则的BxDF（Disney Principled BxDF）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-迪士尼原则的BRDF（Disney-Principled-BRDF）"><span class="nav-number"></span> <span class="nav-text">3.1 迪士尼原则的BRDF（Disney Principled BRDF）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-Disney-Principled-BRDF核心理念"><span class="nav-number">1.</span> <span class="nav-text">3.1.1 Disney Principled BRDF核心理念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-Disney-Principled-BRDF参数"><span class="nav-number">2.</span> <span class="nav-text">3.1.2 Disney Principled BRDF参数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-迪士尼原则的BSDF（Disney-Principled-BSDF）"><span class="nav-number"></span> <span class="nav-text">3.2 迪士尼原则的BSDF（Disney Principled BSDF）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、漫反射BRDF模型（Diffuse-BRDF）"><span class="nav-number"></span> <span class="nav-text">四、漫反射BRDF模型（Diffuse BRDF）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、镜面反射BRDF模型（Specular-BRDF）"><span class="nav-number"></span> <span class="nav-text">五、镜面反射BRDF模型（Specular BRDF）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-从物理现象到BRDF"><span class="nav-number"></span> <span class="nav-text">5.1 从物理现象到BRDF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-Specular-D"><span class="nav-number"></span> <span class="nav-text">5.2 Specular D</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-Specular-F"><span class="nav-number"></span> <span class="nav-text">5.3 Specular F</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-Specular-G"><span class="nav-number"></span> <span class="nav-text">5.4 Specular G</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、基于物理的环境光照（Physically-Based-Environment-Lighting）"><span class="nav-number"></span> <span class="nav-text">六、基于物理的环境光照（Physically Based Environment Lighting）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-分解求和近似（Split-Sum-Approximation）"><span class="nav-number"></span> <span class="nav-text">6.1 分解求和近似（Split Sum Approximation）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-1-流派1：2D-LUT"><span class="nav-number">1.</span> <span class="nav-text">6.3.1 流派1：2D LUT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-2-流派2：解析拟合"><span class="nav-number">2.</span> <span class="nav-text">6.3.2 流派2：解析拟合</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#七、离线渲染相关（Offline-Rendering-Related）"><span class="nav-number"></span> <span class="nav-text">七、离线渲染相关（Offline Rendering Related）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#八、进阶渲染主题（Advanced-Rendering-Topics）"><span class="nav-number"></span> <span class="nav-text">八、进阶渲染主题（Advanced Rendering Topics）</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liyanfeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
         
-          if (result) $(this).text('复制成功');
-          else $(this).text('复制失败');
+          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
         
-        ta.blur(); // For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('复制');
-        }, 300);
-      }).append(e);
-    })
-  </script>
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
 
 
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
 </body>
 </html>

@@ -1,145 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-
-
-
-
-
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-    
-    
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
-  
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.0.1">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '7.0.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
-    fancybox: true,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'W8FJT5MTZU',
-      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
-      indexName: 'hexo',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zentia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"W8FJT5MTZU","apiKey":"f4ca7ae2408d2e27ffc8269ad8d34273","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
   <meta name="description" content="三维空间中的向量　　几何学中，我们用有向线段表示向量，如图1。向量的两个属性是他的长度和他的顶点所指的方向。因此，可以用向量来模拟既有大小又有方向的物理模型。例如，以后我们要实现的粒子系统。我们用向量来模拟粒子的速度和加速度。在3D计算机图形学中我们用向量不仅仅模拟方向。例如我们常常想知道光线的照射方向，以及在3D世界中的摄象机。向量为在3维空间中表示方向的提供了方便。　　　　　　向量与位置无关。">
 <meta name="keywords" content="计算机图形学,Direct3D 9">
@@ -172,18 +51,16 @@
 <meta name="twitter:description" content="三维空间中的向量　　几何学中，我们用有向线段表示向量，如图1。向量的两个属性是他的长度和他的顶点所指的方向。因此，可以用向量来模拟既有大小又有方向的物理模型。例如，以后我们要实现的粒子系统。我们用向量来模拟粒子的速度和加速度。在3D计算机图形学中我们用向量不仅仅模拟方向。例如我们常常想知道光线的照射方向，以及在3D世界中的摄象机。向量为在3维空间中表示方向的提供了方便。　　　　　　向量与位置无关。">
 <meta name="twitter:image" content="http://zentia.github.io/2019/03/24/DirectX93DGame/1.png">
 
+<link rel="canonical" href="http://zentia.github.io/2019/03/24/DirectX93DGame/">
 
 
-
-
-
-  <link rel="canonical" href="http://zentia.github.io/2019/03/24/DirectX93DGame/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -195,15 +72,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -212,9 +82,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -228,150 +97,53 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta custom-logo">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">liyanfeng</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-    
-    
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liyanfeng</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
 
+
 <nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
+  </ul>
 </nav>
 
-
-
-  
 
 
 
@@ -379,116 +151,66 @@
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
-          <div id="content" class="content">
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  
-    <div class="reading-progress-bar"></div>
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/03/24/DirectX93DGame/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">DirectX 9 3D游戏设计入门
-
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          DirectX 9 3D游戏设计入门
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/03/24/DirectX93DGame/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/03/24/DirectX93DGame/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">发表于</span>
 
-          
-          
-
-          
-            <span class="post-meta-divider">|</span>
-            <span class="post-meta-item-icon" title="阅读次数">
-            <i class="fa fa-eye"></i>
-            
-            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              <time title="创建时间：2019-03-24 10:01:00" itemprop="dateCreated datePublished" datetime="2019-03-24T10:01:00+08:00">2019-03-24</time>
             </span>
-          
-
-          
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
 
           
 
         </div>
       </header>
-    
 
     
     
     
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <h1 id="三维空间中的向量"><a href="#三维空间中的向量" class="headerlink" title="三维空间中的向量"></a>三维空间中的向量</h1><p>　　几何学中，我们用有向线段表示向量，如图1。向量的两个属性是他的长度和他的顶点所指的方向。因此，可以用向量来模拟既有大小又有方向的物理模型。例如，以后我们要实现的粒子系统。我们用向量来模拟粒子的速度和加速度。在3D计算机图形学中我们用向量不仅仅模拟方向。例如我们常常想知道光线的照射方向，以及在3D世界中的摄象机。向量为在3维空间中表示方向的提供了方便。<br>　　<br>　　<img src="/2019/03/24/DirectX93DGame/1.png"><br>　　向量与位置无关。有同样长度和方向的两个向量是相等的，即使他们在不同的位置。观察彼此平行的两个向量，例如在图1中u和v是相等的。<br>　　我们继续学习左手坐标系。图2显示的是左手坐标系和右手坐标系。两者不同的是Z轴的方向。在左手坐标系中Z轴是向书的里面去的，而右手坐标系是向书的外边去的。<br>　　　　<img src="/2019/03/24/DirectX93DGame/2.png"><br>　　图2<br>　　因为向量的位置不能改变它的性质，我们可以把所有向量平移使他们的尾部和坐标系的原点重合。因此，当一个向量在标准位置我们能通过头点来描述向量。图3显示的是图1中的向量在标准位置的样子。<br>　　<img src="/2019/03/24/DirectX93DGame/3.png"><br>　　图3<br>　　我们通常用小写字母表示一个向量，但有时也用大写字母。如2、3和4维向量分别是：<br>　　　　　u = (ux, uy),<br>　　　　　N = (Nx, Ny, Nz),<br>　　　　　c = (cx, cy, cz, cw)。<br>　　我们现在介绍4个特殊的3D向量，就象图4显示的。首先是都由含有0的零向量；它被表示成加粗的0 = (0, 0, 0)。接下来3个特殊的向量标准基向量。它们被叫做i, j和k向量，分别沿着坐标系的x轴,y轴和z轴，并且有1的单位长：i = (1, 0, 0), j = (0, 1, 0), and k = (0, 0, 1)。<br>注意：只有1个单位长度的向量叫做单位向量（模长为1的向量）。<br>　　<img src="/2019/03/24/DirectX93DGame/4.png"><br>　　图4<br>在D3DX库中，我们能用D3DXVECTOR3类表示3维空间中的向量。它的定义是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">D3DXVECTOR3</span> :</span> <span class="keyword">public</span> D3DVECTOR</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    D3DXVECTOR3() &#123;&#125;;</span><br><span class="line">    D3DXVECTOR3( CONST FLOAT * );</span><br><span class="line">    D3DXVECTOR3( CONST D3DVECTOR&amp; );</span><br><span class="line">    D3DXVECTOR3( CONST D3DXFLOAT16 * );</span><br><span class="line">    D3DXVECTOR3( FLOAT x, FLOAT y, FLOAT z );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// casting</span></span><br><span class="line">    <span class="keyword">operator</span> FLOAT* ();</span><br><span class="line">    <span class="keyword">operator</span> CONST FLOAT* () <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// assignment operators</span></span><br><span class="line">    D3DXVECTOR3&amp; <span class="keyword">operator</span> += ( CONST D3DXVECTOR3&amp; );</span><br><span class="line">    D3DXVECTOR3&amp; <span class="keyword">operator</span> -= ( CONST D3DXVECTOR3&amp; );</span><br><span class="line">    D3DXVECTOR3&amp; <span class="keyword">operator</span> *= ( FLOAT );</span><br><span class="line">    D3DXVECTOR3&amp; <span class="keyword">operator</span> /= ( FLOAT );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// unary operators</span></span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> + () <span class="keyword">const</span>;</span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> - () <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// binary operators</span></span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> + ( CONST D3DXVECTOR3&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> - ( CONST D3DXVECTOR3&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> * ( FLOAT ) <span class="keyword">const</span>;</span><br><span class="line">    D3DXVECTOR3 <span class="keyword">operator</span> / ( FLOAT ) <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">friend</span> D3DXVECTOR3 <span class="keyword">operator</span> * ( FLOAT, CONST struct D3DXVECTOR3&amp; );</span><br><span class="line"></span><br><span class="line">    BOOL <span class="keyword">operator</span> == ( CONST D3DXVECTOR3&amp; ) <span class="keyword">const</span>;</span><br><span class="line">    BOOL <span class="keyword">operator</span> != ( CONST D3DXVECTOR3&amp; ) <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line">&#125; D3DXVECTOR3, *LPD3DXVECTOR3;</span><br></pre></td></tr></table></figure></p>
@@ -499,7 +221,7 @@
 <p>注意：当比较浮点数时，必须注意。因为浮点数不是精确的，我们认为相等的两个浮点数是有细微差别的；因此，我们测试它们近似相等。我们定义一个常数EPSILON，把它当作非常小的“buffer”。假如两个数和EPSILON相差很小我们说它们近似相等。换句话说，EPSILON让浮点数有一定的精度。接下来的实例函数是怎样用EPSILON比较两个浮点数相等。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Equals</span><span class="params">(<span class="keyword">float</span> lhs, <span class="keyword">float</span> rhs)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// if lhs == rhs their difference should be zero</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fabs</span>(lhs - rhs) &lt; EPSILON ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>   当我们用D3DXVECTOR3类时不必担心，因为它已经帮我们处理了，但是在一般情况下适当注意比较两个浮点数是很重要的。</p>
 <h2 id="计算向量大小（向量的模）"><a href="#计算向量大小（向量的模）" class="headerlink" title="计算向量大小（向量的模）"></a>计算向量大小（向量的模）</h2><p>　　几何学上，向量的大小是有向线段的长度。知道向量的分量，利用下面的公式我们就能计算出向量的大小。</p>
-<p><font size="4">$||u||=\sqrt{u_{x}^2+u_{y}^2+u_{z}^2}$</font><br>‖u‖表示向量u的长度。例如：计算向量u = (1, 2, 3)和v = (1, 1)的大小。<br>根据公式（1），我们得到：<br>　　<font size="4">$||u||=\sqrt{1^2+2^2+3^2} = \sqrt{1+4+9}=\sqrt{14}$</font><br>　　<br>我们利用D3DX库中下面的函数便能计算向量的大小。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FLOAT <span class="title">D3DXVec3Length</span><span class="params">( <span class="comment">// Returns the magnitude.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV <span class="comment">// The vector to compute the length of.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">1.0f</span>, <span class="number">2.0f</span>, <span class="number">3.0f</span>)</span></span>;</span><br><span class="line"><span class="keyword">float</span> magnitude = D3DXVec3Length( &amp;v ); <span class="comment">// = sqrt(14)</span></span><br></pre></td></tr></table></figure></p>
+<p><font size="4">$||u||=\sqrt{u<em>{x}^2+u</em>{y}^2+u_{z}^2}$</font><br>‖u‖表示向量u的长度。例如：计算向量u = (1, 2, 3)和v = (1, 1)的大小。<br>根据公式（1），我们得到：<br>　　<font size="4">$||u||=\sqrt{1^2+2^2+3^2} = \sqrt{1+4+9}=\sqrt{14}$</font><br>　　<br>我们利用D3DX库中下面的函数便能计算向量的大小。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FLOAT <span class="title">D3DXVec3Length</span><span class="params">( <span class="comment">// Returns the magnitude.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV <span class="comment">// The vector to compute the length of.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">1.0f</span>, <span class="number">2.0f</span>, <span class="number">3.0f</span>)</span></span>;</span><br><span class="line"><span class="keyword">float</span> magnitude = D3DXVec3Length( &amp;v ); <span class="comment">// = sqrt(14)</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="标准化向量"><a href="#标准化向量" class="headerlink" title="标准化向量"></a>标准化向量</h2><p>　　<font color="red">标准化向量是让向量的大小等于1，即被叫作单位向量。</font>我们能利用向量大小以及各个分量把一个向量标准化，就像这样：<br>　　$\hat{u} ={u \over ||u||} = {({u_x \over ||u||}, {u_y \over ||u||}, {u_z \over ||u||})}$<br>我们这样表示单位向量$\hat{u}$。如：标准化向量u = (1, 2, 3) 和 v = (1, 1)。<br>解答方法：根据(2)和(3)我们得到‖u‖=√14 和 ‖v‖=√2,因此：<br>　　<br>我们利用D3DX库中下面的函数能标准化向量。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 *<span class="title">D3DXVec3Normalize</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    D3DXVECTOR3* pOut, <span class="comment">// Result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    CONST D3DXVECTOR3* pV <span class="comment">// The vector to normalize.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
 <p>注意：这个函数返回一个指针，因此它可以作为一个参数传递给另一个函数。大数情况下，除非另作说明，D3DX数学函数返回的结果是一个指针。但不是所有函数都这样。</p>
 <h2 id="向量相加"><a href="#向量相加" class="headerlink" title="向量相加"></a>向量相加</h2><p>　　我们能够通过分别把两个向量的各个分量相加得到向量之和，注意在相加之前必须保证它们有相同的维数。<br>$u + v = ({u_x + v_x, u_y + v_y, u_z + v_z})$<br>图5显示的是几何学上的向量相加。<br><img src="/2019/03/24/DirectX93DGame/5.png" title="图5"></p>
@@ -507,11 +229,11 @@
 <h2 id="向量相减"><a href="#向量相减" class="headerlink" title="向量相减"></a>向量相减</h2><p>　　和加法类似，通过分别把两个向量的各个分量相减得到向量之差。再次重声两个向量必须是相同维数。<br>　　$u + v = ({u_x - v_x, u_y - v_y, u_z - v_z})$<br>图6显示的是几何学上的向量相减。<br><img src="/2019/03/24/DirectX93DGame/5.png" title="图6"><br>两个向量相减的代码，我们使用重载的减法操作符：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 <span class="title">u</span><span class="params">(<span class="number">2.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">5.0f</span>)</span></span>;</span><br><span class="line">D3DXVECTOR3 difference = u - v; <span class="comment">// = (2.0f, 1.0f, -4.0f)</span></span><br></pre></td></tr></table></figure></p>
 <p>　　图6显示，向量减法得到一个从v向量终点到u向量终点的向量。假如我们解释u和v的分量，我们能用向量相减找到从一个点到另一个点的向量。这是非常方便的操作，因为我们常常想找到从一个点到另一个点的方向向量。</p>
 <h2 id="标量与向量的乘积"><a href="#标量与向量的乘积" class="headerlink" title="标量与向量的乘积"></a>标量与向量的乘积</h2><p>我们能用一个标量与向量相乘，就象名字暗示的一样，向量按比例变化。这种运算不会改变向量的方向，除非标量是负数，这种情况向量方向相反。<br>　　$ku=(ku_x,ku_y,ku_z)$<br>D3DXVECTOR3类提供了向量与标量乘法的操作符。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 <span class="title">u</span><span class="params">(<span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>)</span></span>;</span><br><span class="line">D3DXVECTOR3 scaledVec = u * <span class="number">10.0f</span>; <span class="comment">// = (10.0f, 10.0f, -10.0f)</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="点积"><a href="#点积" class="headerlink" title="点积"></a>点积</h2><p>　　数学上定义点积是两个向量的乘积。按下面等式计算：<br>　　$u \cdot v = u_{x}v_x+u_{y}v_y+u_{z}v_z = S$<br>　　上面的等式不能很明显的体现几何上的意义。利用余弦定律，我们能够发现它们的关系。<br>　　u · v =|u||v|cosθ，表示两个向量的点积是它们的模和夹角的余弦之积。因此，如果u和v都是单位向量，那么u·v就是它们夹角的余弦。<br>一些点积中有用的特性<br>　　■　假如u · v = 0，那么u⊥v。<br>　　■　假如u · v &gt; 0，那么两个向量的角度θ小于90度。<br>　　■　假如u · v &lt; 0，那么两个向量的角度θ大于90度。<br>　　我们使用下面的D3DX函数计算两个向量的点积：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FLOAT <span class="title">D3DXVec3Dot</span><span class="params">( <span class="comment">// Returns the result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV1, <span class="comment">// Left sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV2 <span class="comment">// Right sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">u</span><span class="params">(<span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">3.0f</span>, <span class="number">2.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="comment">// 1.0*3.0 + -1.0*2.0 + 0.0*1.0</span></span><br><span class="line"><span class="comment">// = 3.0 + -2.0</span></span><br><span class="line"><span class="keyword">float</span> dot = D3DXVec3Dot( &amp;u, &amp;v ); <span class="comment">// = 1.0</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="叉积"><a href="#叉积" class="headerlink" title="叉积"></a>叉积</h2><p>　　第二种乘法在向量数学中叫叉积。<strong>不像点积，结果值是一个标量，叉积的结果值是另一个向量。</strong>通过把两个向量u和v相乘得到另一的向量p，向量p垂直于u和v。也就是说向量p垂直于u并且垂直于u。<br>十字相乘就像这样计算：<br>$p=u \times v=[(u_{y}v_z-u_{z}v_{y}),(u_{z}v_x-u_{x}v_{z}),(u_{x}v_y-u_{y}v_{x})]$<br>$p_x = (u_{y}v_z-u_{z}v_{y})$<br>$p_y = (u_{z}v_x-u_{x}v_{z})$<br>$p_z = (u_{x}v_y-u_{y}v_{x})$<br>　　<br>如：发现j = k×i = (0, 0, 1)×(1, 0, 0) 并且j同时垂直于k和i.<br>因此，j = (0, 1, 0)。回忆一下上节的标题“叉积”，是说如果u · v = 0，那么u⊥v。同样的如果j · k = 0并且j · i = 0那么我们便能知道j既垂直于k又垂直于i的。<br>我们使用下面的D3DX函数计算两个向量的叉积：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 *<span class="title">D3DXVec3Cross</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    D3DXVECTOR3* pOut, <span class="comment">// Result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    CONST D3DXVECTOR3* pV1, <span class="comment">// Left sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    CONST D3DXVECTOR3* pV2 <span class="comment">// Right sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<h2 id="点积"><a href="#点积" class="headerlink" title="点积"></a>点积</h2><p>　　数学上定义点积是两个向量的乘积。按下面等式计算：<br>　　$u \cdot v = u<em>{x}v_x+u</em>{y}v<em>y+u</em>{z}v_z = S$<br>　　上面的等式不能很明显的体现几何上的意义。利用余弦定律，我们能够发现它们的关系。<br>　　u · v =|u||v|cosθ，表示两个向量的点积是它们的模和夹角的余弦之积。因此，如果u和v都是单位向量，那么u·v就是它们夹角的余弦。<br>一些点积中有用的特性<br>　　■　假如u · v = 0，那么u⊥v。<br>　　■　假如u · v &gt; 0，那么两个向量的角度θ小于90度。<br>　　■　假如u · v &lt; 0，那么两个向量的角度θ大于90度。<br>　　我们使用下面的D3DX函数计算两个向量的点积：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FLOAT <span class="title">D3DXVec3Dot</span><span class="params">( <span class="comment">// Returns the result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV1, <span class="comment">// Left sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">　　CONST D3DXVECTOR3* pV2 <span class="comment">// Right sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">u</span><span class="params">(<span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>)</span></span>;</span><br><span class="line"><span class="function">D3DXVECTOR3 <span class="title">v</span><span class="params">(<span class="number">3.0f</span>, <span class="number">2.0f</span>, <span class="number">1.0f</span>)</span></span>;</span><br><span class="line"><span class="comment">// 1.0*3.0 + -1.0*2.0 + 0.0*1.0</span></span><br><span class="line"><span class="comment">// = 3.0 + -2.0</span></span><br><span class="line"><span class="keyword">float</span> dot = D3DXVec3Dot( &amp;u, &amp;v ); <span class="comment">// = 1.0</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="叉积"><a href="#叉积" class="headerlink" title="叉积"></a>叉积</h2><p>　　第二种乘法在向量数学中叫叉积。<strong>不像点积，结果值是一个标量，叉积的结果值是另一个向量。</strong>通过把两个向量u和v相乘得到另一的向量p，向量p垂直于u和v。也就是说向量p垂直于u并且垂直于u。<br>十字相乘就像这样计算：<br>$p=u \times v=[(u<em>{y}v_z-u</em>{z}v<em>{y}),(u</em>{z}v<em>x-u</em>{x}v<em>{z}),(u</em>{x}v<em>y-u</em>{y}v<em>{x})]$<br>$p_x = (u</em>{y}v<em>z-u</em>{z}v<em>{y})$<br>$p_y = (u</em>{z}v<em>x-u</em>{x}v<em>{z})$<br>$p_z = (u</em>{x}v<em>y-u</em>{y}v_{x})$<br>　　<br>如：发现j = k×i = (0, 0, 1)×(1, 0, 0) 并且j同时垂直于k和i.<br>因此，j = (0, 1, 0)。回忆一下上节的标题“叉积”，是说如果u · v = 0，那么u⊥v。同样的如果j · k = 0并且j · i = 0那么我们便能知道j既垂直于k又垂直于i的。<br>我们使用下面的D3DX函数计算两个向量的叉积：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXVECTOR3 *<span class="title">D3DXVec3Cross</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    D3DXVECTOR3* pOut, <span class="comment">// Result.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    CONST D3DXVECTOR3* pV1, <span class="comment">// Left sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    CONST D3DXVECTOR3* pV2 <span class="comment">// Right sided operand.</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
 <p>　　从下图很明显，向量-p与u和v也都相互垂直。我们执行叉积的命令，确定得到的的结果不管是p或者-p。换句话说，u×v = -(v×u)。这说明叉积是不可交换的。你能通过左手法则确定叉积返回的向量。按照第一个向量指向第二个向量弯曲你的左手，这时拇指所指的方向就是向量所指的方向。<br><img src="/2019/03/24/DirectX93DGame/7.png" title="图7">　</p>
-<h2 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h2><p>在这一部分我们关注的焦点是数学中的矩阵。它们在3D图形学中的应用将在下一部分讲解。<br>一个m×n的矩阵是由m行和n列的数字组成的矩阵列。行和列的数字就是这个矩阵的维数。我们通过写在下方的数字识别矩阵清单，数字中的第一个表示行第二个表示列。例如下边的M是3×3矩阵，B是2×4矩阵, C是3×2矩阵。<br>$M=\begin{bmatrix} m_{11} &amp; m_{12} &amp; m_{13} \\ m_{21} &amp; m_{22} &amp; m_{23} \\ m_{31} &amp; m_{32} &amp; m_{33} \\\end{bmatrix}$ $B=\begin{bmatrix} b_{11} &amp; b_{12} &amp; b_{13} b_{14} \\ b_{21} &amp; b_{22} &amp; b_{23} b_{24} \\\end{bmatrix}$ $C=\begin{bmatrix} c_{11} &amp; c_{12} \\ c_{21} &amp; c_{22} \\c_{31} &amp; c_{32} \\\end{bmatrix}$<br>我们使用加粗的大写字母表示矩阵。有时一个矩阵只包含一行或者一列。我们用行矩阵和列矩阵这个特殊的名称来称呼。例如下边就是行和列矩阵：<br>$V = \begin{bmatrix} v_{1} &amp; v_{2} &amp; v_{3} v_{4} \\\end{bmatrix}$ $U = \begin{bmatrix} u_{x} \\ v_{y} \\ v_{z} \\\end{bmatrix}$<br>当使用行或列矩阵时，我们只用一个下标，有时我们还用字母表示。</p>
-<h2 id="相等、数乘矩阵以及相加"><a href="#相等、数乘矩阵以及相加" class="headerlink" title="相等、数乘矩阵以及相加"></a>相等、数乘矩阵以及相加</h2><p>这部分我们将用到下边4个矩阵：<br>　　$A = \begin{bmatrix} 1 &amp; 5 &amp; -2 3 \\\end{bmatrix}$ $B = \begin{bmatrix} 6 &amp; 2 &amp; 5 -8 \\\end{bmatrix}$ $C = \begin{bmatrix} 1 &amp; 5 &amp; -2 3 \\\end{bmatrix}$ $D = \begin{bmatrix} 1 &amp; 2 &amp; -1 &amp; 3 \\ -6 &amp; 3 &amp; 0 &amp; 0 \\\end{bmatrix}$<br>　■假如两个矩阵维数和成员都相同那么它们就相等。例如，A = C 因为A和C有同样的维数并且他们的成员都相等。A≠B同时A≠D因为他们的成员或者维数是不相同的。<br>　■我们能通过标量与矩阵的每个成员相乘得到标量与矩阵相乘。如矩阵D与k相乘：<br>　　$kD = \begin{bmatrix} k(1) &amp; k(2) &amp; k(-1) &amp; k(3) \\ k(-6) &amp; k(3) &amp; k(0) &amp; k(0) \\\end{bmatrix}$<br>假如k = 2,那么：<br>　　$kD = 2D = \begin{bmatrix} 2(1) &amp; 2(2) &amp; 2(-1) &amp; 2(3) \\ 2(-6) &amp; 2(3) &amp; 2(0) &amp; 2(0) \\\end{bmatrix} = \begin{bmatrix} 2 &amp; 4 &amp; -2 &amp; 6 \\ -12 &amp; 6 &amp; 0 &amp; 0 \\\end{bmatrix}$<br>　■当两个矩阵的维数相同时才能把它们相加。和是把两个矩阵相应的成员相加得到。如：<br>　　$A+B=\begin{bmatrix} 1 &amp; 5 \\ -2 &amp; 2(3) &amp; 2(0) &amp; 2(0) \\\end{bmatrix} + \begin{bmatrix} 2(1) &amp; 2(2) &amp; 2(-1) &amp; 2(3) \\ 2(-6) &amp; 2(3) &amp; 2(0) &amp; 2(0) \\\end{bmatrix}$<br>　■矩阵有加法当然也就有减法，前提是有相同的维数。矩阵减法如图所示：</p>
+<h2 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h2><p>在这一部分我们关注的焦点是数学中的矩阵。它们在3D图形学中的应用将在下一部分讲解。<br>一个m×n的矩阵是由m行和n列的数字组成的矩阵列。行和列的数字就是这个矩阵的维数。我们通过写在下方的数字识别矩阵清单，数字中的第一个表示行第二个表示列。例如下边的M是3×3矩阵，B是2×4矩阵, C是3×2矩阵。<br>$M=\begin{bmatrix} m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \ m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \ m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \\end{bmatrix}$ $B=\begin{bmatrix} b</em>{11} &amp; b<em>{12} &amp; b</em>{13} b<em>{14} \ b</em>{21} &amp; b<em>{22} &amp; b</em>{23} b<em>{24} \\end{bmatrix}$ $C=\begin{bmatrix} c</em>{11} &amp; c<em>{12} \ c</em>{21} &amp; c<em>{22} \c</em>{31} &amp; c<em>{32} \\end{bmatrix}$<br>我们使用加粗的大写字母表示矩阵。有时一个矩阵只包含一行或者一列。我们用行矩阵和列矩阵这个特殊的名称来称呼。例如下边就是行和列矩阵：<br>$V = \begin{bmatrix} v</em>{1} &amp; v<em>{2} &amp; v</em>{3} v<em>{4} \\end{bmatrix}$ $U = \begin{bmatrix} u</em>{x} \ v<em>{y} \ v</em>{z} \\end{bmatrix}$<br>当使用行或列矩阵时，我们只用一个下标，有时我们还用字母表示。</p>
+<h2 id="相等、数乘矩阵以及相加"><a href="#相等、数乘矩阵以及相加" class="headerlink" title="相等、数乘矩阵以及相加"></a>相等、数乘矩阵以及相加</h2><p>这部分我们将用到下边4个矩阵：<br>　　$A = \begin{bmatrix} 1 &amp; 5 &amp; -2 3 \\end{bmatrix}$ $B = \begin{bmatrix} 6 &amp; 2 &amp; 5 -8 \\end{bmatrix}$ $C = \begin{bmatrix} 1 &amp; 5 &amp; -2 3 \\end{bmatrix}$ $D = \begin{bmatrix} 1 &amp; 2 &amp; -1 &amp; 3 \ -6 &amp; 3 &amp; 0 &amp; 0 \\end{bmatrix}$<br>　■假如两个矩阵维数和成员都相同那么它们就相等。例如，A = C 因为A和C有同样的维数并且他们的成员都相等。A≠B同时A≠D因为他们的成员或者维数是不相同的。<br>　■我们能通过标量与矩阵的每个成员相乘得到标量与矩阵相乘。如矩阵D与k相乘：<br>　　$kD = \begin{bmatrix} k(1) &amp; k(2) &amp; k(-1) &amp; k(3) \ k(-6) &amp; k(3) &amp; k(0) &amp; k(0) \\end{bmatrix}$<br>假如k = 2,那么：<br>　　$kD = 2D = \begin{bmatrix} 2(1) &amp; 2(2) &amp; 2(-1) &amp; 2(3) \ 2(-6) &amp; 2(3) &amp; 2(0) &amp; 2(0) \\end{bmatrix} = \begin{bmatrix} 2 &amp; 4 &amp; -2 &amp; 6 \ -12 &amp; 6 &amp; 0 &amp; 0 \\end{bmatrix}$<br>　■当两个矩阵的维数相同时才能把它们相加。和是把两个矩阵相应的成员相加得到。如：<br>　　$A+B=\begin{bmatrix} 1 &amp; 5 \ -2 &amp; 2(3) &amp; 2(0) &amp; 2(0) \\end{bmatrix} + \begin{bmatrix} 2(1) &amp; 2(2) &amp; 2(-1) &amp; 2(3) \ 2(-6) &amp; 2(3) &amp; 2(0) &amp; 2(0) \\end{bmatrix}$<br>　■矩阵有加法当然也就有减法，前提是有相同的维数。矩阵减法如图所示：</p>
 <h2 id="乘法"><a href="#乘法" class="headerlink" title="乘法"></a>乘法</h2><p>　　矩阵相乘在3D计算机图形学中是非常重要的运算。通过矩阵相乘，我们能变换向量并且，将不同向量转换到一起。变换是下一节的内容。<br>　　为了得到矩阵之积AB，A的列数必须等于B的行数。假如这个条件不满足，就不能相乘。考虑下边两个矩阵，A 和 B，分别是2×3 和 3×3，如：<br>　　<br>　　我们看乘积AB是可以计算的，因为A的列数等于B的行数。注意乘积BA,它们是不能计算的，因为B的列数不等于A的行数。由此说明：一般情况下矩阵乘法不满足乘法交换律（也就是, AB≠BA）。我们说“一般不可交换”因为有一些矩阵乘法的实例还是可以的。<br>　　知道了矩阵乘法的计算方法，现在我们就能给出精确的定义：假如A是一个m×n的矩阵，B是一个n×p的矩阵，那么它们之积AB可计算并且是一个m×p 的矩阵C, C的成员ij 等于A的第i个与B的第j个相乘：<br>　　<br>例如，求解：<br>　　<br>　　我们检查知道乘法是可计算的，因为A的列数等于B的行数。也知道计算的结果是一个2×2的矩阵。根据公式（4），我们得到：<br>　　<br>作为练习，检查AB≠BA。<br>更一般的例子：
 　　</p>
 <h2 id="单位矩阵"><a href="#单位矩阵" class="headerlink" title="单位矩阵"></a>单位矩阵</h2><p>　　有一种特殊矩阵叫做单位矩阵。单位矩阵是除了对角（左上到右下）以外所有成员都是0，对角都是1的方矩阵。例如，下边是2×2, 3×3, 和 4×4的单位矩阵：</p>
@@ -537,14 +259,14 @@
 <p>   D3DX库也提供下列有用的函数：将D3DXMATRIX转化为单位矩阵，转置D3DXMATRIX矩阵以及求逆矩阵。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixIdentity</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX *pout <span class="comment">// 将矩阵转换为单位矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"></span><br><span class="line">D3DXMATRIX M;</span><br><span class="line">D3DXMatrixIdentity( &amp;M ); <span class="comment">// M = 单位矩阵</span></span><br><span class="line"></span><br><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixTranspose</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX *pOut, <span class="comment">// 输出的转置矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXMATRIX *pM <span class="comment">// 原矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXMATRIX <span class="title">A</span><span class="params">(...)</span></span>; <span class="comment">// 初始化矩阵A</span></span><br><span class="line">D3DXMATRIX B;</span><br><span class="line">D3DXMatrixTranspose( &amp;B, &amp;A ); <span class="comment">// B = 输出的转置矩阵</span></span><br></pre></td></tr></table></figure></p>
 <p>   假如我们将不能求逆的矩阵用求逆函数，那么函数将会返回null.同样的，这本书我们忽视第二个参数，并且总是把它设置为0。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixInverse</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX *pOut, <span class="comment">// 输出的逆矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT *pDeterminant, <span class="comment">// 除非是必需的，一般设为0</span></span></span></span><br><span class="line"><span class="function"><span class="params">	CONST D3DXMATRIX *pM <span class="comment">// 原矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br><span class="line"><span class="function">D3DXMATRIX <span class="title">A</span><span class="params">(...)</span></span>; <span class="comment">// 初始化矩阵</span></span><br><span class="line">D3DXMATRIX B;</span><br><span class="line">D3DXMatrixInverse( &amp;B, <span class="number">0</span>, &amp;A ); <span class="comment">// B = A的逆矩阵</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="基本变换"><a href="#基本变换" class="headerlink" title="基本变换　　"></a>基本变换　　</h2><p>当用Direct3D编程时，我们使用4×4矩阵来进行矩阵变换。用它的原因是：我们设置一个4×4矩阵X是为了更精确的描述矩阵变换。同样我们设置一个相匹配的点或者把向量的分量放置到一个1×4的行矩阵V中。VX的乘积返回一个新的向量V’。例如：让X沿着x轴平移10个单位同时V = [2, 6, –3, 1]，乘积VX = V’= [12, 6, –3, 1]。<br>　　有一些东西需要阐明。我们使用4×4矩阵是因为这样的大小能表现我们需要的所有变换。最初看来一个3×3的好象更适合3D。然而这里有很多种我们喜欢用的变换是不能用一个3×3的矩阵来表示的，比如平移、投影、反射。我们使用向量-矩阵相乘来工作，因此我们至少要通过一个矩阵乘法来完成相应的变化。增大到4×4的矩阵后，它允许我们用一个矩阵描述更多的变换，并且向量-矩阵乘法是可行的。</p>
-<p>　　我们说过把一个相匹配的点或者一个向量的成员放置到一个1×4的行矩阵中。但是点和向量是3D的！为什么我们要用一个1×4的行矩阵呢？我们必需把3D点/向量增大为4D的单行矩阵，是为了符合向量与矩阵的乘法定义，而1×3的单行矩阵和4×4的矩阵相乘是不允许的。<br>　　那么，我们怎么使用第四个成员（我们用w来表示）呢？当我们把一个点放置到一个1×4的行矩阵中时，我们设置w为1。允许对点进行适当的平移。因为向量和位置无关，所以向量的平移没有被定义，如果试图这样做会返回一个无意义的向量。为了防止对向量进行平移，当在把一个向量放置到一个1×4行矩阵中时我们把w设置为0。例如：<br>把点p = (p1, p2, p3)放置到一个单行矩阵中就象这样：<br>[p1, p2, p3, 1]，<br>同样把向量v = (v1, v2, v3) 放置到一个单行矩阵中就象这样：<br>[v1, v2, v3, 0]。<br>　　<br>注意：我们设置w = 1是为了让点可以被恰当的移动，同样我们设置w = 0是为了防止向量被平移。当我们检查矩阵实际平移时这是一个非常清晰的模型。<br>　　有时一个矩阵变换时我们改变向量成员w的值，即w≠0 且 w≠1。考虑下边例子：<br>　　$p = \begin{bmatrix} p_1 &amp; p_2 &amp; p_3 &amp; 1 \\\end{bmatrix} \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 1 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\\end{bmatrix} = \begin{bmatrix} p_1, p_2, p_3, p_3 \\\end{bmatrix} = p`$<br>　　因为p3≠0 且 p3≠1。<br>　　我们注意w =p3。当w≠0 且 w≠1时，我们说我们有一个向量在同类空间中，与3维空间中的向量是相对的。我们能通过把向量的每个分量与w相除将同类空间中的向量映射到3维空间中来。例如把同类空间中向量(x, y, z, w) 映射到3维空间中的向量x，我们这样做：<br>　　${x \over w}, {y \over w}, {z \over w}, {w \over w}$<br>　　在3D图形程序设计中，从齐次坐标空间映射到3D空间时使用<strong>投影透视</strong>。<br>矩阵平移</p>
+<p>　　我们说过把一个相匹配的点或者一个向量的成员放置到一个1×4的行矩阵中。但是点和向量是3D的！为什么我们要用一个1×4的行矩阵呢？我们必需把3D点/向量增大为4D的单行矩阵，是为了符合向量与矩阵的乘法定义，而1×3的单行矩阵和4×4的矩阵相乘是不允许的。<br>　　那么，我们怎么使用第四个成员（我们用w来表示）呢？当我们把一个点放置到一个1×4的行矩阵中时，我们设置w为1。允许对点进行适当的平移。因为向量和位置无关，所以向量的平移没有被定义，如果试图这样做会返回一个无意义的向量。为了防止对向量进行平移，当在把一个向量放置到一个1×4行矩阵中时我们把w设置为0。例如：<br>把点p = (p1, p2, p3)放置到一个单行矩阵中就象这样：<br>[p1, p2, p3, 1]，<br>同样把向量v = (v1, v2, v3) 放置到一个单行矩阵中就象这样：<br>[v1, v2, v3, 0]。<br>　　<br>注意：我们设置w = 1是为了让点可以被恰当的移动，同样我们设置w = 0是为了防止向量被平移。当我们检查矩阵实际平移时这是一个非常清晰的模型。<br>　　有时一个矩阵变换时我们改变向量成员w的值，即w≠0 且 w≠1。考虑下边例子：<br>　　$p = \begin{bmatrix} p_1 &amp; p_2 &amp; p_3 &amp; 1 \\end{bmatrix} \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; 0 \ 0 &amp; 1 &amp; 0 &amp; 0 \ 0 &amp; 0 &amp; 1 &amp; 1 \ 0 &amp; 0 &amp; 0 &amp; 0 \\end{bmatrix} = \begin{bmatrix} p_1, p_2, p_3, p_3 \\end{bmatrix} = p`$<br>　　因为p3≠0 且 p3≠1。<br>　　我们注意w =p3。当w≠0 且 w≠1时，我们说我们有一个向量在同类空间中，与3维空间中的向量是相对的。我们能通过把向量的每个分量与w相除将同类空间中的向量映射到3维空间中来。例如把同类空间中向量(x, y, z, w) 映射到3维空间中的向量x，我们这样做：<br>　　${x \over w}, {y \over w}, {z \over w}, {w \over w}$<br>　　在3D图形程序设计中，从齐次坐标空间映射到3D空间时使用<strong>投影透视</strong>。<br>矩阵平移</p>
 <p>图8<br>    我们能通过与下面的矩阵相乘把向量(x, y, z, 1)沿x轴移动px个单位，沿y轴移动py 个单位，沿z轴移动pz个单位：</p>
 <p>将矩阵平移的D3DX函数是：<br>D3DXMATRIX <em>D3DXMatrixTranslation(<br>    D3DXMATRIX</em> pOut, // 返回平移后的矩阵.<br>    FLOAT x, // x轴移动的单位<br>    FLOAT y, // y轴移动的单位<br>    FLOAT z // z轴移动的单位<br>);<br>　　练习：让T(p)做为一个平移变换矩阵，v = [v1, v2, v3, 0]是也个任意向量。验证vT(p) = v（即，假如w = 0，验证通过平移不会改变向量）。<br>　　平移矩阵求逆只需要简单的将向量p取反即可：</p>
 <h2 id="矩阵旋转"><a href="#矩阵旋转" class="headerlink" title="矩阵旋转"></a>矩阵旋转</h2><p>图9<br>    我们能用下面的矩阵把一个向量围绕x,y 和z轴旋转δ弧度。注意：当我们俯视绕轴原点时，角度是指顺时针方向的角度。</p>
 <p>将矩阵饶着x轴旋转的D3DX函数是：<br>D3DXMATRIX <em>D3DXMatrixRotationX(<br>    D3DXMATRIX</em> pOut, // 返回旋转后的矩阵<br>    FLOAT Angle // Angle是旋转的弧度<br>);</p>
 <p>将矩阵饶着y轴旋转的D3DX函数是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixRotationY</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX* pOut, <span class="comment">// 返回旋转后的矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT Angle <span class="comment">// Angle是旋转的弧度</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
 <p>将矩阵饶着z轴旋转的D3DX函数是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">D3DXMATRIX *<span class="title">D3DXMatrixRotationZ</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	D3DXMATRIX* pOut, <span class="comment">// 返回旋转后的矩阵</span></span></span></span><br><span class="line"><span class="function"><span class="params">	FLOAT Angle <span class="comment">// Angle是旋转的弧度</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
-<p>旋转矩阵R的逆矩阵等于它的转置矩阵：RT= R-1。这样的矩阵我们说它们是互相垂直的。<br>矩阵缩放<br><img src="/2019/03/24/DirectX93DGame/10.png"><br>图10<br>　　我们能通过与下面的矩阵相乘把向量沿x轴缩放qx个单位，沿y轴缩放qy 个单位，沿z轴缩放qz个单位：<br>　　$S(q) = \begin{bmartix}q_x &amp; 0 &amp; 0 &amp; 0 \\ 0 q_y &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; q_z 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \\\end{bmartix}$<br>将矩阵缩放的D3DX函数是：<br>D3DXMATRIX <em>D3DXMatrixScaling(<br>    D3DXMATRIX</em> pOut, // 返回缩放后的矩阵<br>    FLOAT sx, // x轴缩放的比例<br>    FLOAT sy, // y轴缩放的比例<br>    FLOAT sz // z轴缩放的比例.<br>);<br>　　缩放矩阵求逆只需要将每个缩放因子取倒即可：<br>　　<br>综合变换<br>    常常我们要对一个向量进行一系列的变换。比如，我们可能先缩放一个向量，然后旋转它，最后把它平移到指定的位置。<br>　　例如：先把向量p = [5, 0, 0, 1] 在所有轴上缩小为原来的1/5，然后沿着y轴旋转π/4，最后把它在x轴上移动1个单位，在y轴上移动2个单位，在z轴上移动3个单位。<br>　　解答：注意我们必须完成缩放，沿y轴旋转，以及移动。我们设缩放、旋转、移动的变换矩阵分别是S, Ry, T，如下：<br>　　<br>　　<br>　　应用缩放，旋转，以及平移一系列变换，我们得到：<br>　　<br>　　我们能用矩阵乘法把几个变换矩阵转换成一个矩阵，它是非常有益的矩阵。比如，重新考虑这部分开始的例子。通过使用矩阵相乘把3个变换矩阵合成一个矩阵。注意我们必须按实际应用的顺序来进行矩阵相乘。<br>　　<br>那么 pQ = [1.707, 2, –3.707, 1]。<br>　　联合变换有提高效率的能力。假如我们需要对一组数量巨大的向量（在3D图形任务中是很普遍的）进行同样的缩放，旋转以及移动变换。替换这一系列的变换，即就象等式(5)中对每一个向量的做法，我们能把所有3个变换转换到一个矩阵中，即就象在等式(6)中的做法。这样我们只需要对每一个向量进行一次乘法就可以实现3种变换。这就减少了大量的向量-矩阵乘法操作。<br>一些向量变换函数<br>　　D3DX库分别提供了下边两个对点和向量的变换函数。D3DXVec3TransformCoord函数变换点同时设置向量第4个成员为1（用于变换点向量）。D3DXVec3TransformNormal函数变换向量并且设置第4个成员为0（用于变换方向向量）。<br>D3DXVECTOR3 <em>D3DXVec3TransformCoord(<br>        D3DXVECTOR3</em> pOut, // 返回的点向量<br>        CONST D3DXVECTOR3<em> pV, // 点向量<br>        CONST D3DXMATRIX</em> pM // 变换矩阵<br>　　);<br>D3DXMATRIX T(…); // 初始化矩阵<br>D3DXVECTOR3 p(…); // 初始化点<br>D3DXVec3TransformCoord( &amp;p, &amp;p, &amp;T); // 变换一个点</p>
+<p>旋转矩阵R的逆矩阵等于它的转置矩阵：RT= R-1。这样的矩阵我们说它们是互相垂直的。<br>矩阵缩放<br><img src="/2019/03/24/DirectX93DGame/10.png"><br>图10<br>　　我们能通过与下面的矩阵相乘把向量沿x轴缩放qx个单位，沿y轴缩放qy 个单位，沿z轴缩放qz个单位：<br>　　$S(q) = \begin{bmartix}q_x &amp; 0 &amp; 0 &amp; 0 \ 0 q_y &amp; 0 &amp; 0 &amp; 0 \ 0 &amp; 0 &amp; q_z 0 \ 0 &amp; 0 &amp; 0 &amp; 1 \\end{bmartix}$<br>将矩阵缩放的D3DX函数是：<br>D3DXMATRIX <em>D3DXMatrixScaling(<br>    D3DXMATRIX</em> pOut, // 返回缩放后的矩阵<br>    FLOAT sx, // x轴缩放的比例<br>    FLOAT sy, // y轴缩放的比例<br>    FLOAT sz // z轴缩放的比例.<br>);<br>　　缩放矩阵求逆只需要将每个缩放因子取倒即可：<br>　　<br>综合变换<br>    常常我们要对一个向量进行一系列的变换。比如，我们可能先缩放一个向量，然后旋转它，最后把它平移到指定的位置。<br>　　例如：先把向量p = [5, 0, 0, 1] 在所有轴上缩小为原来的1/5，然后沿着y轴旋转π/4，最后把它在x轴上移动1个单位，在y轴上移动2个单位，在z轴上移动3个单位。<br>　　解答：注意我们必须完成缩放，沿y轴旋转，以及移动。我们设缩放、旋转、移动的变换矩阵分别是S, Ry, T，如下：<br>　　<br>　　<br>　　应用缩放，旋转，以及平移一系列变换，我们得到：<br>　　<br>　　我们能用矩阵乘法把几个变换矩阵转换成一个矩阵，它是非常有益的矩阵。比如，重新考虑这部分开始的例子。通过使用矩阵相乘把3个变换矩阵合成一个矩阵。注意我们必须按实际应用的顺序来进行矩阵相乘。<br>　　<br>那么 pQ = [1.707, 2, –3.707, 1]。<br>　　联合变换有提高效率的能力。假如我们需要对一组数量巨大的向量（在3D图形任务中是很普遍的）进行同样的缩放，旋转以及移动变换。替换这一系列的变换，即就象等式(5)中对每一个向量的做法，我们能把所有3个变换转换到一个矩阵中，即就象在等式(6)中的做法。这样我们只需要对每一个向量进行一次乘法就可以实现3种变换。这就减少了大量的向量-矩阵乘法操作。<br>一些向量变换函数<br>　　D3DX库分别提供了下边两个对点和向量的变换函数。D3DXVec3TransformCoord函数变换点同时设置向量第4个成员为1（用于变换点向量）。D3DXVec3TransformNormal函数变换向量并且设置第4个成员为0（用于变换方向向量）。<br>D3DXVECTOR3 <em>D3DXVec3TransformCoord(<br>        D3DXVECTOR3</em> pOut, // 返回的点向量<br>        CONST D3DXVECTOR3<em> pV, // 点向量<br>        CONST D3DXMATRIX</em> pM // 变换矩阵<br>　　);<br>D3DXMATRIX T(…); // 初始化矩阵<br>D3DXVECTOR3 p(…); // 初始化点<br>D3DXVec3TransformCoord( &amp;p, &amp;p, &amp;T); // 变换一个点</p>
 <p>D3DXVECTOR3 <em>WINAPI D3DXVec3TransformNormal(<br>        D3DXVECTOR3 </em>pOut, //返回的方向向量<br>        CONST D3DXVECTOR3 <em>pV, // 方向向量<br>        CONST D3DXMATRIX </em>pM //变换矩阵<br>);<br>D3DXMATRIX T(…); // 初始化变换矩阵<br>D3DXVECTOR3 v(…); // 初始化方向向量<br>D3DXVec3TransformNormal( &amp;v, &amp;v, &amp;T); // 变换方向向量<br>注意：D3DX库也提供D3DXVec3TransformCoordArray和D3DXVec3TransformNormalArray来分别变换一个点数组和向量数组<br>平面<br>   一个平面能通过一个向量n和平面上的一个点p0来描述。这个向量n垂直于平面，它被称为此平面的法向量（如图11）。</p>
 <p>图11</p>
 <p>在图12中我们能够发现平面上任意一点p都满足如下等式。即：假如p、p0都是平面上一点，那么向量（p - p0）垂直于平面的法向量。</p>
@@ -708,941 +430,254 @@
 <p>　　我们还是通过调用IDirect3DDevice9::SetTranform方法来进行投影变换，当然，要把第一个投影类型的参数设为D3DTS_PROJECTION。下面的例子基于一个90度视角、前裁剪面距离为1、后裁剪面距离为1000的平截头体创建投影矩阵：<br>D3DXMATRIX proj;<br>D3DXMatrixPerspectiveFovLH(<br>    &amp;proj, PI * 0.5f, (float)width / (float)height, 1.0, 1000.0f);<br>Device-&gt;SetTransform(D3DTS_PROJECTION, &amp;proj);<br>2.3.8视口变换（Viewport Transform）<br>　　视口变换主要是转换投影窗口到显示屏幕上。通常一个游戏的视口就是整个显示屏，但是当我们以窗口模式运行的时候，也有可能只占屏幕的一部分或在客户区内。视口矩形是由它所在窗口的坐标系来描述的，如图2.16。<br>　　<br>　　图2.16<br>　　在Direct3D中，视口矩形通过D3DVIEWPORT9结构来表示。它的定义如下：<br>typedef struct _D3DVIEWPORT9 {<br>    DWORD X;<br>    DWORD Y;<br>    DWORD Width;<br>    DWORD Height;<br>    DWORD MinZ;<br>    DWORD MaxZ;<br>} D3DVIEWPORT9;<br>   前四个参数定义了视口矩形与其所在窗口的关系。MinZ成员指定最小深度缓冲值，MaxZ指定最大深度缓冲值。Direct3D使用的深度缓冲的范围是0~1，所以如果不想做什么特殊效果的话，将它们分别设成相应的值就可以了。<br>　　一旦我们填充完D3DVIEWPORT9结构后，就可以如下设视口：<br>D3DVIEWPORT9 vp{ 0, 0, 640, 480, 0, 1 };<br>Device-&gt;SetViewport(&amp;vp);<br>这样，Direct3D就会自动为我们处理视口变换。现在还是给出视口变换矩阵作为参考：</p>
 <h3 id="光栅化（Rasterization）"><a href="#光栅化（Rasterization）" class="headerlink" title="光栅化（Rasterization）"></a>光栅化（Rasterization）</h3><p>在把三角形每个顶点转换到屏幕上以后，我们就画了一个2D三角形。光栅化是计算需要显示的每个三角形中每个点颜色值（如图2.17）。<br><img src="/2019/03/24/DirectX93DGame/2.17.jpg"><br>图2.17<br>光栅化过程是非常繁重的计算，它应该通过硬件图形处理来完成。它的处理结果就是把2D图象显示在显示器上。</p>
 
-      
     </div>
 
     
-
-    
-    
-    
-
-    
-
-    
-      
     
     
 
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
-          
-            <a href="/tags/Direct3D-9/" rel="tag"># Direct3D 9</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/03/23/map/" rel="next" title="图">
-                <i class="fa fa-chevron-left"></i> 图
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
+              <a href="/tags/Direct3D-9/" rel="tag"># Direct3D 9</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/24/AssetBundlesIntro/" rel="prev" title="AssetBundles">
-                AssetBundles <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/23/map/" rel="prev" title="图">
+      <i class="fa fa-chevron-left"></i> 图
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/24/AssetBundlesIntro/" rel="next" title="AssetBundles">
+      AssetBundles <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-  </div>
 
 
           </div>
           
-
-  
-    <div class="comments" id="comments">
-    </div>
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">liyanfeng</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">326</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">52</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">97</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-      <!--noindex-->
-        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-            
-            
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#三维空间中的向量"><span class="nav-number">1.</span> <span class="nav-text">三维空间中的向量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相等"><span class="nav-number">1.1.</span> <span class="nav-text">向量相等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算向量大小（向量的模）"><span class="nav-number">1.2.</span> <span class="nav-text">计算向量大小（向量的模）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准化向量"><span class="nav-number">1.3.</span> <span class="nav-text">标准化向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相加"><span class="nav-number">1.4.</span> <span class="nav-text">向量相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相减"><span class="nav-number">1.5.</span> <span class="nav-text">向量相减</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标量与向量的乘积"><span class="nav-number">1.6.</span> <span class="nav-text">标量与向量的乘积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点积"><span class="nav-number">1.7.</span> <span class="nav-text">点积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#叉积"><span class="nav-number">1.8.</span> <span class="nav-text">叉积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵"><span class="nav-number">1.9.</span> <span class="nav-text">矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相等、数乘矩阵以及相加"><span class="nav-number">1.10.</span> <span class="nav-text">相等、数乘矩阵以及相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乘法"><span class="nav-number">1.11.</span> <span class="nav-text">乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单位矩阵"><span class="nav-number">1.12.</span> <span class="nav-text">单位矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逆转"><span class="nav-number">1.13.</span> <span class="nav-text">逆转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#D3DX-矩阵"><span class="nav-number">1.14.</span> <span class="nav-text">D3DX 矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本变换"><span class="nav-number">1.15.</span> <span class="nav-text">基本变换　　</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵旋转"><span class="nav-number">1.16.</span> <span class="nav-text">矩阵旋转</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#D3DX平面"><span class="nav-number">1.16.1.</span> <span class="nav-text">D3DX平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点和平面的空间关系"><span class="nav-number">1.16.2.</span> <span class="nav-text">点和平面的空间关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建平面"><span class="nav-number">1.16.3.</span> <span class="nav-text">创建平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化平面"><span class="nav-number">1.16.4.</span> <span class="nav-text">标准化平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#射线"><span class="nav-number">1.16.5.</span> <span class="nav-text">射线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线-面相交"><span class="nav-number">1.16.6.</span> <span class="nav-text">线/面相交</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化Direct3D-Direct3D-Initialization"><span class="nav-number">2.</span> <span class="nav-text">初始化Direct3D (Direct3D Initialization)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Direct3D概述"><span class="nav-number">2.1.</span> <span class="nav-text">Direct3D概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#REF设备"><span class="nav-number">2.1.1.</span> <span class="nav-text">REF设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D3DDEVTYPE"><span class="nav-number">2.1.2.</span> <span class="nav-text">D3DDEVTYPE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#COM"><span class="nav-number">2.2.</span> <span class="nav-text">COM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些准备工作"><span class="nav-number">2.3.</span> <span class="nav-text">一些准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#表面"><span class="nav-number">2.3.1.</span> <span class="nav-text">表面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multisampling"><span class="nav-number">2.3.2.</span> <span class="nav-text">Multisampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#像素格式"><span class="nav-number">2.3.3.</span> <span class="nav-text">像素格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存池"><span class="nav-number">2.3.4.</span> <span class="nav-text">内存池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-4-创建IDirect3DDevice9对象"><span class="nav-number">2.3.5.</span> <span class="nav-text">1.4.4 创建IDirect3DDevice9对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-1-d3dUtility-h-cpp"><span class="nav-number">2.4.</span> <span class="nav-text">1.5.1 d3dUtility.h/cpp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include-“d3dUtility-h”"><span class="nav-number">3.</span> <span class="nav-text">include “d3dUtility.h”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-FVF-COLOR-D3DFVF-XYZ-D3DFVF-DIFFUSE"><span class="nav-number">4.</span> <span class="nav-text">define FVF_COLOR (D3DFVF_XYZ | D3DFVF_DIFFUSE)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-FVF-NORMAL-TEX-D3DFVF-XYZ-D3DFVF-NORMAL-D3DFVF-TEX1"><span class="nav-number">5.</span> <span class="nav-text">define FVF_NORMAL_TEX (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2虚拟照相机"><span class="nav-number">5.1.</span> <span class="nav-text">2.2虚拟照相机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-渲染管线"><span class="nav-number">5.2.</span> <span class="nav-text">2.3 渲染管线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1自身坐标系（Local-Space）"><span class="nav-number">5.2.1.</span> <span class="nav-text">2.3.1自身坐标系（Local Space）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-5光源（Lighting）"><span class="nav-number">5.2.2.</span> <span class="nav-text">2.3.5光源（Lighting）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-6裁剪（Clipping）"><span class="nav-number">5.2.3.</span> <span class="nav-text">2.3.6裁剪（Clipping）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-7投影（Projection）"><span class="nav-number">5.2.4.</span> <span class="nav-text">2.3.7投影（Projection）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#光栅化（Rasterization）"><span class="nav-number">5.2.5.</span> <span class="nav-text">光栅化（Rasterization）</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </div>
-      <!--/noindex-->
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="总访客量">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="总访问量">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
 
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+          
   
-
-
-
-  
-    
-    
-  
-  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-  
-  <script src="/lib/reading_progress/reading_progress.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=7.0.1"></script>
-
-  <script src="/js/src/motion.js?v=7.0.1"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
-
-
-
-
-  
-  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
-<script src="/js/src/post-details.js?v=7.0.1"></script>
-
-
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
-
-
-  
-  
-  
-
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
-
-
-
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-
-<script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail,link';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
-    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
-    placeholder: 'Just go go',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: false
-  });
-</script>
-
-
-
-
-  
-
-
-  
-
-
-
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-  
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
-        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
-      }
-    });
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-      for (i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<style>
-.MathJax_Display {
-  overflow-x: scroll;
-  overflow-y: hidden;
-}
-</style>
-
-    
-  
-
-
-  
-  
-
-  
-  
-
-  
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-  
-  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
-  <script>
-  
-    bookmark.scrollToMark('auto', "#更多");
-  
-  </script>
-
-
-  
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      
-        background-color: #eee;
-        background-image: linear-gradient(#fcfcfc, #eee);
-        border: 1px solid #d5d5d5;
-        border-radius: 3px;
-      
-      user-select: none;
-      outline: 0;
-    }
-
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      
-        right: 4px;
-        top: 8px;
-      
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1;
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; // Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.readOnly = true;
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, code.length);
-        ta.readOnly = false;
-        var result = document.execCommand('copy');
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#三维空间中的向量"><span class="nav-number">1.</span> <span class="nav-text">三维空间中的向量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相等"><span class="nav-number">1.1.</span> <span class="nav-text">向量相等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算向量大小（向量的模）"><span class="nav-number">1.2.</span> <span class="nav-text">计算向量大小（向量的模）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准化向量"><span class="nav-number">1.3.</span> <span class="nav-text">标准化向量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相加"><span class="nav-number">1.4.</span> <span class="nav-text">向量相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#向量相减"><span class="nav-number">1.5.</span> <span class="nav-text">向量相减</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标量与向量的乘积"><span class="nav-number">1.6.</span> <span class="nav-text">标量与向量的乘积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点积"><span class="nav-number">1.7.</span> <span class="nav-text">点积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#叉积"><span class="nav-number">1.8.</span> <span class="nav-text">叉积</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵"><span class="nav-number">1.9.</span> <span class="nav-text">矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相等、数乘矩阵以及相加"><span class="nav-number">1.10.</span> <span class="nav-text">相等、数乘矩阵以及相加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#乘法"><span class="nav-number">1.11.</span> <span class="nav-text">乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单位矩阵"><span class="nav-number">1.12.</span> <span class="nav-text">单位矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逆转"><span class="nav-number">1.13.</span> <span class="nav-text">逆转</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#D3DX-矩阵"><span class="nav-number">1.14.</span> <span class="nav-text">D3DX 矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本变换"><span class="nav-number">1.15.</span> <span class="nav-text">基本变换　　</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵旋转"><span class="nav-number">1.16.</span> <span class="nav-text">矩阵旋转</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#D3DX平面"><span class="nav-number">1.16.1.</span> <span class="nav-text">D3DX平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点和平面的空间关系"><span class="nav-number">1.16.2.</span> <span class="nav-text">点和平面的空间关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建平面"><span class="nav-number">1.16.3.</span> <span class="nav-text">创建平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化平面"><span class="nav-number">1.16.4.</span> <span class="nav-text">标准化平面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#射线"><span class="nav-number">1.16.5.</span> <span class="nav-text">射线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线-面相交"><span class="nav-number">1.16.6.</span> <span class="nav-text">线/面相交</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化Direct3D-Direct3D-Initialization"><span class="nav-number">2.</span> <span class="nav-text">初始化Direct3D (Direct3D Initialization)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Direct3D概述"><span class="nav-number">2.1.</span> <span class="nav-text">Direct3D概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#REF设备"><span class="nav-number">2.1.1.</span> <span class="nav-text">REF设备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D3DDEVTYPE"><span class="nav-number">2.1.2.</span> <span class="nav-text">D3DDEVTYPE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#COM"><span class="nav-number">2.2.</span> <span class="nav-text">COM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些准备工作"><span class="nav-number">2.3.</span> <span class="nav-text">一些准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#表面"><span class="nav-number">2.3.1.</span> <span class="nav-text">表面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multisampling"><span class="nav-number">2.3.2.</span> <span class="nav-text">Multisampling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#像素格式"><span class="nav-number">2.3.3.</span> <span class="nav-text">像素格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存池"><span class="nav-number">2.3.4.</span> <span class="nav-text">内存池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-4-创建IDirect3DDevice9对象"><span class="nav-number">2.3.5.</span> <span class="nav-text">1.4.4 创建IDirect3DDevice9对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-1-d3dUtility-h-cpp"><span class="nav-number">2.4.</span> <span class="nav-text">1.5.1 d3dUtility.h/cpp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#include-“d3dUtility-h”"><span class="nav-number">3.</span> <span class="nav-text">include “d3dUtility.h”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-FVF-COLOR-D3DFVF-XYZ-D3DFVF-DIFFUSE"><span class="nav-number">4.</span> <span class="nav-text">define FVF_COLOR (D3DFVF_XYZ | D3DFVF_DIFFUSE)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#define-FVF-NORMAL-TEX-D3DFVF-XYZ-D3DFVF-NORMAL-D3DFVF-TEX1"><span class="nav-number">5.</span> <span class="nav-text">define FVF_NORMAL_TEX (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2虚拟照相机"><span class="nav-number">5.1.</span> <span class="nav-text">2.2虚拟照相机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-渲染管线"><span class="nav-number">5.2.</span> <span class="nav-text">2.3 渲染管线</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-1自身坐标系（Local-Space）"><span class="nav-number">5.2.1.</span> <span class="nav-text">2.3.1自身坐标系（Local Space）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-5光源（Lighting）"><span class="nav-number">5.2.2.</span> <span class="nav-text">2.3.5光源（Lighting）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-6裁剪（Clipping）"><span class="nav-number">5.2.3.</span> <span class="nav-text">2.3.6裁剪（Clipping）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-7投影（Projection）"><span class="nav-number">5.2.4.</span> <span class="nav-text">2.3.7投影（Projection）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#光栅化（Rasterization）"><span class="nav-number">5.2.5.</span> <span class="nav-text">光栅化（Rasterization）</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liyanfeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
         
-          if (result) $(this).text('复制成功');
-          else $(this).text('复制失败');
+          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
         
-        ta.blur(); // For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('复制');
-        }, 300);
-      }).append(e);
-    })
-  </script>
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
 
 
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
 </body>
 </html>

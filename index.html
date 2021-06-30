@@ -1,145 +1,24 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-CN">
-<head><meta name="generator" content="Hexo 3.8.0">
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-
-
-
-
-
-  <meta http-equiv="Cache-Control" content="no-transform">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-
-  
-
-  
-    
-      
-    
-
-    
-  
-
-  
-    
-    
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arial:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
-  
-
-
-
-
-
-
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
-
-<link rel="stylesheet" href="/css/main.css?v=7.0.1">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
-
-
-
-
-
-
-
-<script id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '7.0.1',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false,"dimmer":false},
-    fancybox: true,
-    fastclick: false,
-    lazyload: false,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    algolia: {
-      applicationID: 'W8FJT5MTZU',
-      apiKey: 'f4ca7ae2408d2e27ffc8269ad8d34273',
-      indexName: 'hexo',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-  
-
-
-
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zentia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"W8FJT5MTZU","apiKey":"f4ca7ae2408d2e27ffc8269ad8d34273","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="liyanfeng">
@@ -149,18 +28,16 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="liyanfeng">
 
+<link rel="canonical" href="http://zentia.github.io/">
 
 
-
-
-
-  <link rel="canonical" href="http://zentia.github.io/">
-
-
-
-<script id="page.configurations">
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
   };
 </script>
 
@@ -172,15 +49,8 @@
 
 
 
-
-
-
-
-
-
   <noscript>
   <style>
-  .use-motion .motion-element,
   .use-motion .brand,
   .use-motion .menu-item,
   .sidebar-inner,
@@ -189,9 +59,8 @@
   .use-motion .comments,
   .use-motion .post-header,
   .use-motion .post-body,
-  .use-motion .collection-title { opacity: initial; }
+  .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -205,151 +74,53 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left 
-  page-home">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta custom-logo">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">liyanfeng</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-    
-    
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="切换导航栏">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liyanfeng</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
 
+
 <nav class="site-nav">
-  
-    <ul id="menu" class="menu">
-      
-        
-        
-        
-          
-          <li class="menu-item menu-item-home menu-item-active">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-tags">
+        <li class="menu-item menu-item-archives">
 
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
-        
-        
-        
-          
-          <li class="menu-item menu-item-categories">
-
-    
-    
-    
-      
-    
-
-    
-
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
-
-  </li>
-
-      
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
-        </li>
-      
-    </ul>
-  
-
-  
-    
-
-  
-
-  
-    <div class="site-search">
-      
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-  </div>
-
-
-
-
-    </div>
-  
+  </ul>
 </nav>
 
-
-
-  
 
 
 
@@ -357,117 +128,582 @@
     </header>
 
     
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
           
-          <div id="content" class="content">
+
+          <div class="content index posts-expand">
             
-  <section id="posts" class="posts-expand">
-    
       
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/30/ue4-rendering-part-6-adding-a-newshading-model/">
 
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/30/ue4-rendering-part-6-adding-a-newshading-model/" class="post-title-link" itemprop="url">UE4渲染第6节：添加一个新的渲染模型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-30 20:55:59 / 修改时间：19:48:23" itemprop="dateCreated datePublished" datetime="2021-06-30T20:55:59+08:00">2021-06-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UE4/" itemprop="url" rel="index"><span itemprop="name">UE4</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>原文地址：<a href="https://medium.com/@lordned/ue4-rendering-part-6-adding-a-new-shading-model-e2972b40d72d" target="_blank" rel="noopener">https://medium.com/@lordned/ue4-rendering-part-6-adding-a-new-shading-model-e2972b40d72d</a></p>
+<p>（如果你没有读本系列的第五节，<a href="https://medium.com/@lordned/unreal-engine-4-rendering-part-5-shader-permutations-2b975e503dd4" target="_blank" rel="noopener">请点击这里</a>）</p>
+<h2 id="添加一个新的渲染模型"><a href="#添加一个新的渲染模型" class="headerlink" title="添加一个新的渲染模型"></a>添加一个新的渲染模型</h2><p>UE支持几种通用的开箱即用的渲染模型来针对大多数游戏。UE不仅支持微面元反射的默认光照，同时也支持高质量的头发和眼睛效果。但是这些可能不是最合适的对于你的游戏或者你希望修改或者新增对于你的游戏，尤其是对于高度风格化的游戏。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/30/UE4_Macro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/30/UE4_Macro/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-30 14:41:56 / 修改时间：19:29:56" itemprop="dateCreated datePublished" datetime="2021-06-30T14:41:56+08:00">2021-06-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="类说明符"><a href="#类说明符" class="headerlink" title="类说明符"></a>类说明符</h1><ul>
+<li><p>Abstract</p>
+<p>  抽象类说明符将类声明为“抽象基类”，防止用户在虚幻编辑器中向世界添加此类的参与者，或者游戏中创建此类的实例。这对于那些本身没有意义的类很有用。</p>
+</li>
+<li><p>AdvancedClassDisplay</p>
+<p>  强制类的所有属性只显示在“Detail”面板的”Advanced”部分中，默认情况下隐藏在”视图“中。若要在某个属性上重写此项，请在属性上使用SimpleDisplay说明符。</p>
+</li>
+<li><p>AutoCollapseCategories=(Category1, Category2,…)/DontAutoCollapseCategories(Category,Category,…)</p>
+<p>  AutoCollapseCategories类说明取消对父类AutoExpandCategories说明符的列出类别的影响。<br>  DontAutoCollapseCategories否定从父类继承的列出类别的AutoCollapseCategories的说明符。</p>
+</li>
+<li><p>AutoExpendCategories=(Category1,Category2,…)</p>
+<p>  指定应在该类的对象”虚幻编辑器“属性窗口中自动展开的一个或多个类别。若要自动声明为无类别的变量，请使用声明变量的类的名称</p>
+</li>
+<li><p>Blueprintable/NotBlueprintable</p>
+<p>  将此类公开为创建蓝图可接受的基类。默认是NotBlueprintable，除非继承，否则该说明符由子类继承</p>
+</li>
+<li><p>BlueprintType</p>
+<p>  将类型公开可用于蓝图中的变量的类型</p>
+</li>
+<li><p>ClassGroup=GroupName</p>
+<p>  表示在Actor浏览器中启用Group View后，Actor浏览器应该在指定的GroupName中包含此类以及它的任何子类</p>
+</li>
+<li><p>CollapseCategories/DontCollapseCategories</p>
+<p>  表示不应该将此类的属性分组到属性窗口的类别中。这个说明符将传播给子类，但是，子类可以用DontCollapseCategories说明符来覆盖它</p>
+</li>
+<li><p>Config=ConfigName</p>
+<p>  表示允许此类在配置文件中(.ini)中存储数据。如果有使用config或globalconfig说明符属性的任何类属性，则此指定夫将导致这些属性存储在命名的配置文件中。此说明符将传播到所有子类不能被否定，但是子类可以通过re-declaring配置说明符并提供不同的ConfigName来更改配置文件。常见的ConfigName值是”Engine”,”Editor”,”Input”,”Game”。</p>
+</li>
+<li><p>Const</p>
+<p>  该类中所有属性和函数都是const的，并以const的形式导出。该说明符由子类继承</p>
+</li>
+<li><p>ConversionRoot</p>
+<p>  Root转换符将一个子类限制为仅能够转换到为第一个Root类的子类，并上升到层级结构</p>
+</li>
+<li><p>CustomConstructor</p>
+<p>  组织自动生成构造函数声明</p>
+</li>
+<li><p>DefaultToInstanced</p>
+<p>  这个类的所有实例都被认为是”实例化“的。实例化的类（组件）在构建时被复制。该说明符由子类继承</p>
+</li>
+<li><p>DependsOn=(ClassName1,ClassName2,…)</p>
+<p>  列出的所有类将在该类之前编译。类必须在同一个（或上一个）包中指定一个一个类。可以使用由逗号分隔的单个取决于指定多个依赖项类，也可以为每个类使用单独指定。当类使用在另一个类中声明的结构或枚举时，这一点很重要，因为编译器只知道它已编译的类中内容。</p>
+</li>
+<li><p>Deprecated</p>
+<p>  这个类不推荐使用，而且这个类的对象在序列化的时候不会被保存。该说明符由子类继承</p>
+</li>
+<li><p>EditInlineNew/NotEditInlineNew</p>
+<p>  表示可以从”虚幻编辑器“属性窗口创建此类的对象，而不是从现有资产引用。默认行为时只有对现有对象的引用才可以通过属性窗口分配。此说明符被传播到所有子类；子类可以使用NotEditInlineNew说明符来重写此说明符。</p>
+</li>
+<li><p>HideCategories=(Category1,Category2,…)/ShowCategories=(Category1,Category2,…)</p>
+<ul>
+<li>HideCategories列出隐藏在此类对象的”虚幻编辑器“属性窗口的一个或多个类别。若要隐藏声明为”no“类型的属性，请使用声明该变量的名称。此说明符将传播到子类。</li>
+<li>ShowCategories为所列出的类别取消一个HideCategories说明符（从基类继承）</li>
+</ul>
+</li>
+<li><p>HideDropdown</p>
+</li>
+</ul>
+<p>防止在虚寒编辑器属性窗口组合框中显示此类</p>
+<ul>
+<li><p>HideFunctions=(Category1,Category2,…)/ShowFunctions=(Category1,Category2,…)</p>
+<ul>
+<li>HideFunctions从属性查看器隐藏指定类别的所有函数</li>
+<li>ShowFunctions从属性查看器中显示列出的类别中所有函数</li>
+</ul>
+</li>
+<li><p>Intrinsic</p>
+<p>  这表明这个类是直接用C++声明，并且没有UHT生成的generate文件。不要在新类上使用这个说明符。</p>
+</li>
+<li><p>MinimalAPI</p>
+<p>  仅导致要导出的类的类型信息供其它模板使用。类可以被强制转换，单不能调用类的函数（inline除外）。这提高了编译事件，因为不需要在其他模块中访问所有函数的类导出所有内容。</p>
+</li>
+<li><p>NoExport</p>
+<p>  表示此类的声明不应包含由UBT自动生成的generate文件。必须在单独的头文件中手动定义C++声明。仅对本机类有效。不要将此用于新类。</p>
+</li>
+<li><p>Placeable/NotPlaceable</p>
+<p>  表示可以在编辑器中创建此类，并将其放置于关卡、UI或蓝图中（具体取决于类类型）。此标志将传播到所有子类；子类可以使用NotPlaceable说明符来重写此标志</p>
+</li>
+<li><p>Transient/NonTransient</p>
+<p>  属于此类的对象将永远不会保存到磁盘。这与某些非永久性的自然类（如播放器或窗口）结合使用非常有用。此说明符将传播到子类，但可以由NonTransient说明符重写</p>
+</li>
+<li><p>Within=OuterClassName</p>
+<p>  这个类的对象不能存在于一个OuterClassName对象的实例之外。这意味着创建这个类的Object需要提供一个OuterClassName的实例将其作为外部对象</p>
+</li>
+</ul>
+<h1 id="元数据修饰符"><a href="#元数据修饰符" class="headerlink" title="元数据修饰符"></a>元数据修饰符</h1><ul>
+<li><p>BlueprintSpawnableComponent</p>
+<p>  如果存在，组件类可以由蓝图生成</p>
+</li>
+<li><p>BlueprintThreadSafe</p>
+<p>  仅对蓝图函数库有效。此说明符将此类的中函数标记为在动画蓝图中的游戏线程上可调用</p>
+</li>
+<li><p>ChildCannotTick/ChildCanTick</p>
+<ul>
+<li>ChildCannotTick用于Actor和Component类。如果host不能勾选，基于此Actor或Component的蓝图类永远不会勾选，即使bCanBlueprintsTickByDefault为true</li>
+<li>CHildCanTick用于Actor和Component类。如果host不能勾选，则基于此参与者或组件的蓝图类可以覆盖bCanEverTick标记，即使bCanBlueprintsTickByDefault是false。</li>
+</ul>
+</li>
+<li><p>DeprecatedNode</p>
+<p>  对于行为树节点，指示该类已弃用，并在编译时显示警告</p>
+</li>
+<li><p>DeprecationMessage=”Message Text”</p>
+<p>  如果该类被启用，则在尝试编译使用它的蓝图时，此消息奖杯添加到警告中</p>
+</li>
+<li><p>DisplayName=”Blueprint Node Name”</p>
+<p>  蓝图中此节点的名称将替换为此处提供的值，而不是代码生成的名称</p>
+</li>
+<li><p>DontUseGenericSpaenObject</p>
+<p>  不要在蓝图中使用泛型创建对象节点生成类的对象。此说明符仅对既非参与者也不ActorComponents的BlueprintType类是有意义的</p>
+</li>
+<li><p>ExposedAsyncProxy</p>
+<p>  在异步任务节点中公开此类的代理对象</p>
+</li>
+<li><p>IgnoreCategoryKeywordsInSubcalasses</p>
+<p>  用于使类的第一个子类忽略所有继承的ShowCategories和HideCategories说明符</p>
+</li>
+<li><p>IsBlueprintBase=”true/false”</p>
+<p>  声明此类是（或不是）用于创建蓝图的可接受基类，类似与UCLASS说明</p>
+</li>
+<li><p>KismetHideOverrides=”Event1,Event2,…”</p>
+<p>  不允许重写的蓝图事件列表</p>
+</li>
+<li><p>ProhibiteInterfaces=”Interface1,Interface2,…”</p>
+<p>  列出与类不兼容的接口</p>
+</li>
+<li><p>RestrictedToClasses=”Class1,Class2,…”</p>
+<p>  由蓝图函数库类使用，用于限定列表中命名的类的用法</p>
+</li>
+<li><p>ShortToolTip</p>
+<p>  在某些上下文中使用的简短工具提示，其中完整的工具提示可能是压倒性的，如父类选择器对话框</p>
+</li>
+<li><p>ToolTip</p>
+<p>  重写代码注释中自动生成的工具提示</p>
+</li>
+<li><p>ShowWorldContextPin</p>
+<p>  表示放置在此类所拥有的关系图中的蓝图节点必须显示它们的世界上下文，即使它们通常是隐藏的，因为此类的对象不能用作世界上下文。</p>
+</li>
+<li><p>UsesHierarchy</p>
+<p>  表示类使用分层数据。用于实例化detail面板中的分层编辑功能。</p>
+</li>
+</ul>
+<h1 id="Shader中的宏"><a href="#Shader中的宏" class="headerlink" title="Shader中的宏"></a>Shader中的宏</h1><ul>
+<li><p>MOBLIE_MULTI_VIEW</p>
+<p>计算View复杂</p>
+</li>
+<li><p>PACK_INTERPOLANTS</p>
+<p>是否使用了顶点雾，多了PackedInterps数组需要计算高度雾</p>
+</li>
+<li><p>USE_WORLD_POSITION_EXCLUDING_SHADER_OFFSET </p>
+<p>C++对应bNeedsWorldPositionExcludingShaderOffsets，是否需要世界位置，用于Decal计算</p>
+</li>
+<li><p>USE_PS_CLIP_PLANE</p>
+<p>C++中对应r.AllowGlobalClipPlane，是否使用ps裁剪</p>
+</li>
+<li><p>OUTPUT_GAMMA_SPACE</p>
+<p>C++中对应LDR_GAMMA_32，使用Gamma空间</p>
+</li>
+<li><p>FULLY_ROUGH </p>
+<p>c++对应材质IsFullyRough，是否是fullrough，可以减少计算</p>
+</li>
+<li><p>NONMETAL</p>
+<p>C++ MATERIAL_NONMETAL 材质是否金属化，非金属计算量少，EnvBRDFApproxNonmetal EnvBRDFApprox</p>
+</li>
+<li><p>LQ_TEXTURE_LIGHTMAP</p>
+<p>是否使用了Lightmap</p>
+</li>
+<li><p>HQ_REFLECTIONS</p>
+<p>High Quality 反射</p>
+</li>
+<li><p>ALLOW_CUBE_REFLECTIONS</p>
+<p>High Quality 反射中的cube反射</p>
+</li>
+<li><p>MATERIAL_PLANAR_FORWARD_REFLECTIONS</p>
+<p>Planar 反射</p>
+</li>
+<li><p>MATERIALBLENDING_SOLID</p>
+<p>Blend方式</p>
+</li>
+<li><p>MATERIALBLENDING_MASKED</p>
+</li>
+<li><p>MATERIALBLENDING_APLHACOMPOSITE</p>
+</li>
+<li><p>MATERIALBLENDING_TRANSLUCENT</p>
+</li>
+<li><p>MATERIALBLENDING_ADDITIVE</p>
+</li>
+<li><p>MATERIALBLENDING_MODULATE</p>
+</li>
+<li><p>MATERIAL_SHADINGMODEL_UNLIT</p>
+<ul>
+<li>无光照模式</li>
+</ul>
+</li>
+<li><p>ENABLE_SKY_LIGHT</p>
+<p>是否拥有天光</p>
+</li>
+<li><p>MAX_DYNAMIC_POINT_LIGHTS</p>
+<p>动态光</p>
+</li>
+<li><p>NON_DIRECTIONAL_DIRECT_LIGHTING</p>
+</li>
+</ul>
+<p>这可以在DeferredLightingCommon.ush中找到，但似乎只在ForwardLightingCommon.ush定义</p>
+<ul>
+<li>SUPPORT_CONTACT_SHADOWS</li>
+</ul>
+<p>为unreal的contact Shadows Feature提供支持。</p>
+<ul>
+<li>REFERENCE_QUALITY</li>
+</ul>
+<p>在DeferredLightingCommon.ush的顶部定义为0，可能用于cinematic rendering</p>
+<ul>
+<li><p>ALLOW_STATIC_LIGHTING</p>
+<p>如果r.AllowStaticLighting的控制台变量设置为1，则为true。这与Project Settings&gt;Rendering的Static Lighting support选项匹配</p>
+</li>
+<li><p>USE_DEVELOPMENT_SHADERS</p>
+<p>如果COMPLIE_SHADERS_FOR_DEVELOPMENT是真的（并且平台支持它），则为true</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/28/LevelSequencer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/28/LevelSequencer/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-06-28 15:57:10 / 修改时间：21:10:59" itemprop="dateCreated datePublished" datetime="2021-06-28T15:57:10+08:00">2021-06-28</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="LevelSequence（关卡序列）使用说明"><a href="#LevelSequence（关卡序列）使用说明" class="headerlink" title="LevelSequence（关卡序列）使用说明"></a>LevelSequence（关卡序列）使用说明</h1><p>以下文档都来自官方文档，但是我这边还是单独拿出来分析以下，足以证明，这块还是很有意思的。</p>
+<h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/ReferenceEditor/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/ReferenceEditor/</a></p>
+<p>仔细看文档，基础操作，没啥说的，但是要注意，文档和引擎有些许差异，影响不大。</p>
+<h2 id="从摄像机导轨拍摄"><a href="#从摄像机导轨拍摄" class="headerlink" title="从摄像机导轨拍摄"></a>从摄像机导轨拍摄</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CameraRigRail/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CameraRigRail/</a></p>
+<h2 id="在Sequencer中使用帧标记"><a href="#在Sequencer中使用帧标记" class="headerlink" title="在Sequencer中使用帧标记"></a>在Sequencer中使用帧标记</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/FrameMarkers/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/FrameMarkers/</a><br>一个书签的东西，运行时不会用，随便搞。</p>
+<p>挺有意思的，但是感觉可以用其它方式代替。不过可以试试。</p>
+<h2 id="切换Sequencer中Actor的材质"><a href="#切换Sequencer中Actor的材质" class="headerlink" title="切换Sequencer中Actor的材质"></a>切换Sequencer中Actor的材质</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MaterialAnimation/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MaterialAnimation/</a></p>
+<p>没啥好说的，跟着做就好。</p>
+<h2 id="混合动画属性"><a href="#混合动画属性" class="headerlink" title="混合动画属性"></a>混合动画属性</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CharacterAnimation/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CharacterAnimation/</a></p>
+<h2 id="使用模板序列"><a href="#使用模板序列" class="headerlink" title="使用模板序列"></a>使用模板序列</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TemplateSequences/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TemplateSequences/</a></p>
+<p>单个轨道复用的，相当于做一个template sequencer可以给多个level sequencer使用。<br>制作的时候可以想清楚，如果有复用的情况下可以用这个。</p>
+<p>没啥好说的，两个动画做blend，可以选如何插值。</p>
+<h2 id="CineCameraActor（电影摄像机Actor）"><a href="#CineCameraActor（电影摄像机Actor）" class="headerlink" title="CineCameraActor（电影摄像机Actor）"></a>CineCameraActor（电影摄像机Actor）</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CineCameraActors/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CineCameraActors/</a></p>
+<p>这个镜头我还是非常喜欢的，如果项目中可以使用，我是极力推荐的。</p>
+<ul>
+<li>启用观看跟踪（Enable Look at Tracking） -选取此选项可以让摄像机跟踪Actor。</li>
+<li>提取调试观看跟踪位置（Draw Debug Look at Tracking Position）-选取此项可以让我们看到摄像机正在观看的位置。</li>
+<li>要跟踪的Actor（Actor to Track）-将此项设置为ThirdPersonCharacter，因为我们希望在镜头中跟踪此角色。</li>
+<li>相对偏移（Relative Offset）-将Z设置为60以将跟踪位置从默认跟踪位置稍微提高。<br>在CineCameraActor的细节（Details）面板中，将菲林版设置（Filmback Settings）设置为使用Super 16mm。菲林板设置（Filmback Settings）提供了不同的格式，虽然我没看懂是啥意思，但是实验了一下，感觉镜头拉的更近了。</li>
+</ul>
+<h2 id="淡入淡出场景"><a href="#淡入淡出场景" class="headerlink" title="淡入淡出场景"></a>淡入淡出场景</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksFade/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksFade/</a></p>
+<p>使用的轨道是Fade Track</p>
+<h2 id="关卡可见性轨道（项目包装可能与此不同，谨慎使用）"><a href="#关卡可见性轨道（项目包装可能与此不同，谨慎使用）" class="headerlink" title="关卡可见性轨道（项目包装可能与此不同，谨慎使用）"></a>关卡可见性轨道（项目包装可能与此不同，谨慎使用）</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksLevelVisibility/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksLevelVisibility/</a></p>
+<p>使用的轨道是Level Visibility Track<br>简单来说其实就是卸载一个关卡，在加载另一个关卡的表现形式，但是项目的关卡定义方式可能会与此不同，不过即使不同，我们应该也会有类似的实现方式。所以原理可以参考。<br>做过长动画用这个感觉挺好的。</p>
+<h2 id="为材质参数集（Material-Parameter-Collections）设置动画"><a href="#为材质参数集（Material-Parameter-Collections）设置动画" class="headerlink" title="为材质参数集（Material Parameter Collections）设置动画"></a>为材质参数集（Material Parameter Collections）设置动画</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksMaterialParameter/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksMaterialParameter/</a></p>
+<p>使用的轨道是Material Parameter Collection Track<br>设置材质的一些参数。</p>
+<h2 id="调整场景的播放速率"><a href="#调整场景的播放速率" class="headerlink" title="调整场景的播放速率"></a>调整场景的播放速率</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksPlayRate/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksPlayRate/</a></p>
+<p>使用的轨道是Time Dilation，这有点坑，文档上面写着是Play Rate，用的时候要注意，这个之前磊子哥用的挺多的，在AGE中叫SetTimeScale。</p>
+<h2 id="创建镜头和副镜头"><a href="#创建镜头和副镜头" class="headerlink" title="创建镜头和副镜头"></a>创建镜头和副镜头</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksShot/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksShot/</a></p>
+<h2 id="关于蒙太奇"><a href="#关于蒙太奇" class="headerlink" title="关于蒙太奇"></a>关于蒙太奇</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MatineeConversionTool/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MatineeConversionTool/</a></p>
+<p>上面这个文档没啥用，他的意思是说之前有蒙太奇的过场动画，说是一个轻量的，但是后来官方不维护了，就没用了。一堆废话，总之，代码还在，但是我们不用了。<br>跟着官方做，没有找到方法，但是找了一个可以把蒙太奇录入到subsequence里面，也是蛮方便的。录入的前提是需要在运行中录入的，非运行时录入应该也可以，但是这时候你如果可以把这个蒙太奇动起来就可以录入吧，我猜的。</p>
+<p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/SequenceRecorder/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/SequenceRecorder/</a></p>
+<p>真正的是看这个文档，说的很清楚就是运行游戏，然后开始录制，不过这个不是录制视频，而是level sequencer，挺好的。感觉可以做新手引导之类的东西，或者找一个样本，然后二次加工。</p>
+<h2 id="使用音频轨迹"><a href="#使用音频轨迹" class="headerlink" title="使用音频轨迹"></a>使用音频轨迹</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksAudio/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksAudio/</a></p>
+<p>说是要用wwise，做demo感觉可以用这个，不过不管吧，毕竟没啥需求，将来加了wwise，可以在加一个wwise的音频轨道，也好加。</p>
+<h2 id="自动关键帧"><a href="#自动关键帧" class="headerlink" title="自动关键帧"></a>自动关键帧</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingAutoKey/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingAutoKey/</a></p>
+<p>没啥可说的，K帧最基本的东西。</p>
+<h2 id="保留或存储通过Sequencer进行的修改"><a href="#保留或存储通过Sequencer进行的修改" class="headerlink" title="保留或存储通过Sequencer进行的修改"></a>保留或存储通过Sequencer进行的修改</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/WhenFinished/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/WhenFinished/</a></p>
+<p>没啥可说的，播完之后选择如何设置绑定对象或者全局的状态。</p>
+<h2 id="媒体轨道"><a href="#媒体轨道" class="headerlink" title="媒体轨道"></a>媒体轨道</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingMediaTracks/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingMediaTracks/</a></p>
+<h2 id="使用摄像机镜头切换"><a href="#使用摄像机镜头切换" class="headerlink" title="使用摄像机镜头切换"></a>使用摄像机镜头切换</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksCameraCut/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksCameraCut/</a></p>
+<p>这个东西，反正我挺喜欢的，不过按照AGE来说，我们可能只会用一个镜头，但是说实在的，一个镜头却是靠操控性会差很多。而且程序这边还需要传一个主相机。<br>其实level sequencer和age来比，或者age和其它编辑器来说，最大的优势其实是多种坐标系这个概念，让发生的过场动画，跟你的环境不是受太大的影响。然后引导你去这种编辑一些东西。<br>但是其实这种不太好。美术做的东西本来就很容易受环境影响，不同的环境表现力肯定是不相同的，所以我比较倾向程序尽量少传递这些比如镜头和角色等之类的东西，如果在性能可以hold的情况下。</p>
+<h2 id="使用动态变形创建关卡序列"><a href="#使用动态变形创建关卡序列" class="headerlink" title="使用动态变形创建关卡序列"></a>使用动态变形创建关卡序列</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/DynamicTransforms/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/DynamicTransforms/</a></p>
+<p>标题有点难受，其实就是指定坐标原点，相对坐标系那种思路。但是这个是个全局的概念，而不是age那种可以指向到某个轨道上去。</p>
+<h2 id="通过Sequencer混合动画蓝图"><a href="#通过Sequencer混合动画蓝图" class="headerlink" title="通过Sequencer混合动画蓝图"></a>通过Sequencer混合动画蓝图</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/BlendingAnimBPs/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/BlendingAnimBPs/</a></p>
+<p>讲道理来说，我们项目是不推荐使用自带蓝图的，在项目自己的蓝图中没有出来的时候，可以使用这种方式。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用几何体缓存轨迹"><a href="#使用几何体缓存轨迹" class="headerlink" title="使用几何体缓存轨迹"></a>使用几何体缓存轨迹</h3><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/GeometryCacheTrack/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/GeometryCacheTrack/</a></p>
+<p>有点秀操作的东西，但是我们应该用不上。</p>
+<h3 id="非线性动画和混合工具"><a href="#非线性动画和混合工具" class="headerlink" title="非线性动画和混合工具"></a>非线性动画和混合工具</h3><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/AnimationBlendingTools/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/AnimationBlendingTools/</a></p>
+<p>反正官方说是测试功能，不建议使用，我们也就不要使用了吧。大概意思是说，在动画的过渡区域，普通的混合会出现由于骨骼的控制权的归属和权重控制问题导致的错乱。而这个主要是处理这个问题的。但是由于是测试功能，说明还是有些坑没有解决掉的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/17/SpatialAntiAliasingTechnology/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/17/SpatialAntiAliasingTechnology/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-17 10:54:47" itemprop="dateCreated datePublished" datetime="2021-06-17T10:54:47+08:00">2021-06-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
   
   
   
-  <div class="post-block">
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/" class="post-title-link" itemprop="url">3D游戏与计算机图形学中的数学方法</a>
-              
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/" class="post-title-link" itemprop="url">3D游戏与计算机图形学中的数学方法</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Computer-graphics/" itemprop="url" rel="index"><span itemprop="name">Computer graphics</span></a></span>
+              <span class="post-meta-item-text">发表于</span>
 
-                
-                
-              
+              <time title="创建时间：2019-09-06 20:55:59" itemprop="dateCreated datePublished" datetime="2019-09-06T20:55:59+08:00">2019-09-06</time>
             </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
               </span>
-            
-          
-
-          
-          
-
-          
-
-          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Computer-graphics/" itemprop="url" rel="index"><span itemprop="name">Computer graphics</span></a>
+                </span>
+            </span>
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -475,148 +711,78 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
+          <p>通过像素包含测试、裁剪测试、Alpha测试、模版测试和深度测试，段数据的最终颜色值被混合到图像缓冲区。图像缓冲区的新颜色值通过将端数据的最终颜色值与图像缓冲区对应位置的颜色值进行混合操作而获得。段数据的Alpha值和保存在图像缓冲区中的Alpha值也可用来决定视见区中显示的最终颜色值。最简单的混合操作就是用段数据的最终颜色值替换图像缓冲区中的颜色值。混合操作也可用来产生透明一类的特殊视觉效果。</p>
+<h2 id="内积"><a href="#内积" class="headerlink" title="内积"></a>内积</h2><p>两个向量的内积也被称为向量的点积或者标量积，是3D图形学忠应用最多的概念之一。内积可用来计算两个向量的方向差。<br><strong>定义2.3</strong> 两个n维向量$P$和$Q$的内积可以表示$P\cdot Q$，是一个标量，可以按以下公式计算：<br>$\vec P\cdot \vec Q=\sum_{i=1}^nP_iQ_i$<br>从该定义可以看出，两个向量的内积是每个分量乘积的和，对于三维向量，其内积可以表示为<br>$\vec P\cdot \vec Q=P_xQ_x+P_yQ_y+P_zQ_z$<br>接下来的定理2.4将揭示向量内积被广泛应用的原因。<br><strong>定理2.4</strong> 给定任意两个n维向量$\vec P$和$\vec Q$，内积$\vec P \cdot \vec Q$满足以下等式。<br>$\vec P \cdot \vec Q = ||P||\ ||Q||cos\alpha$<br>其中$\alpha$是坐标原点分别与向量$\vec P$和$\vec Q$对应的点之间连线的平面夹角。<br><strong>证明：</strong> 如图2.2所示，令其中$\alpha$为向量$\vec P$和向量$\vec Q$之间的夹角，根据余弦定义可知。<br><img src="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/1.jpg"><br>图 2.2 等式$\vec P \cdot \vec Q = ||P||\ ||Q||cos\alpha$将两个向量的内积与它们的夹角联系在一起</p>
+<h1 id="曲线与曲面"><a href="#曲线与曲面" class="headerlink" title="曲线与曲面"></a>曲线与曲面</h1><p>现代图形硬件已经具备对由大量顶点和平面组成的各类光滑曲面进行有效渲染的能力，因此弯曲几何体的表示与处理已经成为3D图形引擎的必备功能之一。另外，在几何造型系统中，曲线可以表示某个对象的运动轨迹。本章将介绍多种三维的三次曲线，并进一步介绍如何用这些曲线生成双三次参数曲面。</p>
+<h2 id="三次曲线"><a href="#三次曲线" class="headerlink" title="三次曲线"></a>三次曲线</h2><p>三次多项式定义的曲线在操作灵活性和计算简单性方面比较均衡，因此在计算机图形学中被广泛应用。下面将介绍几种不同类型的三次曲线并比较它们之间的性质。<br>三次曲线的基本形式可用以下参数表达式表示。<br>$Q(t)=\vec a+\vec bt+\vec ct^2+\vec dt^3$<br>其中，a，b，c和d为常向量，Q(t)为曲线上与参数t对应的点。Q(t)的分部表达式为<br>$Q_x(t)=\vec a_x+\vec b_xt+\vec c_xt^2+\vec d_xt^3$<br>$Q_y(t)=\vec a_y+\vec b_yt+\vec c_yt^2+\vec d_yt^3$<br>$Q_z(t)=\vec a_z+\vec b_zt+\vec c_zt^2+\vec d_zt^3$<br>上式可以容易地写成矩阵乘积的形式：<br>$Q(t)=\begin{bmatrix}a_x&amp;b_x&amp;c_x&amp;d_x\\a_y&amp;b_y&amp;c_y&amp;d_y\\a_z&amp;b_z&amp;c_z&amp;d_z\end{bmatrix}\begin{bmatrix}1\\t\\t^2\\t^3\end{bmatrix}$<br>写成更紧凑的形式，如下所示：<br>$Q(t)=CT(t)$<br>其中，C为系数矩阵，$T(t)=(1,t,t^2,t^3)$，Q(t)的导数为曲线在t的切线方向，由于矩阵C为常数矩阵，可以很容易地计算出Q(t)的导数，如下式所示。<br>$Q^’(t)=Cd/dtT(t)=C$</p>
+<h3 id="4-4-3-坐标w的几何意义"><a href="#4-4-3-坐标w的几何意义" class="headerlink" title="4.4.3 坐标w的几何意义"></a>4.4.3 坐标w的几何意义</h3><p>在利用$4\times 4$矩阵进行的变换中，四维向量的w坐标起了重要作用，除了这个作用外，w坐标还有重要的几何意义。前面，通过给三维点扩展一个等于1的w坐标，变成四维空间中的一个点。这里研究一下相反的情况，假设有一个4D点向量$\vec p = (x,y,z,w)$，其中w不为0.令向量$P’$为向量$P$在w=1的三维空间中的映射，如下式所示：<br>$P’=({x\over w},{y\over w},{z\over w})$</p>
+<h3 id="4-6-2-四元数旋转"><a href="#4-6-2-四元数旋转" class="headerlink" title="4.6.2 四元数旋转"></a>4.6.2 四元数旋转</h3><p>三维空间的旋转可以看成函数$\varphi$在三维向量空间$R^3$内的映射变换。由于函数$\varphi$表示一个旋转变换，它必须保持长度、角度和偏手性不变。<br>如图4.5所示，图中为了方便省略了z轴，3D点向量$P’$为点$P$与坐标系原点的连线与w=1的三维空间的交点，因此，给4D向量P</p>
+<h3 id="5-3-1-视场"><a href="#5-3-1-视场" class="headerlink" title="5.3.1 视场"></a>5.3.1 视场</h3><p>如图5.10所示，投影平面是一个与相机指向垂直的平面，该平面与相机的距离为e，左锥面与右锥面分别与该平面在x=-1和x=1处相交。距离e有时也被称为相机的焦距，与左锥面和右锥面之间的夹角$\alpha$有关，夹角$\alpha$被称为水平视场角。<br><img src="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/2.jpg"><br>图5.10 相机到投影平面的距离e与水平视场角$\alpha$有关</p>
+<p>对于给定的水平视场角$\alpha$，到投影平面的距离e可由以下三角关系表达式给出。<br>$e = {1\over tan( \alpha / 2)}$</p>
+<p>焦距越短，则视场越大。视场角逐渐缩小，相机则进行放大成像，而焦距越大。<br>显示屏幕的宽高比等于显示屏幕的高度除以宽度，例如，像素分辨率为$640\times 480$的显示器的宽高比为0.75。由于大多数显示器不是正方形而是长方形，所以垂直视场不等于水平视场。低锥平面和顶锥平面与投影平面在$y=\pm a$处相交，a为显示器的宽高比，这可构成图5.11所示的三角形，则垂直视场角$\beta$的表达式如下：<br>$\beta=2tan^{-1}(a/e)$</p>
+<img src="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/3.jpg">
+<p>图5.11 垂直视场角$\beta$与高宽比a有关</p>
+<p>视锥的4个边平面在从投影平面切出一个长方形，该长方形与相机距离为e，它的四条边分别位于$x=\pm 1$和$y=\pm a$处。</p>
+<h3 id="5-3-2-锥平面"><a href="#5-3-2-锥平面" class="headerlink" title="5.3.2 锥平面"></a>5.3.2 锥平面</h3><p>6个视锥平面在相机空间的法向量如图5.12所示，其中4个边锥平面的法向量向内，指向视锥内部，可以通过将边平面中的边的方向向里旋转90°获得。由于每个边锥平面都经过坐标系原点，其平面四锥表达式中的D=0。近锥平面与原点距离为n，与原点的相对方向与其法向量相同，所以D=-n。远锥平面与原点距离为f，与原点的相对方向与其法向量相反，所以D=f。表5.1总结了视锥的6个锥平面的四维平面表示向量。在表5.1中，4个边锥平面的法向量已经规范化成长度为单位长度的向量。<br><img src="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/4.jpg"><br>图5.12 在OpenGL的相机空间中的视锥平面的法向量方向<br><strong>表5.1 在OpenGL的相机空间中的视锥平面向量</strong></p>
+<h2 id="深度值偏移"><a href="#深度值偏移" class="headerlink" title="深度值偏移"></a>深度值偏移</h2><p>在很多游戏中，经常遇到渲染一些特殊效果的情况，如墙上的火烧痕迹和地面上的脚印，这些内容都不是原始场景的一部分，而是在游戏过程中产生的，在9.2节中将介绍这些特效的方法。这些修饰性的对象通常被贴到当前的物体表面上，因此这些对象包含的多边形与场景中的插值深度值，很少会等于与共面的另一多边形某一部分对应的渲染像素的插值深度值，这将导致一个不想要的渲染结果，即原始表面的多边形会透过贴上去的多边形而显示出来。<br>为了解决上述问题，需要寻找一个方法可以将多边形在场景中的深度适当偏移而不改变它的投影屏幕坐标或者调整多边形的纹理映射透视处理方法。多数3D图形系统包含一些多边形偏移函数，借用这些函数可实现处理目标。然而，这些办法缺少灵活的控制方法，常会导致逐顶点的复杂运算。本节将介绍一个通过修改投影矩阵而获得深度偏移效果的方法。</p>
+<h3 id="投影矩阵调整"><a href="#投影矩阵调整" class="headerlink" title="投影矩阵调整"></a>投影矩阵调整</h3><p>首先分析标准的OpenGL透视投影矩阵对观察空间一点$P = (P_x,P_y,P_z,1)$的变换结果。</p>
 
-      
-        
-          
-            <p>
-              通过像素包含测试、裁剪测试、Alpha测试、模版测试和深度测试，段数据的最终颜色值被混合到图像缓冲区。图像缓冲区的新颜色值通过将端数据的最终颜色值与图像缓冲区对应位置的颜色值进行混合操作而获得。段数据的Alpha值和保存在图像缓冲区中的Alpha值也可用来决定视见区中显示的最终颜色值。最简单的混合操
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/06/Mathematical-methods-in-3D-games-and-computer-graphics/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
       
     </div>
 
     
-
     
     
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/06/Calculus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/06/Calculus/" class="post-title-link" itemprop="url">Calculus</a>
-              
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/06/Calculus/" class="post-title-link" itemprop="url">Calculus</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/06/Calculus/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/06/Calculus/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">发表于</span>
 
-          
-          
-
-          
-
-          
+              <time title="创建时间：2019-09-06 17:51:04" itemprop="dateCreated datePublished" datetime="2019-09-06T17:51:04+08:00">2019-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -624,164 +790,72 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
           
-            <p>
-              
-              
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/06/Calculus/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
       
     </div>
 
     
-
     
     
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/06/ArchitecturalShadow/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/06/ArchitecturalShadow/" class="post-title-link" itemprop="url">建筑场景的阴影实现</a>
-              
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/06/ArchitecturalShadow/" class="post-title-link" itemprop="url">建筑场景的阴影实现</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a></span>
+              <span class="post-meta-item-text">发表于</span>
 
-                
-                
-              
+              <time title="创建时间：2019-09-06 10:46:24" itemprop="dateCreated datePublished" datetime="2019-09-06T10:46:24+08:00">2019-09-06</time>
             </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/06/ArchitecturalShadow/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/06/ArchitecturalShadow/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
               </span>
-            
-          
-
-          
-          
-
-          
-
-          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -789,165 +863,75 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
+          <p>首先看一下我们的效果需求，我们是一款SLG游戏，主程中的建筑都是3D的建筑，玩家到后期主城内有上百个建筑，而且建筑都是可以让玩家随意摆放的。我们的建筑要实现自身的阴影和在地面上的投影。如下图：<br><img src="/2019/09/06/ArchitecturalShadow/v2-6477cf3cf37a266372d7e8e09c763991_r.jpg"><br>一般我们在游戏中要实现建筑的阴影有两种方案：1.灯光的实时影音；2.使用Lightmap烘培阴影信息。</p>
+<p>方案1在移动端使用的很少，如果没有实时光影的变化，类似天气系统之类的需求，基本上是不会使用的。要多一个pass去计算阴影，相当于场景中的三角面数翻倍。</p>
+<p>方案2是目前大多数移动端上使用的，开销的话只是用第二套UV去采样一次Lightmap贴图而已。但是这种方法烘培Lightmap</p>
 
-      
-        
-          
-            <p>
-              首先看一下我们的效果需求，我们是一款SLG游戏，主程中的建筑都是3D的建筑，玩家到后期主城内有上百个建筑，而且建筑都是可以让玩家随意摆放的。我们的建筑要实现自身的阴影和在地面上的投影。如下图：一般我们在游戏中要实现建筑的阴影有两种方案：1.灯光的实时影音；2.使用Lightmap烘培阴影信息。
-方案
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/06/ArchitecturalShadow/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
       
     </div>
 
     
-
     
     
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/06/StandardShaderMaterialParamterOcclusionMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/" class="post-title-link" itemprop="url">Occlusion Map（环境光散射贴图）</a>
-              
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/" class="post-title-link" itemprop="url">Occlusion Map（环境光散射贴图）</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a></span>
+              <span class="post-meta-item-text">发表于</span>
 
-                
-                
-              
+              <time title="创建时间：2019-09-06 10:12:53" itemprop="dateCreated datePublished" datetime="2019-09-06T10:12:53+08:00">2019-09-06</time>
             </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
               </span>
-            
-          
-
-          
-          
-
-          
-
-          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -955,149 +939,72 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
+          <img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderParameterOcclusion.png">
+<p>The occlusion map is used to provide information about which areas of the model should receive high or low indirect lighting.Indirect lighting comes from ambient lighting and reflections,and so steep concave parts of your model such as a crack or fold would not realistically receive much indirect light.</p>
+<p>Occlusion texture maps are normally calculated by 3D applications directly from the 3D model using the modeller or third party software.</p>
+<p>An occlusion map is a greyscale image（灰度图像）,with white indicating areas（白色显示区域） that should receive full indirect lighting（间接光照）,and black indicating（指示） no indirect lighting.Sometimes this is as simple as a greyscale hightmap,for simple surface(such as the knobbly stone wall（有节的石墙）texture shown in the heightmap example above).</p>
+<p>At other times,generating the correct occlusion texture is slightly more complex（稍微复杂的）.For example,if a character in you scene is wearing a hood（戴着头巾）,the inside edegs of the hood should be set to very low indirect lighting（头巾外围应该设置很低的间接光）,or none at all（或者一点也没有）.In these situations（状况）,occlusion maps will be often be produced by artists,using 3D applications to automaticalyy generate an occlusion map based on the model.</p>
+<img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderOcclusionMapTexture.jpg">
+<p>This occlusion map identifies ares on a character’s sleeve（头套）that are exposed（暴露）or hidden from ambient lighting.It is used on the model pictured below.（它用在下面的模型）</p>
+<img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderOcclusionMap.jpg">
+<p>Before and after applying an occlusion map.The areas that partially obscured,（部分模糊的区域）particularly in the folds of fabric around the neck.（特别是在脖子周围的织物褶皱上）are lit too brightly on the left.After the ambient occlusion map is assigned,these ares are no longer lit by the green ambient light from the surrounding wooded envirnoment.</p>
 
-      
-        
-          
-            <p>
-              
-The occlusion map is used to provide information about which areas of the model should receive high or low indirect lighting.Indirect lighting comes 
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
       
     </div>
 
     
-
     
     
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/" class="post-title-link" itemprop="url">纹理过滤模式中的Bilinear、Trilinear以及Anistropic Filtering</a>
-              
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/" class="post-title-link" itemprop="url">纹理过滤模式中的Bilinear、Trilinear以及Anistropic Filtering</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">发表于</span>
 
-          
-          
-
-          
-
-          
+              <time title="创建时间：2019-09-05 21:02:39" itemprop="dateCreated datePublished" datetime="2019-09-05T21:02:39+08:00">2019-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -1105,487 +1012,75 @@ The occlusion map is used to provide information about which areas of the model 
     <div class="post-body" itemprop="articleBody">
 
       
-      
+          <h1 id="为什么在纹理采样时需要texture-filter（纹理过滤）"><a href="#为什么在纹理采样时需要texture-filter（纹理过滤）" class="headerlink" title="为什么在纹理采样时需要texture filter（纹理过滤）"></a>为什么在纹理采样时需要texture filter（纹理过滤）</h1><p>我们的纹理是要贴到三维图形表面的，而三维图形上的pixel中心和纹理上的texel中心点并不一致（pixel不一定对应texture的采样中心texel），大小也不一定一致。当纹理大于三维图形表面时，导致一个像素被映射到许多纹理像素上；当纹理小于三维图形表面时，许多个像素都映射到同一个纹理。<br>当这些情况发生时，贴图就会变得模糊或发生错位，马赛克。要解决此类问题，必须通过技术平滑texel和pixel之间的对应。这种技术就叫纹理滤波。<br>不同的过滤模式，计算复杂度不一样，会得到不同的效果。过滤模式由简单到复杂包括：Nearest Point Sampling（最近采样点），Bilinear（双线性过滤），Trilinear（三线性过滤）、Anisotropic Filtering（各项异性过滤）。</p>
+<h1 id="什么是各向同性和各向异性？"><a href="#什么是各向同性和各向异性？" class="headerlink" title="什么是各向同性和各向异性？"></a>什么是各向同性和各向异性？</h1><p>当需要贴图的三维表面平行于屏幕（viewport），则是各向同性的。当要贴图的三维表面与屏幕有一定角度的倾斜，则是各向异性的。</p>
+<h1 id="Nearest-Point-Sampling（最近点采样）"><a href="#Nearest-Point-Sampling（最近点采样）" class="headerlink" title="Nearest Point Sampling（最近点采样）"></a>Nearest Point Sampling（最近点采样）</h1><p>这个最简单，每个像素的纹理坐标，并不是刚好对应Texture上的一个采样点texel，怎么办呢？最近点采样取最接近的texel进行采样。<br>当纹理的大小与贴图的三维图形的大小差不多时，这种方法非常有效和快捷。如果大小不同，纹理就需要进行放大或缩小，这样，结果就会变得矮胖、变形或模糊。</p>
 
-      
-        
-          
-            <p>
-              为什么在纹理采样时需要texture filter（纹理过滤）我们的纹理是要贴到三维图形表面的，而三维图形上的pixel中心和纹理上的texel中心点并不一致（pixel不一定对应texture的采样中心texel），大小也不一定一致。当纹理大于三维图形表面时，导致一个像素被映射到许多纹理像素上；当
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
       
     </div>
 
     
-
     
     
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/05/GPU-Gems-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="liyanfeng">
       <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="liyanfeng">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/05/GPU-Gems-2/" class="post-title-link" itemprop="url">GPU Gems 2</a>
-              
-            
-          </h2>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/05/GPU-Gems-2/" class="post-title-link" itemprop="url">GPU Gems 2</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/GPU-Gems/" itemprop="url" rel="index"><span itemprop="name">GPU Gems</span></a></span>
+              <span class="post-meta-item-text">发表于</span>
 
-                
-                
-              
+              <time title="创建时间：2019-09-05 16:13:08" itemprop="dateCreated datePublished" datetime="2019-09-05T16:13:08+08:00">2019-09-05</time>
             </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/05/GPU-Gems-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/05/GPU-Gems-2/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
               </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              前言《GPU Gems 2》这本书除了丰富的内容之外，还有两个特点。
-
-虚幻引擎之父Tim Sweeney为《GPU Gems 2》作序。作为Epic Games的创始人，Unreal Engine早期主要开发者，Tim也在序中展示了《GPU Gems 2》出版伊始（2005年3月）时开发完成的Un
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/05/GPU-Gems-2/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/05/GPU-Architectures/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/05/GPU-Architectures/" class="post-title-link" itemprop="url">GPU Architectures</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/05/GPU-Architectures/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/05/GPU-Architectures/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              Graphics pipeline
-
-“Logical” pipeline described in OGL/DX specification
-It’s an abstraction
-
-
-At physical level things are very different
-As long as s
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/05/GPU-Architectures/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/04/OpenGLES-Fragment-Shader/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/04/OpenGLES-Fragment-Shader/" class="post-title-link" itemprop="url">OpenGL ES 3.0 Fragment Shader</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
+                <i class="far fa-folder"></i>
               </span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OpenGL-ES-3-0/" itemprop="url" rel="index"><span itemprop="name">OpenGL ES 3.0</span></a></span>
-
-                
-                
-              
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GPU-Gems/" itemprop="url" rel="index"><span itemprop="name">GPU Gems</span></a>
+                </span>
             </span>
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/04/OpenGLES-Fragment-Shader/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/04/OpenGLES-Fragment-Shader/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
 
           
 
         </div>
       </header>
-    
 
     
     
@@ -1593,372 +1088,41 @@ As long as s
     <div class="post-body" itemprop="articleBody">
 
       
-      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>《GPU Gems 2》这本书除了丰富的内容之外，还有两个特点。</p>
+<ul>
+<li>虚幻引擎之父Tim Sweeney为《GPU Gems 2》作序。作为Epic Games的创始人，Unreal Engine早期主要开发者，Tim也在序中展示了《GPU Gems 2》出版伊始（2005年3月）时开发完成的Unreal Engine 3。UE3可谓是开创了一个时代。随后包括《新鬼泣》在内的100+款大作（2005年~2015年），都是基于UE3开发。</li>
+<li>《GPU Gems 2》的中文版是龚大2005年，但可以不夸张地说，书中介绍的很多方法技巧trick，哪怕是放到现在，依然非常值得学习和借鉴。</li>
+</ul>
+<p>ok，篇幅原因，开场话就不多说了，放一张本文的核心内容，真是感植物渲染的图，我们就直接开始正题。<br><img src="/2019/09/05/GPU-Gems-2/1.png"></p>
+<h1 id="实现照片级真实感的虚拟植物（Toward-Photorealism-in-Virtual-Botany）"><a href="#实现照片级真实感的虚拟植物（Toward-Photorealism-in-Virtual-Botany）" class="headerlink" title="实现照片级真实感的虚拟植物（Toward Photorealism in Virtual Botany）"></a>实现照片级真实感的虚拟植物（Toward Photorealism in Virtual Botany）</h1><h2 id="内容概览"><a href="#内容概览" class="headerlink" title="内容概览"></a>内容概览</h2><p>众所周知，植物的渲染需要很多的视觉深度和细节才能令人信服。</p>
+<p>本章即关于渲染逼真自然场景的技术，描述了对实时游戏引擎友好的、用于渲染更真实的自然场景的策略。讲述了在不需要大量CPU或GPU占用的前提下渲染出包含大量植物和树组成的绿色植物场景。</p>
+<p>内容安排方面，这章从管理大型户外场景数据这一基础开始描述。然后，提供一些细节，例如关于如何最大化GPU吞吐量，以便可以看到密集的草丛。接下来扩展这些技术，增加地面杂物和大型植物，如树，将阴影和环境影响组合进去。</p>
+<p>一些真实感植物渲染的效果图：</p>
+<img src="/2019/09/05/GPU-Gems-2/2.png">
+<img src="/2019/09/05/GPU-Gems-2/3.png">
+<img src="/2019/09/05/GPU-Gems-2/4.png">
+<h2 id="场景管理（Scene-Management）"><a href="#场景管理（Scene-Management）" class="headerlink" title="场景管理（Scene Management）"></a>场景管理（Scene Management）</h2><p>任何3D游戏引擎都应该有环境相关渲染技术的管理和组织。</p>
+<p>游戏引擎必须管理其渲染技术，以适合于它们希望看到的环境范围。以自然场景为主的游戏由上千棵树，灌木和可能上百万片草叶组成。直接分开渲染会出现数据管理问题，只有解决了这一问题才能以交互的帧率实时渲染。</p>
+<p>我们的目标是在一个逼真的室外场景中大范围地移动游戏相机，而不需要在任务管理上花费过多的存储器资源。</p>
+<h2 id="种植栅格（The-Planting-Grid）"><a href="#种植栅格（The-Planting-Grid）" class="headerlink" title="种植栅格（The Planting Grid）"></a>种植栅格（The Planting Grid）</h2><p>场景管理方面，首先是使用了虚拟栅格的思想。</p>
+<p>我们在相机周围建立一个世界空间固定的栅格，来管理每一层的植物和其他自然物体的种植数据。每个栅格单元包含渲染它所在物理空间层的所有数据。特别是，单元数据结构存储了对应的顶点、索引缓冲区和材质信息来再现需要绘制的内容。</p>
+<p>对植物的每个层，建立相机到层的距离，层需要用它来产生视觉效果，这决定了虚拟栅格的大小。相机移动，虚拟栅格也随之移动。当一个栅格单元不再在虚拟栅格中时，丢弃它，并在需要维护完成栅格结构的地方添加新的单元。在添加每个单元格时，用一种种植算法把渲染所需的数据填充到层。如下图。<br><img src="/2019/09/05/GPU-Gems-2/5.png" title="一个虚拟栅格"><br>图注：内层有一个世界空间对齐的固定大小的栅格。深绿的单元表现为活动单元。当相机向前移动时，丢弃标记为X的单元，添加新的单元（显示为亮绿色）以维持虚拟栅格的大小，实现过程中有用的改进是使用栅格单元池且循环使用，因为当一个旧单元被丢弃时，总会增加一个新单元。</p>
+<h3 id="种植策略（Planting-Strategy）"><a href="#种植策略（Planting-Strategy）" class="headerlink" title="种植策略（Planting Strategy）"></a>种植策略（Planting Strategy）</h3><p>对于充满自然物体的每个单元，需要在地面上选择需要放置物体的适当位置。采用试探的方法根据被防止对象对象类型来选择这些点。通常，需要的密度随机选点，然后看地面上的对应点是否适合要种植的东西。而地面多边形的材质决定了一个层是否适用。</p>
 
-      
-        
-          
-            <p>
-              第9章介绍了在片段着色器中创建和应用纹理的基础知识。在本章中，我们提供了片段着色器的更多细节，并描述它的一些用户。特别是，我们聚焦于如何用片段着色器实现固定功能技术。本章介绍的主题包括：
-
-固定功能片段着色器
-可编程片段着色器概述
-多重纹理
-雾化
-Alpha测试
-用户裁剪平面
-
-
-在图10-1中，已
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/04/OpenGLES-Fragment-Shader/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
       
     </div>
 
     
-
     
     
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
-
-
-    
-      
-
-  
-
   
   
   
 
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/04/GPU-Optimize/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/04/GPU-Optimize/" class="post-title-link" itemprop="url">当我们谈优化时，我们谈些什么</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/04/GPU-Optimize/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/04/GPU-Optimize/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              过去几年里，我经历过大约几十场面试，几乎在每次面试的时候，面试官都会提问一个问题：“你在渲染性能优化方面有什么经验？”这个时候我就会开始揣测面试官的意图，试着去回忆他之前提的问题，看看面试官到底想听什么样的回答，往往这种尝试都是失败的，结果就是不知道从何说起，因为没有具体的情景，最后只能说“整个渲染
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/04/GPU-Optimize/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/04/Mobile-GPU-Architecture/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/09/04/Mobile-GPU-Architecture/" class="post-title-link" itemprop="url">移动GPU架构浅析</a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-            
-              
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/09/04/Mobile-GPU-Architecture/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/09/04/Mobile-GPU-Architecture/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              移动GPU相对桌面GPU只能算小弟弟，移动GPU的劣势主要表现在理论性能和带框。移动GPU受限于芯片面积，能耗以及成本所以必须牺牲部分性能和带宽来求得性价比和电池续航的平衡。与桌面GPU动辄256bit甚至512bit的带宽、1.2-1.5GHz的高频显存相比，移动GPU不仅要和CPU共享内存带宽，
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/09/04/Mobile-GPU-Architecture/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
 
   
   <nav class="pagination">
@@ -1970,876 +1134,215 @@ Alpha测试
           </div>
           
 
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <p class="site-author-name" itemprop="name">liyanfeng</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          
-            <nav class="site-state motion-element">
-              
-                <div class="site-state-item site-state-posts">
-                
-                  <a href="/archives">
-                
-                    <span class="site-state-item-count">326</span>
-                    <span class="site-state-item-name">日志</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-categories">
-                  <a href="/categories/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">52</span>
-                    <span class="site-state-item-name">分类</span>
-                  </a>
-                </div>
-              
-
-              
-                
-                
-                <div class="site-state-item site-state-tags">
-                  <a href="/tags/index.html">
-                    
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                    <span class="site-state-item-count">97</span>
-                    <span class="site-state-item-name">标签</span>
-                  </a>
-                </div>
-              
-            </nav>
-          
-
-          
-
-          
-            <div class="links-of-author motion-element">
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://github.com/zentia" title="GitHub &rarr; https://github.com/zentia" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="mailto:363477658@qq.com" title="E-Mail &rarr; mailto:363477658@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
-                </span>
-              
-                <span class="links-of-author-item">
-                  
-                  
-                    
-                  
-                  
-                    
-                  
-                  <a href="https://www.zhihu.com/people/zentia-33/activities" title="Zhihu &rarr; https://www.zhihu.com/people/zentia-33/activities" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>Zhihu</a>
-                </span>
-              
-            </div>
-          
-
-          
-
-          
-          
-
-          
-            
-          
-          
-
-        </div>
-      </div>
-
-      
-
-      
-
-    </div>
-  </aside>
-  
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
-
-  
-
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-user"></i>
-    </span>
-    <span class="site-uv" title="总访客量">
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-    </span>
-  
-
-  
-    <span class="post-meta-divider">|</span>
-  
-
-  
-    <span class="post-meta-item-icon">
-      <i class="fa fa-eye"></i>
-    </span>
-    <span class="site-pv" title="总访问量">
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-    
-
-    
-  </div>
-
-  
-
 <script>
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
+        </div>
+          
   
-
-
-
-  
-    
-    
-  
-  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
-
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-  
-  <script src="/lib/three/three.min.js"></script>
-
-  
-  <script src="/lib/three/three-waves.min.js"></script>
-
-  
-  <script src="/lib/reading_progress/reading_progress.js"></script>
-
-
-  
-
-
-  <script src="/js/src/utils.js?v=7.0.1"></script>
-
-  <script src="/js/src/motion.js?v=7.0.1"></script>
-
-
-
-  
-  
-
-
-  <script src="/js/src/schemes/muse.js?v=7.0.1"></script>
-
-
-
-
-  
-
-  
-
-
-  <script src="/js/src/bootstrap.js?v=7.0.1"></script>
-
-
-  
-  
-  
-
-<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
-
-
-
-<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-
-<script>
-  var GUEST = ['nick', 'mail', 'link'];
-  var guest = 'nick,mail,link';
-  guest = guest.split(',').filter(function(item) {
-    return GUEST.indexOf(item) > -1;
-  });
-  new Valine({
-    el: '#comments',
-    verify: false,
-    notify: false,
-    appId: '8yU6gvODOHdX3WaGCQV08wuU-gzGzoHsz',
-    appKey: 'ODzJO92E6yKW6EoYlUShbfMV',
-    placeholder: 'Just go go',
-    avatar: 'mm',
-    meta: guest,
-    pageSize: '10' || 10,
-    visitor: false
-  });
-</script>
-
-
-
-
-
-  
-
-
-
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/src/algolia-search.js?v=7.0.1"></script>
-
-
-
-  
-
-  
-
-  
-  
-
-  
-  
-    
-      
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liyanfeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
         
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  
-
-  
-    
-      <script type="text/x-mathjax-config">
-  
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-      
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
-        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
-      }
-    });
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-      for (i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-      }
-  });
-</script>
-<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-<style>
-.MathJax_Display {
-  overflow-x: scroll;
-  overflow-y: hidden;
-}
-</style>
-
-    
-  
+          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
 
 
-  
-  
 
-  
-  
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-      
-    
-  
+      </div>
 
-  
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
 
 
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
   
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
 
   
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-  
-  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
   <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
   
-    bookmark.loadBookmark();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
   
-  </script>
-
 
   
-  <style>
-    .copy-btn {
-      display: inline-block;
-      padding: 6px 12px;
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 20px;
-      color: #333;
-      white-space: nowrap;
-      vertical-align: middle;
-      cursor: pointer;
-      
-        background-color: #eee;
-        background-image: linear-gradient(#fcfcfc, #eee);
-        border: 1px solid #d5d5d5;
-        border-radius: 3px;
-      
-      user-select: none;
-      outline: 0;
-    }
 
-    .highlight-wrap .copy-btn {
-      transition: opacity .3s ease-in-out;
-      opacity: 0;
-      padding: 2px 6px;
-      position: absolute;
-      
-        right: 4px;
-        top: 8px;
-      
-    }
-
-    .highlight-wrap:hover .copy-btn,
-    .highlight-wrap .copy-btn:focus {
-      opacity: 1;
-    }
-
-    .highlight-wrap {
-      position: relative;
-    }
-  </style>
-  <script>
-    $('.highlight').each(function(i, e) {
-      var $wrap = $('<div>').addClass('highlight-wrap');
-      $(e).after($wrap);
-      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
-        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
-          return $(e).text();
-        }).toArray().join('\n');
-        var ta = document.createElement('textarea');
-        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-        ta.style.top = yPosition + 'px'; // Prevent page scroll
-        ta.style.position = 'absolute';
-        ta.style.opacity = '0';
-        ta.readOnly = true;
-        ta.value = code;
-        document.body.appendChild(ta);
-        ta.select();
-        ta.setSelectionRange(0, code.length);
-        ta.readOnly = false;
-        var result = document.execCommand('copy');
-        
-          if (result) $(this).text('复制成功');
-          else $(this).text('复制失败');
-        
-        ta.blur(); // For iOS
-        $(this).blur();
-      })).on('mouseleave', function(e) {
-        var $b = $(this).find('.copy-btn');
-        setTimeout(function() {
-          $b.text('复制');
-        }, 300);
-      }).append(e);
-    })
-  </script>
-
-
+    </div>
 </body>
 </html>
