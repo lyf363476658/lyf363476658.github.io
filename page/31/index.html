@@ -145,6 +145,233 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/16/www/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/16/www/" class="post-title-link" itemprop="url">www</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-16 10:27:44" itemprop="dateCreated datePublished" datetime="2017-10-16T10:27:44+08:00">2017-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>StartCoroutine开启一个协程，yield return是迭代器返回调用迭代的地方。<br>协程至少产生十几还是多少B的GC具体是多少我忘记了，至少在5.3.8f2之前的版本是，未来如果有时间和有机会我会讲解一个可以避免掉GC的办法。CoroutineTool，本篇不再介绍范围内。<br>一个协程的执行可以在任何地方用yield语句来暂停，yield return的值决定了什么时候协程恢复执行。<br>WWW的加载方式，本身会增加FileSystem的崩溃率，然后还增加显存占用提高了Present的崩溃率。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/16/Jenkins/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/16/Jenkins/" class="post-title-link" itemprop="url">Jenkins</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-16 00:39:14" itemprop="dateCreated datePublished" datetime="2017-10-16T00:39:14+08:00">2017-10-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li>添加Jenkins的源（repository）<br> sudo wget -O /etc/yum.repos.d/jenkins.repo <a href="http://jenkins-ci.org/redhat/jenkins.repo" target="_blank" rel="noopener">http://jenkins-ci.org/redhat/jenkins.repo</a><br> sudo rpm —import <a href="http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key" target="_blank" rel="noopener">http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key</a></li>
+<li>安装/检查JDK<br> java —version # 这个必须安装成功<br> sudo yum install java-1.6.0-openjdk # 我用的1.8</li>
+<li>安装Jenkins:<br> sudo yum install jenkins</li>
+</ol>
+<p>安装完成后，有如下相关目录：<br>/usr/lib/jenkins/ :jenkins安装目录，WAR包会放在这里。<br>    cd /usr/lib/jenkins<br>    ll</p>
+<ol>
+<li>启动Jenkins<br> echo &amp;JAVA_HOME<br> /usr/java/…(懒的复制了)<br>昨天还好好的，今天不知道为什么访问不了，各种查最后通过<br> service jenkins start<br>搞定了，但是昨天一直没关，ps -aux | grep “jenkins” 也能找到。奇怪。<br>不过使用service jenkins start之后多了一个。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/15/makefile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/15/makefile/" class="post-title-link" itemprop="url">makefile</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-15 15:35:44" itemprop="dateCreated datePublished" datetime="2017-10-15T15:35:44+08:00">2017-10-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="make-Nothing-to-be-done-for-xxxx"><a href="#make-Nothing-to-be-done-for-xxxx" class="headerlink" title="make: Nothing to be done for xxxx"></a>make: Nothing to be done for xxxx</h1><h1 id="中间文件、链接文件"><a href="#中间文件、链接文件" class="headerlink" title="中间文件、链接文件"></a>中间文件、链接文件</h1><p>C、C++要把源文件编译成中间代码文件，在Windows是.obj文件，在Linux是.o文件，即Object File，这一步叫做编译。然后把这些Object File合成可执行文件，这一步叫做链接(link)。<br>编译时，编译器需要的是语法正确，函数和变量声明正确，然后编译中中间目标文件。一般来说每个源文件都对应一个中间目标文件（O文件或者OBJ文件）。链接主要是链接函数和全局变量，所以我们可以使用这些中间目标文件来链接我们的可执行文件。链接器并不考虑源文件，只考虑中间目标文件（OBJ文件），大点的项目文件成千上百，导致会变成生成太多的中间文件，而链接时需要明确指出中间目标文件名，这对于编译很不方便，所以出现了库文件来合并这些目标文件windows下“库文件”（Library File）.lib文件，在Liunx下叫Archive File（.a）文件，所以一般包Link 错误就是指没有找到这个中间文件，即没有找到该声明的实现（一般情况下）。</p>
+<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><p>make命令执行时，需要一个Makefile（一般是.mk 缺省Makefile或者makefile，作者习惯Makefile.mk）文件，告诉make命令如何编译和链接程序。<br>规则：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target ... : prerequisites ...</span><br><span class="line">    command</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></p>
+<p>target也就是一个目标文件，可是是Object File，也可以是执行文件。还可以是一个标签（Label）。<br>prerequisites就是，要生成那个target所需要的文件或目标。<br>command是make需要执行的命令。（Shell命令）<br>这是一个依赖关系，就是说，target这一个或多个目标文件依赖于prerequisties中的文件，而规则是由command决定的。也就是说，prerequisites中如果有一个以上的文件比target文件要新的话，command所定义的命令就会被执行。这就是Makefile的规则。</p>
+<ol>
+<li>ifeq的用法<br> ifeq($(SRCFILE),)<br> else ifeq()<br> endif<br>如果没有变量值，则判断是否定义，有则判断是否相等<br>./test.sh -f config.conf -v —prefix=/home<br>我们称-f为选项，它需要一个参数，即config.conf，-v也是一个选项，但它不需要参数。<br>—prefix我们称之为长选项，即选项本身多余一个字符，它也需要一个参数，用等号连接，当然等号不是必须的，/home可以直接卸载—prefix后面，即—prefix/home。<h1 id="伪目标、虚目标"><a href="#伪目标、虚目标" class="headerlink" title="伪目标、虚目标"></a>伪目标、虚目标</h1>伪目标不是一个真正的文件名，在执行make时可以指定这个目标执行</li>
+<li><p>如果我们需要书写这样一个规则：规则所定义的命令不是去创建目标文件，而是使用make指定具体的目标来执行一些特定的命令。像下边那样：<br> clean:<br> rm <em>.o temp<br>规则中”rm”不是创建文件”clean”的命令，只是删除当前目录下的所有.O文件和temp文件。在工作目录下不存在”clean”这个文件时，我们输入”make clean”后，”rm </em>.o temp”总会被执行。这是我们的初衷。<br>但当前工作目录下存在”clean”时情况就不一样了，在我们输入”make clean”时。规则没有依赖文件，所以目标被认为是最新的而不去执行规则所定义的命令，命令”rm”将不会被执行。这并不是我们的初衷。为了避免这个问题，我们可以将目标”clean”明确声明为伪目标。讲一个目标声明为伪目标需要将它作为特殊目标.PHONY的依赖。如下：<br> .PHONY: dummy_help all dep obj cleanobj cleanint cleanout clean veryclean verycleanint install dirint dirout dirs pch cleanpch<br>这样dummy_help等就是一些伪目标或者说是虚目标，无论当前目录下是否存在”clean”这个文件。我们输入”make clean”之后，”rm”命令都会被执行。而且当一个目标被声明为伪目标后，make在执行规则时不会试图去查找隐含规则来创建这个目标。这样也提高了make的执行效率，同时我们也不用担心由于目标和文件名重名而使我们的期望失败。在书写伪目标规则时，首先需要声明目标是一个伪目标，之后才是伪目标的规则定义。目标”clean”书写格式应该如下：<br> .PHONY: clean<br> cleanint: cleanobj</p>
+<h1 id="移除所有临时文件-目标文件、依赖文件"><a href="#移除所有临时文件-目标文件、依赖文件" class="headerlink" title="移除所有临时文件(目标文件、依赖文件)"></a>移除所有临时文件(目标文件、依赖文件)</h1><pre><code> $(RM) -f $(DEPFILE_TO_DEL)
+</code></pre><p> cleanout:<br> ifeq ($(ISWHAT),LIB)</p>
+<h1 id="库"><a href="#库" class="headerlink" title="库"></a>库</h1><pre><code>     $(RM) -f $(TargetOutFile).*
+</code></pre><p> else<br> ifeq ($(ISWHAT),EXE)</p>
+<h1 id="EXE文件"><a href="#EXE文件" class="headerlink" title="EXE文件"></a>EXE文件</h1><pre><code>     $(RM) -f $(TargetOutFile)
+</code></pre><p> else</p>
+<h1 id="DLL或其他"><a href="#DLL或其他" class="headerlink" title="DLL或其他"></a>DLL或其他</h1><pre><code>     $(RM) -f $(TargetOutFile).*
+</code></pre><p> ifneq ($(OutDirLib),)</p>
+<pre><code>     $(RM) -f $(TargetOutFileLib).*
+</code></pre><p> endif<br> endif<br> endif</p>
+<p> cleanpch:</p>
+<pre><code>     $(RM) -f $(PchFile)
+</code></pre><p> clean: cleanint cleanout cleanpch</p>
+<pre><code>     @echo ==== clean now ====
+</code></pre></li>
+</ol>
+<h1 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h1><p>通配符是一种特殊语句，主要有星号(*)和问号(?)，用来模糊搜索文件</p>
+<h1 id="Makefile中的wildcard用法"><a href="#Makefile中的wildcard用法" class="headerlink" title="Makefile中的wildcard用法"></a>Makefile中的wildcard用法</h1><p>在Makefile规则中，通配符会被自动展开。但在变量的定义和函数引用时，通配符将失效。这种情况下如果需要通配符有效，就需要使用函数”wildcard”，它的用法是：$(wildcard PATTERN…)。在Makefile中，它被展开为已经存在的、使用空格分开的、匹配此模式的所有文件列表。如果不存在任何符合此模式的文件，函数会忽略模式字符并返回空。需要</p>
+<h1 id="Linux-make-保存错误日志"><a href="#Linux-make-保存错误日志" class="headerlink" title="Linux make 保存错误日志"></a>Linux make 保存错误日志</h1><p>$mkdbg all 2&gt;&amp;1|tee xxx.log<br>这条命令是编译并保存打印信息。在Linux Shell的设备定义中，“0”表示标准输入，“1”表示标准输出，“2”表示标准出错信息输出。2&gt;&amp;1表示把2设备的信息重定向到1设 备；“|”是管道符号，把标准输出的信息直接传递给后面的命令；tee是创建文件并保存信息的工具；xxx.log是文件名。<br>这种管道的用法在Linux Shell命令中使用非常普遍。编译过程中都可以使用这个方法，生成日志文件，保存到buildlogs目录下。<br>  1 # 编译模式名<br>  2 ConfigurationName               := debug<br>  3 # 用于体现该编译模式的文件标记<br>  4 # (对于debug版来说，比如目标文件后缀就会变成._do)<br>  5 CfgFileTag                              := _d<br>  6 # 编译选项<br>  7 #CCFlag                                 := -Wall -g -D_DEBUG -march=native<br>  8 CFlag                                   := -Wall -Wno-multichar -g -D_DEBUG -DPG_MEMORY_DISABLE_POOL -march=core2 -m32 -rdynamic<br>  9 CCFlag                                  := $(CFlag) -std=c++0x<br> 10<br> 11 #CCFlag                                 := -finput-charset=gb2312 -Wall -g -D_DEBUG<br> 12 # 连接选项<br> 13 #LNFlag                                 := -lpthread -march=native<br> 14 LNFlag                                  := -lpthread -ldl -lrt -march=prescott</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/15/gdb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -859,216 +1086,10 @@ systemctl start mariadb
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/13/ssh-key/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/13/ssh-key/" class="post-title-link" itemprop="url">ssh</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-13 14:42:00" itemprop="dateCreated datePublished" datetime="2017-10-13T14:42:00+08:00">2017-10-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>ssh中，有两个钥匙：<strong><em>公钥、私钥</em></strong>，公钥主要是用于对一些敏感信息进行加密，私钥适用于解密。<br>ssh的文件都存在于机器~/.ssh中。</p>
-<ul>
-<li>客户端：id_rsa(私钥)、id_rsa.pub(公钥)、known_hosts(已知远程主机)</li>
-<li>服务端: authorized_keys(验证过的公钥列表)、sshd_config(ssh配置文件)</li>
-</ul>
-<h1 id="设置ssh连接不断开"><a href="#设置ssh连接不断开" class="headerlink" title="设置ssh连接不断开"></a>设置ssh连接不断开</h1><pre><code>vim /etc/ssh/sshd_config
-# 客户端每隔多少秒向服务器发送一个心跳数据
-ClientAliveInterval 30
-# 客户端多少秒没有响应，服务器自动断掉连接
-ClientAliveCountMax 1800
-service sshd restart
-</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/13/site-dealy-role/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/13/site-dealy-role/" class="post-title-link" itemprop="url">网站部署规则</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-13 14:05:21" itemprop="dateCreated datePublished" datetime="2017-10-13T14:05:21+08:00">2017-10-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>网站发布只在自己笔记本电脑发布，公司电脑只能hexo s —debug,不能 hexo d -g<br>本地内容修改完成之后记得<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add . </span><br><span class="line">git commit -am <span class="string">"m"</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/13/github-remote-error/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/13/github-remote-error/" class="post-title-link" itemprop="url">fatal:remote error You can't push to git 的解决办法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-13 13:34:04" itemprop="dateCreated datePublished" datetime="2017-10-13T13:34:04+08:00">2017-10-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>branch正确的情况下，不知为什么，在push的时候出现:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fatal: remote error:</span><br><span class="line">You can<span class="string">'t push to git://github.com/zentia/hexo.git</span></span><br><span class="line"><span class="string">Use git@github.com:zentia/hexo.git</span></span><br></pre></td></tr></table></figure></p>
-<p>解决办法:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote rm origin</span><br><span class="line">git remote add origin git@github.com:zentia/hexo.git</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/30/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/32/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/30/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/30/">30</a><span class="page-number current">31</span><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/32/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1134,7 +1155,7 @@ service sshd restart
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1145,7 +1166,7 @@ service sshd restart
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

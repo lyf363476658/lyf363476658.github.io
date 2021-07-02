@@ -145,6 +145,346 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/06/18/gpugem2-0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/06/18/gpugem2-0/" class="post-title-link" itemprop="url">头发动画和渲染</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-18 10:23:43" itemprop="dateCreated datePublished" datetime="2019-06-18T10:23:43+08:00">2019-06-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GPUGem2/" itemprop="url" rel="index"><span itemprop="name">GPUGem2</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>渲染在水中飘动的金色长发需要一个计算头发自阴影生成算法，还需要一个通过每一串头发来模拟光纤散射的反射模型。把这些结合起来，就能实时创建出极其真实的头发影像。<br><img src="/2019/06/18/gpugem2-0/1.jpg"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/06/11/zbrushdivide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/06/11/zbrushdivide/" class="post-title-link" itemprop="url">ZBrush模型的细分</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-11 16:08:48" itemprop="dateCreated datePublished" datetime="2019-06-11T16:08:48+08:00">2019-06-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ZBrush/" itemprop="url" rel="index"><span itemprop="name">ZBrush</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在ZBrush中对模型进行雕刻时，随着细节越来越丰富，原有的面数已经不能满足我们对细节的要求，为了得到更多的细节，我们就必须增加模型的面数，让更多的面来支持我们进行雕刻，如下图（左）和下图（右）所示，设置不同细分级别时模型的雕刻结果。<br><img src="/2019/06/11/zbrushdivide/1.png"><br>打开Light Box(灯光盒子)，选择DemoHead，拖拽鼠标左键，在场景中绘制一个DemoHead，单机tool-&gt;GempHead，（工具-&gt;几何体）命令，打开其菜单，它是ZBrush中用于控制细分功能的主要菜单，如图所示，当导入的模型在菜单中显示出自身共有3级细分。<br><img src="/2019/06/11/zbrushdivide/2.png"><br>在ZBrush中三维模型由多边形网格构成，每个网格有4条边，当增加一级细分时，一个四边形网格经被分割为4个网格，所以每增加一级细分，总体的网格数量就会增加4倍。<br>可以通过以下两种方式观察当前模型的网格数量。</p>
+<ol>
+<li>通过顶部工具架右侧的ActivePoints（活动点数）和PotalPoints（合计点数）数值来查看当前模型的网格数量。如果屏幕分辨率不足以显示顶部工具架上全部的命令，这两个参数可以在Preferences-&gt;Misc（参数-&gt;杂项）命令中找到，如图所示。<img src="/2019/06/11/zbrushdivide/3.png"></li>
+<li>将鼠标指针停留在Tool（工具）菜单当前模型的工具图标上数秒，便可以显示当前模型的相关信息，如图所示。<img src="/2019/06/11/zbrushdivide/4.png">
+</li>
+</ol>
+<p>Geometry（几何）菜单中相关命令的使用方式如下。</p>
+<ol>
+<li>模型在最高级别的细分时，单机Divide（细分）（快捷键是Ctrl+D）按钮可以增加一级细分（当模型处于最高级别状态或是模型由隐藏部分时，此功能不能正常使用）。下图（左）为细分之前；（右）细分之后。<img src="/2019/06/11/zbrushdivide/5.png"></li>
+<li>Smt（细分平滑）：此命令可以使模型在增加细分时进行光滑处理。</li>
+<li>Suv（平滑UV）：此命令可以增加细分时UV接缝保持光滑（用于导入其他三维软件建立的低级细分的模型并且已经编辑好UV时使用）。</li>
+<li>Lower Res（降低细分）/Highter Res（提高细分）/SDiv（细分级别）：当物体存在多细分级别时，可以通过Lower Res（降低细分）命令、Higher Res（提高细分）命令或者SDiv（细分级别）滑块参数来控制当前模型显示哪一级别的细分。</li>
+<li>Del Lower（删除低级）/Del Highter（删除高级）：如果有需要也可以单机Del Lower（删除低级）命令或Del Highter（删除高级）命令来取消不需要细分级别。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/06/10/3dmaxshortcutkey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/06/10/3dmaxshortcutkey/" class="post-title-link" itemprop="url">3DMax快捷键</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-06-10 11:10:30" itemprop="dateCreated datePublished" datetime="2019-06-10T11:10:30+08:00">2019-06-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/3DMax/" itemprop="url" rel="index"><span itemprop="name">3DMax</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>F1</code></td>
+<td>帮助</td>
+</tr>
+<tr>
+<td><code>F2</code></td>
+<td>加亮所选物体的面(开关)</td>
+</tr>
+<tr>
+<td><code>F3</code></td>
+<td>线框显示(开光)/光滑加亮</td>
+</tr>
+<tr>
+<td><code>F4</code></td>
+<td>在透视图中线框显示(开关)显示分段数</td>
+</tr>
+<tr>
+<td><code>F5</code></td>
+<td>约束到X轴</td>
+</tr>
+<tr>
+<td><code>F6</code></td>
+<td>约束到Y轴</td>
+</tr>
+<tr>
+<td><code>F7</code></td>
+<td>约束到Z轴</td>
+</tr>
+<tr>
+<td><code>F8</code></td>
+<td>约束到XY/YZ/ZX平面(切换)</td>
+</tr>
+<tr>
+<td><code>F9</code></td>
+<td>用前一次的配置进行渲染(渲染先前渲染过的那个视图)</td>
+</tr>
+<tr>
+<td><code>F10</code></td>
+<td>打开渲染菜单</td>
+</tr>
+<tr>
+<td><code>F11</code></td>
+<td>打开脚本编辑器</td>
+</tr>
+<tr>
+<td><code>F12</code></td>
+<td>打开移动/渲染/缩放等精确数据输入对话框</td>
+</tr>
+<tr>
+<td>`</td>
+<td>刷新所有视图</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>进入物体层级1层</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>进入物体层级2层</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>进入物体层级3层</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>进入物体层级4层</td>
+</tr>
+<tr>
+<td><code>Shift+4</code></td>
+<td>进入有指向性灯光视图</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>进入物体层级5层</td>
+</tr>
+<tr>
+<td><code>Alt+6</code></td>
+<td>显示/隐藏主工具栏</td>
+</tr>
+<tr>
+<td><code>Alt+W</code></td>
+<td>最大化视图</td>
+</tr>
+<tr>
+<td><code>Alt+C</code></td>
+<td>切割</td>
+</tr>
+<tr>
+<td><code>Ctrl+V</code></td>
+<td>拷贝复制</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="美术资源"><a href="#美术资源" class="headerlink" title="美术资源"></a>美术资源</h1><h2 id="软件地址"><a href="#软件地址" class="headerlink" title="软件地址"></a>软件地址</h2><p>3Dmax各版本软件下载链接: [有效] <a href="http://pan.baidu.com/s/1jIa4DvS" target="_blank" rel="noopener">http://pan.baidu.com/s/1jIa4DvS</a> 密码: chdw<br>各个版本的3Dmax（附加Vary）链接：<a href="https://pan.baidu.com/s/1fAhYzCec9yZ0X6mVtkr87Q" target="_blank" rel="noopener">https://pan.baidu.com/s/1fAhYzCec9yZ0X6mVtkr87Q</a> 提取码：ofpq<br>Vray各版本软下载链接: [有效] <a href="https://pan.baidu.com/s/1ctHPs6" target="_blank" rel="noopener">https://pan.baidu.com/s/1ctHPs6</a> 密码: 4ufa<br>CAD各版本软件下载链接: [有效] <a href="http://pan.baidu.com/s/1eRBAuYI" target="_blank" rel="noopener">http://pan.baidu.com/s/1eRBAuYI</a> 密码: pbjk<br>PS各版本软件下载链接: [有效] <a href="http://pan.baidu.com/s/1nuUYNNz" target="_blank" rel="noopener">http://pan.baidu.com/s/1nuUYNNz</a> 密码: chxi<br>CDR各版本软件下载链接: [有效] <a href="http://pan.baidu.com/s/1qXSkWKs" target="_blank" rel="noopener">http://pan.baidu.com/s/1qXSkWKs</a> 密码: cxv8<br>AI各版本软件下载链接: [有效] <a href="https://pan.baidu.com/s/1gfOFISz" target="_blank" rel="noopener">https://pan.baidu.com/s/1gfOFISz</a> 密码: 2gnn<br>office各版本软件下载链接: [有效] <a href="http://pan.baidu.com/s/1jHND2Sm" target="_blank" rel="noopener">http://pan.baidu.com/s/1jHND2Sm</a> 密码: 37hw</p>
+<h2 id="视频地址"><a href="#视频地址" class="headerlink" title="视频地址"></a>视频地址</h2><p>3DMAX灯光教程全套视频：<a href="https://www.bilibili.com/video/av27889940/?spm_id_from=333.788.b_636f6d6d656e74.54" target="_blank" rel="noopener">https://www.bilibili.com/video/av27889940/?spm_id_from=333.788.b_636f6d6d656e74.54</a><br>3DMAX材质教程全套视频：<a href="https://www.bilibili.com/video/av27252253/" target="_blank" rel="noopener">https://www.bilibili.com/video/av27252253/</a><br>3Dmax基础教程全套视频：<a href="https://www.bilibili.com/video/av26994483/" target="_blank" rel="noopener">https://www.bilibili.com/video/av26994483/</a><br>3DMAX建模教程全套视频：<a href="https://www.bilibili.com/video/av26368250/" target="_blank" rel="noopener">https://www.bilibili.com/video/av26368250/</a><br>3DMAX灯光渲染全套教程：<a href="https://www.bilibili.com/video/av26287976/" target="_blank" rel="noopener">https://www.bilibili.com/video/av26287976/</a><br>3dmax别墅模型建模视频：<a href="https://www.bilibili.com/video/av26017246/" target="_blank" rel="noopener">https://www.bilibili.com/video/av26017246/</a><br>3dmax家具建模详细教程：<a href="https://www.bilibili.com/video/av29328398/" target="_blank" rel="noopener">https://www.bilibili.com/video/av29328398/</a><br>3dmax灯光渲染详细教程：<a href="https://www.bilibili.com/video/av29357444/" target="_blank" rel="noopener">https://www.bilibili.com/video/av29357444/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/06/09/game/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -834,310 +1174,10 @@ bash-4.4# clang main.c
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/27/filltriangle/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/27/filltriangle/" class="post-title-link" itemprop="url">填充三角形</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-27 16:30:21" itemprop="dateCreated datePublished" datetime="2019-05-27T16:30:21+08:00">2019-05-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="填充三角形"><a href="#填充三角形" class="headerlink" title="填充三角形"></a>填充三角形</h1><h2 id="线性插值"><a href="#线性插值" class="headerlink" title="线性插值"></a>线性插值</h2><p>来复习一下画线,我们知道画线的时候我们做的实际上是这样的事情：对于要画的线AB，在满足我们设定的条件（斜率 ≤ 1, A &lt; B）之后，因为我们要画的是整数的像素点，对于x每增加1，我们算出对应的y，然后来画点（x，y），这样重复直到x增加到B点：</p>
-<img src="/2019/05/27/filltriangle/Bresenham.png">
-<p>对于 AB 上的任意一点 P 满足：</p>
-<script type="math/tex; mode=display">
-P = A + t(B - A), 0 \le t \le 1</script><p>也可以写成：</p>
-<script type="math/tex; mode=display">
-P = (1 - t)A + tB , 0 \le t \le 1</script><p>这个公式是著名的线性插值，实际上也是我们画线的基础。因为在画线部分核心代码长这样：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> x=x0; x&lt;=x1; x++) &#123;</span><br><span class="line">  <span class="keyword">float</span> t = (x-x0)/(<span class="keyword">float</span>)(x1-x0);</span><br><span class="line">  <span class="keyword">int</span> y = y0 + (y1 - y0)*t;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对于P点，我们根据增加后的x算出t值，然后算出y，得到应该画的点。</p>
-<p>其实在画框架的时候我们已经画过三角形了，就画三条线就OK。现在我们要做的是来填充三角形。</p>
-<h2 id="扫描法"><a href="#扫描法" class="headerlink" title="扫描法"></a>扫描法</h2><p>若要填充一个三角形，最简单的能想到的办法是对于三角形的每一个y，我们找到对应的左侧和右侧，x_left和x_right，我们画上x_left到x_right的线，那么从三角形最上面的点按y增加扫到最下面的点既可。</p>
-<p>为了简单起见，我们先把三角形拆成上下两部分：</p>
-<img src="/2019/05/27/filltriangle/upper_down_triangle.png">
-<p>那么对于一个特定的y，我们想要找到它的左边和右边 A B 两点，思路是这样：</p>
-<ul>
-<li>首先排序，保证 t0 ≤ t1 ≤ t2</li>
-<li>整个三角形的高度必为 t2.y - t0.y</li>
-<li>那么对于上半部分，y每增加1（注意有可能t0 == t1),我们用插值法算出对应的两点A和B</li>
-</ul>
-<p>这样就能算出对应的 A 和 B</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t0.y; y&lt;=t1.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height = t1.y-t0.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t0.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t0 + (t1-t0)*beta; </span><br><span class="line">        image.<span class="built_in">set</span>(A.x, y, red); </span><br><span class="line">        image.<span class="built_in">set</span>(B.x, y, green); </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/2019/05/27/filltriangle/triangle_left_right.png">
-<p>那么有了 A 和 B 之后，我们在AB之间调用我们的画线函数，再用同样的方法给下半部分填满，问题既解决。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t0.y; y&lt;=t1.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height = t1.y-t0.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t0.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t0 + (t1-t0)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, y, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t1.y; y&lt;=t2.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height =  t2.y-t1.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t1.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t1 + (t2-t1)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, y, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样三角形填充就解决。代码里有很多重复的部分，然后这里决定让代码短一点，代价是读起来没那么清楚了：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (t0.y==t1.y &amp;&amp; t0.y==t2.y) <span class="keyword">return</span>; <span class="comment">// I dont care about degenerate triangles </span></span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;total_height; i++) &#123; </span><br><span class="line">        <span class="keyword">bool</span> second_half = i&gt;t1.y-t0.y || t1.y==t0.y; </span><br><span class="line">        <span class="keyword">int</span> segment_height = second_half ? t2.y-t1.y : t1.y-t0.y; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)i/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(i-(second_half ? t1.y-t0.y : <span class="number">0</span>))/segment_height; <span class="comment">// be careful: with above conditions no division by zero here </span></span><br><span class="line">        Vec2i A =               t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = second_half ? t1 + (t2-t1)*beta : t0 + (t1-t0)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, t0.y+i, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="wavefront-obj"><a href="#wavefront-obj" class="headerlink" title="wavefront obj"></a>wavefront obj</h2><p>上一章我们画了框架，这下我们来填上三角形：</p>
-<img src="/2019/05/27/filltriangle/filledframe.png">
-<p>好吧，并不是很动人=。=之所以不动人是因为光影光影，我们只有颜色，没有考虑光，</p>
-<p><a href="https://github.com/KrisYu/tinyrender/tree/master/code/03_filledtriangle" target="_blank" rel="noopener">代码</a></p>
-<h2 id="重心坐标法"><a href="#重心坐标法" class="headerlink" title="重心坐标法"></a>重心坐标法</h2><p>除了上面提到的扫描法之外，另外一个可以想到的办法是，因为我们终究是画到二维平面上的像素，一个一个的点，那么对于我们要画的区域内的每一个点，我们是否可以检测看它是否在三角形之内，如果是的话，画它，否则不理之。这样的思路是可行的，对于三角形内及其边上的任意一点，我们都可以用重心坐标系来表示：</p>
-<script type="math/tex; mode=display">
-P = (1 - u - v)A + uB + vC, 0 \le u,v \le 1</script><p>这个长得也很像线性插值。</p>
-<p>运算:</p>
-<script type="math/tex; mode=display">
-P = A + u\overrightarrow{AB}  + v\overrightarrow{AC}</script><p>继续：</p>
-<script type="math/tex; mode=display">
-u\overrightarrow{AB}  + v\overrightarrow{AC} + \overrightarrow{PA} = 0</script><p>PA是AB和AC的线性组合。</p>
-<p>拆一拆：</p>
-<script type="math/tex; mode=display">
-u\overrightarrow{AB}_x  + v\overrightarrow{AC}_x + \overrightarrow{PA}_x = 0</script><script type="math/tex; mode=display">
-u\overrightarrow{AB}_y  + v\overrightarrow{AC}_y + \overrightarrow{PA}_y = 0</script><p>实际上我们都可以看做是我们在寻找向量 $(u, v, 1)$ 同时垂直于向量 $(\overrightarrow{AB}_x, \overrightarrow{AC}_x,\overrightarrow{PA}_x)$ 和向量 $(\overrightarrow{AB}_y, \overrightarrow{AC}_y,\overrightarrow{PA}_y)$。 这就是叉乘。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xvector = (B_x - A_x, C_x - A_x, A_x - P_x)</span><br><span class="line">yvector = (B_y - A_y, C_y - A_y, A_y - P_y)</span><br><span class="line">u = xvector x yvector</span><br><span class="line"></span><br><span class="line"># 如果 u 的 z 分量不等于1则说明P点不在三角形内</span><br></pre></td></tr></table></figure>
-<p>因为我们的计算有浮点数，可能u的z分量不会一定等于1,令 u 的三个分量是 (a, b, c),我们代入原式子：</p>
-<script type="math/tex; mode=display">
-a\overrightarrow{AB}  + b\overrightarrow{AC} + c\overrightarrow{PA} = 0</script><script type="math/tex; mode=display">
-P = (1 - a/c - b/c)A +  a/cB + b/cC, c \ne 0</script><p>代码我们这样写：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Vec3f <span class="title">barycentric</span><span class="params">(Vec2f A, Vec2f B, Vec2f C, Vec2f P)</span> </span>&#123;</span><br><span class="line">    Vec3f s[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">2</span>; i--; ) &#123;</span><br><span class="line">        s[i][<span class="number">0</span>] = C[i]-A[i];</span><br><span class="line">        s[i][<span class="number">1</span>] = B[i]-A[i];</span><br><span class="line">        s[i][<span class="number">2</span>] = A[i]-P[i];</span><br><span class="line">    &#125;</span><br><span class="line">    Vec3f u = cross(s[<span class="number">0</span>], s[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">abs</span>(u[<span class="number">2</span>])&gt;<span class="number">1e-2</span>) <span class="comment">// dont forget that u[2] is integer. If it is zero then triangle ABC is degenerate</span></span><br><span class="line">        <span class="keyword">return</span> Vec3f(<span class="number">1.f</span>-(u.x+u.y)/u.z, u.y/u.z, u.x/u.z);</span><br><span class="line">    <span class="keyword">return</span> Vec3f(<span class="number">-1</span>,<span class="number">1</span>,<span class="number">1</span>); <span class="comment">// in this case generate negative coordinates, it will be thrown away by the rasterizator</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>我们当然也不用把平面区域的每个点代入P去做检查，我们只需要找到三角形的 bounding_box,然后看其中的每一个整数点，如果在其中，那就画之。</p>
-<p>用同样的方法来给模型填色，效果一样。</p>
-<p><a href="https://github.com/KrisYu/tinyrender/tree/master/code/04_barycentricfilled" target="_blank" rel="noopener">代码</a></p>
-<p>效果跟之前依旧一致，我们给每个三角形随机填上色：</p>
-<img src="/2019/05/27/filltriangle/filledrandom.png">
-<p>随机填色这个我们看起来倒是有点cool.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/27/python/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/27/python/" class="post-title-link" itemprop="url">Python</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-27 14:39:42" itemprop="dateCreated datePublished" datetime="2019-05-27T14:39:42+08:00">2019-05-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="python3-怎么安装-PIL"><a href="#python3-怎么安装-PIL" class="headerlink" title="python3 怎么安装 PIL"></a>python3 怎么安装 PIL</h1><p>关于Pillow与PIL</p>
-<p>PIL(Python Imaging Library)是Python一个强大方便的图像处理库，名气也比较大。不过只支持到Python 2.7。</p>
-<p>PIL官方网站：<a href="http://www.pythonware.com/products/pil/" target="_blank" rel="noopener">http://www.pythonware.com/products/pil/</a></p>
-<p>Pillow是PIL的一个派生分支，但如今已经发展成为比PIL本身更具活力的图像处理库。目前最新版本是3.0.0。</p>
-<p>Pillow的Github主页：<a href="https://github.com/python-pillow/Pillow" target="_blank" rel="noopener">https://github.com/python-pillow/Pillow</a><br>Pillow的文档(对应版本v3.0.0)：<a href="https://pillow.readthedocs.org/en/latest/handbook/index.html" target="_blank" rel="noopener">https://pillow.readthedocs.org/en/latest/handbook/index.html</a><br>Pillow的文档中文翻译(对应版本v2.4.0)：<a href="http://pillow-cn.readthedocs.org/en/latest/" target="_blank" rel="noopener">http://pillow-cn.readthedocs.org/en/latest/</a></p>
-<p>Python 3.x 安装Pillow</p>
-<p>给Python安装Pillow非常简单，使用pip或easy_install只要一行代码即可。</p>
-<p>在命令行使用PIP安装：<br>pip install Pillow</p>
-<p>或在命令行使用easy_install安装：<br>easy_install Pillow</p>
-<p>安装完成后，使用from PIL import Image就引用使用库了。比如：<br>from PIL import Image<br>im = Image.open(“bride.jpg”)<br>im.rotate(45).show()</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/27/DrawLine/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/27/DrawLine/" class="post-title-link" itemprop="url">DrawLine</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-27 14:27:34" itemprop="dateCreated datePublished" datetime="2019-05-27T14:27:34+08:00">2019-05-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计算机图形学/" itemprop="url" rel="index"><span itemprop="name">计算机图形学</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="画线"><a href="#画线" class="headerlink" title="画线"></a>画线</h1><p>我们先从屏幕画线开始。</p>
-<p>首先，<code>y = ax + b</code> 这个并不能画出所有的线，并且有两个问题：</p>
-<ul>
-<li>如果a很大，那么x由 $x_0$ 增加到 $x_0+1$ 那么y增加a，如果 a 很大，那么会有分裂的样式</li>
-</ul>
-<img src="/2019/05/27/DrawLine/line_01.png">
-<ul>
-<li>无法画出平行于 y 的竖线</li>
-</ul>
-<img src="/2019/05/27/DrawLine/line_02.png">
-<p>针对这种状况，我们采用的画图方式是利用如下的代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Interpolate (i0, d0, i1, d1)&#123;</span><br><span class="line">    if i0 == i1 &#123;</span><br><span class="line">        return [d0] </span><br><span class="line">    &#125;</span><br><span class="line">    values = []</span><br><span class="line">    a = (d1 - d0) / (i1 - i0)</span><br><span class="line">    d = d0</span><br><span class="line">    for i = i0 to i1&#123;</span><br><span class="line">        values.append(d)</span><br><span class="line">        d = d + a</span><br><span class="line">    &#125; </span><br><span class="line">    return values</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>首先是我们利用的是要么 <code>y = ax + b</code> , 要么 <code>x = ay + b</code>, 意思是要么我们让 y 随着 x 变化，要么让 x 随着 y 变化. 在上述的伪码中，我们的 d 是 dependent value， i 是 independent value，我们让 d 随着 i 变化。</p>
-<p>其次是我们分情况，看线是更加水平或者是更加竖直，如果线更加水平，那么 y 随着x变化，如果更竖直，那么x 随着y变化，这样来作图。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">DrawLine(P0, P1, color) &#123;</span><br><span class="line">    if abs(x1 - x0) &gt; abs(y1 -y0)&#123;</span><br><span class="line">        # Line is horizontal-ish</span><br><span class="line">        # Make sure x0 &lt; x1</span><br><span class="line">        if x0 &gt; x1 &#123;</span><br><span class="line">            swap(P0, P1)</span><br><span class="line">        &#125;</span><br><span class="line">        ys = Interpolate(x0, y0, x1, y1)</span><br><span class="line">        for x = x0 to x1&#123;</span><br><span class="line">            canvas.PutPixel(x, ys[x-x0], color)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        # Line is vertical-ish</span><br><span class="line">        # Make sure y0 &lt; y1</span><br><span class="line">        if y0 &gt; y1 &#123;</span><br><span class="line">            swap(P0,P1)</span><br><span class="line">        &#125;</span><br><span class="line">        xs = Interpolate(y0, x0, y1, x1)</span><br><span class="line">        for y = y0 to y1&#123;</span><br><span class="line">            canvas.PutPixel(xs[y-y0], y, color)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="画出来"><a href="#画出来" class="headerlink" title="画出来"></a>画出来</h2><img src="/2019/05/27/DrawLine/raster01.png">
-<p><a href="https://github.com/zentia/computer-graphics-from-scratch-Notes/blob/master/raster01.py" target="_blank" rel="noopener">代码</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1203,7 +1243,7 @@ P = (1 - a/c - b/c)A +  a/cB + b/cC, c \ne 0</script><p>代码我们这样写：
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1214,7 +1254,7 @@ P = (1 - a/c - b/c)A +  a/cB + b/cC, c \ne 0</script><p>代码我们这样写：
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

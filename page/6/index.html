@@ -145,6 +145,306 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/27/filltriangle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/27/filltriangle/" class="post-title-link" itemprop="url">填充三角形</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-27 16:30:21" itemprop="dateCreated datePublished" datetime="2019-05-27T16:30:21+08:00">2019-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index"><span itemprop="name">OpenGL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="填充三角形"><a href="#填充三角形" class="headerlink" title="填充三角形"></a>填充三角形</h1><h2 id="线性插值"><a href="#线性插值" class="headerlink" title="线性插值"></a>线性插值</h2><p>来复习一下画线,我们知道画线的时候我们做的实际上是这样的事情：对于要画的线AB，在满足我们设定的条件（斜率 ≤ 1, A &lt; B）之后，因为我们要画的是整数的像素点，对于x每增加1，我们算出对应的y，然后来画点（x，y），这样重复直到x增加到B点：</p>
+<img src="/2019/05/27/filltriangle/Bresenham.png">
+<p>对于 AB 上的任意一点 P 满足：</p>
+<script type="math/tex; mode=display">
+P = A + t(B - A), 0 \le t \le 1</script><p>也可以写成：</p>
+<script type="math/tex; mode=display">
+P = (1 - t)A + tB , 0 \le t \le 1</script><p>这个公式是著名的线性插值，实际上也是我们画线的基础。因为在画线部分核心代码长这样：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> x=x0; x&lt;=x1; x++) &#123;</span><br><span class="line">  <span class="keyword">float</span> t = (x-x0)/(<span class="keyword">float</span>)(x1-x0);</span><br><span class="line">  <span class="keyword">int</span> y = y0 + (y1 - y0)*t;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于P点，我们根据增加后的x算出t值，然后算出y，得到应该画的点。</p>
+<p>其实在画框架的时候我们已经画过三角形了，就画三条线就OK。现在我们要做的是来填充三角形。</p>
+<h2 id="扫描法"><a href="#扫描法" class="headerlink" title="扫描法"></a>扫描法</h2><p>若要填充一个三角形，最简单的能想到的办法是对于三角形的每一个y，我们找到对应的左侧和右侧，x_left和x_right，我们画上x_left到x_right的线，那么从三角形最上面的点按y增加扫到最下面的点既可。</p>
+<p>为了简单起见，我们先把三角形拆成上下两部分：</p>
+<img src="/2019/05/27/filltriangle/upper_down_triangle.png">
+<p>那么对于一个特定的y，我们想要找到它的左边和右边 A B 两点，思路是这样：</p>
+<ul>
+<li>首先排序，保证 t0 ≤ t1 ≤ t2</li>
+<li>整个三角形的高度必为 t2.y - t0.y</li>
+<li>那么对于上半部分，y每增加1（注意有可能t0 == t1),我们用插值法算出对应的两点A和B</li>
+</ul>
+<p>这样就能算出对应的 A 和 B</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t0.y; y&lt;=t1.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height = t1.y-t0.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t0.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t0 + (t1-t0)*beta; </span><br><span class="line">        image.<span class="built_in">set</span>(A.x, y, red); </span><br><span class="line">        image.<span class="built_in">set</span>(B.x, y, green); </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/2019/05/27/filltriangle/triangle_left_right.png">
+<p>那么有了 A 和 B 之后，我们在AB之间调用我们的画线函数，再用同样的方法给下半部分填满，问题既解决。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t0.y; y&lt;=t1.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height = t1.y-t0.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t0.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t0 + (t1-t0)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, y, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y=t1.y; y&lt;=t2.y; y++) &#123; </span><br><span class="line">        <span class="keyword">int</span> segment_height =  t2.y-t1.y+<span class="number">1</span>; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)(y-t0.y)/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(y-t1.y)/segment_height; <span class="comment">// be careful with divisions by zero </span></span><br><span class="line">        Vec2i A = t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = t1 + (t2-t1)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, y, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样三角形填充就解决。代码里有很多重复的部分，然后这里决定让代码短一点，代价是读起来没那么清楚了：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">triangle</span><span class="params">(Vec2i t0, Vec2i t1, Vec2i t2, TGAImage &amp;image, TGAColor color)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (t0.y==t1.y &amp;&amp; t0.y==t2.y) <span class="keyword">return</span>; <span class="comment">// I dont care about degenerate triangles </span></span><br><span class="line">    <span class="comment">// sort the vertices, t0, t1, t2 lower−to−upper (bubblesort yay!) </span></span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t1.y) <span class="built_in">std</span>::swap(t0, t1); </span><br><span class="line">    <span class="keyword">if</span> (t0.y&gt;t2.y) <span class="built_in">std</span>::swap(t0, t2); </span><br><span class="line">    <span class="keyword">if</span> (t1.y&gt;t2.y) <span class="built_in">std</span>::swap(t1, t2); </span><br><span class="line">    <span class="keyword">int</span> total_height = t2.y-t0.y; </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;total_height; i++) &#123; </span><br><span class="line">        <span class="keyword">bool</span> second_half = i&gt;t1.y-t0.y || t1.y==t0.y; </span><br><span class="line">        <span class="keyword">int</span> segment_height = second_half ? t2.y-t1.y : t1.y-t0.y; </span><br><span class="line">        <span class="keyword">float</span> alpha = (<span class="keyword">float</span>)i/total_height; </span><br><span class="line">        <span class="keyword">float</span> beta  = (<span class="keyword">float</span>)(i-(second_half ? t1.y-t0.y : <span class="number">0</span>))/segment_height; <span class="comment">// be careful: with above conditions no division by zero here </span></span><br><span class="line">        Vec2i A =               t0 + (t2-t0)*alpha; </span><br><span class="line">        Vec2i B = second_half ? t1 + (t2-t1)*beta : t0 + (t1-t0)*beta; </span><br><span class="line">        <span class="keyword">if</span> (A.x&gt;B.x) <span class="built_in">std</span>::swap(A, B); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j=A.x; j&lt;=B.x; j++) &#123; </span><br><span class="line">            image.<span class="built_in">set</span>(j, t0.y+i, color); <span class="comment">// attention, due to int casts t0.y+i != A.y </span></span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="wavefront-obj"><a href="#wavefront-obj" class="headerlink" title="wavefront obj"></a>wavefront obj</h2><p>上一章我们画了框架，这下我们来填上三角形：</p>
+<img src="/2019/05/27/filltriangle/filledframe.png">
+<p>好吧，并不是很动人=。=之所以不动人是因为光影光影，我们只有颜色，没有考虑光，</p>
+<p><a href="https://github.com/KrisYu/tinyrender/tree/master/code/03_filledtriangle" target="_blank" rel="noopener">代码</a></p>
+<h2 id="重心坐标法"><a href="#重心坐标法" class="headerlink" title="重心坐标法"></a>重心坐标法</h2><p>除了上面提到的扫描法之外，另外一个可以想到的办法是，因为我们终究是画到二维平面上的像素，一个一个的点，那么对于我们要画的区域内的每一个点，我们是否可以检测看它是否在三角形之内，如果是的话，画它，否则不理之。这样的思路是可行的，对于三角形内及其边上的任意一点，我们都可以用重心坐标系来表示：</p>
+<script type="math/tex; mode=display">
+P = (1 - u - v)A + uB + vC, 0 \le u,v \le 1</script><p>这个长得也很像线性插值。</p>
+<p>运算:</p>
+<script type="math/tex; mode=display">
+P = A + u\overrightarrow{AB}  + v\overrightarrow{AC}</script><p>继续：</p>
+<script type="math/tex; mode=display">
+u\overrightarrow{AB}  + v\overrightarrow{AC} + \overrightarrow{PA} = 0</script><p>PA是AB和AC的线性组合。</p>
+<p>拆一拆：</p>
+<script type="math/tex; mode=display">
+u\overrightarrow{AB}_x  + v\overrightarrow{AC}_x + \overrightarrow{PA}_x = 0</script><script type="math/tex; mode=display">
+u\overrightarrow{AB}_y  + v\overrightarrow{AC}_y + \overrightarrow{PA}_y = 0</script><p>实际上我们都可以看做是我们在寻找向量 $(u, v, 1)$ 同时垂直于向量 $(\overrightarrow{AB}_x, \overrightarrow{AC}_x,\overrightarrow{PA}_x)$ 和向量 $(\overrightarrow{AB}_y, \overrightarrow{AC}_y,\overrightarrow{PA}_y)$。 这就是叉乘。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">xvector = (B_x - A_x, C_x - A_x, A_x - P_x)</span><br><span class="line">yvector = (B_y - A_y, C_y - A_y, A_y - P_y)</span><br><span class="line">u = xvector x yvector</span><br><span class="line"></span><br><span class="line"># 如果 u 的 z 分量不等于1则说明P点不在三角形内</span><br></pre></td></tr></table></figure>
+<p>因为我们的计算有浮点数，可能u的z分量不会一定等于1,令 u 的三个分量是 (a, b, c),我们代入原式子：</p>
+<script type="math/tex; mode=display">
+a\overrightarrow{AB}  + b\overrightarrow{AC} + c\overrightarrow{PA} = 0</script><script type="math/tex; mode=display">
+P = (1 - a/c - b/c)A +  a/cB + b/cC, c \ne 0</script><p>代码我们这样写：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Vec3f <span class="title">barycentric</span><span class="params">(Vec2f A, Vec2f B, Vec2f C, Vec2f P)</span> </span>&#123;</span><br><span class="line">    Vec3f s[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">2</span>; i--; ) &#123;</span><br><span class="line">        s[i][<span class="number">0</span>] = C[i]-A[i];</span><br><span class="line">        s[i][<span class="number">1</span>] = B[i]-A[i];</span><br><span class="line">        s[i][<span class="number">2</span>] = A[i]-P[i];</span><br><span class="line">    &#125;</span><br><span class="line">    Vec3f u = cross(s[<span class="number">0</span>], s[<span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">abs</span>(u[<span class="number">2</span>])&gt;<span class="number">1e-2</span>) <span class="comment">// dont forget that u[2] is integer. If it is zero then triangle ABC is degenerate</span></span><br><span class="line">        <span class="keyword">return</span> Vec3f(<span class="number">1.f</span>-(u.x+u.y)/u.z, u.y/u.z, u.x/u.z);</span><br><span class="line">    <span class="keyword">return</span> Vec3f(<span class="number">-1</span>,<span class="number">1</span>,<span class="number">1</span>); <span class="comment">// in this case generate negative coordinates, it will be thrown away by the rasterizator</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们当然也不用把平面区域的每个点代入P去做检查，我们只需要找到三角形的 bounding_box,然后看其中的每一个整数点，如果在其中，那就画之。</p>
+<p>用同样的方法来给模型填色，效果一样。</p>
+<p><a href="https://github.com/KrisYu/tinyrender/tree/master/code/04_barycentricfilled" target="_blank" rel="noopener">代码</a></p>
+<p>效果跟之前依旧一致，我们给每个三角形随机填上色：</p>
+<img src="/2019/05/27/filltriangle/filledrandom.png">
+<p>随机填色这个我们看起来倒是有点cool.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/27/python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/27/python/" class="post-title-link" itemprop="url">Python</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-27 14:39:42" itemprop="dateCreated datePublished" datetime="2019-05-27T14:39:42+08:00">2019-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="python3-怎么安装-PIL"><a href="#python3-怎么安装-PIL" class="headerlink" title="python3 怎么安装 PIL"></a>python3 怎么安装 PIL</h1><p>关于Pillow与PIL</p>
+<p>PIL(Python Imaging Library)是Python一个强大方便的图像处理库，名气也比较大。不过只支持到Python 2.7。</p>
+<p>PIL官方网站：<a href="http://www.pythonware.com/products/pil/" target="_blank" rel="noopener">http://www.pythonware.com/products/pil/</a></p>
+<p>Pillow是PIL的一个派生分支，但如今已经发展成为比PIL本身更具活力的图像处理库。目前最新版本是3.0.0。</p>
+<p>Pillow的Github主页：<a href="https://github.com/python-pillow/Pillow" target="_blank" rel="noopener">https://github.com/python-pillow/Pillow</a><br>Pillow的文档(对应版本v3.0.0)：<a href="https://pillow.readthedocs.org/en/latest/handbook/index.html" target="_blank" rel="noopener">https://pillow.readthedocs.org/en/latest/handbook/index.html</a><br>Pillow的文档中文翻译(对应版本v2.4.0)：<a href="http://pillow-cn.readthedocs.org/en/latest/" target="_blank" rel="noopener">http://pillow-cn.readthedocs.org/en/latest/</a></p>
+<p>Python 3.x 安装Pillow</p>
+<p>给Python安装Pillow非常简单，使用pip或easy_install只要一行代码即可。</p>
+<p>在命令行使用PIP安装：<br>pip install Pillow</p>
+<p>或在命令行使用easy_install安装：<br>easy_install Pillow</p>
+<p>安装完成后，使用from PIL import Image就引用使用库了。比如：<br>from PIL import Image<br>im = Image.open(“bride.jpg”)<br>im.rotate(45).show()</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/27/DrawLine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/27/DrawLine/" class="post-title-link" itemprop="url">DrawLine</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-27 14:27:34" itemprop="dateCreated datePublished" datetime="2019-05-27T14:27:34+08:00">2019-05-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机图形学/" itemprop="url" rel="index"><span itemprop="name">计算机图形学</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="画线"><a href="#画线" class="headerlink" title="画线"></a>画线</h1><p>我们先从屏幕画线开始。</p>
+<p>首先，<code>y = ax + b</code> 这个并不能画出所有的线，并且有两个问题：</p>
+<ul>
+<li>如果a很大，那么x由 $x_0$ 增加到 $x_0+1$ 那么y增加a，如果 a 很大，那么会有分裂的样式</li>
+</ul>
+<img src="/2019/05/27/DrawLine/line_01.png">
+<ul>
+<li>无法画出平行于 y 的竖线</li>
+</ul>
+<img src="/2019/05/27/DrawLine/line_02.png">
+<p>针对这种状况，我们采用的画图方式是利用如下的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Interpolate (i0, d0, i1, d1)&#123;</span><br><span class="line">    if i0 == i1 &#123;</span><br><span class="line">        return [d0] </span><br><span class="line">    &#125;</span><br><span class="line">    values = []</span><br><span class="line">    a = (d1 - d0) / (i1 - i0)</span><br><span class="line">    d = d0</span><br><span class="line">    for i = i0 to i1&#123;</span><br><span class="line">        values.append(d)</span><br><span class="line">        d = d + a</span><br><span class="line">    &#125; </span><br><span class="line">    return values</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先是我们利用的是要么 <code>y = ax + b</code> , 要么 <code>x = ay + b</code>, 意思是要么我们让 y 随着 x 变化，要么让 x 随着 y 变化. 在上述的伪码中，我们的 d 是 dependent value， i 是 independent value，我们让 d 随着 i 变化。</p>
+<p>其次是我们分情况，看线是更加水平或者是更加竖直，如果线更加水平，那么 y 随着x变化，如果更竖直，那么x 随着y变化，这样来作图。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">DrawLine(P0, P1, color) &#123;</span><br><span class="line">    if abs(x1 - x0) &gt; abs(y1 -y0)&#123;</span><br><span class="line">        # Line is horizontal-ish</span><br><span class="line">        # Make sure x0 &lt; x1</span><br><span class="line">        if x0 &gt; x1 &#123;</span><br><span class="line">            swap(P0, P1)</span><br><span class="line">        &#125;</span><br><span class="line">        ys = Interpolate(x0, y0, x1, y1)</span><br><span class="line">        for x = x0 to x1&#123;</span><br><span class="line">            canvas.PutPixel(x, ys[x-x0], color)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        # Line is vertical-ish</span><br><span class="line">        # Make sure y0 &lt; y1</span><br><span class="line">        if y0 &gt; y1 &#123;</span><br><span class="line">            swap(P0,P1)</span><br><span class="line">        &#125;</span><br><span class="line">        xs = Interpolate(y0, x0, y1, x1)</span><br><span class="line">        for y = y0 to y1&#123;</span><br><span class="line">            canvas.PutPixel(xs[y-y0], y, color)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="画出来"><a href="#画出来" class="headerlink" title="画出来"></a>画出来</h2><img src="/2019/05/27/DrawLine/raster01.png">
+<p><a href="https://github.com/zentia/computer-graphics-from-scratch-Notes/blob/master/raster01.py" target="_blank" rel="noopener">代码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/27/RayTracying/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1395,235 +1695,10 @@ unop ::= `-´ | not | `#´
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/22/spritepacker/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/22/spritepacker/" class="post-title-link" itemprop="url">SpritePacker</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-22 15:56:42" itemprop="dateCreated datePublished" datetime="2019-05-22T15:56:42+08:00">2019-05-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/UGUI/" itemprop="url" rel="index"><span itemprop="name">UGUI</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Version:2018.3</p>
-<h1 id="NGUI图集和UGUI图集的区别"><a href="#NGUI图集和UGUI图集的区别" class="headerlink" title="NGUI图集和UGUI图集的区别"></a>NGUI图集和UGUI图集的区别</h1><p>NGUI是必须先打出图集然后才能开始做界面，这一点很烦，因为始终都要考虑你的UI图集。比如图集会不会超过1024，图集该如何规划等。而UGUI的原理则是，让开发者不要去关心自己的图集。做界面的时候只用小图，而最终打包的时候Unity才会把你的小图合并在一张大的图集里面，然而这一切都是自动完成的，开发者不需要去care它。</p>
-<h1 id="启用"><a href="#启用" class="headerlink" title="启用"></a>启用</h1><p>在Edit-&gt;Project Settings-&gt;Editor-&gt;Sprite Packer-&gt;Mode中进行设置</p>
-<img src="/2019/05/22/spritepacker/1.jpg">
-<ol>
-<li>Disabled: 不启用</li>
-<li>Enabled For Builds(Legacy Sprite Packer):打包的时候使用，过时的</li>
-<li>Always Enabled(Legacy Sprite Packer):总是开启，过时了</li>
-<li>Enabled For Builds: 打包的时候使用</li>
-<li>Always Enabled: 总是使用，推荐方式<br>开始的时候我们需要清楚看到现在的有几个Draw Call，从而才能优化小图。在最终打包的时候Unity会自动构建大的图集，将同一图集的所有图片的packing tag设置成一个名字就可以看到这个图集占几个Draw Call了。</li>
-</ol>
-<img src="/2019/05/22/spritepacker/2.jpg">
-<p>图集的预览仅仅是让你看看你的图集大概长什么样子。图集保存在Libary/AtlasCache里面。<br>Window-&gt;2D-&gt;Sprite Packer<br><img src="/2019/05/22/spritepacker/3.jpg"><br>此时在Hierarchy试图中创建两个Image对象。如下图所示，我们发现此时Draw Calls变成了1。<br><img src="/2019/05/22/spritepacker/4.jpg"><br>注意你的图片不能放在Resources文件夹下面，Resources文件夹下的资源将不会被打入图集。此时在Hierarchy试图中创建两个Image对象。可以发现Draw Call已经被合并成1了。</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">MenuItem(<span class="meta-string">"Build AssetBundle"</span>)</span>]</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/22/assetstudio/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/22/assetstudio/" class="post-title-link" itemprop="url">AssetsStudio</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-22 14:55:14" itemprop="dateCreated datePublished" datetime="2019-05-22T14:55:14+08:00">2019-05-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>AssetsStudio url: <a href="https://github.com/Perfare/AssetStudio.git" target="_blank" rel="noopener">https://github.com/Perfare/AssetStudio.git</a><br>AssetsStudio Release url: <a href="https://ci.appveyor.com/project/Perfare/assetstudio/branch/master/artifacts" target="_blank" rel="noopener">https://ci.appveyor.com/project/Perfare/assetstudio/branch/master/artifacts</a><br>fbx url: <a href="https://github.com/arturoc/ofxFBX.git" target="_blank" rel="noopener">https://github.com/arturoc/ofxFBX.git</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/14/fiction-2-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/14/fiction-2-1/" class="post-title-link" itemprop="url">生死界</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-14 09:11:47" itemprop="dateCreated datePublished" datetime="2019-05-14T09:11:47+08:00">2019-05-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>当芩醒来的时候，发现周围的环境他已经不认识了，脑袋有点昏昏沉沉的，像是睡了好久。很奇怪，没有阳光，天空是黑色的，什么也看不见，但是周围的环境却看到一清二楚。<br>这时，从远处走来了一个男子，身穿黑色长袍，手里拿着一本不知道是书还是记事簿的东西，走过来对芩说，“走吧。”。<br>“去哪里？”，芩问道。<br>“自然是去你该去的地方。”，黑衣男子说道。<br>“哪里是我该去的地方呢？”，芩仍然问道。<br>“哟，你今天的话似乎有点多。”，黑衣男子调侃道。<br>“你怎么知道我以前的话不多？”，芩疑惑的问道。<br>“你不喜欢你之前的世界，所以话不多，我猜的，一个人不会对他不喜欢的东西还说那么多话，不是吗？”，黑衣男子笑道。<br>“之前的世界，所以说，我死了？那么这里是阴曹地府吗？”，芩仍然疑惑的问道。<br>“嗯，你死啦。但是这里不是阴曹地府，不过你待会去的地方算是阴曹地府吧，只不过我们称之为死界，你生活的地方是生界，所以现在这个地方是生死界，连接生界和死界的地方，而我是负责将你们送到死界的人，吧！”，黑衣男子娓娓道来。<br>“果然我还是死了，唉，算啦，本来也不打算抱活着的希望，而且没什么牵挂，死了好，死了好呀。”，芩心里想着，并露出了微笑。<br>“哈哈，你果然是不喜欢之前的世界，对吧，一般很少有人像你一样，来了这个地方还满带笑意的，他们都舍不得那个世界呀。”，黑衣男子感叹道。<br>“你说错了，人们总喜欢对新出生婴儿的家庭说恭喜恭喜，却对死去人的家庭说可惜可惜，这并不是说他们喜欢活着的世界，只是他们不知道死去的世界，所以选择了活着的世界，而我去哪里都一样，我都可以接受。”，芩淡淡的说道。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1689,7 +1764,7 @@ unop ::= `-´ | not | `#´
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1700,7 +1775,7 @@ unop ::= `-´ | not | `#´
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

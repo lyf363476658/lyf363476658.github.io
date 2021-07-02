@@ -145,6 +145,237 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/26/Unity-Stencil-Buffer-Stencil-Test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/26/Unity-Stencil-Buffer-Stencil-Test/" class="post-title-link" itemprop="url">Shader模板缓冲和模板测试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-26 17:33:58" itemprop="dateCreated datePublished" datetime="2018-04-26T17:33:58+08:00">2018-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在图形学种一个像素会有如下缓存：</p>
+<ul>
+<li>颜色缓存color buffer/pixel buffer : 存储该点即将显示地颜色，RGBA值</li>
+<li>深度缓存depth buffer/z buffer:存储该点地深度，z</li>
+<li>模板缓存stencil buffer： 通常用作限制渲染区域。更高级用法需结合深度缓冲，例如某像素地模板缓冲值会随着其是否通过深度缓冲测试而改变。</li>
+<li>累计缓存Accumulation Buffer:与颜色缓存类似，同样储存一个RGBA值。累计缓存是为合成多幅图像而设计地，累计缓存提供了一种在保持好地颜色分辨率下实现在场景中”多重曝光(multiple exposures”地方法。使用累计缓存可以产生许多图像效果来提高图像的真实性，其中包括：反走样，运动模糊，软阴影，深度域（景深）和卷积。要产生这些效果，必须将图像渲染多次，对场景位置（或所选的物体）进行微小的、渐增的改变，然后累计结果。</li>
+</ul>
+<p>stencil与颜色缓冲区和深度缓存区类似，模板缓存区可以为屏幕上的每个像素点保存一个无符号整数值（通常是个八位整数）。这个值的具体意义视程序的具体应用而定。在渲染的过程中，可以用这个值与一个预先设定的参考值相比较，根据比较的结果来决定是否更新相应的像素点的颜色值。这个比较的过程成为模板测试Stencil Test。模板测试发生在透明度测试(alpha test)之后。如果模板测试通过，则相应的像素点更新，否则不更新。图形渲染管线中，基于单个像素的测试操作的顺序如下图<br><img src="http://oxcvfpext.bkt.clouddn.com/Unity-Stencil-Buffer-Stencil-Test-1.jpg"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/26/Unity-Lerp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/26/Unity-Lerp/" class="post-title-link" itemprop="url">Unity Lerp</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-26 16:54:28" itemprop="dateCreated datePublished" datetime="2018-04-26T16:54:28+08:00">2018-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>有时，我们在做游戏时会发现有些跟随动作不够圆滑或者需要一个缓冲的效果，这时，一般会考虑到插值。（比如摄像机跟随主角）</p>
+<p>插值是数学上的一个概念，公式： from + (to - from) * t;<br>from是起始地位置，to是目标位置，按照数字t在from到to之间插值。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/21/CG-Input-Output-And-Semantic-Bind/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/04/21/CG-Input-Output-And-Semantic-Bind/" class="post-title-link" itemprop="url">CG-Input-Output-And-Semantic-Bind</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-04-21 19:26:35" itemprop="dateCreated datePublished" datetime="2018-04-21T19:26:35+08:00">2018-04-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>先复习一下GPU的工作流程，第三章从CPU运行原理和数据流程的角度阐述了顶点着色器程序和片段着色程序的输入输出，即，应用程序(宿主程序)将图元信息(顶点位置、法向量、纹理坐标等)传递给顶点着色程序；顶点着色程序基于图元信息进行坐标空间变换，运算得到的数据传递到片段着色程序中；片段着色程序还可以接受从应用程序中传递的纹理信息，将这些信息综合起来计算每个片段的颜色值，最后将这些颜色值输送到帧缓冲区(或颜色缓冲区)中。<br><img src="http://oxcvfpext.bkt.clouddn.com/CG-Input-Output-And-Semantic-Bind-1.jpg"><br>这一章中，我们将讲解Cg语言通过何种机制确定数据类型和传递形式。<br>三个问题：<br>1、从应用程序传递到GPU的数据，分为图元信息数据(在GPU处理的基本数据如顶点位置信息等)和其他的离散数据(在GPU运行流程中不会发生变化，如材质对光的反射、折射信息)，这两种输入数据如何区分？<br>2、从应用程序传递到GPU中的图元信息如何区分类型，即，顶点程序怎么知道一个数据是位置数据，而不是法线量数据？<br>3、顶点着色程序与片段着色程序之间的数据传递如何进行？<br>cg关键字不但用于指定输入图元的数据含义(是位置信息，还是法向量信息),本质也则对应着这些图元数据存放的硬件资源(寄存器或者纹理)，称之为语义词(Semantics),通常也根据其用法称之为绑定语义词(binging semantics)。</p>
+<p>除语义词外，Cg中还提供了三个关键字，int、out、inout，用于表示函数的输入参数的传递方式，称为输入/输出关键字，这组关键字可以和语义词合用表达硬件上不同的存储位置，即同一个语义词，使用in关键字修饰和out关键词修饰，表示的图形硬件上不同的寄存器。</p>
+<p>Cg语言还提供两个修饰符：uniform,用于指定变量的数据初始化方式；const关键字的含义与C/C++中相同，表示被修饰变量为常量变量。</p>
+<h3 id="uniform"><a href="#uniform" class="headerlink" title="uniform"></a>uniform</h3><p>Cg语言将输入输出数据流分为两类：</p>
+<ol>
+<li>Varying inputs,即数据流输入图元信息的各种组成要素。从应用程序输入到GPU的数据除了顶点位置数据，还有顶点的法向量数据，纹理坐标数据等。</li>
+<li>Uniform inputs,表示一些与三维渲染有关的离散信息数据，这些数据通常由应用程序传入，并通常不会随着图元信息的变化而变化，如材质对光的反射信息、运动矩阵等。Uniform修饰一个参数，表示该参数的值由外部应用程序初始化并传入。<br>使用Uniform修饰的变量，除了数据来源不同外，与其他变量是完全一样的。需要注意的一点是：uniform修辞的变量是从外部传入的，所以在Cg程序(顶点程序和片段程序)中通常所有uniform参数修辞函数形参，不容许声明一个uniform修辞的局部变量！</li>
+</ol>
+<p>Cg语言中参数传递方式同样分为”值传递”和”引用传递”，但指针机制并不被GPU硬件支持，所以Cg语言采用不同的语法修辞符来区别”值传递”和”引用传递”.这些修辞符分别为：</p>
+<ol>
+<li>in   :修辞一个形参只是用于输入，进入函数体时被初始化，且该形参值的改变不会影响实参值，这是典型的值传递方式。</li>
+<li>out  :修辞一个形参只是用于输出的，进入函数体时并没有被初始化，这种类型的形参一般是一个函数的运行结果；</li>
+<li>inout:修辞一个形参即用于输入也用于输出，这是典型的引用传递。<br>例如： void myFunction(float x); //等价于in float x，这种用法和C/C++完全一致<br>语义词(Semantic)与语义绑定(Binding semantics)</li>
+</ol>
+<p>语义词，表示输入图元的数据含义(是位置信息，还是法向量信息)，也表明这些图元数据存放的硬件资源(寄存器或者纹理缓存区)。顶点着色程序和片段着色程序中Varying inputs类型的输入，必须和一个语义词相绑定，这称之为绑定语义(binding semantics)。</p>
+<p>记住这一点：语义，是两个处理阶段(顶点程序、片段程序)之间的输入/输出数据和寄存器之间的桥梁，同时语义通常也表示数据的含义，如POSITION一般表示参数存放的数据是顶点位置。</p>
+<p>语义，只对两个处理阶段的输入/输出数据有意义，也就是说，语义只有在入口函数中才有效，在内部函数(一个阶段的内部处理函数，和下一个阶段没有数据传递关系)无效，被忽略。</p>
+<p>顶点着色程序必须声明一个输出变量，并绑定POSITION语义词，该变量中的数据将被用于且至被用于光栅化！</p>
+<p>为了保持顶点程序输出语义和片段程序输入语义的一致性，通常使用相同的struct类型数据作为两者之间的传递，这是一种非常方便的写法，推荐使用。</p>
+<p>注意：当使用struct结构中成员变量绑定语义时，需要主要到顶点着色程序中使用的POSITION语义词，是不会被片段程序所使用的。</p>
+<p>都要记住vertex program中的绑定语义(POSITION除外)的输出形参中的数据会传递到fragment program中绑定相同语义的输入形参中。</p>
+<p>片段着色器的输出语义词较少，通常是COLOR。这是因为片段着色程序运行完毕后，就基本到了GPU流水线的末端了。片段程序必须声明一个out向量(三元或四元),绑定语义词COLOR，这个值将被用作该片段的最终颜色值。</p>
+<h3 id="语义绑定方法"><a href="#语义绑定方法" class="headerlink" title="语义绑定方法"></a>语义绑定方法</h3><p>绑定语义放在函数的参数列表的参数声明后面中：</p>
+<pre><code>[const][int|out|inout]&lt;type&gt;&lt;identifier&gt;[:&lt;binding-semantic&gt;][=&lt;initializer&gt;]
+</code></pre><p>绑定语义可以放在结构体(struct)的成员变量后面：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct &lt;struct-tag&gt;</span><br><span class="line">&#123;</span><br><span class="line">    &lt;type&gt;&lt;identifier&gt; [:&lt;binding-semantic&gt;];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>绑定语义词可以放在函数声明的后面，其形式为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt; &lt;identifier&gt;(&lt;parameter-list&gt;)[:&lt;binding-semantic&gt;]</span><br><span class="line">&#123;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后一种语义绑定的方法是，将绑定语义词放在全局非静态变量的声明后面。其形式为：</p>
+<pre><code>&lt;type&gt; &lt;identifer&gt;[:&lt;binding-semantic&gt;][=&lt;initializer&gt;];
+</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/21/Unity-Mesh/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -748,393 +979,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/16/Unity-Manual/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/16/Unity-Manual/" class="post-title-link" itemprop="url">Unity Manual</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-16 19:01:26" itemprop="dateCreated datePublished" datetime="2018-04-16T19:01:26+08:00">2018-04-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>public static float Mathf.Round(float f)</td>
-<td>四舍五入</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>DisallowMultipleComponent 禁止一个脚本被加载多次</p>
-<h3 id="YieldInstruction-中断指令"><a href="#YieldInstruction-中断指令" class="headerlink" title="YieldInstruction 中断指令"></a>YieldInstruction 中断指令</h3><p>所有yield指令的基类<br>参考WaitForSeconds, WaitForFixedUpdate, Coroutine and MonoBehaviour,StartCoroutine</p>
-<h3 id="WaitForSeconds-等待几秒"><a href="#WaitForSeconds-等待几秒" class="headerlink" title="WaitForSeconds 等待几秒"></a>WaitForSeconds 等待几秒</h3><p>Namespace: UnityEngine<br>Inherits from: YieldInstruction</p>
-<p>在给定的秒数内，暂停协同程序的执行。<br>WaitForSeconds只能用在协同程序中的yield声明。</p>
-<h3 id="RequireComponent"><a href="#RequireComponent" class="headerlink" title="RequireComponent"></a>RequireComponent</h3><p>当你添加了一个用了RequireComponent组件的脚本，需要的组件将会自动被添加到GameObject上。这个可以有效避免组装错误。在新建类的前面加</p>
-<pre><code>[RequireComponent(typeof(LineRenderer))]
-</code></pre><h3 id="AssetDatabase-ImportAsset"><a href="#AssetDatabase-ImportAsset" class="headerlink" title="AssetDatabase.ImportAsset"></a>AssetDatabase.ImportAsset</h3><pre><code>static function ImportAsset(path : string, options : ImportAssetOptions = ImportAssetOptions.Default):void
-</code></pre><p>导入指定路径的资源<br>所有路径都是相对于工程目录文件，例如”Assets/MyTexture/hello.png”</p>
-<h3 id="AssetImporter-GetAtPath"><a href="#AssetImporter-GetAtPath" class="headerlink" title="AssetImporter.GetAtPath"></a>AssetImporter.GetAtPath</h3><pre><code>static function GetAtPath(path: string):AssetImporter
-</code></pre><p>通过指定路径来导入资源</p>
-<h3 id="TextureWrapMode"><a href="#TextureWrapMode" class="headerlink" title="TextureWrapMode"></a>TextureWrapMode</h3><p>在进行纹理贴图时，图像会出现在物体表面(u,v)位置上，而这些值在[0.0,1.0]范围内。但是，如果超出这个范围，会发生什么情况呢，这由纹理的映射函数来决定.常见有下面几种：</p>
-<ol>
-<li>重复(REPEAT):图像在表面上重复出现。在算法上，忽略纹理坐标的整数部分，并将纹理图的拷贝粘贴在物体表面上。对于大多数复制纹理的使用，在纹理顶部的纹理单元应于底部的纹理单元相匹配，在纹理左侧的纹理单元也应于右侧的纹理单元相匹配。</li>
-<li>截取(CLAMP): 将大于1.0的数值设置为1.0，将小于0.0的数值设置为0.0，即将超出[0.0,1.0]范围的数值截取到[0.0,1.0]范围内，这样会导致纹理边缘的重复。</li>
-<li>镜像重复(MIRRORED_REPEAT_ARB)</li>
-<li>边界截取(CLAMP_TO_BORDER_ARB)</li>
-<li>边缘截取(CLAMP_TO_EDGE)</li>
-</ol>
-<h3 id="CameraClearFlag"><a href="#CameraClearFlag" class="headerlink" title="CameraClearFlag"></a>CameraClearFlag</h3><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> CameraClearFlags</span><br><span class="line">&#123;</span><br><span class="line">    Skybox = <span class="number">1</span>,			<span class="comment">// 这是默认设置，在屏幕上空的部分显示当前相机的天空盒。如果当前相机没有设置天空盒，它会默认使用Edit-&gt;Render Settings里)中选择天空盒。然后它将退回使用背景颜色，另外天空盒组件可以添加到相机上。</span></span><br><span class="line">    SolidColor = <span class="number">2</span>, <span class="comment">// 屏幕上的任何空的部分显示当前相机的背景颜色</span></span><br><span class="line">    Color = <span class="number">2</span>,</span><br><span class="line">    Depth = <span class="number">3</span>,			<span class="comment">// 该深度的东西永远都不会被裁剪</span></span><br><span class="line">    Nothing = <span class="number">4</span>,		<span class="comment">// 什么事情都不做</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Projector"><a href="#Projector" class="headerlink" title="Projector"></a>Projector</h3><pre><code>nearClipPlane       近裁剪面的距离
-farClipPlane        远裁剪面的距离
-fieldOfView         该投影的视野，以度为单位
-aspectRatio         投影的宽高比
-orthographic        投射是正交还是透视
-orthographicSize    在正交模式下投射的一半尺寸
-ignoreLayers        哪个物体层被这个投射器忽略
-material            要投射到每个物体的材质
-</code></pre><h2 id="Mesh"><a href="#Mesh" class="headerlink" title="Mesh"></a>Mesh</h2><h3 id="Mesh-RecalculateBounds"><a href="#Mesh-RecalculateBounds" class="headerlink" title="Mesh.RecalculateBounds"></a>Mesh.RecalculateBounds</h3><p>在修改完顶点后你应该用这个函数以确保包围体是恰当的。赋值三角形将自动重新计算包围体。</p>
-<h3 id="Mesh-RecalculateNormals"><a href="#Mesh-RecalculateNormals" class="headerlink" title="Mesh.RecalculateNormals"></a>Mesh.RecalculateNormals</h3><p>重新计算网格的法线<br>在修改完定点后，通常会更新发现来反映新的变化。发现是根据共享的顶点计算出来的。导入到网格有时不共享所有顶点。例如：一个顶点在一个纹理坐标的接缝处将会被分为两个顶点。因此这个RecalculateNormals函数将会在纹理坐标接缝处创建一个不光滑的法线。RecalculateNormals不会自动产生切线，因此bumpmap着色器在调用RecalculateNormals之后不会工作。然而你可以提取你自己的切线。</p>
-<h2 id="惯性坐标系"><a href="#惯性坐标系" class="headerlink" title="惯性坐标系"></a>惯性坐标系</h2><p>因为在进行物体到世界坐标系的转换时候，即需要平移同时也需要进行旋转，为了简化这种变化，在其中假如惯性坐标系，其中惯性坐标系的原点与本地坐标系的原点重合其轴和世界坐标系平英。那么本地坐标系到惯性坐标系只需要旋转操作（之前也得缩放）再到世界坐标系只需要进行平移。</p>
-<h1 id="构建AssetBundles"><a href="#构建AssetBundles" class="headerlink" title="构建AssetBundles"></a>构建AssetBundles</h1><p>在<a href="https://docs.unity3d.com/Manual/AssetBundles-Workflow.html" target="_blank" rel="noopener">AssetBundle工作流</a>的文档中，我们有一个代码示例，它将三个参数传递给BuildPipeline.BuildAssetBundles函数。让我们更深入实际的了解。<br>Assets/AssetBundles:这是AssetBundles输出的目录。您可以将其更改为您想要的任何输出目录，只需确保在尝试构建之前文件夹实际存在。</p>
-<h2 id="BuildAssetBundleOptions"><a href="#BuildAssetBundleOptions" class="headerlink" title="BuildAssetBundleOptions"></a>BuildAssetBundleOptions</h2><p>BuildAssetBundleOptions您可以指定几种具有各种效果的不同。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/12/Unity-Optimize/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/12/Unity-Optimize/" class="post-title-link" itemprop="url">Unity优化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-12 14:51:15" itemprop="dateCreated datePublished" datetime="2018-04-12T14:51:15+08:00">2018-04-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>更新不透明贴图的压缩格式为ETC 4bit，因为android市场的手机中的GPU有多种，每家的GPU支持不同的压缩格式，但他们都兼容ETC格式。</li>
-<li>对于透明贴图，我们只能选择RGBA 16bit 或者RGBA 32bit。</li>
-<li>减少FPS，在ProjectSetting-&gt; Quality中的VSync Count 参数会影响你的FPS，EveryVBlank相当于FPS=60，EverySecondVBlank = 30；<br>这两种情况都不符合游戏的FPS的话，我们需要手动调整FPS，首先关闭垂直同步这个功能，然后在代码的Awake方法里手动设置FPS（Application.targetFrameRate = 45;）<br>降低FPS的好处：<br>1）省电，减少手机发热的情况；<br>2）能都稳定游戏FPS，减少出现卡顿的情况。</li>
-<li>当我们设置了FPS后，再调整下Fixed timestep这个参数，这个参数在ProjectSetting-&gt;Time中，目的是减少物理计算的次数，来提高游戏性能。</li>
-<li>尽量少使用Update LateUpdate FixedUpdate，这样也可以提升性能和节省电量。多使用事件（不是SendMessage，使用自己写的，或者C#中的事件委托）。</li>
-<li>待机时，调整游戏的FPS为1，节省电量。</li>
-<li>图集大小最好不要高于1024，否则游戏安装之后、低端机直接崩溃、原因是手机系统版本低于2.2、超过1000的图集无法读取、导致。2.2 以上没有遇见这个情况。注意手机的RAM 与 ROM、小于 512M的手机、直接放弃机型适配。</li>
-</ol>
-<h2 id="VSCount-垂直同步"><a href="#VSCount-垂直同步" class="headerlink" title="VSCount 垂直同步"></a>VSCount 垂直同步</h2><p>Unity3D中新建一个空场景的时候，帧速率（FPS总是很低），大概在60~70之间。在Unity3D中当运行场景打开Profiler的时候，我们会看到VSync 这一项占了很大的比重。<br>这个是什么呢，这个就是垂直同步。<br>我们可以关闭VSync来提高帧速率，选择edit-&gt;project settings-&gt;Quality。<br>在右侧面板中可以找到VSync Count,把它选成Don’t Sync。<br>这就关闭了VSync(垂直同步)，现在在运行场景看看，帧速率是不是提高很多。<br>现在来说说什么是垂直同步，要知道什么是垂直同步，必须要先明白显示器的工作原理，<br>显示器上的所有图像都是一线一线的扫描上去的，无论是隔行扫描还是逐行扫描，<br>显示器都有两种同步参数——水平同步和垂直同步。</p>
-<p>什么叫水平同步？什么叫垂直同步？<br>垂直和水平是CRT中两个基本的同步信号，水平同步信号决定了CRT画出一条横越屏幕线的时间，<br>垂直同步信号决定了CRT从屏幕顶部画到底部，再返回原始位置的时间，<br>而恰恰是垂直同步代表着CRT显示器的刷新率水平。</p>
-<p>为什么关闭垂直同步信号会影响游戏中的FPS数值？<br>如果我们选择等待垂直同步信号（也就是我们平时所说的垂直同步打开），<br>那么在游戏中或许强劲的显卡迅速的绘制完一屏的图像，但是没有垂直同步信号的到达，<br>显卡无法绘制下一屏，只有等85单位的信号到达，才可以绘制。<br>这样FPS自然要受到操作系统刷新率运行值的制约。</p>
-<p>而如果我们选择不等待垂直同步信号（也就是我们平时所说的关闭垂直同步），那么游戏中作完一屏画面，<br>显卡和显示器无需等待垂直同步信号就可以开始下一屏图像的绘制，自然可以完全发挥显卡的实力。<br>但是不要忘记，正是因为垂直同步的存在，才能使得游戏进程和显示器刷新率同步，使得画面更加平滑和稳定。<br>取消了垂直同步信号，固然可以换来更快的速度，但是在图像的连续性上势必打折扣。<br>这也正是很多朋友抱怨关闭垂直后发现画面不连续的理论原因。</p>
-<p>合并材质球Unity3D中每导入一次模型就多一个材质球，可我的这些模型都是共用一张贴图的就想共用一个材质球，所以每次都要删除再附上，很麻烦。怎么才能合并这些材质球？<br>采用TexturePacking吧</p>
-<ol>
-<li>遍历gameobject，取出material，并根据shader来将material分类；</li>
-<li>调用Unity自带的PackTextures函数来合并每个shader分类中的material所对应的textures（PackTextures函数有缺陷，不过可以将就用）；</li>
-<li>根据合并的大的texture来更新原有模型的texture、material已经uv坐标值。</li>
-</ol>
-<p>需要注意的是：需要合并的纹理应该是物体在场景中距离相近的，如果物体在场景中的距离较远，<br>则不建议合并纹理，因为这样做很有可能非但起不到优化的作用，反而降低了运行效率。 </p>
-<p>mesh合并<br>分为2种方式合并</p>
-<ol>
-<li><p>自带的合并必须勾选静态。</p>
-<p>所有被勾选了“Static”的GameObject，其中的Mesh Filter中的mesh都会被合并到 “Combined Mesha (root: scene)” 中</p>
-</li>
-<li><p>也可以用脚本来合并mesh 。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections; </span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span>  <span class="title">MyClass</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line"></span><br><span class="line">        MeshFilter [] meshFilters = GetComponentsInChildren&lt;MeshFilter&gt; ();</span><br><span class="line">        CombineInstance[] combine = <span class="keyword">new</span> CombineInstance[meshFilters.Length];</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; meshFilters.Length; i++) </span><br><span class="line">        &#123;</span><br><span class="line">            combine[i].mesh = meshFilters[i].sharedMesh;</span><br><span class="line">            combine[i].transform = meshFilters[i].transform.localToWorldMatrix;</span><br><span class="line">            meshFilters[i].gameObject.active = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        transform.GetComponent&lt;MeshFilter&gt;().mesh = <span class="keyword">new</span> Mesh ();</span><br><span class="line">        transform.GetComponent&lt;MeshFilter&gt;().mesh.CombineMeshes (combine);</span><br><span class="line">        transform.gameObject.active = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>先在 Unity 中建立空物件 ( Empty ) </p>
-</li>
-<li>再创建2个 Cube 方块，并放入空物件底下 (可以改成你自己的模型)</li>
-<li>把 MyClass 代码丟进空物件上 。</li>
-<li>(可选) 建立一个 Material 材质，并且丢进空物件上</li>
-<li><p>执行</p>
-</li>
-<li><p>角色Material数量2-3个，骨骼数量小于30个，面片数量300-1500，一般角色应该没有IK结点<br>这是因为角色的动作大多数都是事先设定好的，并不需要经过IK操作来进行实时计算（Rogdoll除外），所以在模型导入时，不要将IK结点一起导入。</p>
-</li>
-<li>静态实体不要附加Animation Component<br>在静态实体上附加Animation部件虽然对结果没有影响，但却会增加一定的CPU开销来调用这一组件，所以尽量去掉该组件。<br>网格顶点数小于500；UV值范围尽量不要超过（0, 1）区间；尽量保证UV值不越界，这对于将来的纹理拼合优化很有帮助。</li>
-<li>地形<br>地形的分辨率大小<br>长宽均尽量小于257。这是因为地形太大，会造成大量顶点数据，给你的内存带宽造成一定的影响，在目前的ios设备中，内存带宽是非常有限的，需要尽量节省。同时，如果用Unity自带的地形，一定也要使用Occlusion Culling，因为Unity的刷地形工具虽然方便，但却是framekiller，刷过之后，你会发现drawcall增加的非常多。<br>混合纹理数量<br>不要超过4。地形的混合操作是很耗时的，应该尽量避免。能合并的纹理尽量合并。</li>
-<li>纹理</li>
-</ol>
-<ul>
-<li>纹理格式<br>建议png或tga。不用转成ios硬件支持的PVRTC格式，因为Unity在发布时会帮你自动转的。</li>
-<li>纹理尺寸<br>长宽小于1024。同时应该尽可能地小，够用就好，以保证纹理对内存带宽的影响达到最小。</li>
-<li>支持Mipmap（UI不需要转，不然会增大内存）<br>建议生成Mipmap。虽然这种做法会增加一些应用程序的大小，但在游戏运行时，系统会根据需求应用Mipmap来渲染，从而减少内存带宽。</li>
-<li>检查Alpha值<br>如果纹理的alpha通道均为1，则用RGB的24位纹理来代替RGBA的32位纹理。（据说Unity内部会进行自动检测）</li>
-</ul>
-<ol>
-<li>光源<br>光源“Important”个数建议1个，一般为方向光。“Important”个数应该越小越少。个数越多，drawcall越多。<br>Pixel Light数目1-2个。</li>
-<li>粒子特效<br>屏幕上的最大粒子数建议小于200个粒子。<br>每个粒子发射器发射的最大粒子数建议不超过50个。<br>粒子大小如果可以的话，粒子的size应该尽可能地小。因为Unity的粒子系统的shader无论是alpha test还是alpha blending都是一笔不小的开销。同时，对于非常小的粒子，建议粒子纹理去掉alpha通道。<br>尽量不要开启粒子的碰撞功能。<br>非常耗时。</li>
-<li>音频<br>游戏中播放时间较长的音乐（如背景音乐）使用.ogg或.mp3的压缩格式。<br>较短音乐（如枪声）使用.wav和.aif的未压缩音频格式。</li>
-<li>相机<br>裁剪平面<br>将远平面设置成合适的距离。远平面过大会将一些不必要的物体加入渲染，降低效率。<br>根据不同的物体设置不同的远裁剪平面<br>Unity提供了可以根据不同的layer来设置不同的view distance，所以我们可以实现将物体进行分层，大物体层设置的可视距离大些，而小物体层可以设置地小些，另外，一些开销比较大的实体（如粒子系统）可以设置得更小些等等。</li>
-<li>碰撞<br>尽量不用MeshCollider<br>如果可以的话，尽量不用MeshCollider，以节省不必要的开销。如果不能避免的话，尽量用减少Mesh的面片数，或用较少面片的代理体来代替。</li>
-<li>其他<br>Drawcall<br>尽可能地减少Drawcall的数量。IOS设备上建议不超过100。减少的方法主要有如下几种：Frustum Culling，Occlusion Culling，Texture Packing。Frustum Culling是Unity内建的，我们需要做的就是寻求一个合适的远裁剪平面；Occlusion Culling，遮挡剔除，Unity内嵌了Umbra，一个非常好OC库。但Occlusion Culling也并不是放之四海而皆准的，有时候进行OC反而比不进行还要慢，建议在OC之前先确定自己的场景是否适合利用OC来优化；Texture Packing，或者叫Texture Atlasing，是将同种shader的纹理进行拼合，根据Unity的static batching的特性来减少draw call。建议使用，但也有弊端，那就是一定要将场景中距离相近的实体纹理进行拼合，否则，拼合后很可能会增加每帧渲染所需的纹理大小，加大内存带宽的负担。这也就是为什么会出现“DrawCall降了，渲染速度也变慢了”的原因。</li>
-</ol>
-<p>非运动物体尽量打上Static标签<br>Unity在运行时会对static物体进行自动优化处理，所以应该尽可能将非运行实体勾上static标签。</p>
-<p>场景中尽可能地使用prefab<br>尽可能地使用prefab的实例化物体，以降低内存带宽的负担。检查实体的PrefabType，尽量将其变成PrefabInstance，而不是ModelPrefabInstance。</p>
-<p>移动平台相对于PC机，具有体积小，计算弱，带宽少的特点。</p>
-<p>因此做手机游戏的开发，优化的方向，与力度对比PC游戏都有所区别。</p>
-<p>必须要做到优化流程，合理利用资源。<br>目前在手机上面，还不能够像PC游戏那样追求高质量渲染效果，为了让手机不那么容易发烫，还要控制cpu，gpu，不能让他们全速运算。</p>
-<p>材质方面：<br>纹理方面，建议使用压缩纹理，</p>
-<p>Android上面使用ETC1，苹果上面使用PVRTC。<br>UV坐标控制在0到1之间，人物模型面数控制在1500内，骨骼控制在30个以内。<br>场景中使用一个主光（不能再多了）。<br>尽量减少alphaTest和alphaBlend材质的使用。在手机上，这是很杀效率的。<br>骨骼动画方面：<br>在动画方面可以考虑不使用插值，固定的帧率的动画。</p>
-<p>如果要做插值，考虑使用四元数（表示旋转）和向量（表示位移）来做插值。</p>
-<p>四元数做插值速度比矩阵来的快，Slerp提供了平滑插值。</p>
-<p>优化的常规技巧<br>剖析你的游戏。<br>不要花费时间来优化那些晦涩的代码或者缩减图形文件的大小，除非这是你游戏的瓶颈。<br>第一次剖析你的游戏将会使你发现你游戏的瓶颈。Apple’s Shark是一个很好的用来剖析基于OpenGL的程序的工具。<br>再次剖析你的游戏。<br>优化之后不要忘记再剖析一次你的游戏，这样可以检查你所做的优化是否达到了预期的效果。<br>当然，这样做也可能会使你发现更多的瓶颈。<br>流程第一、性能第二。花费时间来使你游戏的创建尽可能地流畅。<br>尽可能快地修正游戏中的错误将会使你后期更容易优化你的游戏。<br>在Scene View中测试场景。<br>这样做将会使你清楚了解这个场景中的物体或者附加在物体上的脚本是否降低了游戏性能。<br>如果Scene View反应迟钝，那么有可能是图形方面的原因，如果Scene View反应不迟钝，那么瓶颈可能出在脚本或者物理系统上。<br>禁用指定游戏物体。<br>在play模式下，尝试禁用并启用游戏物体来排查出游戏慢的原因。</p>
-<p>网格<br>如果可能的话，把相邻的物体（网格）合并为一个只有一个材质的物体（网格）。比如，你的游戏中包含一个桌子，上面有一堆东西，你完全可以在3D程序中将它们合并在一起（这可能也需要你将这些物体的纹理合并为一个大的纹理集）。减少需要渲染的物体的数量可以极大地提高游戏性能。</p>
-<p>不要有不必要的网格。<br>如果你的游戏场景中有一个人物，那么他应该是一个网格。如果你有一个船，那么它也应该只是一个网格。<br>每一个网格只用一种材质。<br>使用极少的面数的网格（比如500个多边形以下）。<br>最好把你人物的三角面数量控制在1500-2000个之间。<br>这个数量可以说是游戏质量和性能之间一个均衡值。如果你的模型有四边形，那么在导入模型的时候，引擎将会把每个四边形变为两个三角形。</p>
-<p>光照<br>像素光。<br>像素光可以让你的游戏看起来效果很牛逼，但是不要使用过多的像素光。<br>在你的游戏中可以使用质量管理器来调节像素光的数量来取得一个性能和质量的均衡点.</p>
-<p>性能占用顺序：聚光灯&gt;点光源&gt;平行光。<br>一个好的点亮场景的方法就是先得到你想要的效果，然后看看哪些光更重要；<br>在保持光效的前提下看看哪些光可以去掉。</p>
-<p>点光源和聚光灯只影响它们范围内的网格。<br>如果一个网格处于点光源或者聚光灯的照射范围之外，并且光源的attenuate开关是打开的，那么这个网格将不会被光源所影响，这样就可以节省性能开销。<br>这样做理论上来讲可以使用很多小的点光源而且依然能有一个好的性能，因为这些光源只影响一小部分物体。<br>一个网格在有8个以上光源影响的时候，只响应前8个最亮的光源。</p>
-<p>贴图<br>在外观不变的前提下，贴图大小越小越好。<br>如果你的显卡的显存不够大的话，你游戏中的贴图将会被转存到系统内存中，在显卡调用它们的时候再传到显卡中。<br>对于比较新的电脑来说，内存和显卡之间有足够的带宽来达到一个很好的性能；<br>如果你很无耻地用了巨多的大图片的话，在低显存的电脑上运行你的游戏的时候，你的游戏必然会挂掉。<br>倒是没有必要在图形编辑软件中调整贴图的大小。你可以在unity导入贴图的时候进行调整。</p>
-<p>不要使用低质量的图片。<br>在小播放界面的游戏中使用低质量的jpeg图片或者低色彩的png图片亦或是gif图片没什么问题。<br>在发布游戏的时候，引擎会自动压缩这些图片，多重压缩和解压将会降低图片的质量，所以最好保持贴图文件的分辨率为原始分辨率。<br>这样就会减少多重压缩和解压所导致的图片失真现象。</p>
-<p>Shaders<br>多重效果的shader就比看起来样式很单一的shader要更耗费资源。<br>同样在一个拥有贴图和光反射的物体上，使用VertexLit Diffuse shader无疑是最省资源的。</p>
-<p>在美术制作场景的过程中，会使用到大量的粒子系统。<br>比如场景中的火把。在我们的一个地下城场景中，美术们放置了大量的火把。整个场景中的各个地方，有100来个火把。</p>
-<p>unity中，在摄像机范围外的粒子系统虽然不会被绘制。<br>但是update是一直持续的。这也就意味着，这100多个火把，不论是否可见都在更新。</p>
-<p>这个设计应该是很不合理的，在我看过的其他引擎中，都会有一个开关，来控制不可见的粒子系统是否需要update。<br>有的粒子系统在不可见的时候需要更新,比如爆炸。有的不需要更新，比如火堆火把。</p>
-<p>为了避免不必要的update开销，尤其是最后游戏是要发布到页游平台（web player只能使用一个cpu的核）。<br>于是写了一个脚本，控制不可见的粒子系统就不更新。</p>
-<p>该脚本主要是用到了2个MonoBehaviour的函数。<br>OnBecameInvisible() 当变为不可见   和   OnBecameVisible() 当变成可见。 </p>
-<p>要这2个函数起作用的前提是，该GameObject绑定了MeshRender组件。<br>所以，我们要在粒子系统的GameObject放置在一个GameObject  下，且给该GameObject绑定一个MeshRender 与 MeshFilter。<br>MeshFilter中的mesh可以随便找个cube。</p>
-<p>在Start（） 的时候，把最GameObject的scale设置为很小，以保证该cube不被看见。<br>其实遍历所有的child，把active设置为false。</p>
-<p>在OnBecameVisible 中 遍历所有child，把active设置为true。<br>在OnBecameInvisible中 遍历所有child，把active设置为false。</p>
-<p>Unity 性能优化 Draw Call </p>
-<p>Unity（或者说基本所有图形引擎）生成一帧画面的处理过程大致可以这样简化描述：引擎首先经过简单的可见性测试，确定摄像机可以看到的物体，然后把这些物体的顶点（包括本地位置、法线、UV等），索引（顶点如何组成三角形），变换（就是物体的位置、旋转、缩放、以及摄像机位置等），相关光源，纹理，渲染方式（由材质/Shader决定）等数据准备好，然后通知图形API——或者就简单地看作是通知GPU——开始绘制，GPU基于这些数据，经过一系列运算，在屏幕上画出成千上万的三角形，最终构成一幅图像。</p>
-<p>在Unity中，每次引擎准备数据并通知GPU的过程称为一次Draw Call。这一过程是逐个物体进行的，对于每个物体，不只GPU的渲染，引擎重新设置材质Shader也是一项非常耗时的操作。因此每帧的Draw Call次数是一项非常重要的性能指标，对于iOS来说应尽量控制在20次以内，这个值可以在编辑器的Statistic窗口看到。</p>
-<p>Unity内置了Draw Call Batching技术，从名字就可以看出，它的主要目标就是在一次Draw Call中批量处理多个物体。只要物体的变换和材质相同，GPU就可以按完全相同的方式进行处理，即可以把它们放在一个Draw Call中。Draw Call Batching技术的核心就是在可见性测试之后，检查所有要绘制的物体的材质，把相同材质的分为一组（一个Batch），然后把它们组合成一个物体（统一变换），这样就可以在一个Draw Call中处理多个物体了（实际上是组合后的一个物体）。</p>
-<p>但Draw Call Batching存在一个缺陷，就是它需要把一个Batch中的所有物体组合到一起，相当于创建了一个与这些物体加起来一样大的物体，与此同时就需要分配相应大小的内存。这不仅会消耗更多内存，还需要消耗CPU时间。特别是对于移动的物体，每一帧都得重新进行组合，这就需要进行一些权衡，否则得不偿失。但对于静止不动的物体来说，只需要进行一次组合，之后就可以一直使用，效率要高得多。</p>
-<p>Unity提供了Dynamic Batching和Static Batching两种方式。Dynamic Batching是完全自动进行的，不需要也无法进行任何干预，对于顶点数在300以内的可移动物体，只要使用相同的材质，就会组成Batch。Static Batching则需要把静止的物体标记为Static，然后无论大小，都会组成Batch。如前文所说，Static Batching显然比Dynamic Batching要高效得多</p>
-<p>要有效利用Draw Call Batching，首先是尽量减少场景中使用的材质数量，即尽量共享材质，对于仅纹理不同的材质可以把纹理组合到一张更大的纹理中（称为Texture Atlasing）。然后是把不会移动的物体标记为Static。此外还可以通过CombineChildren脚本（Standard Assets/Scripts/Unity Scripts/CombineChildren）手动把物体组合在一起，但这个脚本会影响可见性测试，因为组合在一起的物体始终会被看作一个物体，从而会增加GPU要处理的几何体数量，因此要小心使用。</p>
-<p>对于复杂的静态场景，还可以考虑自行设计遮挡剔除算法，减少可见的物体数量同时也可以减少Draw Call。</p>
-<p>总之，理解Draw Call和Draw Call Batching原理，根据场景特点设计相应的方案来尽量减少Draw Call次数才是王道，其它方面亦然。</p>
-<p>Draw Call Batching （绘制调用批处理）</p>
-<p>To draw an object on the screen, the engine has to issue a draw call to the graphics API (OpenGL ES in the case of iOS). Every single draw call requires a significant amount of work on the part of the graphics API, causing significant performance overhead on the CPU side.<br>在屏幕上渲染物体，引擎需要发出一个绘制调用来访问图形API（iOS系统中为OpenGL ES）。<br>每个绘制调用需要进行大量的工作来访问图形API，从而导致了CPU方面显著的性能开销。</p>
-<p>Unity combines a number of objects at runtime and draws them together with a single draw call. This operation is called “batching”. The more objects Unity can batch together, the better rendering performance you will get.<br>Unity在运行时可以将一些物体进行合并，从而用一个绘制调用来渲染他们。这一操作，我们称之为“批处理”。<br>一般来说，Unity批处理的物体越多，你就会得到越好的渲染性能。</p>
-<p>Built-in batching support in Unity has significant benefit over simply combining geometry in the modeling tool (or using theCombineChildren script from the Standard Assets package). Batching in Unity happensafter visibility determination step. The engine does culling on each object individually, and the amount of rendered geometry is going to be the same as without batching. Combining geometry in the modeling tool, on the other hand, prevents effecient culling and results in much higher amount of geometry being rendered.<br>Unity中内建的批处理机制所达到的效果要明显强于使用几何建模工具（或使用Standard Assets包中的CombineChildren脚本）的批处理效果。<br>这是因为，Unity引擎的批处理操作是在物体的可视裁剪操作之后进行的。<br>Unity先对每个物体进行裁剪，然后再进行批处理，这样可以使渲染的几何总量在批处理前后保持不变。<br>但是，使用几何建模工具来拼合物体，会妨碍引擎对其进行有效的裁剪操作，从而导致引擎需要渲染更多的几何面片。</p>
-<p>Materials<br>材质<br>Only objects sharing the same material can be batched together. Therefore, if you want to achieve good batching, you need to share as many materials among different objects as possible.<br>只有拥有相同材质的物体才可以进行批处理。<br>因此，如果你想要得到良好的批处理效果，你需要在程序中尽可能地复用材质和物体。</p>
-<p>If you have two identical materials which differ only in textures, you can combine those textures into a single big texture - a process often calledtexture atlasing. Once textures are in the same atlas, you can use single material instead.<br>如果你的两个材质仅仅是纹理不同，那么你可以通过纹理拼合操作来将这两张纹理拼合成一张大的纹理。<br>一旦纹理拼合在一起，你就可以使用这个单一材质来替代之前的两个材质了。</p>
-<p>If you need to access shared material properties from the scripts, then it is important to note that modifyingRenderer.material will create a copy of the material. Instead, you should useRenderer.sharedMaterial to keep material shared.<br>如果你需要通过脚本来访问复用材质属性，那么值得注意的是改变Renderer.material将会造成一份材质的拷贝。<br>因此，你应该使用Renderer.sharedMaterial来保证材质的共享状态。</p>
-<p>Dynamic Batching<br>动态批处理<br>Unity can automatically batch moving objects into the same draw call if they share the same material.<br>如果动态物体共用着相同的材质，那么Unity会自动对这些物体进行批处理。</p>
-<p>Dynamic batching is done automatically and does not require any additional effort on your side.<br>动态批处理操作是自动完成的，并不需要你进行额外的操作。</p>
-<p>Tips:<br>提醒：<br>1、Batching dynamic objects has certain overheadper vertex, so batching is applied only to meshes containing less than900 vertex attributes in total.<br>批处理动态物体需要在每个顶点上进行一定的开销，所以动态批处理仅支持小于900顶点的网格物体。</p>
-<p>2、If your shader is using Vertex Position, Normal and single UV, then you can batch up to 300 verts and if your shader is using Vertex Position, Normal, UV0, UV1 and Tangent, then only 180 verts.<br>Please note: attribute count limit might be changed in future<br>如果你的着色器使用顶点位置，法线和UV值三种属性，那么你只能批处理300顶点以下的物体；<br>如果你的着色器需要使用顶点位置，法线，UV0，UV1和切向量，那你只能批处理180顶点以下的物体。<br>请注意：属性数量的限制可能会在将来进行改变。</p>
-<p>4、Don’t use scale. Objects with scale (1,1,1) and (2,2,2) won’t batch.<br>不要使用缩放尺度（scale）。分别拥有缩放尺度(1,1,1)和(2,2,2)的两个物体将不会进行批处理。</p>
-<p>5、Uniformly scaled objects won’t be batched with non-uniformly scaled ones.<br>统一缩放尺度的物体不会与非统一缩放尺度的物体进行批处理。<br>Objects with scale (1,1,1) and (1,2,1) won’t be batched. On the other hand (1,2,1) and (1,3,1) will be.<br>使用缩放尺度(1,1,1)和 (1,2,1)的两个物体将不会进行批处理，但是使用缩放尺度(1,2,1)和(1,3,1)的两个物体将可以进行批处理。</p>
-<p>6、Using different material instances will cause batching to fail.<br>使用不同材质的实例化物体（instance）将会导致批处理失败。</p>
-<p>7、Objects with lightmaps have additional (hidden) material parameter: offset/scale in lightmap, so lightmapped objects won’t be batched (unless they point to same portions of lightmap)<br>拥有lightmap的物体含有额外（隐藏）的材质属性，比如：lightmap的偏移和缩放系数等。所以，拥有lightmap的物体将不会进行批处理（除非他们指向lightmap的同一部分）。</p>
-<p>8、Multi-pass shaders will break batching. E.g. Almost all unity shaders supports several lights in forward rendering, effectively doing additional pass for them<br>多通道的shader会妨碍批处理操作。比如，几乎unity中所有的着色器在前向渲染中都支持多个光源，并为它们有效地开辟多个通道。</p>
-<p>9、Using instances of a prefab automatically are using the same mesh and material.<br>预设体的实例会自动地使用相同的网格模型和材质。</p>
-<p>Static Batching<br>静态批处理</p>
-<p>Static batching, on the other hand, allows the engine to reduce draw calls for geometry of any size (provided it does not move and shares the same material). Static batching is significantly more efficient than dynamic batching. You should choose static batching as it will require less CPU power.<br>相对而言，静态批处理操作允许引擎对任意大小的几何物体进行批处理操作来降低绘制调用（只要这些物体不移动，并且拥有相同的材质）。因此，静态批处理比动态批处理更加有效，你应该尽量低使用它，因为它需要更少的CPU开销。</p>
-<p>In order to take advantage of static batching, you need explicitly specify that certain objects are static and willnot move, rotate or scale in the game. To do so, you can mark objects as static using the Static checkbox in the Inspector:<br>为了更好地使用静态批处理，你需要明确指出哪些物体是静止的，并且在游戏中永远不会移动、旋转和缩放。想完成这一步，你只需要在检测器（Inspector）中将Static复选框打勾即可；<br>Using static batching will require additional memory for storing the combined geometry. If several objects shared the same geometry before static batching, then a copy of geometry will be created for each object, either in the Editor or at runtime. This might not always be a good idea - sometimes you will have to sacrifice rendering performance by avoiding static batching for some objects to keep a smaller memory footprint. For example, marking trees as static in a dense forest level can have serious memory impact.<br>使用静态批处理操作需要额外的内存开销来储存合并后的几何数据。在静态批处理之前，如果一些物体共用了同样的几何数据，那么引擎会在编辑以及运行状态对每个物体创建一个几何数据的备份。这并不总是一个好的想法，因为有时候，你将不得不牺牲一点渲染性能来防止一些物体的静态批处理，从而保持较少的内存开销。比如，将浓密森里中树设为Static，会导致严重的内存开销。</p>
-<p>Static batching is only available in Unity iOS Advanced.<br>静态批处理目前只支持Unity iOS Advanced。</p>
-<p>前两天，MadFinger，就是当今iOS与Android上画质最牛逼闪闪的游戏之一——ShadowGun的开发商，令人惊异地放出了一个ShadowGun的样例关卡以及若干可免费使用的Shader，国外同行们的分享精神真的是令人赞叹不已。原文在这里，以下是我的一些摘录和笔记。</p>
-<p>首先是一些优化常识。针对图形方面的优化主要包括三角形数量，纹理所占内存，以及Shader，前两项基本没什么好讲的，针对设备机能的限制制定相应的指标即可，所以Shader就成为了图形性能优化的关键。</p>
-<p>Alpha blending</p>
-<p>在Unity官方文档中讲，由于硬件原因，在iOS设备上使用alpha-test会造成很大的性能开销，应尽量使用alpha-blend代替。这里提到，在同屏使用alpha-blend的面数，尤其是这些面所占屏幕面积的大小，对性能也会造成很大影响。原因是使用alpha-blend的面会造成overdraw的增加，这尤其对低性能设备的影响很大。不过没有购买Pro版，没有Occlusion Culling功能的话，就不必顾虑这一问题了，反正overdraw是必然的。</p>
-<p>复杂的Per-pixel shader</p>
-<p>Per-pixel shader即Fragment shader，顾名思义是要对每个渲染到屏幕上的像素做处理的shader，如果per-pixel shader比较复杂且需要处理的像素很多时，也就是使用该shader的面占屏幕面积很大时，对性能的影响甚至要超过alpha blending。因此复杂的per-pixel shader只适用于小物体。</p>
-<p>下面是对几个Shader的逐一讲解：</p>
-<p>Environment specular maps(Shader Virtual Gloss Per Vertex Additive)<br>Specular map通常都是利用贴图的alpha通道来定义物体表面的光滑程度（反光度），这个shader的特点是per-vertex计算反光度的，有着相当不错的效果的同时比per-pixel的shader性能要高得多。这个shader很适用于关卡环境等占很大区域的模型。</p>
-<p>经过优化的动态角色光照和阴影(Light probes和BRDF Shader)<br>传统的Lightmaps无法支持动态物体，对此Unity提供了Light probes技术，预先把动态物体的光照信息保存在代理对象(即Light probes)中，运行时动态物体从距离最近的Probe中获取光照信息。</p>
-<p>Unity本身还提供了一个效果非常棒的专为移动设备优化过的角色Shader，支持Diffuse、Specular和Normal maps，并通过一个特殊的脚本生成贴图用于模仿BRDF光照效果。最终产生的效果堪比次时代大作中的角色光影效果。</p>
-<p>雾和体积光(Shader Blinking Godrays)<br>目前在移动设备上要开启真正的雾效基本不可行，ShadowGun的方案是通过简单的网格＋透明贴图(称为雾面)来模拟雾效。在玩家靠近时，雾面逐渐变淡，同时fog plane的顶点也会移开(即使完全透明的alpha面也会消耗很多渲染时间)。</p>
-<p>使用这个Shader的网格需要经过处理：</p>
-<p>顶点的alpha值用于决定顶点是否可以移动(在例子中0为不可动，1为可动)。<br>顶点法线决定移动的方向<br>然后Shader通过计算与观察者的距离来控制雾面的淡入/淡出。<br>这个Shader还可以用来做体积光和其它一些alpha效果。</p>
-<p>飞机坠毁的浓烟效果(Shader Scroll 2 Layers Sine Alpha-blended)<br>通过粒子产生浓烟的代价太高，所以ShadowGun中使用了网格＋贴图动画来制作这个效果。通过混合两层贴图并让它们交错移动来产生动画效果。其中顶点alpha值用于让网格的边缘看起来比较柔和，同时使用顶点颜色来模拟从火焰到烟雾的过渡效果。</p>
-<p>带动态效果的天空盒(Shader Scroll 2 Layers Multiplicative)<br>通过两张贴图的混合和移动产生云的动态效果。</p>
-<p>旗帜和衣服的飘动效果(Shader Lightmap + Wind)<br>同样利用顶点alpha值决定哪些顶点可以移动，然后shader的参数用于调整摆动的方向和速度。</p>
-<p>一、程序方面<br>　　1. 务必删除脚本中为空或不需要的默认方法；<br>　　2. 只在一个脚本中使用OnGUI方法；（最好不要加）<br>　 3. 避免在OnGUI中对变量、方法进行更新、赋值，输出变量建议在Update内；<br>　　4. 同一脚本中频繁使用的变量建议声明其为全局变量，脚本之间频繁调用的变量或方法建议声明为全局静态变量或方法；<br>　　5. 不要去频繁获取组件，将其声明为全局变量；<br>　　6. 数组、集合类元素优先使用Array，其次是List；<br>　　7. 脚本在不使用时脚本禁用之，需要时再启用；<br>　　8. 可以使用Ray来代替OnMouseXXX类方法；<br>　　9. 需要隐藏/显示或实例化来回切换的对象，尽量不要使用SetActiveRecursively或active，而使用将对象远远移出相机范围和移回原位的做法；<br>　　10. 尽量少用模运算和除法运算，比如a/5f，一定要写成a * 0.2f。<br>　　11. 对于不经常调用或更改的变量或方法建议使用Coroutines &amp; Yield；<br>　　12. 尽量直接声明脚本变量，而不使用GetComponent来获取脚本；<br>iPhone<br>　　13. 尽量使用整数数字，因为iPhone的浮点数计算能力很差；<br>　　14. 不要使用原生的GUI方法；<br>　　15. 不要实例化（Instantiate）对象，事先建好对象池，并使用Translate“生成”对象；<br>二、模型方面<br>　　1. 合并使用同贴图的材质球，合并使用相同材质球的Mesh；<br>　　2. 角色的贴图和材质球只要一个，若必须多个则将模型离分离为多个部分；<br>　　2. 骨骼系统不要使用太多；<br>　　3. 当使用多角色时，将动画单独分离出来；<br>　　4. 使用层距离来控制模型的显示距离；<br>　　5. 阴影其实包含两方面阴暗和影子，建议使用实时影子时把阴暗效果烘焙出来，不要使用灯光来调节光线阴暗。<br>　　6. 少用像素灯和使用像素灯的Shader；<br>　　7. 如果硬阴影可以解决问题就不要用软阴影，并且使用不影响效果的低分辨率阴影；<br>　　08、实时阴影很耗性能，尽量减小产生阴影的距离；<br>　　09、允许的话在大场景中使用线性雾，这样可以使远距离对象或阴影不易察觉，因此可以通过减小相机和阴影距离来提高性能；<br>　　10、使用圆滑组来尽量减少模型的面数；<br>　　11、项目中如果没有灯光或对象在移动那么就不要使用实时灯光；<br>　　12、水面、镜子等实时反射/折射的效果单独放在Water图层中，并且根据其实时反射/折射的范围来调整；<br>　　13、碰撞对效率的影响很小，但碰撞还是建议使用Box、Sphere碰撞体；<br>　　14、建材质球时尽量考虑使用Substance；<br>　　15、尽量将所有的实时反射/折射（如水面、镜子、地板等等）都集合成一个面；<br>　　16、假反射/折射没有必要使用过大分辨率，一般64<em>64就可以，不建议超过256</em>256；<br>　　17、需要更改的材质球，建议实例化一个，而不是使用公共的材质球；<br>　　18、将不须射线或碰撞事件的对象置于IgnoreRaycast图层；<br>　　19、将水面或类似效果置于Water图层<br>　　20、将透明通道的对象置于TransparentFX图层；<br>　　21、养成良好的标签（Tags）、层次（Hieratchy）和图层（Layer）的条理化习惯，将不同的对象置于不同的标签或图层，三者有效的结合将很方便的按名称、类别和属性来查找；<br>　　22、通过Stats和Profile查看对效率影响最大的方面或对象，或者使用禁用部分模型的方式查看问题到底在哪儿；<br>　　23、使用遮挡剔除（Occlusion Culling）处理大场景，一种较原生的类LOD技术，并且能够“分割”作为整体的一个模型。</p>
-<p>三、其它<br>　　场景中如果没有使用灯光和像素灯，就不要使用法线贴图，因为法线效果只有在有光源（Direct Light/Point Light/Angle Light/Pixel Light）的情况下才有效果。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/12/C-Thread-Sync/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/12/C-Thread-Sync/" class="post-title-link" itemprop="url">C# 线程同步</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-12 14:26:42" itemprop="dateCreated datePublished" datetime="2018-04-12T14:26:42+08:00">2018-04-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="线程同步的方式"><a href="#线程同步的方式" class="headerlink" title="线程同步的方式"></a>线程同步的方式</h1><p>线程同步有：临界区、互斥区、事件、信号量四种方式</p>
-<ol>
-<li>临界区(Critical Section)：临界区：通过对多线程的串行化来访问公共资源或一段代码，速度快，适合控制数据访问。在任意时刻只允许一个线程对共享资源进行访问，如果有多个线程试图访问公共资源，那么在有一个线程进入后，其他试图访问公共资源的线程将被挂起，并一直等到进入临界区的线程离开，临界区在被释放后，其他线程才可以抢占。</li>
-<li>互斥量(Mutex)：采用互斥对象机制。 只有拥有互斥对象的线程才有访问公共资源的权限，因为互斥对象只有一个，所以能保证公共资源不会同时被多个线程访问。互斥不仅能实现同一应用程序的公共资源安全共享，还能实现不同应用程序的公共资源安全共享 </li>
-<li>信号量(Semaphore)：它允许多个线程在同一时刻访问同一资源，但是需要限制在同一时刻访问此资源的最大线程数目 </li>
-<li>事件(Event)：通过通知操作的方式来保持线程的同步，还可以方便实现对多个线程的优先级比较的操作</li>
-</ol>
-<h2 id="lock-关键字"><a href="#lock-关键字" class="headerlink" title="lock 关键字"></a>lock 关键字</h2><p>lock 关键字将语句块标记为临界区，方法是获取给定对象的互斥锁，执行语句，然后释放该锁。<br>lock 确保当一个线程位于代码的临界区时，另一个线程不进入临界区。如果其他线程试图进入锁定的代码，则它将一直等待（即被阻止），直到该对象被释放。</p>
-<h2 id="同步事件和等待句柄"><a href="#同步事件和等待句柄" class="headerlink" title="同步事件和等待句柄"></a>同步事件和等待句柄</h2><p>使用锁或监视器对于防止同时执行区分线程的代码块很有用，但是这些构造不允许一个线程向另一个线程传达事件。这需要“同步事件”，它是有两个状态（终止和非终止）的对象，可以用来激活和挂起线程。让线程等待非终止的同步事件可以将线程挂起，将事件状态更改为终止可以将线程激活。如果线程试图等待已经终止的事件，则线程将继续执行，而不会延迟。     </p>
-<p>同步事件有两种：AutoResetEvent 和 ManualResetEvent。它们之间唯一的不同在于，无论何时，只要 AutoResetEvent 激活线程，它的状态将自动从终止变为非终止。相反，ManualResetEvent 允许它的终止状态激活任意多个线程，只有当它的 Reset 方法被调用时才还原到非终止状态。</p>
-<p>等待句柄，可以通过调用一种等待方法，如WaitOne、WaitAny 或 WaitAll，让线程等待事件。System.Threading.WaitHandle.WaitOne使线程一直等待，直到单个事件变为终止状态；System.Threading.WaitHandle.WaitAny 阻止线程，直到一个或多个指示的事件变为终止状态；System.Threading.WaitHandle.WaitAll 阻止线程，直到所有指示的事件都变为终止状态。当调用事件的 Set 方法时，事件将变为终止状态。</p>
-<p>AutoResetEvent 允许线程通过发信号互相通信。 通常，当线程需要独占访问资源时使用该类。线程通过调用 AutoResetEvent 上的 WaitOne 来等待信号。 如果 AutoResetEvent 为非终止状态，则线程会被阻止，并等待当前控制资源的线程通过调用 Set 来通知资源可用。调用 Set 向 AutoResetEvent 发信号以释放等待线程。 AutoResetEvent 将保持终止状态，直到一个正在等待的线程被释放，然后自动返回非终止状态。 如果没有任何线程在等待，则状态将无限期地保持为终止状态。如果当 AutoResetEvent 为终止状态时线程调用 WaitOne，则线程不会被阻止。 AutoResetEvent 将立即释放线程并返回到非终止状态。<br>可以通过将一个布尔值传递给构造函数来控制 AutoResetEvent 的初始状态：如果初始状态为终止状态，则为 true；否则为 false。<br>AutoResetEvent 也可以同 staticWaitAll 和 WaitAny 方法一起使用。</p>
-<h2 id="WaitHandle-WaitOne"><a href="#WaitHandle-WaitOne" class="headerlink" title="WaitHandle.WaitOne()"></a>WaitHandle.WaitOne()</h2><p>阻止当前线程，直到当前的 WaitHandle 收到信号为止</p>
-<h2 id="EventWaitHandle-Set"><a href="#EventWaitHandle-Set" class="headerlink" title="EventWaitHandle.Set()"></a>EventWaitHandle.Set()</h2><p>将事件状态设置为有信号，从而允许一个或多个等待线程继续执行。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/22/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/24/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/22/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/24/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1200,7 +1048,7 @@ material            要投射到每个物体的材质
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1211,7 +1059,7 @@ material            要投射到每个物体的材质
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

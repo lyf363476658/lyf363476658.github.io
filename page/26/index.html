@@ -145,6 +145,217 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/23/actor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/23/actor/" class="post-title-link" itemprop="url">Actor模型原理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-23 10:36:48" itemprop="dateCreated datePublished" datetime="2018-03-23T10:36:48+08:00">2018-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-Actor模型"><a href="#1-Actor模型" class="headerlink" title="1.Actor模型"></a>1.Actor模型</h1><p>在使用Java进行并发编程时需要特别的关注锁和内存原子性等一系列线程问题，而Actor模型内部的状态由它自己维护即它内部数据只能由它自己修改（通过消息传递来进行状态修改），所以使用Actors模型进行并发编程可以很好避免这些问题，Actor由状态(state),行为(Behavior)和邮箱(mailBox)三部分组成<br>1.状态(state):Actor中的状态指的是Actor对象的变量信息，状态由Actor自己管理，避免了并发环境下的锁和内存原子性等问题<br>2.行为(Behavior):行为指的是Actor中计算逻辑，通过Actor接收到消息来改变Actor的状态<br>3.邮箱(mailBox):邮箱是Actor和Actor之间的通信桥梁，邮箱内部通过FIFO消息队列来存储发送发Actor消息，接收方Actor从邮箱队列中获取消息</p>
+<p>Actor的基础就是消息传递</p>
+<h1 id="2-使用Actor模型的好处"><a href="#2-使用Actor模型的好处" class="headerlink" title="2.使用Actor模型的好处"></a>2.使用Actor模型的好处</h1><p>1.事件驱动—Actor之间的通信是异步的，即使Actor在发送消息后也无需阻塞或者等待就能够处理其他事件<br>2.强隔离性—Actor中的方法不能由外部部署直接调用，所有的一切都通过消息传递进行的，从而避免了Actor之间的数据共享，想要观察到另一个Actor的状态变化只能通过消息传递进行询问<br>3.位置透明—无论Actor地址实在本地还是在远程机上对于代码来说都是一样的<br>4.轻量性—Actor是非常轻量的计算单机，单个Actor仅占400多字节，只需少量内存就能达到高并发</p>
+<h1 id="3-Actor模型原理"><a href="#3-Actor模型原理" class="headerlink" title="3.Actor模型原理"></a>3.Actor模型原理</h1><p>以下通过学生于教师之间的邮件通信来理解akka中的Actor模型</p>
+<h2 id="学生-教师的消息传递"><a href="#学生-教师的消息传递" class="headerlink" title="学生-教师的消息传递"></a>学生-教师的消息传递</h2><p>首先只考虑学生单向发送消息给教师（学生—》教师），如下图：<br><img src="http://oxcvfpext.bkt.clouddn.com/actor-1.png"><br>图解：<br>1.学生创建一个ActorSystem<br>2.通过ActorSystem创建ActorRef，将QuoteRequest消息发送到ActorRef(教师代理)<br>3.ActorRef(教师代理)消息传到Dispatcher中<br>4.Dispather依次的将消息发送到TeacherActor邮箱中<br>5.Dispather将邮箱推送到一条线程中<br>6.邮箱取出一条消息并委派给TeacherActor的Receiver方法</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/22/thread-process/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/22/thread-process/" class="post-title-link" itemprop="url">简单介绍多进程和多线程服务器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-22 20:19:23" itemprop="dateCreated datePublished" datetime="2018-03-22T20:19:23+08:00">2018-03-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="首先贴下多进程单线程和单进程多线程的特点："><a href="#首先贴下多进程单线程和单进程多线程的特点：" class="headerlink" title="首先贴下多进程单线程和单进程多线程的特点："></a>首先贴下多进程单线程和单进程多线程的特点：</h1><p>多进程：有独立的地址空间，进程之间不共享内存和变量，但可以通过共享内存实现，每个进程只有一个线程，一般用于单机系统开发。<br>多线程：在同一个进程下所有线程可以共享内存和变量。<br>而共同点是，同开辟的进程数/线程数多余系统cpu核数时，无法继续提供应用的性能。<br>而多线程架构的服务器，只要适当将一些任务分出来用新的进程启动，就可以扩展成分布式架构，使用tcp通信即可。当然多进程也可以这么干，通信方式也是使用tcp。<br>而操作系统对于线程的切换是比进程的切换要快。</p>
+<h1 id="下面先介绍下多进程单线程服务器架构，以单机系统为例："><a href="#下面先介绍下多进程单线程服务器架构，以单机系统为例：" class="headerlink" title="下面先介绍下多进程单线程服务器架构，以单机系统为例："></a>下面先介绍下多进程单线程服务器架构，以单机系统为例：</h1><p>下贴架构图：<br><img src="http://oxcvfpext.bkt.clouddn.com/thread-process-1.png"><br>一个游戏服大概就有这几个进程。<br>router:作用如其名，路由。每个功能进程启动时，会先连接router,router会给连上来的进程分配一个唯一标识，所有功能进程都是靠这个router进程通信。<br>login:登录服务器，client登录验证在这个进程进行。<br>login:玩家单人逻辑操作处理进程，login会将登录的玩家平台到这些logic上。<br>global_login:全局操作进程，多人玩法的功能，例如战斗匹配，工会等操作会放在这里进行。<br>log:游戏日志输出进程，所有功能进程的日志输出都发到这个进程，log进程会输出到磁盘文件。<br>db:redis作为内存数据库，Mysql作为数据持久化，其它功能进程取数据都会发送请求到db。<br>back:后台进程，集成了一个http服务器。处理http请求，这里可以集成一些第三方服务功能，如gm指令。</p>
+<p>以上每个进程都是单线程，所以无需考虑锁的问题。<br>对于每个进程收发数据：<br>    发数据：直接把{target_id:data}发送到router<br>    收数据：帧驱动，如100ms主动向router询问是否有数据，有则取过来处理。<br>单机系统下，如果采用共享内存方式，通信效率将非常高。<br>所以多进程的服务器架构设计起来还是比较简单的。</p>
+<h1 id="在介绍下多线程服务器架构，这里我想介绍actor模型。"><a href="#在介绍下多线程服务器架构，这里我想介绍actor模型。" class="headerlink" title="在介绍下多线程服务器架构，这里我想介绍actor模型。"></a>在介绍下多线程服务器架构，这里我想介绍actor模型。</h1><p><img src="http://oxcvfpext.bkt.clouddn.com/thread-process-2.png"><br>一个Actor指的是一个最基本的计算单元。它能接收一个消息并且基于其执行计算。<br>这个理念很像面向对象语言，一个对象接受一条消息（方法调用），然后根据接受的消息做事（调用了哪个方法）。<br>Actors一大重要特征在于actors之间相互隔离，它们并不互相共享内存。这点区别于上述的对象。也就是说，一个actor能维持一个私有的状态，并且这个状态不可能被另一个actor所改变。<br>每个Actor都有一个邮箱，用于接受其他actor发送的消息。</p>
+<p>这里重点讲一下Actor模型的调度是怎样做的。<br>Actor模型实际上可以有成千上万个，但目前一台通用服务器最多只有24核，当然不可能也开成千上万个线程。</p>
+<p>我们可以把Actor简单想象成这样一个类实例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Actor</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">process_1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">process_2</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fetch_msg</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> actor_id;</span><br><span class="line">        <span class="built_in">string</span> actor_name;</span><br><span class="line">        <span class="built_in">list</span>&lt;msg&gt; msg_queue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>每个Actor定义了自己实现的功能(process_1,process_2)<br>当msg_queue邮箱有消息到来的时候，就调用fetch_msg取获取这些消息进程处理。<br>这一步就靠调度线程来做了。</p>
+<p>Actor模型的调度实现起码要有：<br>    1.一个位于主线程的Actor队列，如global_queue<actor*> gq,当某个Actor收到消息时，就会被放进这个gp，等待工作线程进行调度。<br>    2.n个工作线程，这个就要根据机器的核数来决定开多少个了，例如只是一台双核的机器，那么开一个就好了，开多了会浪费时间在线程切换上，得不尝试。<br>每个工作线程做的事件很简单，向主线程询问任务，获取任务，处理任务，然后又继续询问，大致如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="literal">true</span>)</span><br><span class="line">&#123;</span><br><span class="line">    task_list = fetch_task();</span><br><span class="line">    process_task(task_list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></actor*></p>
+<p>所以一个Actor的创建和调度过程如下：<br>1.在主线程创建并放入管理列表<br>2.其他actor往本actor发送消息，消息进入msg_queue,本actor进入global_queue等待调度。<br>3.有工作线程处理完一堆任务了，向主线程询问任务，主线程把本actor分配给这个工作线程。<br>4.该工作线程取出msg，调用actor相应处理函数处理这个消息。</p>
+<p>所以可见，actor数目于工作线程数目没有必然的关系，当然理想状态是，每个actor都有自己的处理线程，这里有消息来到时，就可以马上处理，不用等待。</p>
+<p>理论上，actor开的越多，业务逻辑就分的越细，每次处理的时间就越短，只要actor的数目超过线程数，就可以最大限度利用多核的优势，cpu的调度就越充分。所以actor模型设计关键在于如何将业务逻辑平摊到更多的actor上，而不是集中，例如上面提到global_logic是多人玩法的业务逻辑，只要一细分，可以分成帮会actor,组队actor,战斗actor等等，这样三个消息同时就有机会被三个cpu处理，而不是固定只有一个。</p>
+<p>Actor可以理解成用户级别的进程，于操作系统级别的进程分离，即使开很多Actor，只要工作线程数目设计合理（&lt;=系统cpu核数),就能保证线程能一直在同一个cpu上进行操作，减少线程切换的消耗，这对于cpu核数小的机器非常游泳，而对于像24核的机器，因为开辟的线程数是配置的，所以也很好规划一台机器能部署多少个服。<br>而多线程如果要对某些功能进程扩展，如增加login,增加Logic,就是要增加一个系统线程，一旦进程超过cpu核，就会有时间浪费在切换线程上了，这是一个缺点。<br>而Actor模型本身是优秀的，但是Actor的调度算法会有很多中实现，而且必然涉及到锁的涉及，这就需要设计者的设计功力了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/21/JVM-heap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/21/JVM-heap/" class="post-title-link" itemprop="url">JVM的新生代、老年代、MinorGC、MajorGC</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-21 17:30:17" itemprop="dateCreated datePublished" datetime="2018-03-21T17:30:17+08:00">2018-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>JVM中的堆，一般分为三大部分：新生代、老年代、永久代：<br>一、新生代<br>主要时用来存放新生的对象。一般占据堆的1/3空间。由于频繁创建对象，所以新生代会频繁发MinorGC进行垃圾回收。<br>新生代又分为Eden区、ServivorFrom、ServivorTo三个区。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/21/JVM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -629,229 +840,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/18/openresty/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/18/openresty/" class="post-title-link" itemprop="url">openresty</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-18 14:03:37" itemprop="dateCreated datePublished" datetime="2018-03-18T14:03:37+08:00">2018-03-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>/usr/local/openresty/luajit:luajit环境，luajit类似于java的jit,即即时编译，lua是一种解释语言，通过luajit可以即时编译lua代码到机器代码，得到很好的性能。<br>/usr/local/openresty/lualib:要使用的lua库，里边提供了一些默认的lua库，如redis,json库等，也可以把自己开发的或者第三方放在这；<br>/usr/local/openresty/nginx:安装的nginx</p>
-<p>/usr/local/openresty/nginx/sbin/nginx -V     查看nginx版本和安装的模块</p>
-<h1 id="启动-nginx"><a href="#启动-nginx" class="headerlink" title="启动 nginx"></a>启动 nginx</h1><pre><code>nginx -p `pwd`/ -c conf/nginx.conf
-</code></pre><h1 id="重启nginx"><a href="#重启nginx" class="headerlink" title="重启nginx"></a>重启nginx</h1><pre><code>/usr/local/openresty/nginx/sbin/nginx -s reload
-</code></pre><h1 id="nginx-pid-no-file"><a href="#nginx-pid-no-file" class="headerlink" title="nginx.pid no file"></a>nginx.pid no file</h1><p>nginx -c /home/www/conf/nginx.conf</p>
-<h1 id="add-header-directive-is-not-allowed-here-in"><a href="#add-header-directive-is-not-allowed-here-in" class="headerlink" title="add_header directive is not allowed here in"></a>add_header directive is not allowed here in</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/13/Unity-PGK/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/13/Unity-PGK/" class="post-title-link" itemprop="url">Unity打包详细流程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-13 18:00:36" itemprop="dateCreated datePublished" datetime="2018-03-13T18:00:36+08:00">2018-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>打包策略：按照目录划分<br>目录进行分类<br>配置文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;AssetBundleInfo&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;ui.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Art/ResExport/GUI/&quot;,</span><br><span class="line">                &quot;Art/GUI/Atlas/&quot;,</span><br><span class="line">                &quot;res/GUI/res/&quot;,</span><br><span class="line">                &quot;res/GUI/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;ui_font.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/GUI/res/Font/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;particles.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/Particles/&quot;,</span><br><span class="line">                &quot;Art/Particles/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;gfx.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/FX/&quot;,</span><br><span class="line">                &quot;res/SkillWarning/&quot;,</span><br><span class="line">                &quot;res/Shader/&quot;,</span><br><span class="line">                &quot;PluginsScripts/NGUI/Resources/Shaders/&quot;,</span><br><span class="line">                &quot;Art/Graphics/shader/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;misc.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Art/&quot;,</span><br><span class="line">                &quot;res/&quot;,</span><br><span class="line">                &quot;Resources/&quot;,</span><br><span class="line">                &quot;Plugins/&quot;,</span><br><span class="line">                &quot;PluginsScripts/&quot;,</span><br><span class="line">                &quot;Models/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: .bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Scenes/Assets Skyboxes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;scenes.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/Scenes/&quot;,</span><br><span class="line">                &quot;Scenes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;PackageInfo&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;cfg&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;cfg/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;lang&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Art/lang&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;code&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;cfg/&quot;,</span><br><span class="line">                &quot;mb/&quot;,</span><br><span class="line">                &quot;Lua/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;gfx&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;FX/&quot;,</span><br><span class="line">                &quot;MaterialEx/&quot;,</span><br><span class="line">                &quot;Shader/&quot;,</span><br><span class="line">                &quot;SkillWarning/&quot;,</span><br><span class="line">                &quot;Textures/&quot;,</span><br><span class="line">                &quot;Still/&quot;,</span><br><span class="line">                &quot;bones/&quot;,</span><br><span class="line">                &quot;weapons/&quot;,</span><br><span class="line">                &quot;Equips/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;gui&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;GUI/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;particles&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Particles/&quot;,</span><br><span class="line">                &quot;Assets/Art/Particles/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Scenes/&quot;,</span><br><span class="line">                &quot;scn/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;sounds&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Sounds/&quot;,</span><br><span class="line">                &quot;Assets/Art/Sounds/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;animations&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Animations/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes_mesh&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Art/Scene/_Mesh/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes_assets&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Scenes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;models&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Models/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;misc&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;pandora&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;pandora/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>不使用Resources的原因是，打包程序的时候会将Resources目录下的全部文件都加密压缩达到包内，这样如果我们想使用assetbundle方式打小包就不行了（比如更新包）。<br>1.多语言文件先导入<br>2.根据配置文件生成包信息，AssetBundleInfo,AssetBundleIndex<br>3.处理Res目录资源<br>4.AssetDatabase.GetDependencies<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> nameParam = <span class="keyword">new</span> <span class="keyword">string</span>[<span class="number">1</span>];</span><br><span class="line"><span class="function"><span class="keyword">string</span>[] <span class="title">GetDirectDeps</span>(<span class="params"><span class="keyword">string</span> uri</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    DepInfo depInfo = <span class="keyword">new</span> DepInfo();</span><br><span class="line">    nameParam[<span class="number">0</span>] = uri;</span><br><span class="line">    <span class="keyword">var</span> deps = AssetDatabase.GetDependenices(nameParem, <span class="literal">true</span>);<span class="comment">//查找这个资源引用了哪些资源,cs和js文件不用处理</span></span><br><span class="line">    depInfos[uri] = depInfo;<span class="comment">//global</span></span><br><span class="line">    <span class="keyword">return</span> deps;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">string</span>[] <span class="title">MakeDepends</span>(<span class="params"><span class="keyword">string</span> uri</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> deps = GetDirectDeps(uri);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addPkgFile</span>(<span class="params"><span class="keyword">string</span> filePath, <span class="keyword">bool</span> isCompress, <span class="keyword">string</span> accessPath, <span class="keyword">byte</span> fileType, <span class="keyword">byte</span> loadType</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    accessPath = accessPath.ToLower();</span><br><span class="line">    PkgInfo.FileInfo fileInfo = NewPkgFileInfo(filePath, isCompress, accessPath, )</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator <span class="title">ProcessSounds</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    titleText = <span class="string">"处理音频"</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">string</span> soundsDir = Application.dataPath + <span class="string">"/Art/Sounds"</span>;</span><br><span class="line">    <span class="keyword">if</span> (System.IO.Exists(soundsDir))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> rootSize = Application.dataPath.Length - <span class="number">6</span>;<span class="comment">//Assets</span></span><br><span class="line">        <span class="keyword">string</span>[] file = System.IO.Directory.GetFiles(soundsDir, <span class="string">"*.bank"</span>, SearchOption.AllDirectories);</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> file <span class="keyword">in</span> files)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">string</span> path = file.SubString(rootSize).ToLower().Replace(<span class="string">'\\'</span>, <span class="string">'/'</span>);</span><br><span class="line">            addPkgFile(path, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            addFileProcessed.Add(path);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator <span class="title">DoProcess</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return <span class="title">ProcessRes</span>(<span class="params">resUri</span>)</span>;</span><br><span class="line">    <span class="keyword">if</span> (!isRuning) <span class="keyword">yield</span> <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return <span class="title">ProcessSounds</span>(<span class="params"></span>)</span>;<span class="comment">//smod,因为unity自带的容易崩溃</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h1 id="打包常见问题整理"><a href="#打包常见问题整理" class="headerlink" title="打包常见问题整理"></a>打包常见问题整理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line">CommandInvokationFailure: Gradle build failed. </span><br><span class="line">C:\Program Files\Unity_2018.3.0f2\Editor\Data\PlaybackEngines\AndroidPlayer/Tools\OpenJDK\Windows\bin\java.exe -classpath &quot;C:\Program Files\Unity_2018.3.0f2\Editor\Data\PlaybackEngines\AndroidPlayer\Tools\gradle\lib\gradle-launcher-4.6.jar&quot; org.gradle.launcher.GradleMain &quot;-Dorg.gradle.jvmargs=-Xmx4096m&quot; &quot;assembleRelease&quot;</span><br><span class="line"></span><br><span class="line">stderr[</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">A problem occurred configuring root project &apos;gradleOut&apos;.</span><br><span class="line">&gt; Could not resolve all artifacts for configuration &apos;:classpath&apos;.</span><br><span class="line">   &gt; Could not download bcpkix-jdk15on.jar (org.bouncycastle:bcpkix-jdk15on:1.56)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download bcprov-jdk15on.jar (org.bouncycastle:bcprov-jdk15on:1.56)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download fastutil.jar (it.unimi.dsi:fastutil:7.2.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jimfs.jar (com.google.jimfs:jimfs:1.1)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download guava.jar (com.google.guava:guava:23.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download gson.jar (com.google.code.gson:gson:2.8.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download httpclient.jar (org.apache.httpcomponents:httpclient:4.5.2)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download httpcore.jar (org.apache.httpcomponents:httpcore:4.4.5)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download kotlin-reflect.jar (org.jetbrains.kotlin:kotlin-reflect:1.2.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download antlr4.jar (org.antlr:antlr4:4.5.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download juniversalchardet.jar (com.googlecode.juniversalchardet:juniversalchardet:1.0.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download kotlin-stdlib.jar (org.jetbrains.kotlin:kotlin-stdlib:1.2.20)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.20/kotlin-stdlib-1.2.20.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.20/kotlin-stdlib-1.2.20.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download proguard-base.jar (net.sf.proguard:proguard-base:6.0.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download auto-value.jar (com.google.auto.value:auto-value:1.5.2)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download protobuf-java.jar (com.google.protobuf:protobuf-java:3.4.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jdom2.jar (org.jdom:jdom2:2.0.6)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download commons-compress.jar (org.apache.commons:commons-compress:1.12)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download commons-codec.jar (commons-codec:commons-codec:1.9)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/commons-codec/commons-codec/1.9/commons-codec-1.9.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/commons-codec/commons-codec/1.9/commons-codec-1.9.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jaxb-runtime.jar (org.glassfish.jaxb:jaxb-runtime:2.2.11)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.2.11/jaxb-runtime-2.2.11.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.2.11/jaxb-runtime-2.2.11.jar&apos;.</span><br><span class="line">            &gt; Remote host closed connection during handshake</span><br><span class="line">   &gt; Could not download FastInfoset.jar (com.sun.xml.fastinfoset:FastInfoset:1.2.13)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.13/FastInfoset-1.2.13.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.13/FastInfoset-1.2.13.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line"></span><br><span class="line">* Try:</span><br><span class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.</span><br><span class="line"></span><br><span class="line">* Get more help at https://help.gradle.org</span><br><span class="line"></span><br><span class="line">BUILD FAILED in 5m 15s</span><br><span class="line">]</span><br><span class="line">stdout[</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.2.0/gradle-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.2.0/lint-gradle-api-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler-common/3.2.0/databinding-compiler-common-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.2.0/builder-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.2.0/gradle-api-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.2.0/shared-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/bundletool/0.5.0/bundletool-0.5.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/jetifier/jetifier-core/1.0.0-alpha10/jetifier-core-1.0.0-alpha10.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/jetifier/jetifier-processor/1.0.0-alpha10/jetifier-processor-1.0.0-alpha10.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/crash/26.2.0/crash-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-analysis/6.0/asm-analysis-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm/6.0/asm-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-commons/6.0/asm-commons-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-gradle/6.0.3/proguard-gradle-6.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-util/6.0/asm-util-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-parent/6.0/asm-parent-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-parent/6.0.3/proguard-parent-6.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/ow2/1.3/ow2-1.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/sonatype/oss/oss-parent/7/oss-parent-7.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.2.0/sdk-common-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/common/26.2.0/common-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.2.0/tracker-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.2.0/protos-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.2.0/manifest-merger-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.2.0/sdklib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.2.0/builder-model-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.2.0/apkzlib-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.2.0/apksig-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.2.0/builder-test-api-3.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-tree/6.0/asm-tree-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.2.0/annotations-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/gson/gson-parent/2.8.0/gson-parent-2.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/guava/guava-parent/23.0/guava-parent-23.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpmime/4.5.2/httpmime-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-client/4.5.2/httpcomponents-client-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-core/4.4.5/httpcomponents-core-4.4.5.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/project/7/project-7.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/13/apache-13.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/databinding/baseLibrary/3.2.0/baseLibrary-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-common/3.2.0/databinding-common-3.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-io/commons-io/2.4/commons-io-2.4.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/squareup/javapoet/1.8.0/javapoet-1.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-parent/25/commons-parent-25.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/antlr/antlr4-master/4.5.3/antlr4-master-4.5.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/sonatype/oss/oss-parent/9/oss-parent-9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/9/apache-9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.0/kotlin-stdlib-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2-proto/0.3.1/aapt2-proto-0.3.1.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.2.0/error_prone_annotations-2.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/auto/auto-parent/3/auto-parent-3.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-parent/3.4.0/protobuf-parent-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.2.0/error_prone_parent-2.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/google/1/google-1.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.2.0/dvlib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.2.0/layoutlib-api-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.2.0/repository-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-parent/39/commons-parent-39.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/16/apache-16.pom</span><br><span class="line">Download https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-logging/commons-logging/1.2/commons-logging-1.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-codec/co&lt;message truncated&gt;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/13/Mono-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/13/Mono-1/" class="post-title-link" itemprop="url">Mono-1</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-13 12:20:06" itemprop="dateCreated datePublished" datetime="2018-03-13T12:20:06+08:00">2018-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Mono主要包含了C#的编译器，CLI(Common Language Infrastructure)实现和一系列相关的开发工具。</p>
-<h1 id="源码结构"><a href="#源码结构" class="headerlink" title="源码结构"></a>源码结构</h1><p>msc:<br>    msc: Mono实现的基于Ecma标准的C#编译器。<br>    class:CLI的C#的实现。类似于Android中的Java蹭，应用程序看到的是这一层提供的接口。这一层是平台无关的。<br>    ilasm:反汇编器，将Native code反汇编成bytecode。<br>mono:<br>    mini:JIT编译器，将bytecode编译成native code。<br>    metadata:Mono的runtime,CLI的Native级的下实现。<br>    io-layer:与操作系统的接口实现，像socket,thread,mutex这些。<br>liggc:GC实现的一部分。</p>
-<h1 id="Mono主要工作框架"><a href="#Mono主要工作框架" class="headerlink" title="Mono主要工作框架"></a>Mono主要工作框架</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">mini/main.c:main()</span><br><span class="line">    mono_main_with_options()</span><br><span class="line">        mono_mian()</span><br><span class="line">            mini_ini()</span><br><span class="line">            mono_assembly_open()</span><br><span class="line">            main_thread_handler()//assembly(也就是bytecode)的编译执行</span><br><span class="line">            mini_cleanup()</span><br><span class="line">main_thread_handler()</span><br><span class="line">    mono_jit_exec()</span><br><span class="line">        mono_assembly_get_image()//得到image信息，如&quot;test.ext&quot;</span><br><span class="line">        mono_image_get_entry_point()//得到类，方法信息</span><br><span class="line">        mono_runtime_run_main(method,argc,argv,NULL)</span><br><span class="line">            mono_thread_set_main(mono_thread_current());//把当前线程设为主线程</span><br><span class="line">            mono_assembly_set_main()</span><br><span class="line">            mono_runtime_exec_main() //编译及调用目标方法</span><br><span class="line">mono_runtime_exec_main()</span><br><span class="line">    mono_runtime_invoke(method, NULL, pa, exc)//要调用的方法，如&quot;ClassName::Main()&quot;</span><br><span class="line">        default_mono_runtime_invoke()//实际上是调用了mono_jit_runtime_invoke()</span><br><span class="line">            info-&gt;compiled_method = mono_jit_compile_method_with_opt(method)//编译目标函数</span><br><span class="line">            info-&gt;runtime_invoke = mono_jit_compile_method()//编译目标函数的runtime wrapper</span><br><span class="line">                mono_jit_compile_method_with_opt(method,default_opt,&amp;ex)</span><br><span class="line">            runtime_invoke=info-&gt;runtime_invoke</span><br><span class="line">            runtime_invoke(obj,pararms,exc,info-&gt;compiled_method)//调用wrapper,wrapper会调用目标方法</span><br><span class="line">mono_jit_compile_method_with_opt()</span><br><span class="line">    mono_jit_compile_method_inner()</span><br><span class="line">        mini_method_compile(method, opt, target_domain, TRUE, FALSE, 0)//通过JIT编译给定方法</span><br><span class="line">        mono_runtime_class_init_full()//初始化方法所在对象</span><br><span class="line">            method=mono_class_get_cctor()//得到类的构造函数</span><br><span class="line">            if(do_initialization)//对象需要初始化</span><br><span class="line">                mono_runtime_invoke()//调用相应构造函数来构造对象，如&quot;System.console:.cctor()&quot;</span><br><span class="line">                    mono_jit_runtime_invoke()</span><br></pre></td></tr></table></figure>
-<h1 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h1><p>垃圾回收(GC)是CLI中很重要的部分，</p>
-<h1 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h1><p>应用程序或者Mono runtime中的一些异步恩物可以交由单独线程完成。Mono中提供了两个线程池:async_tp和async_io_tp。往线程池加线程函数为threadpool_append_jobs()，当第一次试图往里边加线程时，会进行初始化，起一个”Monitor”线程(该线程执行monotor_thread())。现在假设</p>
-<h1 id="Mono内存"><a href="#Mono内存" class="headerlink" title="Mono内存"></a>Mono内存</h1><p>内存占用：</p>
-<ol>
-<li>库代码：Unity库、第三方库</li>
-<li>Native堆：资源、Unity逻辑、第三方逻辑</li>
-<li>Mono堆：C#代码</li>
-</ol>
-<p>Unity游戏逻辑代码所使用的语言为C#，我们知道C#代码所占用的内存又称为mono内存，由于Unity它是通过mono来跨平台解析并运行C#代码的，它在Android系统上面，因此游戏的lib目录下存在的libmono.so文件，就是mono在Android系统上的实现。</p>
-<p>C#的代码是通过mono来解析执行的，所需要的内存字然也是由mono来进行分配管理，下面来介绍一个mono的内存管理策略以及内存泄漏分析。</p>
-<h1 id="Mono内存管理的基本策略"><a href="#Mono内存管理的基本策略" class="headerlink" title="Mono内存管理的基本策略"></a>Mono内存管理的基本策略</h1><p>Mono通过垃圾回收机制(GarbageCollect，简称GC)堆内存进行管理。Mono内存分为两部分，已用内存(used)和堆内存(heap)，已用内存它指的是mono实际需要使用的内存，堆内存指的是mono向操作系统申请的内存，两者的差值就是mono的空闲内存。</p>
-<p>当mono需要分配内存时，首先是会查看空闲内存是否足够，若足够的话，则是直接在空闲内存中分配，否则mono会进行一次GC以释放更多的内存，如果GC之后仍然没有足够的空闲内存，则mono会向操作系统申请内存，并扩充堆内存。</p>
-<p>C/C++ Mono运行时 托管代码(CIL)</p>
-<p>将Mono运行时潜入应用，可以分为三个步骤：</p>
-<ol>
-<li>编译C++程序和链接</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/25/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><span class="page-number current">26</span><a class="page-number" href="/page/27/">27</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/27/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -917,7 +909,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -928,7 +920,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

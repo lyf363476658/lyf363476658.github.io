@@ -145,6 +145,247 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/10/EventSource/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/10/EventSource/" class="post-title-link" itemprop="url">EventSource</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-10 14:03:59" itemprop="dateCreated datePublished" datetime="2019-05-10T14:03:59+08:00">2019-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GameFramework/" itemprop="url" rel="index"><span itemprop="name">GameFramework</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li>原则上不会出现托管堆数据，不会List接口，数据统一申请，按需释放。</li>
+<li>充分利用CPU，防止让线程之间切换时间片的发生。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/10/csharp-thread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/10/csharp-thread/" class="post-title-link" itemprop="url">CSharp Thread</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-10 11:22:20" itemprop="dateCreated datePublished" datetime="2019-05-10T11:22:20+08:00">2019-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CSharp/" itemprop="url" rel="index"><span itemprop="name">CSharp</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="IsBackground"><a href="#IsBackground" class="headerlink" title="IsBackground"></a>IsBackground</h1><p>A thread is either a background thread or a foreground thread.Background threads are identical to foreground threads,except that background threads do not prevent a process from terminating.<br>通过Thread类新建线程默认为前台线程。当所有前台线程关闭时，所有的后台线程也会被直接终止，不会抛出异常。</p>
+<h1 id="Thread-sleep-0"><a href="#Thread-sleep-0" class="headerlink" title="Thread.sleep(0)"></a>Thread.sleep(0)</h1><p>在Java或者C#中，都会用到Thread.Sleep()来使线程挂起一段时间。<br>那么你有没有正确的理解这个方法的用法呢？思考下面这两个问题：</p>
+<ol>
+<li>假设现在2019-5-13 17:00:00.000，如果我调用一下Thread.Sleep(1000)，在2019-5-13 17:00:01.000的时候，这个线程会不会被唤醒？</li>
+<li>代码中添加：Thread.Sleep(0)。既然是Sleep 0毫秒，那么和去掉这句代码相比，有什么区别？</li>
+</ol>
+<p>首先回顾一下操作系统原理<br>在操作系统中，CPU竞争有很多种策略。Unix系统使用的是时间片算法，而Windows则属于抢占式的。<br>在时间片算法中，所有的进程拍成一个队列。操作系统按照他们顺序，给每个进程分配一段时间，即该进程允许运行的时间。<br>如果在时间片结束时进程还在运行，则CPU将被剥夺并分配给另一个进程。如果进程在时间片结束前阻塞或结束，则CPU当即进行切换。调度程序所要做的就是维护一张就绪进程列表，当进程用完它的时间片后，它被移到队列的末尾。<br>所谓抢占式操作系统，就是说如果一个进程得到了CPU时间，除非它自己放弃使用CPU，否则将完全霸占CPU。因此可以看出，在抢占式操作系统中，操作系统假设所有的进程都会主动退出CPU。<br>在抢占式操作系统中，假设有若干进程，操作系统会根据他们的优先级、饥饿时间（已经多长时间没有使用过CPU了），给他们算出一个总的优先级来。操作系统就会把CPU交给总优先级最高的这个进程。<br>当进程执行完毕或者自己主动挂起后，操作系统就会重新计算一次所有进程的总优先级，然后在挑一个优先级最高的把CPU控制权交给他。<br>我们用分蛋糕的场景来描述这两种算法。假设有源源不断的蛋糕（源源不断的时间），一副刀叉（一个CPU），10个等待吃蛋糕的人（10个进程）。<br>如果是Unix操作系统来负责分蛋糕，那么他会这样顶规定：每个人上来吃1分钟，时间到了换下一个。最后一个人吃完了就再从头开始。于是，不管这10个人是不是优先级不同、饥饿成都不同、饭量不同，每个人上来的时候都可以吃1分钟。当然，如果有人本来不太饿，或者饭量小，吃了30秒中之后就吃饱了，那么也可以跟操作系统说：我已经吃饱了（挂起）。于是操作系统就会让下一个人接着吃。<br>如果是Windows操作系统来负责分蛋糕的，那么场面就很有意思了。<br>他会这样顶规矩：我会根据你们的优先级、饥饿程序会给你们每个人计算一个优先级。<br>优先级最高的那个人，可以上来吃蛋糕，吃到你不想吃为止。等这个人吃完了，我再重新根据优先级、饥饿程序来计算每个人的优先级，然后再分给优先级最高的那个人。<br>这样看来，这个场面就很意思了，可能有些人是MM，因此具有高优先级，于是她就可以经常来吃蛋糕。可能另外一个人优先级特别低，于是好半天了才轮到他一次（因为随着时间的推移，他会越来越饥饿，因此算出来的总优先级就会越来越高，因此总有一天会轮到他）。而且，如果一不小心让一个大胖子得到了刀叉，因为他饭量大，可能他会霸占着蛋糕连续吃很久很久。<br>而且，还可能会有这种情况出现：操作系统现在计算出来的结果，5号MM总优先级最高，而且高出别人一大截。因此就叫5号来吃蛋糕。5号吃了一小会儿，觉得没那么饿了，于是说“我不吃了”（挂机）。因此操作系统就会重新计算所有人的优先级。因为5号刚刚吃过，因此她的饥饿程序变小了，于是总优先级变小了；而其他人因为多等了一会儿，饥饿程度都变大了，所以总优先级也变大了。<br>不过这时候仍然有可能5号的优先级比别的都搞，只不过现在只比其他的高一点点，但她仍然是总优先级最高的呀。因此操作系统就会说：5号MM上来吃蛋糕….（5号MM心里郁闷，这不刚吃过嘛，人家要减肥。。谁叫你长那么漂亮，获得了那么高的优先级）。<br>那么，Thread.Sleep()是干吗的呢？还用刚才的分蛋糕的场景来描述。<br>上面的场景里面，5号MM再吃了一次蛋糕之后，觉得已经有8分饱了，她觉得再未来半个小时之内不想再来吃蛋糕了，那么她就会跟操作系统说：再未来的半小时之内不要叫我上来吃蛋糕了。这样，操作系统再随后的半小时里面重新计算所有人总优先级的时候，就会忽略5号MM。Sleep函数就是干这事的，他告诉操作系统“在未来的多少毫秒内我不参与CPU竞争”。<br>看完了Thread.Sleep()的作用，再来考虑前面的两个问题。<br>对于第一个问题，答案是：不一定，因为你只是告诉操作系统：在未来的1000毫秒内我不想再参与到PU竞争。那么1000毫秒过去之后，这时候也许另外一个线程正在使用CPU。<br>那么这时候操作系统是不会重新分配CPU的，直到那个线程挂起或结束；<br>况且，即使这个时候恰巧轮到操作系统进行CPU分配，那么当前线程也不一定就是总优先级最高的那个，CPU还是可能被其他线程抢占去。<br>与此相似的，Thread有个Resume()，用来唤醒挂起的线程。当然，这个函数只是“告诉操作系统我从现在开始参与CPU竞争了”，这个函数的调用并不能马上使得这个线程获得CPU的控制权。<br>不过，因为具有死锁倾向，JDK1.6以后已经不赞成是使用Thread.stop、Thread.suspend、Thread.resume。<br>对于第二个问题，答案是：有，而且区别很明显，假如我们刚才的分蛋糕场景里面，有另外一个MM7号，而且饭量也很大。<br>不过7号人品很好，她很善良，她没吃几口就会想：如果现在有别人比我更需要吃蛋糕，那么我就让他。因此，她可以每吃几口就跟操作系统说：我们来重新计算一下所有人的总优先级吧。<br>不过，操作系统不接受这个建议，因为操作系统不提供这个接口。于是7号就换了个说法：“再未来0毫秒之内不要再叫我上来吃蛋糕了”。<br>这个指令时操作系统接受的，于是此时操作系统就会重新计算大家的总优先级，注意这个时候是连7号一起计算的，因为“0毫秒已经过去了”嘛。因此如果没有比7号更需要吃蛋糕的人出现，那么下一次7号还是会被叫上来吃蛋糕。<br>因此，Thread.Sleep(0)的作用，就是“触发操作系统立刻重新进行一次CPU竞争”。<br>竞争的结果也许是当前线程仍然获得CPU控制权，也许会换成别的线程获得CPU控制权。<br>这也是我们再大循环里面经常会写一句Thread.Sleep(0)，因为这样就给了其他线程比如Paint线程获得CPU控制的权力，这样界面就会不会假死再那里。<br>另外，虽然上面提到说“除非它自己放弃使用CPU，否则将完全霸占CPU”<br>但这个行为仍然是收到制约的，操作系统会监控你霸占CPU的情况，如果发现某个线程长时间霸占CPU，会强制使用这个线程挂起。<br>因此实际上不会出现“一个线程一直霸占着CPU不放”的情况。其实再Windwos原理层面，CPU竞争都是线程级的，本文中把这里的线程、进程看成一个东西就可以了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/10/loadfromfileasyncandyield/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/10/loadfromfileasyncandyield/" class="post-title-link" itemprop="url">LoadFromFileAsync和Yield的问题探究</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-10 09:11:21" itemprop="dateCreated datePublished" datetime="2019-05-10T09:11:21+08:00">2019-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="问题提出"><a href="#问题提出" class="headerlink" title="问题提出"></a>问题提出</h1><p>昨晚临下班的时候在同时讨论到Unity的资源异步加载接口是否是多线程的时候，然后自己发了一份源自网上的测试文档，地址：<a href="https://github.com/zentia/UnityDemo" target="_blank" rel="noopener">https://github.com/zentia/UnityDemo</a><br>然后群里开始讨论这个问题，根据文档出现两个分歧</p>
+<ol>
+<li>LoadFormFileAsync是否是多线程实现的？</li>
+<li>yield 即协程是否是多线程实现的？</li>
+</ol>
+<p>带着上述两个问题，我们开始分析和验证。</p>
+<h1 id="验证与分析"><a href="#验证与分析" class="headerlink" title="验证与分析"></a>验证与分析</h1><h2 id="LoadFormFileAsync是否是多线程？"><a href="#LoadFormFileAsync是否是多线程？" class="headerlink" title="LoadFormFileAsync是否是多线程？"></a>LoadFormFileAsync是否是多线程？</h2><p>测试环境：Unity 2018.3<br>测试平台：Windows(由于没有Android打包环境和设备，暂时选Windows)<br>测试工程：<a href="https://github.com/zentia/UnityDemo" target="_blank" rel="noopener">https://github.com/zentia/UnityDemo</a><br><img src="/2019/05/10/loadfromfileasyncandyield/1.png"><br><img src="/2019/05/10/loadfromfileasyncandyield/2.png"><br><img src="/2019/05/10/loadfromfileasyncandyield/6.png"><br>好吧，是图片不具有代表性吗？那我们换大点的图片。<br><img src="/2019/05/10/loadfromfileasyncandyield/3.png"> <img src="/2019/05/10/loadfromfileasyncandyield/4.png"> <img src="/2019/05/10/loadfromfileasyncandyield/5.png"><br>从结果来看，我认为LoadFromFileAsync内部是多线程实现的。协程不具备多线程的功能。<br>我们来分析协程，下面是4.7的源码</p>
+<h2 id="Coroutine"><a href="#Coroutine" class="headerlink" title="Coroutine"></a>Coroutine</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"UnityPrefix.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Coroutine.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> ENABLE_SCRIPTING</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Misc/AsyncOperation.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Mono/MonoBehaviour.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Mono/MonoScript.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Mono/MonoIncludes.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Mono/MonoManager.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/GameCode/CallDelayed.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Export/WWW.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Scripting/ScriptingUtility.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Scripting/Backend/ScriptingBackendApi.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Scripting/ScriptingObjectWithIntPtrField.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> UNITY_IPHONE_API</span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Input/OnScreenKeyboard.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Runtime/Scripting/Backend/ScriptingBackendApi.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// copied from MonoBehaviour.cpp</span></span><br><span class="line"><span class="comment">// if they should be synced - blame the author not me ;-)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEBUG_COROUTINE 0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEBUG_COROUTINE_LEAK 0</span></span><br><span class="line"></span><br><span class="line">Coroutine::Coroutine()</span><br><span class="line">    : m_DoneRunning(<span class="literal">false</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> coroutineCounter = <span class="number">0</span>;</span><br><span class="line">    coroutineCounter++;</span><br><span class="line">    printf_console(<span class="string">"Allocating coroutine %d --- %d : 0x%x\n"</span>, <span class="keyword">this</span>, coroutineCounter, &amp;m_RefCount);</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Coroutine::~Coroutine()</span><br><span class="line">&#123;</span><br><span class="line">    Assert(m_CoroutineEnumeratorGCHandle == <span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE</span></span><br><span class="line">    printf_console(<span class="string">"Deconstructor coroutine %d\n"</span>, <span class="keyword">this</span>);</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Coroutine::SetMoveNextMethod(ScriptingMethodPtr method)</span><br><span class="line">&#123;</span><br><span class="line">    m_MoveNext = method;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Coroutine::SetCurrentMethod(ScriptingMethodPtr method)</span><br><span class="line">&#123;</span><br><span class="line">    m_Current = method;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Coroutine::ContinueCoroutine (Object* o, <span class="keyword">void</span>* userData)</span><br><span class="line">&#123;</span><br><span class="line">    Coroutine* coroutine = (Coroutine*)userData;</span><br><span class="line">    Assert(coroutine-&gt;m_RefCount &gt; <span class="number">0</span> &amp;&amp; coroutine-&gt;m_RefCount &lt; <span class="number">1000000</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> ((Object*)coroutine-&gt;m_Behaviour != o)</span><br><span class="line">    &#123;</span><br><span class="line">        ErrorString(<span class="string">"Coroutine continue failure"</span>);</span><br><span class="line">        <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE</span></span><br><span class="line">        <span class="keyword">if</span> ((Object*)coroutine-&gt;m_Behaviour != o)</span><br><span class="line">        &#123;</span><br><span class="line">            printf_console (<span class="string">"continue Coroutine fuckup %d refcount: %d behaviour: %d \n"</span>, coroutine, coroutine-&gt;m_RefCount, coroutine-&gt;m_Behaviour);</span><br><span class="line">            printf_console (<span class="string">"continue Coroutine fuckup name: %s methodname\n"</span>, ((MonoBehaviour*)(o))-&gt;GetScript()-&gt;GetName());</span><br><span class="line">            <span class="keyword">if</span> (coroutine-&gt;m_CoroutineMethod)</span><br><span class="line">                printf_console (<span class="string">"continue Coroutine methodname: %s\n"</span>, scripting_method_get_name(coroutine-&gt;m_CoroutineMethod));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    coroutine-&gt;Run ();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Coroutine::CleanupCoroutine (<span class="keyword">void</span>* userData)</span><br><span class="line">&#123;</span><br><span class="line">    Coroutine* coroutine = (Coroutine*)userData;</span><br><span class="line">    AssertIf(coroutine-&gt;m_RefCount &lt;= <span class="number">0</span>);</span><br><span class="line">    AssertIf(coroutine-&gt;m_RefCount &gt; <span class="number">1000000</span>);</span><br><span class="line">    coroutine-&gt;m_RefCount--;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE</span></span><br><span class="line">    printf_console(<span class="string">"decrease refcount %d - active: %d \n"</span>, coroutine, coroutine-&gt;m_RefCount);</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (coroutine-&gt;m_RefCount &gt; <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    coroutine-&gt;m_DoneRunning = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE</span></span><br><span class="line">    printf_console (<span class="string">"CleanupCoroutine %d\n"</span>, coroutine);</span><br><span class="line">    <span class="keyword">if</span> (coroutine-&gt;m_Behaviour &amp;&amp; GetDelayedCallManager().HasDelayedCall(coroutine-&gt;m_Behaviour, Coroutine::ContinueCoroutine, CompareCoroutineMethodName, coroutine))</span><br><span class="line">    &#123;</span><br><span class="line">        printf_console (<span class="string">"FUCKUP is still in delayed call manager%d!\n"</span>, coroutine-&gt;m_Behaviour);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (coroutine-&gt;m_ContinueWhenFinished)</span><br><span class="line">    &#123;</span><br><span class="line">        CleanupCoroutine (coroutine-&gt;m_ContinueWhenFinished);</span><br><span class="line">        coroutine-&gt;m_ContinueWhenFinished = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (coroutine-&gt;m_WaitingFor)</span><br><span class="line">        coroutine-&gt;m_WaitingFor-&gt;m_ContinueWhenFinished = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">    coroutine-&gt;RemoveFromList();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (coroutine-&gt;m_AsyncOperation)</span><br><span class="line">    &#123;</span><br><span class="line">        coroutine-&gt;m_AsyncOperation-&gt;SetCoroutineCallback(<span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">        coroutine-&gt;m_AsyncOperation-&gt;Release();</span><br><span class="line">        coroutine-&gt;m_AsyncOperation = <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Assert(coroutine-&gt;m_CoroutineEnumeratorGCHandle != <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    scripting_gchandle_free (coroutine-&gt;m_CoroutineEnumeratorGCHandle);</span><br><span class="line"></span><br><span class="line">    coroutine-&gt;m_CoroutineEnumeratorGCHandle = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!coroutine-&gt;m_IsReferencedByMono)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span> coroutine;</span><br><span class="line">        </span><br><span class="line">        <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE_LEAK</span></span><br><span class="line">        gCoroutineCounter--;</span><br><span class="line">        <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Coroutine::CleanupCoroutineGC (<span class="keyword">void</span>* userData)</span><br><span class="line">&#123;</span><br><span class="line">    Coroutine* coroutine = (Coroutine*)userData;</span><br><span class="line">    <span class="keyword">if</span> (!coroutine-&gt;m_IsReferencedByMono)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (coroutine-&gt;m_RefCount != <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        coroutine-&gt;m_IsReferencedByMono = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ErrorIf(coroutine-&gt;IsInList());</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">delete</span> coroutine;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE</span></span><br><span class="line">    printf_console (<span class="string">"GC free coroutine: %d\n"</span>, coroutine);</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">            </span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE_LEAK</span></span><br><span class="line">    gCoroutineCounter--;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> Coroutine::CompareCoroutineMethodName (<span class="keyword">void</span>* callBackUserData, <span class="keyword">void</span>* cancelUserdata)</span><br><span class="line">&#123;</span><br><span class="line">    Coroutine* coroutine = (Coroutine*)callBackUserData;</span><br><span class="line">    <span class="keyword">if</span> (!coroutine-&gt;m_CoroutineMethod)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">strcmp</span>(scripting_method_get_name(coroutine-&gt;m_CoroutineMethod), (<span class="keyword">const</span> <span class="keyword">char</span>*)cancelUserdata) == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">bool</span> Coroutine::InvokeMoveNext(ScriptingExceptionPtr* exception)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function">ScriptingInvocation <span class="title">invocation</span><span class="params">(m_MoveNext)</span></span>;</span><br><span class="line">    invocation.object = m_CoroutineEnumerator;</span><br><span class="line">    invocation.classContextForProfiler = m_Behaviour-&gt;GetClass();</span><br><span class="line">    invocation.objectInstanceIDContextForException = m_Behaviour-&gt;GetInstanceID();</span><br><span class="line">    <span class="keyword">bool</span> result = invocation.Invoke&lt;<span class="keyword">bool</span>&gt;(exception);</span><br><span class="line">    <span class="keyword">return</span> result &amp;&amp; *exception==<span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Coroutine::Run ()</span><br><span class="line">&#123;</span><br><span class="line">    Assert(m_RefCount != <span class="number">0</span>);</span><br><span class="line">    Assert(m_Behaviour != <span class="literal">NULL</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE</span></span><br><span class="line">    AssertIf(GetDelayedCallManager().HasDelayedCall(m_Behaviour, Coroutine::ContinueCoroutine, CompareCoroutineMethodName, <span class="keyword">this</span>));</span><br><span class="line">    <span class="keyword">if</span> (m_Behaviour == <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        printf_console (<span class="string">"Coroutine fuckup %d refcount: %d behaviour%d\n"</span>, <span class="keyword">this</span>, m_RefCount, m_Behaviour);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        </span><br><span class="line">    <span class="comment">// - Call MoveNext (This processes the function until the next yield!)</span></span><br><span class="line">    <span class="comment">// - Call Current (This returns condition when to continue the coroutine next.)</span></span><br><span class="line">    <span class="comment">//   -&gt; Queue it based on the continue condition</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Temporarily increase refcount so the object will not get destroyed during the m_MoveNext call</span></span><br><span class="line">    m_RefCount++;</span><br><span class="line">    ScriptingExceptionPtr exception = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">bool</span> keepLooping = InvokeMoveNext(&amp;exception);</span><br><span class="line">    AssertIf(m_RefCount &lt;= <span class="number">0</span> || m_RefCount &gt; <span class="number">10000000</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">bool</span> coroutineWasDestroyedDuringMoveNext = m_RefCount == <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// Decrease temporary refcount so the object will not get destroyed during the m_MoveNext call</span></span><br><span class="line">    CleanupCoroutine(<span class="keyword">this</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// The coroutine has been destroyed in the mean time, probably due to a call to StopAllCoroutines, stop executing further</span></span><br><span class="line">    <span class="keyword">if</span> (coroutineWasDestroyedDuringMoveNext)</span><br><span class="line">    &#123;</span><br><span class="line">        Assert(m_ContinueWhenFinished == <span class="literal">NULL</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;   </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (exception != <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Are we done with this coroutine?</span></span><br><span class="line">    <span class="keyword">if</span> (!keepLooping)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// If there is a coroutine waiting for this one to finish Run it!</span></span><br><span class="line">        <span class="keyword">if</span> (m_ContinueWhenFinished)</span><br><span class="line">        &#123;</span><br><span class="line">            AssertIf (<span class="keyword">this</span> != m_ContinueWhenFinished-&gt;m_WaitingFor);</span><br><span class="line">            Coroutine* continueWhenFinished = m_ContinueWhenFinished;</span><br><span class="line">            m_ContinueWhenFinished-&gt;m_WaitingFor = <span class="literal">NULL</span>;</span><br><span class="line">            m_ContinueWhenFinished = <span class="literal">NULL</span>;</span><br><span class="line">            <span class="comment">// The coroutine might have been stopped inside of the last coroutine invokation</span></span><br><span class="line">            <span class="keyword">if</span> (continueWhenFinished-&gt;m_Behaviour)</span><br><span class="line">                continueWhenFinished-&gt;Run ();</span><br><span class="line">            CleanupCoroutine (continueWhenFinished);</span><br><span class="line">        &#125;</span><br><span class="line">                </span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">if</span> (m_Behaviour == <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    ProcessCoroutineCurrent();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Coroutine::ProcessCoroutineCurrent()</span><br><span class="line">&#123;</span><br><span class="line">    ScriptingExceptionPtr exception = <span class="literal">NULL</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !UNITY_FLASH</span></span><br><span class="line">    <span class="function">ScriptingInvocation <span class="title">invocation</span><span class="params">(m_Current)</span></span>;</span><br><span class="line">    invocation.object = m_CoroutineEnumerator;</span><br><span class="line">    invocation.objectInstanceIDContextForException = m_Behaviour-&gt;GetInstanceID();</span><br><span class="line">    invocation.classContextForProfiler = m_Behaviour-&gt;GetClass();</span><br><span class="line">    ScriptingObjectPtr monoWait = invocation.Invoke(&amp;exception);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    ScriptingObjectPtr monoWait = Ext_Flash_getProperty(m_CoroutineEnumerator,<span class="string">"IEnumerator_Current"</span>); </span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    AssertIf(m_RefCount &lt;= <span class="number">0</span> || m_RefCount &gt; <span class="number">10000000</span>);</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">if</span> (exception != <span class="literal">NULL</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">if</span> (monoWait == SCRIPTING_NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        m_RefCount++;</span><br><span class="line">        CallDelayed (ContinueCoroutine, m_Behaviour, <span class="number">0.0F</span>, <span class="keyword">this</span>, <span class="number">0.0F</span>, CleanupCoroutine, DelayedCallManager::kRunDynamicFrameRate | DelayedCallManager::kWaitForNextFrame);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    HandleIEnumerableCurrentReturnValue(monoWait);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Coroutine::HandleIEnumerableCurrentReturnValue(ScriptingObjectPtr monoWait)</span><br><span class="line">&#123;</span><br><span class="line">    AsyncOperation* async = <span class="literal">NULL</span>;</span><br><span class="line">    ScriptingClassPtr waitClass = scripting_object_get_class (monoWait, GetScriptingTypeRegistry());</span><br><span class="line">    <span class="keyword">const</span> CommonScriptingClasses&amp; classes = GetMonoManager ().GetCommonClasses ();</span><br><span class="line">            </span><br><span class="line">    <span class="comment">// Continue the coroutine in 'wait' seconds</span></span><br><span class="line">    <span class="keyword">if</span> (scripting_class_is_subclass_of (waitClass, classes.waitForSeconds))</span><br><span class="line">    &#123;</span><br><span class="line">        m_RefCount++;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">float</span> wait;</span><br><span class="line">        MarshallManagedStructIntoNative(monoWait,&amp;wait);</span><br><span class="line">        CallDelayed (ContinueCoroutine, m_Behaviour, wait, <span class="keyword">this</span>, <span class="number">0.0F</span>, CleanupCoroutine, DelayedCallManager::kRunDynamicFrameRate | DelayedCallManager::kWaitForNextFrame);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Continue the coroutine on the next fixed update</span></span><br><span class="line">    <span class="keyword">if</span> (scripting_class_is_subclass_of (waitClass, classes.waitForFixedUpdate))</span><br><span class="line">    &#123;</span><br><span class="line">        m_RefCount++;</span><br><span class="line">        CallDelayed (ContinueCoroutine, m_Behaviour, <span class="number">0.0F</span>, <span class="keyword">this</span>, <span class="number">0.0F</span>, CleanupCoroutine, DelayedCallManager::kRunFixedFrameRate);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Continue the coroutine at the end of frame</span></span><br><span class="line">    <span class="keyword">if</span> (scripting_class_is_subclass_of (waitClass, classes.waitForEndOfFrame))</span><br><span class="line">    &#123;</span><br><span class="line">        m_RefCount++;</span><br><span class="line">        CallDelayed (ContinueCoroutine, m_Behaviour, <span class="number">0.0F</span>, <span class="keyword">this</span>, <span class="number">0.0F</span>, CleanupCoroutine, DelayedCallManager::kEndOfFrame);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Continue after another coroutine is finished</span></span><br><span class="line">    <span class="keyword">if</span> (scripting_class_is_subclass_of (waitClass, classes.coroutine))</span><br><span class="line">    &#123;</span><br><span class="line">        Coroutine* waitForCoroutine;</span><br><span class="line">        MarshallManagedStructIntoNative(monoWait,&amp;waitForCoroutine);                </span><br><span class="line">        <span class="keyword">if</span> (waitForCoroutine-&gt;m_DoneRunning)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// continue executing.</span></span><br><span class="line">            ContinueCoroutine(m_Behaviour, <span class="keyword">this</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (waitForCoroutine-&gt;m_ContinueWhenFinished != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            LogStringObject (<span class="string">"Another coroutine is already waiting for this coroutine!\nCurrently only one coroutine can wait for another coroutine!"</span>, m_Behaviour);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        m_RefCount++;</span><br><span class="line">        waitForCoroutine-&gt;m_ContinueWhenFinished = <span class="keyword">this</span>;</span><br><span class="line">        m_WaitingFor = waitForCoroutine;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> ENABLE_WWW</span></span><br><span class="line">    <span class="comment">// Continue after fetching an www object is done</span></span><br><span class="line">            </span><br><span class="line">    <span class="keyword">if</span> (classes.www &amp;&amp; scripting_class_is_subclass_of (waitClass, classes.www ))</span><br><span class="line">    &#123;</span><br><span class="line">        WWW* wwwptr;</span><br><span class="line">        MarshallManagedStructIntoNative(monoWait,&amp;wwwptr);</span><br><span class="line">        <span class="keyword">if</span>(wwwptr != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            m_RefCount++;</span><br><span class="line">            wwwptr-&gt;CallWhenDone (ContinueCoroutine, m_Behaviour, <span class="keyword">this</span>, CleanupCoroutine);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">    <span class="comment">// Continue after fetching an www object is done</span></span><br><span class="line">    <span class="keyword">if</span> ((scripting_class_is_subclass_of (waitClass, classes.asyncOperation)) &amp;&amp; (async = ScriptingObjectWithIntPtrField&lt;AsyncOperation&gt; (monoWait).GetPtr()) != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        m_RefCount++;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (async-&gt;IsDone())</span><br><span class="line">        &#123;</span><br><span class="line">            CallDelayed (ContinueCoroutine, m_Behaviour, <span class="number">0.0F</span>, <span class="keyword">this</span>, <span class="number">0.0F</span>, CleanupCoroutine, DelayedCallManager::kRunDynamicFrameRate | DelayedCallManager::kRunDynamicFrameRate | DelayedCallManager::kWaitForNextFrame);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Use AysncOperation ContinueCoroutine - default path</span></span><br><span class="line">        <span class="keyword">if</span> (async-&gt;HasCoroutineCallback ())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">////@<span class="doctag">TODO:</span> Throw exception?</span></span><br><span class="line">            ErrorString(<span class="string">"This asynchronous operation is already being yielded from another coroutine. An asynchronous operation can only be yielded once."</span>);</span><br><span class="line">            CallDelayed (ContinueCoroutine, m_Behaviour, <span class="number">0.0F</span>, <span class="keyword">this</span>, <span class="number">0.0F</span>, CleanupCoroutine, DelayedCallManager::kRunDynamicFrameRate | DelayedCallManager::kRunDynamicFrameRate | DelayedCallManager::kWaitForNextFrame);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        async-&gt;SetCoroutineCallback(ContinueCoroutine, m_Behaviour, <span class="keyword">this</span>, CleanupCoroutine);</span><br><span class="line">        m_AsyncOperation = async;</span><br><span class="line">        m_AsyncOperation-&gt;Retain();</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Continue the coroutine on the next dynamic frame update</span></span><br><span class="line">    m_RefCount++;</span><br><span class="line">    CallDelayed (ContinueCoroutine, m_Behaviour, <span class="number">0.0F</span>, <span class="keyword">this</span>, <span class="number">0.0F</span>, CleanupCoroutine, DelayedCallManager::kRunDynamicFrameRate | DelayedCallManager::kRunDynamicFrameRate | DelayedCallManager::kWaitForNextFrame);</span><br><span class="line">    <span class="comment">//Ext_MarshalMap_Release_ScriptingObject(monoWait);//RH TODO : RELEASE THE MONOWAIT OBJECTS SOMEWHERE</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="MonoBehaviour-cpp"><a href="#MonoBehaviour-cpp" class="headerlink" title="MonoBehaviour.cpp"></a>MonoBehaviour.cpp</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Coroutine* MonoBehaviour::CreateCoroutine(ScriptingObjectPtr userCoroutine, ScriptingMethodPtr method)</span><br><span class="line">&#123;</span><br><span class="line">    ScriptingMethodPtr moveNext = scripting_object_get_virtual_method(userCoroutine, MONO_COMMON.IEnumerator_MoveNext, GetScriptingMethodRegistry());</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !UNITY_FLASH</span></span><br><span class="line">    ScriptingMethodPtr current = scripting_object_get_virtual_method(userCoroutine, MONO_COMMON.IEnumerator_Current, GetScriptingMethodRegistry());</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="comment">//todo: make flash use generic path. set a bogus value for flash here right now so it passes current != NULL check,  flash path will never use this value for now.</span></span><br><span class="line">    ScriptingMethodPtr current = (ScriptingMethodPtr)<span class="number">1</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (current == SCRIPTING_NULL || moveNext == SCRIPTING_NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">string</span> message = (method != SCRIPTING_NULL) ? Format (<span class="string">"Coroutine '%s' couldn't be started!"</span>, scripting_method_get_name(method)) : <span class="string">"Coroutine couldn't be started!"</span>;</span><br><span class="line">        LogStringObject (message, <span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Coroutine* coroutine = <span class="keyword">new</span> Coroutine ();</span><br><span class="line">    </span><br><span class="line">    coroutine-&gt;m_CoroutineEnumeratorGCHandle = scripting_gchandle_new (userCoroutine);</span><br><span class="line">    coroutine-&gt;m_CoroutineEnumerator = userCoroutine;</span><br><span class="line">    coroutine-&gt;m_CoroutineMethod = method;</span><br><span class="line">    coroutine-&gt;SetMoveNextMethod(moveNext);</span><br><span class="line">    coroutine-&gt;SetCurrentMethod(current);</span><br><span class="line">    coroutine-&gt;m_Behaviour = <span class="keyword">this</span>;</span><br><span class="line">    coroutine-&gt;m_ContinueWhenFinished = <span class="literal">NULL</span>;</span><br><span class="line">    coroutine-&gt;m_WaitingFor = <span class="literal">NULL</span>;</span><br><span class="line">    coroutine-&gt;m_AsyncOperation = <span class="literal">NULL</span>;</span><br><span class="line">    coroutine-&gt;m_RefCount = <span class="number">1</span>;</span><br><span class="line">    coroutine-&gt;m_IsReferencedByMono = <span class="number">0</span>;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE</span></span><br><span class="line">    printf_console (<span class="string">"Allocate coroutine %d\n"</span>, coroutine);</span><br><span class="line">    AssertIf(GetDelayedCallManager().HasDelayedCall(coroutine-&gt;m_Behaviour, Coroutine::ContinueCoroutine, CompareCoroutine, coroutine));</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">if</span> DEBUG_COROUTINE_LEAK            </span></span><br><span class="line">    printf_console (<span class="string">"Active coroutines %d\n"</span>, gCoroutineCounter);</span><br><span class="line">    gCoroutineCounter++;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    m_ActiveCoroutines.push_back (*coroutine);</span><br><span class="line">    AssertIf(&amp;m_ActiveCoroutines.back() != coroutine);</span><br><span class="line">    m_ActiveCoroutines.back ().Run ();</span><br><span class="line"></span><br><span class="line">    AssertIf(coroutine-&gt;m_RefCount == <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (coroutine-&gt;m_RefCount &lt;= <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Coroutine::CleanupCoroutine(coroutine);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Coroutine::CleanupCoroutine(coroutine);</span><br><span class="line">    <span class="keyword">return</span> coroutine;               </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了，入口我们找到了，那么它是运行的呢？我们跟踪run的时候会发现有一个CallDelaye函数，而这个函数是一个定时器函数，内部最终在Update上执行，那么我们的目标转而它的Update在哪里执行的呢？我们继续看。<br>我们发现它最终是在场景的中Tick执行的，但是我目前并未发现Tick是多线程执行的，而且在个人的理解中，Tick也不太会或者不敢用多线程。</p>
+<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1><p>通过Unity2018上测试发现LoadFromFileAsync是使用多线程，协程在主线程上跑，这看上去符合我们的实验结果。<br>而从Unity4.7源码发现协程是在主线程中运行。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/09/edgedetection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -723,226 +964,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/08/unitywebrequests/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/08/unitywebrequests/" class="post-title-link" itemprop="url">UnityWebRequest</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-08 23:35:49" itemprop="dateCreated datePublished" datetime="2019-05-08T23:35:49+08:00">2019-05-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Network</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        StartCoroutine(Get());</span><br><span class="line">        StartCoroutine(Post());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">IEnumerator <span class="title">Get</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        UnityWebRequest webRequest = UnityWebRequest.Get(<span class="string">"http://www.baidu.com"</span>);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> webRequest.SendWebRequest();</span><br><span class="line">        <span class="keyword">if</span> (webRequest.isHttpError || webRequest.isNetworkError)</span><br><span class="line">            Debug.Log(webRequest.error);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            Debug.Log(webRequest.downloadHandler.text);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function">IEnumerator <span class="title">Post</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        WWWForm form = <span class="keyword">new</span> WWWForm();</span><br><span class="line">        form.AddField(<span class="string">"key"</span>, <span class="string">"value"</span>);</span><br><span class="line">        form.AddField(<span class="string">"name"</span>, <span class="string">"mafanwei"</span>);</span><br><span class="line">        form.AddField(<span class="string">"blog"</span>,<span class="string">"qwe25878"</span>);</span><br><span class="line">        UnityWebRequest webRequest = UnityWebRequest.Post(<span class="string">"http://www.baidu.com"</span>, form);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> webRequest.SendWebRequest();</span><br><span class="line">        <span class="keyword">if</span> (webRequest.isHttpError || webRequest.isNetworkError)</span><br><span class="line">            Debug.Log(webRequest.error);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            Debug.Log(webRequest.downloadHandler.text);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/08/decompiler/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/08/decompiler/" class="post-title-link" itemprop="url">decompiler</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-08 16:40:14" itemprop="dateCreated datePublished" datetime="2019-05-08T16:40:14+08:00">2019-05-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><a href="https://github.com/Zhentar/ILSpy/releases/tag/0.1" target="_blank" rel="noopener">https://github.com/Zhentar/ILSpy/releases/tag/0.1</a> 一款优秀的反编译产品，作者修复了Mono Iterator的问题。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/30/Unity-Shadow/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/30/Unity-Shadow/" class="post-title-link" itemprop="url">Unity的阴影</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-30 20:59:51" itemprop="dateCreated datePublished" datetime="2019-04-30T20:59:51+08:00">2019-04-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity-Shader/" itemprop="url" rel="index"><span itemprop="name">Unity Shader</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="阴影是如何实现的"><a href="#阴影是如何实现的" class="headerlink" title="阴影是如何实现的"></a>阴影是如何实现的</h1><p>在实时渲染中，我们最长用的是一种名为Shadow Map技术。这种技术理解起来非常简单，它会首先把摄像机的位置放在与光源重合的位置上，那么场景中该光源的阴影区域就是那些摄像机看不到的地方。而Unity就是使用的这种技术。<br>在前向渲染路径中，如果场景中最重要的平行光开启了阴影，Unity就会为该光源计算它的阴影映射纹理（shadowmap）。这张阴影隐射纹理本质也是一张深度图，它记录了从该光源的位置触发、能看到的场景中距离它最近的表面位置（深度信息）。<br>那么，在计算阴影映射纹理时，我们如何判定距离它最近的表面位置呢？一种方法是，先把摄像机放置到光源的位置上，然后按正常的渲染流程，即调用Base Pass和Additional Pass来更新深度信息，得到阴影映射纹理。但这种方法会对性能造成一定的浪费，因为我们实际上仅仅需要深度信息而已，而Base Pass和Additional Pass中往往涉及很多复杂的光照模型计算。因此，Unity选择使用一个额外的Pass来专门更新光源的阴影映射纹理，这个Pass就是LightMode标签被设置为ShadowCaster的Pass。这个Pass的渲染目标不是帧缓存，而是阴影映射纹理（或深度纹理）。Unity首先把摄像机放置到光源的位置上，然后调用该Pass，通过对顶点变换后得到光源空间下的位置，并据此来输出深度信息到阴影映射纹理中。因此，当开启了光源的阴影效果后，底层渲染引擎首先会在当前渲染物体的Unity Shader中找到LightMode为ShadowCaster的Pass，如果没有，它就会在Fallback指定的Unity Shader中继续寻找，如果仍然没有找到，该物体就无法向其他物体投射阴影（但它仍然可以接受来自其他物体的阴影）。当找到了一个LightMode位ShadowCaster的Pass后，Unity会使用该Pass来更新光源的阴影映射纹理。<br>在传统的阴影映射纹理的实现中，我们会在正常渲染的Pass中把顶点位置变换到光源空间下，以得到它在光源空间中的三维位置信息。然后，我们使用xy分量对阴影映射纹理进行采样，得到阴影映射纹理中该位置的深度信息。如果该深度值小于该顶点的深度值（通常由z分量得到），那么说明该点位于阴影中。但在Unity5中，Unity使用了不同于这种传统的阴影采样技术，即屏幕空间的阴影映射技术（Screenspace Shadow Map）。屏幕空间的阴影映射原本是延迟渲染中产生阴影的方法。需要注意的是，并不是所有的平台Unity都会使用这种技术。这是因为，屏幕空间的阴影映射需要显卡支持MRT，而有些移动平台不支持这种特性。<br>当使用了屏幕空间的阴影映射技术时，Unity首先会通过调用LightMode为ShadowCaster的Pass来得到可投射阴影的光源的阴影映射纹理以及摄像机的深度纹理。然后，根据光源的阴影映射纹理和摄像机的深度纹理来得到屏幕空间的阴影图。如果摄像机的深度图中记录的表面深度大于转换到阴影隐射纹理中的深度值，就说明该表面虽然是可见的，但是却处于该光源的阴影中。通过这样的方式，阴影图就包含了屏幕空间中所有阴影的区域。如果我们想要一个物体接受来自其他物体的阴影，只需要在Shader中对阴影图进行采样。由于阴影图是屏幕空间下的，因此，我们首先需要把表面坐标从模型空间变换到屏幕空间中，然后使用这个坐标对阴影图进行采样即可。<br>总结一下，一个物体接受来自其他物体的阴影，以及它像其他物体投射阴影是两个过程。</p>
-<ul>
-<li>如果我们想要一个物体接受来自其他物体的阴影，就必须在Shader中对阴影映射纹理（包括屏幕空间的阴影图）进行采样，把采样结果和最后的光照结果相乘来产生阴影效果。</li>
-<li>如果我们想要一个物体向其他物体投射阴影，就必须把该物体加入到光源的阴影映射纹理的计算中，从而让其他物体在对阴影映射纹理采样时可以得到该物体的相关信息。在Unity中，这个过程是通过为该物体执行LightMode为ShadowCaster的Pass来实现的。如果使用了屏幕空间的投影映射技术，Unity还会使用这个Pass产生一张摄像机的深度纹理。</li>
-</ul>
-<h1 id="不透明物体的阴影"><a href="#不透明物体的阴影" class="headerlink" title="不透明物体的阴影"></a>不透明物体的阴影</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/8/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/10/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1008,7 +1033,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1019,7 +1044,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

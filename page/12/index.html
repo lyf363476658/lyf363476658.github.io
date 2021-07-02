@@ -145,6 +145,371 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/12/RTR-4th-Chapter2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/12/RTR-4th-Chapter2/" class="post-title-link" itemprop="url">RTR 4th Chapter2 图形渲染管线</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-12 23:14:20" itemprop="dateCreated datePublished" datetime="2019-04-12T23:14:20+08:00">2019-04-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/RTR-4th/" itemprop="url" rel="index"><span itemprop="name">RTR-4th</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>整个渲染流水线的目标是实时地通过一个虚拟的camera，把光源，3D物体（包括上面的纹理）等渲染到2D图像上，流水线是并行化执行的，但是会出现stall，直到流水线中最慢的一个阶段完成它的任务<br>整条流水线的架构，主要依次分为四个阶段：<br>Application,Geometry Processing,Rasterization和Pixel Processing</p>
+<p><div align="center"><img src="/2019/04/12/RTR-4th-Chapter2/1.jpg"></div><br>每个阶段内部也有自己的pipeline的。<br>我们要区别“阶段（functional stage）”和具体的实现结构，也就是说具体的某个实现结合可能合并了几个stage的内容到一个单元（unit），使得其过程时间消耗更短。</p>
+<h1 id="简要介绍"><a href="#简要介绍" class="headerlink" title="简要介绍"></a>简要介绍</h1><p>Application阶段主要是在CPU上完成的，可以利用现代CPU的多和特性进行多线程优化，这一部分通常包括碰撞检测，全局加速算法，动画，物理模拟等待，这些取决于application的类型。<br>Geometry Processing阶段主要处理转换（transforms），投影（projections）等等其他所有类型的几何操作，这个阶段计算了什么将会被渲染，怎样被渲染，在哪里被渲染，主要在GPU上完成。<br>Rasterization阶段一般接受三个顶点，构建出一个三角形，找到所有被这个三角形包含着的像素点，然后把这些像素点传递给Pixel Processing阶段，这部分完全在GPU上完成。<br>Pixel Processing阶段执行逐像素的程序，计算每个像素的color，也许会进行Z-Test等进行可见性判断，也许会进行blend操作等，这部分也完全在GPU上完成。</p>
+<h1 id="具体介绍每个阶段"><a href="#具体介绍每个阶段" class="headerlink" title="具体介绍每个阶段"></a>具体介绍每个阶段</h1><h2 id="Application-Stage"><a href="#Application-Stage" class="headerlink" title="Application Stage"></a>Application Stage</h2><p>这部分是开发者完全控制的阶段，因为这部分通常是基于CPU执行的，对于这部分的改变会影响后续阶段的performance（比如这里可以通过算法减低要被渲染的三角形的数量）但是现在在这部分平台上也可以使用计算着色器来借GPU的力量加速。这个阶段的最后，渲染图元（点、线、三角形）传入到Geometry Procssing阶段。<br>这个部分是不能被分割成子部分的，因为这个是基于软件的实现方式，我们最多只能借助CPU的多核编写多线程程序来提升性能<br>这个阶段也是用来处理外接设备的输入，两个物体的碰撞检测，加速算法（比如部分剔除算法）</p>
+<h2 id="Geometry-Processing"><a href="#Geometry-Processing" class="headerlink" title="Geometry Processing"></a>Geometry Processing</h2><p>用来负责逐三角形和逐顶点的操作。这部分可以被分为4个阶段：Vertex Shading，Projection，Clipping和Screen Mapping，下面逐一介绍：<br>Vertex Shading：这个子阶段主要处理两个任务：1.计算顶点位置 2.计算每个顶点包含的其他性质，如发现，纹理坐标等<br>以前会在这里实现逐顶点的光照，所以叫顶点着色器，现在顶点着色器变成了一个更加通用的用来设定与操作每个顶点相关的数据的计算单元（比如可以实现顶点动画等）<br>这个阶段同时是转换坐标的阶段，把坐标从模型空间转换到世界空间，为了便于后续的投影和裁剪，在使用view transform转换到相机空间，同时保存每个顶点对应的material，normal等信息，接下来把它转换到一个单位(-1,-1,-1)(1,1,1)中进行投影（z也可能是[0,1]），首先是进行投影，投影可分为正交投影和透视投影，在进行顶点着色器的操作<br>这个子阶段的输出（包含颜色，纹理坐标等）被送到Rasterization和Pixel Processing阶段被插值，用来计算表面的shading，这一步结束后，z-轴坐标不再存储在image中，而是z-buffer内，也就是说，这一步把3D-&gt;2D。</p>
+<p>Optional Vertex Processing：这个阶段是可选的，而且不同的GPU对这部分的硬件支持程度也是不同的。简单来说依次是曲面细分，几何着色和流输出。</p>
+<p>Clipping：只有那些全部部分在view volume中的渲染图元才能够pass这个阶段进入后续的阶段，使用投影矩阵意味着把transform后的图元裁剪单位立方体中。</p>
+<img src="/2019/04/12/RTR-4th-Chapter2/2.jpg">
+<p>Screen Mapping：把还是3D的坐标转换成屏幕坐标（屏幕坐标原点取决于API）</p>
+<h2 id="Rasterization"><a href="#Rasterization" class="headerlink" title="Rasterization"></a>Rasterization</h2><p>目标：找到所有被渲染图元包含或覆盖的像素点<br>这部分分为两个部分：三角形建立和三角形遍历。把2D的顶点在屏幕空间转换到屏幕上的像素，在这里，三角形通过传入的3个点得以简历，最后把所有图元的像素点传递到Pixel Processing中。这个阶段通常是由硬件实现的。</p>
+<h2 id="Pixel-Processing"><a href="#Pixel-Processing" class="headerlink" title="Pixel Processing"></a>Pixel Processing</h2><p>这个阶段通常分为2个子阶段，分别是Pixel Shading和Mergeing<br>Pixel Shading：所有逐像素的计算都在这里完成，这里的输入是通过shading data的插值得到的。这里是基本上完全可编程的，通过自定义片元着色器（或者叫像素着色器）在GPU上完成光照，纹理等计算<br>Mergeing：每个像素存储来一个叫颜色缓冲的地方，我们需要一个Merge阶段处理片元着色器出来的颜色和buffer中本来存着的颜色之间的关系，这部分也用来负责可见性问题（使用z-buffer算法）<br>模版缓冲是一个离屏缓冲用来记录渲染图元的位置，每个像素通常为8bit，可以用来控制后续图元的渲染情况（通过模版测试的方式）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/unity-render-optimize/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/11/unity-render-optimize/" class="post-title-link" itemprop="url">Unity中的渲染优化技术</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-11 20:01:17" itemprop="dateCreated datePublished" datetime="2019-04-11T20:01:17+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity-Shader/" itemprop="url" rel="index"><span itemprop="name">Unity Shader</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="移动平台的特点"><a href="#移动平台的特点" class="headerlink" title="移动平台的特点"></a>移动平台的特点</h1><p>和PC平台相比，移动平台上的GPU架构有很大的不同。由于处理资源等条件的限制，移动设备上的GPU架构专注于尽可能使用更小的带宽和公共能，也由此带来许多和PC平台完全不同的现象。<br>例如，为了尽可能移除那些隐藏的表面，减少overdraw（即一个像素被绘制多次），PowerVR芯片（通常用于iOS设备和某些Android设备）使用了基于瓦片的延迟渲染（Tiled-based Deffered Rendering，TBDR）架构，把所有的渲染图像装入一个个瓦片（tile）中，再由硬件找到可见的片元，而只有这些可见片元才会执行片元着色器。另一些基于瓦片的GPU架构，如Adreno（高通的芯片）和Mali（ARM的芯片）则会使用Early-Z或相似的技术进行一个低精度的深度检测，来剔除那些不需要渲染的片元。还有一些GPU，如Tegra（英伟达的芯片），则使用了传统的架构设计，因为在这些设备上，overdraw更可能造成性能的瓶颈。<br>由于这些芯片架构造成的不同，一些游戏往往需要针对不通的芯片发布不同的版本，以便对每个芯片进行更有针对性的优化。尤其是在Android平台上，不通设备使用的硬件，如图形芯片、屏幕分辨率等，大相径庭，这对图形优化提出了更高的挑战。相比于Android平台，iOS平台的硬件条件则相对统一。</p>
+<h1 id="影响性能的因素"><a href="#影响性能的因素" class="headerlink" title="影响性能的因素"></a>影响性能的因素</h1><p>首先，在学习如何优化之前，我们得先了解影响游戏性能的因素有哪些。对于一个游戏来说，它主要需要使用两种计算资源：CPU和GPU。它们会互相合作，来让我们的游戏可以在预期的帧率和分辨率下工作。其中，CPU主要负责保证帧率，GPU主要负责分辨率相关的一些处理。<br>据此，可以把造成游戏性能瓶颈的主要原因分成以下几个方面。</p>
+<ol>
+<li>CPU<ul>
+<li>过多的draw call</li>
+<li>复杂的脚本或者物理模拟</li>
+</ul>
+</li>
+<li>GPU<ul>
+<li>顶点处理<ul>
+<li>过多的顶点</li>
+<li>过多的逐顶点计算</li>
+</ul>
+</li>
+<li>片元处理<ul>
+<li>过多的片元（既可能是由于分辨率造成的，也可能是由于overdraw造成的）。</li>
+<li>过多的逐片元计算。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>带宽<ul>
+<li>使用了尺寸很大且未压缩的纹理</li>
+<li>分辨率过高的帧缓存</li>
+</ul>
+</li>
+</ol>
+<p>对于CPU来说，限制它的主要是每一帧draw call的数目。简单来说，就是CPU在每次通知GPU进行渲染之前，都需要提前准备好顶点数据（如位置、法线、颜色、纹理坐标等），然后调用一系列API把它们放到GPU可以访问到的指定位置，最后，调用一个绘制命令，来告诉GPU。而调用一次绘制命令的时候，就会产生一个draw call。过多的draw call会造成CPU的性能瓶颈，这是因为每次调用draw call时，CPU往往都需要改变很多渲染状态的设置，而这些操作是非常耗时的。如果一帧中需要的draw call数目过多的话，就会导致CPU把大部分时间都花费在提交draw call的工作上面了。当然，其他原因也可能造成CPU瓶颈，例如物理、布料模拟、蒙皮、粒子模拟等，这些都是计算量很大的操作。<br>而对于GPU来说，它负责整个渲染流水线。它从处理CPU传递过来的模拟数据开始，进行顶点着色器、片元着色器等一系列工作，最后输出屏幕上的每个像素。因此，GPU的性能瓶颈和需要处理的顶点数目、屏幕分辨率、显存等因素有关。而相关的优化策略可以减少处理的数据（包括顶点数目和片元数目）、减少运算复杂度等方面入手。</p>
+<ol>
+<li>CPU优化<ul>
+<li>使用批处理技术减少draw call数目</li>
+</ul>
+</li>
+<li>GPU优化<ul>
+<li>减少需要处理的顶点数目。<ul>
+<li>优化几何体</li>
+<li>使用模型的LOD（Level of Detail）技术</li>
+<li>使用遮挡剔除（Ovvlusion Culling）技术</li>
+</ul>
+</li>
+<li>减少需要处理的片元数目<ul>
+<li>控制绘制顺序</li>
+<li>警惕透明物体</li>
+<li>减少实时光照</li>
+</ul>
+</li>
+<li>减少计算复杂度<ul>
+<li>使用Shader的LOD（Level Of Deail）技术</li>
+<li>代码方面的优化</li>
+</ul>
+</li>
+<li>节省内存带宽<ul>
+<li>减少纹理大小</li>
+<li>利用分辨率缩放</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>在开始优化之前，我们首先需要知道是哪个步骤造成了性能瓶颈。而这可以利用Unity提供的一些渲染分析工具来实现。</p>
+<h1 id="Unity中的渲染分析工具"><a href="#Unity中的渲染分析工具" class="headerlink" title="Unity中的渲染分析工具"></a>Unity中的渲染分析工具</h1><p>Unity内置了一些工具，来帮助我们方便地查看和渲染相关的各个统计数据。这些数据可以帮助我们分析游戏渲染性能，从而更有针对性的进行优化。这些工具包括了渲染统计窗口（Rendering Statistics Window）、性能分析器（Profiler），以及帧调试器（Frame Debugger）。需要注意的是，在不同的目标平台上，这些工具中显示的数据也会发生变化。</p>
+<h2 id="渲染统计窗口"><a href="#渲染统计窗口" class="headerlink" title="渲染统计窗口"></a>渲染统计窗口</h2><p>渲染统计窗口主要包含了音频（Audio）、图像（Graphics）。这里我们只关心图像相关的渲染统计结果。<br>渲染统计窗口中显示了很多重要的渲染数据，例如FPS、批处理数目、顶点和三角网格的数目等。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>信息名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>每帧的时间和FPS</td>
+<td>在Graphic的右侧显示，给出了处理和渲染一帧所需的时间，以及FPS数目</td>
+</tr>
+<tr>
+<td>Batches</td>
+<td>一帧中需要进行的批处理数目</td>
+</tr>
+<tr>
+<td>Saved by batching</td>
+<td>合并的批处理数目，这个数字表明了批处理为我们节省了多少的draw call</td>
+</tr>
+<tr>
+<td>Tris和Verts</td>
+<td>需要绘制的三角面片和顶点数目</td>
+</tr>
+<tr>
+<td>Screen</td>
+<td>屏幕的大小，以及它占用的内存大小</td>
+</tr>
+<tr>
+<td>SetPass calls</td>
+<td>渲染使用的Pass的数目，每个Pass都需要Unity的runtime来绑定一个新的Shader，这可能造成CPU瓶颈</td>
+</tr>
+<tr>
+<td>Shadow casters</td>
+<td>场景中有多少可以投射阴影的物体，一般这些物体都作为场景中光源</td>
+</tr>
+<tr>
+<td>visible skinned meshed</td>
+<td>渲染皮肤网格的数量</td>
+</tr>
+<tr>
+<td>animations</td>
+<td>正在播放动画的数量</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="性能分析器的渲染区域"><a href="#性能分析器的渲染区域" class="headerlink" title="性能分析器的渲染区域"></a>性能分析器的渲染区域</h2><img src="/2019/04/11/unity-render-optimize/1.jpg">
+<p>性能分析器显示了绝大部分在渲染统计窗口中提供的信息，例如，绿线显示了批处理数目、蓝线显示了Pass数目等，同时还给出了许多其他非常有用的信息，例如，draw call数目、动态批处理/静态批处理的数目、渲染纹理的数目和内存占用等。<br>结合渲染统计窗口和性能分析器，我们可以查看与渲染相关的绝大多数重要的数据。一个值得注意的想象是，性能分析器给出的draw call数目和批处理数目、Pass数目并不相等，并且看起来好像要大于我们估算的数目，这是因为Unity在背后需要进行很多工作，例如，初始化各个缓存、为阴影更新深度纹理和阴影映射纹理等，因此需要花费比“预期”更多的draw call。</p>
+<h2 id="帧调试器"><a href="#帧调试器" class="headerlink" title="帧调试器"></a>帧调试器</h2><p><div align="center"><img src="/2019/04/11/unity-render-optimize/2.jpg"></div><br>帧调试器的调试面板上显示了渲染这一帧锁需要的所有的渲染时间，在本例中，事件数目为41，而其中包含了36个draw call事件（其他渲染时间多为清空缓存等）。通过单击面板上的每个事件，我们可以在Game视图查看该时间的绘制结果，同时渲染统计面上的数据也会显示成截至当前事件为止的各个渲染统计数据。</p>
+<h2 id="其他性能分析工具"><a href="#其他性能分析工具" class="headerlink" title="其他性能分析工具"></a>其他性能分析工具</h2><p>对于Android平台来说，高通的Adreno分析工具可以对不同的测试机进行详细的性能分析。英伟达提供的NVPerfHUD工具来帮助我们得到几乎所有需要的性能分析数据，例如，每个draw call的GPU时间，每个shader话费的cycle数目等。<br>对于iOS平台来说，Unity内置的分析器可以得到整个场景的花费的GPU时间。PowerVRaw的PVRUniSCo shader分析器也可以给出一个大致的性能评估。Xcode中的OpenGL ES Driver Instruments可以给出一些宏观上的性能信息，例如，设备利用率、渲染器利用率等。但相对于Android平台，对iOS的性能分析更加困难（工具较少）。而且PowerVR芯片采用了基于瓦片的延迟渲染器，因此，想要得到每个draw call话费的GPU时间是几乎不可能的。这是，一些宏观上统计数据可能更有参考价值。</p>
+<h1 id="减少draw-call数目"><a href="#减少draw-call数目" class="headerlink" title="减少draw call数目"></a>减少draw call数目</h1><p>批处理的实现原理就是为了减少每一帧需要的draw call数目。为了把一个对象渲染到屏幕上，</p>
+<h4 id="动态批处理"><a href="#动态批处理" class="headerlink" title="动态批处理"></a>动态批处理</h4><p>基本原理：每一帧把可以进行批处理的模型网格进行合并，再把合并后的模型数据传递给GPU，然后使用同一个材质对其渲染。动态批处理的一个好处是实现方便，另一个好处是，经过批处理的物体仍然可以移动，这是由于在处理每帧时Unity都会重新合并一次网格。</p>
+<p>条件限制：</p>
+<ul>
+<li>能够进行动态批处理的网格的顶点属性规模要小于900。例如，如果shader中需要使用顶点位置、发现和纹理坐标这3个顶点属性，那么要想让模型能够被动态批处理，它的顶点数目不能超过300。</li>
+<li>多Pass的shader会中断批处理。在前向渲染中，我们有时需要使用额外的Pass来为模型添加更多的光照效果，但这样一来模型就不会被动态批处理了。</li>
+</ul>
+<h4 id="静态批处理"><a href="#静态批处理" class="headerlink" title="静态批处理"></a>静态批处理</h4><p>Unity提供了另一种批处理方式，即静态批处理。相比于动态批处理来说，静态批处理适用于任何大小的几何模式。它的实现原理是，只在运行开始阶段，把需要进行静态批处理的模型合并到一个新的网络结构中，这意味着这些模型不可以在运行时刻被移动。但由于它只需要进行一次合并操作，因此，比动态批处理更加高效。静态批处理的另一个缺点在与，它往往需要占用更多的内存来存储合并后的几何结构。这是因为，如果在静态批处理钱一些物体共享了相同的网格，那么在内存中每一个物体都会对应一个该网格的复制品，即一个网格会变成多个网格在发送给GPU。如果这类使用同一网格的对象很多，那么这就会成为一个性能瓶颈了。例如，如果在一个使用了1000个相同模型的森林中使用静态批处理，那么，就会多使用1000倍的内存，这会造成严重的内存影响。</p>
+<h4 id="共享材质"><a href="#共享材质" class="headerlink" title="共享材质"></a>共享材质</h4><p>无论是静态批处理还是动态批处理，都要求模型之间需要共享同一个材质。但不同的模型之间总会需要有不同的渲染属性，例如，使用不同的纹理、颜色等。这是，我们需要一些策略来尽可能地合并材质。<br>如果两个材质之间只有使用的纹理不同，我们可以把这些纹理合并到一张更大的纹理中，这张更大的纹理被称为是一张图集（atlas）。一旦使用了同一张纹理，我们就可以使用同一个材质，再使用不同的采样坐标对纹理采样即可。<br>但有时，除了纹理不同外，不同的物体在材质上还有一些微小的参数变化，例如，颜色不同、某些浮点属性不同。但是，不管是动态批处理还是静态批处理，它们的前提都是要使用同一个材质。是同一个，而不是使用了同一种Shader的材质，也就是说它们指向的材质必须是同一个实体。这意味着，只要我们调整了参数，就会影响所有使用这个材质的对象，那么想要微小的调整怎么办？一种常用的方法就是使用网格的顶点（最常见的就是顶点颜色数据）来存储这些参数。经过批处理后的物体会被处理成更大的VBO发送给GPU，VBO中的数据可以作为输入传递给顶点着色器，因此，我们可以巧妙地对VBO中的数据进行控制，从而达到不通效果的目的。一个例子是，森林场景中所有的树使用了同一种材质，我们希望它们可以通过批处理来减少draw call，但不同树的颜色可能不同。这么，我们可以利用网格的顶点的颜色数据来调整。</p>
+<h4 id="批处理的注意事项"><a href="#批处理的注意事项" class="headerlink" title="批处理的注意事项"></a>批处理的注意事项</h4><h3 id="减少需要处理的顶点数目"><a href="#减少需要处理的顶点数目" class="headerlink" title="减少需要处理的顶点数目"></a>减少需要处理的顶点数目</h3><h4 id="优化几何体"><a href="#优化几何体" class="headerlink" title="优化几何体"></a>优化几何体</h4><p>移除不必要的硬边以及纹理衔接，避免边界平滑和纹理分离。</p>
+<h4 id="模型的LOD技术"><a href="#模型的LOD技术" class="headerlink" title="模型的LOD技术"></a>模型的LOD技术</h4><h4 id="遮挡剔除技术"><a href="#遮挡剔除技术" class="headerlink" title="遮挡剔除技术"></a>遮挡剔除技术</h4><h3 id="减少需要处理的片元数目"><a href="#减少需要处理的片元数目" class="headerlink" title="减少需要处理的片元数目"></a>减少需要处理的片元数目</h3><h4 id="控制绘制顺序"><a href="#控制绘制顺序" class="headerlink" title="控制绘制顺序"></a>控制绘制顺序</h4><h4 id="时刻警惕透明物体"><a href="#时刻警惕透明物体" class="headerlink" title="时刻警惕透明物体"></a>时刻警惕透明物体</h4><h4 id="减少实时光照和阴影"><a href="#减少实时光照和阴影" class="headerlink" title="减少实时光照和阴影"></a>减少实时光照和阴影</h4><h3 id="节省带宽"><a href="#节省带宽" class="headerlink" title="节省带宽"></a>节省带宽</h3><h4 id="减少纹理大小"><a href="#减少纹理大小" class="headerlink" title="减少纹理大小"></a>减少纹理大小</h4><ul>
+<li>纹理的长宽比最好是正方形，长宽值最好是2的整数幂</li>
+<li>多级渐远纹理技术（mipmapping）和纹理压缩。</li>
+</ul>
+<h4 id="利用分辨率缩放"><a href="#利用分辨率缩放" class="headerlink" title="利用分辨率缩放"></a>利用分辨率缩放</h4><h3 id="减少计算复杂度"><a href="#减少计算复杂度" class="headerlink" title="减少计算复杂度"></a>减少计算复杂度</h3><h4 id="Shader的LOD技术"><a href="#Shader的LOD技术" class="headerlink" title="Shader的LOD技术"></a>Shader的LOD技术</h4><h4 id="代码方面的优化"><a href="#代码方面的优化" class="headerlink" title="代码方面的优化"></a>代码方面的优化</h4><h4 id="根据硬件进行缩放"><a href="#根据硬件进行缩放" class="headerlink" title="根据硬件进行缩放"></a>根据硬件进行缩放</h4>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/physics-base-render/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/11/physics-base-render/" class="post-title-link" itemprop="url">基于物理的渲染</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-11 16:58:13" itemprop="dateCreated datePublished" datetime="2019-04-11T16:58:13+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity-Shader/" itemprop="url" rel="index"><span itemprop="name">Unity Shader</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="双向反射分布函数（BRDF）"><a href="#双向反射分布函数（BRDF）" class="headerlink" title="双向反射分布函数（BRDF）"></a>双向反射分布函数（BRDF）</h2><p><strong>辐射率（radiance）</strong>是单位面积、单位方向上光源的辐射通量，通常用L表示，被认为是对单一光线的亮度和颜色评估。<font color="red">在渲染中，我们通常会基于表面的入射光线的入射辐射率 $ L<em>i  $ 来计算出射辐射率 $L</em>{0}$ ，这个过程往往也称为<strong>着色（shading）</strong>过程。</font><br>而要得到出射辐射率$L_{o}$，我们需要知道物体表面一点是如何和光进行交互的。而这个过程就可以使用<strong>BRDF（Bidirectional Reflectance Distribution Function，双向反射分布函数）</strong>来定量分析。在大多数情况下，BRDF可以用$f(I,v)$来表示，其中I为入射方向和v为观察方向（双向的含义）。这种情况下，绕着表面法线旋转入射方向或观察方向并不会影响BRDF的结果，这种BRDF被称为是<strong>各项同性（isotropic）</strong>的BRDF。与之对应的则是<strong>各项异性（anisotropic）</strong>的BRDF。</p>
+<p>公式如下：</p>
+<p>$L<em>{o}(p,w</em>{o}) = \int<em>\Omega(k</em>{d}{c \over \pi} + k<em>{s}{DGF \over 4(w</em>{o} \cdot n)(w<em>{i} \cdot n)})L</em>{i}(p,w<em>{i})(w</em>{i} \cdot n)dw_{i}$</p>
+<p>这是PBR的核心，也是主要的劝退点。<br>翻译成自然语言，大概是这样的：</p>
+<p>$输出颜色 = \int<em>\Omega(漫反射比例{纹理颜色 \over \pi} + 镜面反射比例{镜面高光 x 几何遮蔽 x 菲涅尔效应 \over 4(view</em>{Dir} \cdot normal)(lightDir \cdot normal)})光源颜色(lightDir,normal)dw_{i}$</p>
+<p>先解释下这个公式遗留的部分。半球积分($\int<em>\Omega………dw</em>{i}$)</p>
+<h3 id="放置反射探针"><a href="#放置反射探针" class="headerlink" title="放置反射探针"></a>放置反射探针</h3><p>在实时渲染中，我们经常会使用Cubemap来模拟物体的反射效果。例如，在赛车游戏中，我们需要对车身或车窗使用反射映射的技术来模拟它们的反光材质。然而，如果我们永远使用同一个Cubemap，那么，当赛车周围的场景发生较大变化时，就很容易出现“穿帮镜头”，因为车身或车窗的环境反射并没有随环境变化而变换。一种解决办法是可以在脚本中控制何时生成从当前位置观察到的Cubemap，Unity中提供了反射探针<strong>（Reflection Probes）</strong>。反射探针的工作原理和光照探针（Light Probes）类似，它允许我们在场景中的特定位置上对整个场景的环境反射进行采样，并把采样结果存储在每个探针上。当游戏中包含反射效果的物体从这些探针附近经过时，Unity会把这些邻近探针存储的反射结果传递给物体使用的反射纹理。如果物体周围存在多个反射探针，Unity还会在这些反射之间进行插值，来得到平滑渐变的反射效果。实际上，Unity会在场景中放置一个默认的反射探针，这个反射探针粗怒触了对场景使用的Skybox的反射结果，来作为场景的环境光照。如果我们需要让场景中的物体包含额外的反射效果，就需要放置更多的反射探针。<br>反射探针同样有3种类型：Baked，这种类型的反射探针是通过提前烘培来得到该位置使用的Cubemap的，在游戏运行时反射探针中存储的Cubemap并不会发生变化。需要注意的是，这种类型的反射探针在烘培时同样只会处理那些静态物体（即那些被标志为Reflection Probe Static的物体）；Realtime，这种类型则会实时更新当前的Cubemap，并且不受静态物体还是动态物体的影响。当然，这种类型的反射探针需要花费更多的处理时间，因此，在使用时应当非常小心它们的性能。幸运的是，Unity允许我们从脚本中通过触发来精确控制反射探针的更新；最后一种类型是Custom，这种类型的探针即可以让我们从编辑器中烘培它，也可以让我们使用一个自定义的Cubemap来作为反射映射，但自定义的Cubemap不会被实时更新。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/The-Effects-Framework/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2182,554 +2547,10 @@ m_LightTexEffect-&gt;SetMatrix( m_ProjMatrixHandle, &amp;P);
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Building-a-Flexible-Camera-Class/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/Building-a-Flexible-Camera-Class/" class="post-title-link" itemprop="url">第十一章 网格模型II(Building a Flexible Camera Class)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-11 15:17:21" itemprop="dateCreated datePublished" datetime="2019-04-11T15:17:21+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ID3DXBuffer"><a href="#ID3DXBuffer" class="headerlink" title="ID3DXBuffer"></a>ID3DXBuffer</h1><p>　　对ID3DXBuffer接口的一些参考是在上一章，这里我们不会详细讲解。在D3DX库中到处都能看见这个接口，因此大概介绍一下该接口还是很有必要的。<br>　　ID3DXBuffer接口是一个很普通的数据结构， D3DX用它将数据存储到邻接内存块中。它只有两个方法：</p>
-<ul>
-<li>LPVOID GetBufferPointer()——返回一个指向开始数据的指针。</li>
-<li>DWORD GetBufferSize()——返回在缓存中的字节大小。<br> 为了保持结构特性，它使用一个空指针。也就是说它让我们知道被存储的数据的类型。例如，D3DXLoadMeshFromX使用一个ID3DXBuffer来返回mesh的邻接信息。因为邻接信息是被存储在DWORD数组中的，所以当我们希望使用缓存中的邻接信息时，我们不得不将缓存转换为DWORD数组。<br>　　例如：<br>DWORD<em> info =(DWORD</em>)adjacencyInfo-&gt;GetBufferPointer();<br>D3DXMATERIAL<em> mtrls = (D3DXMATERIAL</em>)mtrlBuffer-&gt;GetBufferPointer();<br>　　因为ID3DXBuffer是一个COM对象，当你使用完以后就必须释放它以防止内存泄漏：<br>adjacencyInfo-&gt;Release();<br>mtrlBuffer-&gt;Release();<br>　　我们能够使用下面的方法来创建一个空的ID3DXBuffer：<br>HRESULT D3DXCreateBuffer(<br>  DWORD NumBytes, // Size of the buffer, in bytes.<br>  LPD3DXBUFFER <em>ppBuffer // Returns the created buffer.<br>);<br>　　下面的例子是创建一个能包含4个整数的缓存：<br>ID3DXBuffer</em> buffer = 0;<br>D3DXCreateBuffer( 4 <em> sizeof(int), &amp;buffer );<br>11.2 X文件<br> 迄今为止，我们已经使用过了简单的几何物体，如球体，圆柱体，立方体等，它们都是用D3DXCreate</em>函数来创建的。假如你想通过手工指定顶点来创建你自己的3D物体，你能，不用怀疑，不过这是非常枯燥乏味的事情。为了减轻建造3D物体数据的工作，专门的应用程序已经被开发出来了，我们把它们叫做3D建模工具。它们允许我们在一个虚拟的拥有丰富工具的交互环境下建造复杂的真实的mesh，在这建造这些模型都是非常容易的。例如在游戏开发中常用到的有3DSMax（www.discreet.com）,LightWave 3D（www.newtek.com）,以及Maya（www.aliaswavefront.com）。<br> 这些工具，当然能够输出创建好的mesh数据到文件中。因此，我们也能够写一个文件来提取在我们的3D应用程序中要用到的mesh数据。这的确是一种可行的解决办法。不过，还存在一个更方便的解决方案。它是一种叫做X文件的特殊mesh文件格式（扩展名为.X）。很多3D建模软件都能输出这种格式，当然这里存在一个将其他流行的mesh文件转换为X文件的过程。是什么使X文件这么便利呢？因为它是DirectX定义的格式，并且D3DX库很容易地支持X文件。D3DX库提供了读和写X文件的函数。因此，如果我们使用这种格式就避免了还要自己写程序文件来读/写模型文件了。<br> 注意：你能够下载DirectX9 SDK Extra——你能从MSDN（www.msdn.microsoft.com）上得到一些已经开发好的针对3DMax,LightWave,Maya软件导出.X文件的Direct3D工具包。<br>11.2.1读取X文件<br> 我们使用下面的函数来读取存储在X文件中的mesh数据。注意这个方法创建一个ID3DXMesh对象，且从X文件中读取几何信息数据填入其中。<br>HRESULT D3DXLoadMeshFromX(<br>  LPCSTR pFilename,<br>  DWORD Options,<br>  LPDIRECT3DDEVICE9 pDevice,<br>  LPD3DXBUFFER <em>ppAdjacency,<br>  LPD3DXBUFFER </em>ppMaterials,<br>  LPD3DXBUFFER<em> ppEffectInstances,<br>  PDWORD pNumMaterials,<br>  LPD3DXMESH </em>ppMesh<br>);</li>
-<li>pFilename — 读取的X文件的文件名。</li>
-<li>Options — 用来创建mesh的一个或多个创建标志。要了解所有标志信息请查看sdk文档。现在列出一部分：</li>
-<li>D3DXMESH_32BIT — mesh使用32位索引。</li>
-<li>D3DXMESH_MANAGED — mesh数据将被放在受控的内存中。</li>
-<li>D3DXMESH_WRITEONLY — mesh数据只能执行写操作，不能执行读操作。</li>
-<li>D3DXMESH_DYNAMIC — mesh缓存将是动态的。</li>
-<li>pDevice — 与复制mesh有关的设备。</li>
-<li>ppAdjacency — 返回一个ID3DXBuffer包含一个DWORD数组，描述mesh的邻接信息。</li>
-<li>ppMaterials — 返回一个ID3DXBuffer包含一个D3DXMATERIAL结构的数组，存储了mesh的材质数据。我们在下一节介绍mesh材质。</li>
-<li>ppEffectInstances — 返回一个ID3DXBuffer包含一个D3DXEFFECTINSTANCE结构的数组。我们现在通过指定0值来忽略这个参数。</li>
-<li>pNumMaterials — 返回mesh的材质数。</li>
-<li>ppMesh — 返回填充了X文件几何信息的ID3DXMesh对象。<br>11.2.2 X文件的材质<br>　　D3DXLoadMeshFromX的第七个参数返回的是mesh包含的材质数，第五个参数返回的是包含着材质数据的一个D3DXMATERIAL结构数组。D3DXMATERIAL结构的定义如下：<br>typedef struct D3DXMATERIAL {<br>  D3DMATERIAL9 MatD3D;<br>  LPSTR pTextureFilename;<br>} D3DXMATERIAL;<br>　　这是一个简单的结构；它包含一个基本的D3DMATERAIL9结构和一个用来指定与之相关联的纹理文件名的一个以null结束的字符串指针。一个X文件是不能插入纹理数据的；它只能插入文件名。因此，在使用D3DXLoadMeshFromX读取一个X文件以后，我们还必须从纹理文件中读取纹理数据。我们将在下一节中说明怎样具体实现。<br>　　D3DXLoadMeshFromX函数读取X文件数据以便在返回的D3DXMATERIAL数组中的第i项与第i个子集相对应。因此，子集是使用0，1，2，…，n-1标记的，n是子集和材质的数目。这也就允许使用简单的循环来渲染mesh了。<br>11.2.3 实例程序：X文件<br>　　我们现在演示本章中的第一个实例（X文件）的相关代码。该例子调用一个叫做bigship1.x的x文件，你可以在DirectX SDK下的media文件夹下找到它。完整原代码可以在相应的文件中找到。图11.1是该实例的一个截图。</li>
-</ul>
-<p>图11.1<br>　　该实例使用下面的全局变量：<br>ID3DXMesh<em>                      Mesh = 0;<br>std::vector<d3dmaterial9>       Mtrls(0);<br>std::vector&lt;IDirect3DTexture9</d3dmaterial9></em>&gt; Textures(0);<br>   这里有一个ID3DXMesh对象，它被用来存储从X文件中读取的mesh数据。也有一个材质vector和纹理vector,我们用它们来分别存储mesh的材质和纹理。<br>　　我们首先在Setup函数中操作。首先，我们读取X文件：<br>bool Setup()<br>{<br>    HRESULT hr = 0;<br>    //<br>    // Load the XFile data.<br>    //<br>    ID3DXBuffer<em> adjBuffer  = 0;<br>    ID3DXBuffer</em> mtrlBuffer = 0;<br>    DWORD        numMtrls   = 0;<br>    hr = D3DXLoadMeshFromX(<br>        “bigship1.x”,<br>        D3DXMESH_MANAGED,<br>        Device,<br>        &amp;adjBuffer,<br>        &amp;mtrlBuffer,<br>        0,<br>        &amp;numMtrls,<br>        &amp;Mesh);<br>    if(FAILED(hr))<br>    {<br>        ::MessageBox(0, “D3DXLoadMeshFromX() - FAILED”, 0, 0);<br>        return false;<br>     }<br>　　读取完X文件数据以后，我们必须遍历D3DXMATERIAL数组来读取mesh中所使用的所有纹理：<br>    //<br>    // Extract the materials, and load textures.<br>    //<br>    if( mtrlBuffer != 0 &amp;&amp; numMtrls != 0 )<br>    {<br>        D3DXMATERIAL<em> mtrls = (D3DXMATERIAL</em>)mtrlBuffer-&gt;GetBufferPointer();<br>        for(int i = 0; i &lt; numMtrls; i++)<br>        {<br>            // the MatD3D property doesn’t have an ambient value set<br>            // when its loaded, so set it now:<br>            mtrls[i].MatD3D.Ambient = mtrls[i].MatD3D.Diffuse;<br>            // save the ith material<br>            Mtrls.push_back( mtrls[i].MatD3D );<br>            // check if the ith material has an associative texture<br>            if( mtrls[i].pTextureFilename != 0 )<br>            {<br>                // yes, load the texture for the ith subset<br>                IDirect3DTexture9<em> tex = 0;<br>                D3DXCreateTextureFromFile(<br>                    Device,<br>                    mtrls[i].pTextureFilename,<br>                    &amp;tex);<br>                // save the loaded texture<br>                Textures.push_back( tex );<br>            }<br>            else<br>            {<br>                // no texture for the ith subset<br>                Textures.push_back( 0 );<br>            }<br>        }<br>    }<br>　　d3d::Release&lt;ID3DXBuffer</em>&gt;(mtrlBuffer); // done w/ buffer<br>    .<br>    . // Snipped irrelevant code to this chapter (e.g., setting up lights,<br>    . // view and projection matrices, etc.)<br>    .<br>    return true;<br>} // end Setup()<br>　　在Display函数中我们让mesh在每一帧中都旋转一个小角度。我们使用简单的循环，Mesh便能够被渲染了：<br>bool Display(float timeDelta)<br>{<br>    if( Device )<br>    {<br>        //<br>        // Update: Rotate the mesh.<br>        //</p>
-<pre><code>    static float y = 0.0f;
-    D3DXMATRIX yRot;
-    D3DXMatrixRotationY(&amp;yRot, y);
-    y += timeDelta;
-
-    if( y &gt;= 6.28f )
-        y = 0.0f;
-
-    D3DXMATRIX World = yRot;
-
-    Device-&gt;SetTransform(D3DTS_WORLD, &amp;World);
-
-    //
-    // Render
-    //
-
-    Device-&gt;Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0);
-    Device-&gt;BeginScene();
-
-    for(int i = 0; i &lt; Mtrls.size(); i++)
-    {
-        Device-&gt;SetMaterial( &amp;Mtrls[i] );
-        Device-&gt;SetTexture(0, Textures[i]);
-        Mesh-&gt;DrawSubset(i);
-    }   
-
-    Device-&gt;EndScene();
-    Device-&gt;Present(0, 0, 0, 0);
-}
-return true;
-</code></pre><p>}<br>11.2.4 产生顶点法线<br>   一个X文件不包含顶点法线数据，这是很有可能的。假如是这种情况，那么手动计算顶点法线以便我们能够使用灯光这是很有必要的。在第5章中我们简要的介绍了一下怎么做。然而，现在我们知道了ID3DXMesh接口和它的父接口ID3DXBaseMesh，我们能够使用下面的函数来产生任何mesh的顶点法线：<br>HRESULT D3DXComputeNormals(<br>    LPD3DXBASEMESH pMesh, // Mesh to compute normals of.<br>    const DWORD <em>pAdjacency // Input adjacency info.<br>);<br>   这个函数通过使用平均法线的方法来产生顶点法线。假如有邻接信息，那么重复的顶点是被忽略的。假如没有邻接信息，那么重复的顶点也会被重复计算。了解这些是很重要的，我们检查pMash必须有一个包含D3DFVF_NORMAL标记的顶点格式。<br>   注意假如X文件不包含顶点法线数据，那么通过D3DXLoadMeshFromX创建的ID3DXMesh对象在它的顶点格式中没有指定的D3DFVF_NORMAL标记。因此，在我们能够使用D3DXComputeNormals之前，我们必须复制mesh并且为其指定包含D3DFVF_NORMAL的顶点格式。下面就是相应的代码：<br>// does the mesh have a D3DFVF_NORMAL in its vertex format?<br>if ( !(pMesh-&gt;GetFVF() &amp; D3DFVF_NORMAL) )<br>{<br>    // no, so clone a new mesh and add D3DFVF_NORMAL to its format:<br>    ID3DXMesh</em> pTempMesh = 0;<br>    pMesh-&gt;CloneMeshFVF(<br>        D3DXMESH_MANAGED,<br>        pMesh-&gt;GetFVF() | D3DFVF_NORMAL, // add it here<br>        Device,<br>        &amp;pTempMesh );</p>
-<pre><code>// compute the normals:
-D3DXComputeNormals( pTempMesh, 0 );
-
-pMesh-&gt;Release(); // get rid of the old mesh
-pMesh = pTempMesh; // save the new mesh with normals
-</code></pre><p>}<br>11.3渐进网格（Progressive Meshes）<br>   渐进网格，它通过ID3DXPMesh接口来表现，允许我们通过简化边缩减转换（edge collapse transformations，ECT）来简化mesh。每执行一次ECT就移除一个顶点和一或2个面。因为每个ECT是可逆的（它的逆过程叫顶点分裂），我们能够逆转简化过程并且恢复mesh为它的原始状态。当然，我们不可能得到比原始情况还要精细的网格。我们仅仅只能简化然后恢复简化操作。图11.2显示了同一个mesh的三种不同精细级别（levels of detail，LOD）：高，中，低。</p>
-<p>图11.2<br>   渐进网格和mipmaps纹理非常相似。当使用纹理时，我们已经注意到在一个小或远的图元上使用高分辨率的纹理简直就是浪费。对于mesh也是同样的道理；一个小或远的mesh不需要太多三角形，多了也是浪费。因此，我们不会花费渲染高三角形模型的时间来渲染一个只需要表现小的低三角形模型。<br>   我们可以使用渐进网格来根据模型距离摄象机的距离来调整模型的LOD。也就是说，当距离减少时，我们增加mesh的细节，当距离增加时我们减少mesh的细节。<br>   注意我们还没有讨论渐进网格是怎样被实现的；这里我们只讲解怎样使用ID3DXPMesh接口。对此感兴趣的读者可以到渐进网格的原始页面Hoppe上查看。Hoppe的网址：<a href="http://research.microsoft.com/~hoppe/。" target="_blank" rel="noopener">http://research.microsoft.com/~hoppe/。</a><br>11.3.1 产生一个渐进网格<br>   我们能够使用下面的函数来创建一个ID3DXPMesh对象：<br>HRESULT D3DXGeneratePMesh(<br>    LPD3DXMESH pMesh,<br>    CONST DWORD <em>pAdjacency,<br>    CONST LPD3DXATTRIBUTEWEIGHTS pVertexAttributeWeights,<br>    CONST FLOAT </em>pVertexWeights,<br>    DWORD MinValue,<br>    DWORD Options,<br>    LPD3DXPMESH *ppPMesh<br>);</p>
-<ul>
-<li>pMesh— 输入原始mesh，它包含了我们想要生成的渐进网格的mesh数据。</li>
-<li>pAdjacency — 指向一个包含pMesh邻接信息的DWORD数组。</li>
-<li>pVertexAttributeWeights — 指向一个D3DXATTRIBUTEWEIGHTS数组，它的大小是pMesh-&gt;GetNumVertices（）。它的第i项与pMesh中的第i个顶点相对应并且指定的是它的品质权重。品质权重被用来确定一个顶点被删除的可能性大小。你能够将此参数设置为null，对于每个顶点一个默认的顶点品质权重将被设置。在11.3.2节中有关于顶点品质权重和D3DXATTRIBUTEWEIGHTS结构的更多信息。</li>
-<li>pVertexWeights — 指向一个float数组，它的大小是pMesh-&gt;GetNumVertices（），它的第i项与pMesh中的第i个顶点相对应并且指定的是它的顶点权重。顶点权重越高被删除的可能性越小。你能够将此参数设置为null，对于每个顶点一个默认的顶点品质权重1.0将被设置。</li>
-<li>MinValue — 我们想要简化到的最小顶点或面数。注意该值是必须的，而且与顶点/品质权重有关，最终可能达不到该值。</li>
-<li>Options — 只能取D3DXMESHSIMP枚举类型中的一个值：</li>
-<li>D3DXMESHSIMP_VERTEX — 指定在上一个参数MinValue中提到的数为顶点数。</li>
-<li>D3DXMESHSIMP_FACE —指定在上一个参数MinValue中提到的数为面数。</li>
-<li><p>ppPMesh — 返回生成好的渐进网格。<br>11.3.2 顶点品质权重<br>typedef struct _D3DXATTRIBUTEWEIGHTS {<br>  FLOAT Position;<br>  FLOAT Boundary;<br>  FLOAT Normal;<br>  FLOAT Diffuse;<br>  FLOAT Specular;<br>  FLOAT Texcoord[8];<br>  FLOAT Tangent;<br>  FLOAT Binormal;<br>} D3DXATTRIBUTEWEIGHTS;<br>　　顶点权重结构允许我们为每个顶点属性指定一个权值。0.0表示该属性没有权重。顶点属性的权重越高在简化过程中被移除的可能性越小。默认的权值如下：<br>D3DXATTRIBUTEWEIGHTS AttributeWeights;<br>AttributeWeights.Position = 1.0;<br>AttributeWeights.Boundary = 1.0;<br>AttributeWeights.Normal = 1.0;<br>AttributeWeights.Diffuse = 0.0;<br>AttributeWeights.Specular = 0.0;<br>AttributeWeights.Tex[8] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};<br>　　默认的权值是被推荐的，除非你的应用程序有一个重要的理由而不使用它。<br>11.3.3 ID3DXPMesh方法<br> ID3DXPMesh接口是继承自ID3DXBaseMesh接口。因此它拥有以前所学习过的ID3DXMesh的所有函数，下面是一些额外的方法：<br>DWORD GetMaxFaces(VOID)——返回渐进网格能够被设置的最大面数。<br>DWORD GetMaxVertices(VOID)——返回渐进网格能够被设置的最大顶点数。<br>DWORD GetMinFaces(VOID)——返回渐进网格能够被设置的最小面数。<br>DWORD GetMinVertices(VOID)——返回渐进网格能够被设置的最小顶点数。<br>HRESULT SetNumFaces(DWORD Faces)——这个方法允许我们设置面的个数，以便让mesh简化/复杂化。例如，假设mesh目前有50个面，我们现在想将它简化到30个面；我们将写成：<br>pmesh-&gt;SetNumFaces(30);<br> 注意调整后的面数可能并不是我们设定的面数。假如面数小于了GetMinFaces（），那么面数将为GetMinFaces（）。同样的，假如面数大于了GetMaxFaces（），那么面数将为GetMaxFaces（）。<br>HRESULT SetNumVertices(DWORD Vertices)——这个方法允许我们设置顶点的个数，以便让mesh简化/复杂化。例如，假设mesh目前有20个顶点，我们现在想将它增加到40个；我们将写成：<br>pmesh-&gt;SetNumVertices(40);<br> 注意调整后的顶点数可能并不是我们设定的数。假如顶点数小于了GetMinVertices（），那么顶点数将为GetMinVertices（）。同样的，假如顶点数大于了GetMaxVertices（），那么顶点数将为GetMaxVertices（）。<br>HRESULT TrimByFaces(<br>DWORD NewFacesMin,<br>DWORD NewFacesMax,<br>DWORD <em>rgiFaceRemap, // Face remap info.<br>DWORD </em>rgiVertRemap // Vertex remap info.<br>);<br> 这个方法允许我们设置新的最小和最大面数，分别通过NewFacesMin和NewFacesMax指定。注意新的最小和最大值必须在现有最小和最大面数之间；也就是说，必须在[GetMinFaces（），GetMaxFaces（）]之中。该函数也返回面和顶点的重影射信息。重影射信息参见10.4节。<br>HRESULT TrimByVertices(<br>DWORD NewVerticesMin,<br>DWORD NewVerticesMax,<br>DWORD <em>rgiFaceRemap, // Face remap info.<br>DWORD </em>rgiVertRemap // Vertex remap info.<br>);<br> 这个方法允许我们设置新的最小和最大顶点数，分别通过NewVerticesMin和NewVerticesMax指定。注意新的最小和最大值必须在现有最小和最大顶点数之间；也就是说，必须在[GetMinVertices（），GetMaxVertices（）]之中。该函数也返回面和顶点的重影射信息。重影射信息参见10.4节。<br>11.3.4实例程序：渐进网格<br> 渐进网格例子与X文件例子很相似，除了实际上我们创建和渲染的是一个渐进网格，通过ID3DXPMesh接口来表现。我们允许用户通过键盘输入进行交互式地改变渐进网格。你能通过按A键来增加mesh的面数，按S键来减少mesh的面数。<br> 在这个例子中使用的全局变量和X文件例子中的是一样的，不过我们增加了一个用来存储渐进网格的变量：<br>ID3DXMesh<em>                      SourceMesh = 0;<br>ID3DXPMesh</em>                     PMesh      = 0; // progressive mesh<br>std::vector<d3dmaterial9>       Mtrls(0);<br>std::vector<idirect3dtexture9*> Textures(0);<br> 回想一下，为了得到一个渐进网格我们必须输入一个包含了数据信息的源mesh。因此，我们首先读取一个X文件数据到ID3DXMesh对象SourceMesh之中，然后再产生渐进网格：<br>bool Setup()<br>{<br>  HRESULT hr = 0;<br>  // …Load XFile data into SourceMesh snipped.<br>  //<br>　　// …Extracting materials and textures snipped.<br> 因为这一部分代码和X文件例子中的是完全一样的，在这里我们就把它省略了。一但有了源mesh，我们就能够象下面一样来生成渐进网格了：<br>  //<br>  // Generate the progressive mesh.<br>  //<br>  hr = D3DXGeneratePMesh(</idirect3dtexture9*></d3dmaterial9></p>
-<pre><code>  SourceMesh,
-  (DWORD*)adjBuffer-&gt;GetBufferPointer(), // adjacency
-  0,                  // default vertex attribute weights
-  0,                  // default vertex weights
-  1,                  // simplify as low as possible
-  D3DXMESHSIMP_FACE,  // simplify by face count
-  &amp;PMesh);
-</code></pre><p>  d3d::Release<id3dxmesh*>(SourceMesh);  // done w/ source mesh<br>  d3d::Release<id3dxbuffer*>(adjBuffer); // done w/ buffer</id3dxbuffer*></id3dxmesh*></p>
-<p>  if(FAILED(hr))<br>  {</p>
-<pre><code>  ::MessageBox(0, &quot;D3DXGeneratePMesh() - FAILED&quot;, 0, 0);
-  return false;
-</code></pre><p>   }<br>　　注意，因为顶点/品质权值的缘故，很难将Mesh简化到只有一个面，但是，如果将其指定为1，则可以将Mesh简化到最低。<br>　　在这一点上，渐进网格已经被产生了，但是假如你现在就渲染它，它将以最简化的方式来渲染。以为我们想开始渲染最高精度的mesh，所以我们设置它为：<br>  // set to original detail<br>  DWORD maxFaces = PMesh-&gt;GetMaxFaces();<br>   PMesh-&gt;SetNumFaces(maxFaces);<br> 在Display函数中，我们测试A键和S键并将结果输入。<br>bool Display(float timeDelta)<br>{<br>  if( Device )<br>  {</p>
-<pre><code>  //
-  // Update: Mesh resolution.
-  //
-
-  // Get the current number of faces the pmesh has.
-  int numFaces = PMesh-&gt;GetNumFaces();
-
-  // Add a face, note the SetNumFaces() will  automatically
-  // clamp the specified value if it goes out of bounds.
-  if( ::GetAsyncKeyState(&#39;A&#39;) &amp; 0x8000f )
-  {
-      // Sometimes we must add more than one face to invert
-      // an edge collapse transformation
-      PMesh-&gt;SetNumFaces( numFaces + 1 );
-      if( PMesh-&gt;GetNumFaces() == numFaces )
-          PMesh-&gt;SetNumFaces( numFaces + 2 );
-  }
-
-  // Remove a face, note the SetNumFaces() will  automatically
-  // clamp the specified value if it goes out of bounds.
-  if( ::GetAsyncKeyState(&#39;S&#39;) &amp; 0x8000f )
-</code></pre><p>　　　　　　　　PMesh-&gt;SetNumFaces( numFaces - 1 );<br> 这是很简单的，但是要注意当增加面时我们有时必须增加两个面来完成ECT。<br>　　最后，我们就能象渲染ID3DXMesh对象一样来渲染ID3DXPMesh对象。另外，为了更加直观的观察网格的三角形数的变化情况，使用黄色材质在线框模式（Wireframe Mode）下渲染Mesh的三角形。</p>
-<pre><code>  Device-&gt;Clear(0, 0, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0xffffffff, 1.0f, 0);
-  Device-&gt;BeginScene();
-  for(int i = 0; i &lt; Mtrls.size(); i++)
-  {
-      // draw pmesh
-      Device-&gt;SetMaterial( &amp;Mtrls[i] );
-      Device-&gt;SetTexture(0, Textures[i]);
-      PMesh-&gt;DrawSubset(i);
-      // draw wireframe outline
-      Device-&gt;SetMaterial(&amp;d3d::YELLOW_MTRL);
-      Device-&gt;SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
-      PMesh-&gt;DrawSubset(i);
-      Device-&gt;SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-  }   
-  Device-&gt;EndScene();
-  Device-&gt;Present(0, 0, 0, 0);
-</code></pre><p>  }<br>  return true;<br>}<br>　　<br>图11.3<br>11.4 界线容积（Bounding Volumes）<br>　　有时我们需要计算mesh的界线容积（边界范围）。常用的有两种类型：立方体和球。也有使用其它方法的，如圆柱体，椭球体，菱形体，胶囊形。图11.4演示了对同一个mesh分别使用立方体和球体类型。这一节我们只讨论立方体和球体两种边界形式。<br>　　<br>　　图11.4<br>　　边界盒/球常常被用来加速可见性测试，碰撞检测等。例如，假如一个mesh的边界盒/球不可见，那么我们就说mesh不可见。一个盒/球可见性测试是比分别测试mesh中的每个三角形要廉价的多。对于一个碰撞检测例子，如果一枚导弹点火起飞，我们需要检测它是否击中了同一场景中的目标。由于这些物体都是由大量三角形构成，我们可以依次检测每个对象的每个三角形，来测试导弹（可以用射线数学模型）是否碰撞到了这些三角形。这个方法需要进行多次的射线/三角形交点的运算。一个更好的方法是使用边界盒或边界球，计算射线与场景中的每个对象的边界盒/边界球的交点。如果射线与对象的边界范围相交，可以认为该对象被击中了。这是一个公平的近似方法，如果需要更高的精度，可以用边界范围法先去除那些明显不会相撞的对象，然后用更精确地方法检测很可能相撞的对象。如果边界范围检测发现相撞，则该对象就很有可能相撞。<br>　　D3DX库提供了计算mesh的边界盒和边界球的函数。这些函数使用顶点数组作为输入计算边界盒/球。这些函数本来就是设计的很灵活的，它们可以使用各种顶点格式：<br>HRESULT D3DXComputeBoundingSphere(<br>  LPD3DXVECTOR3 pFirstPosition,<br>  DWORD NumVertices,<br>  DWORD dwStride,<br>  D3DXVECTOR3<em> pCenter,<br>  FLOAT</em> pRadius<br>);</p>
-</li>
-<li>pFirstPosition——指向在顶点数组中第一个顶点的向量，描述顶点位置。</li>
-<li>NumVertices——在顶点数组中的的顶点数。</li>
-<li>dwStride——每个顶点的字节大小。这是很需要的，因为顶点结构可能有一些额外信息如法向量和纹理坐标，这些信息对计算边界又没有用，函数需要知道应该跳过多少字节来得到下一个顶点的位置。</li>
-<li>pCenter——返回边界球的中心。</li>
-<li>pRadius——返回边界球的半径。<br>HRESULT D3DXComputeBoundingBox(<br>  LPD3DXVECTOR3 pFirstPosition,<br>  DWORD NumVertices,<br>  DWORD dwStride,<br>  D3DXVECTOR3<em> pMin,<br>  D3DXVECTOR3</em> pMax<br>);<br>前三个参数和D3DXComputeBoundingSphere的前三个参数是完全一样的。最后两个参数分别用来返回边界盒的最小和最大点。<br>11.4.1一些新的特殊常量<br>让我来介绍两个常量，它们在本书中是经常要用到的。我们把它们添加到d3d名称空间中：<br>namespace d3d<br>{<br>  …<br>  const float INFINITY = FLT_MAX;<br>  const float EPSILON = 0.001f;<br>常量INFINITY是用来表示一个浮点数所能存储的最大数。因为我们找不到一个比FLT_MAX还要大的浮点数，我们可以将它视为无穷大。常量EPSILON是一个很小的值，我们这样定义它，凡是比它小的数就视为0。这也是很有必要的，因为得到的浮点是不精确的，一个被读作0的数可能有一点点小偏差。因此，让它和0比较相等肯定会失败。我们因此可以通过把该值与0的差值与EPSILON比较来确定是否相等：<br>bool Equals(float lhs, float rhs)<br>{<br>  // if lhs == rhs their difference should be zero<br>  return fabs(lhs - rhs) &lt; EPSILON ? true : false;<br>}<br>11.4.2界线容积类型<br> 为了更容易的使用边界盒和边界球，我们将它们分别封装到两个类中。现在在d3d名称空间中定义类：<br>struct BoundingBox<br>{<br>  BoundingBox();<br>  bool isPointInside(D3DXVECTOR3&amp; p);<br>  D3DXVECTOR3 _min;<br>  D3DXVECTOR3 _max;<br>};<br>struct BoundingSphere<br>{<br>  BoundingSphere();<br>  D3DXVECTOR3 _center;<br>  float _radius;<br>};<br>d3d::BoundingBox::BoundingBox()<br>{<br>  // infinite small bounding box<br>  _min.x = d3d::INFINITY;<br>  _min.y = d3d::INFINITY;<br>  _min.z = d3d::INFINITY;<br>  _max.x = -d3d::INFINITY;<br>  _max.y = -d3d::INFINITY;<br>  _max.z = -d3d::INFINITY;<br>}<br>bool d3d::BoundingBox::isPointInside(D3DXVECTOR3&amp; p)<br>{<br>  // is the point inside the bounding box?<br>  if(p.x &gt;= _min.x &amp;&amp; p.y &gt;= _min.y &amp;&amp; p.z &gt;= _min.z &amp;&amp;<pre><code>  p.x &lt;= _max.x &amp;&amp; p.y &lt;= _max.y &amp;&amp; p.z &lt;= _max.z)
-</code></pre>  {<pre><code>  return true;
-</code></pre>  }<br>  else<br>  {<pre><code>  return false;
-</code></pre>  }<br>}<br>d3d::BoundingSphere::BoundingSphere()<br>{<br>  _radius = 0.0f;<br>}<br>11.4.3实例程序：界线容积<br>　　在这一章中被叫做界线容积的实例程序主要是演示使用D3DXComputeBoundingSphere和D3DXComputeBoundingBox。程序读取一个X文件并且计算该mesh的边界球。它创建两个ID3DXMesh对象，一个用来作为边界球模型一个用来作为边界盒模型。X文件生成的mesh被渲染，其中的边界球或边界盒不可见（如图11.5）。你能够通过敲空格键来再边界球和边界盒之间切换。</li>
-</ul>
-<p>图11.5<br>　　这个例子是非常简单的，我们列出你要学习的代码。我们实现的两个函数是用来计算网格的边界球和边界盒的：<br>bool ComputeBoundingSphere(<br>        ID3DXMesh<em> mesh, // mesh to compute bounding sphere for<br>        d3d::BoundingSphere</em> sphere) // return bounding sphere<br>{<br>    HRESULT hr = 0;</p>
-<pre><code>BYTE* v = 0;
-mesh-&gt;LockVertexBuffer(0, (void**)&amp;v);
-
-hr = D3DXComputeBoundingSphere(
-        (D3DXVECTOR3*)v,
-        mesh-&gt;GetNumVertices(),
-        D3DXGetFVFVertexSize(mesh-&gt;GetFVF()),
-        &amp;sphere-&gt;_center,
-        &amp;sphere-&gt;_radius);
-
-mesh-&gt;UnlockVertexBuffer();
-
-if( FAILED(hr) )
-    return false;
-return true;
-</code></pre><p>}</p>
-<p>bool ComputeBoundingBox(<br>        ID3DXMesh<em> mesh, // mesh to compute bounding box for<br>        d3d::BoundingBox</em> box) // return bounding box<br>{<br>    HRESULT hr = 0;</p>
-<pre><code>BYTE* v = 0;
-mesh-&gt;LockVertexBuffer(0, (void**)&amp;v);
-
-hr = D3DXComputeBoundingBox(
-        (D3DXVECTOR3*)v,
-        mesh-&gt;GetNumVertices(),
-        D3DXGetFVFVertexSize(mesh-&gt;GetFVF()),
-        &amp;box-&gt;_min,
-        &amp;box-&gt;_max);
-
-mesh-&gt;UnlockVertexBuffer();
-
-if( FAILED(hr) )
-    return false;
-return true;
-</code></pre><p>}<br>　　注意，类型转换(D3DXVECTOR3*)v假定顶点位置成员是被存储在我们所使用的顶点结构的开始位置。同样要注意我们能够使用D3DXGetFVFVertexSize函数来得到顶点结构的大小。<br>11.5 摘要(略)</p>
-<p>第十二章 创建灵活的摄像机类(Building a Flexible Camera Class)<br>　　迄今，我们已经使用过D3DXMatrixLookAtLH函数来计算视图空间变换矩阵。这个函数对于在固定位置布置和对准摄像机是非常好用的，不过它的用户接口对于要响应用户输入来实现摄像机移动就不那么好用了。这就激发我们用我们自己的方法来解决。在这一章我们展示了怎样实现一个Camera类，它使我们能够比D3DXMatrixLookAtLH函数更好地操作摄像机，并且可以用来作为飞行模拟摄像机和第一人称视角摄像机。<br>目标</p>
-<ul>
-<li>学习怎样实现一个灵活的摄像机类，它可以用作飞行模拟摄像机和第一人称视角摄像机。<br>12.1 摄像机设计<br>　　我们定义一个相对于世界坐标系的位置和摄像机的方向，这里使用四个摄像机向量：right vector ,  up vector, look vector 以及 position vector, 如图12.1所示。这些向量用来为摄像机定义一个坐标系来描述在世界坐标中的对应关系。因为 right ，up 和 look 向量定义了摄像机在世界中的方向，我们有时把它们三个向量一起称为方向向量（orientation vectors）。方向向量必须被标准化。假如彼此互相垂直且都是单位长度，那么我们就称它们是正交标准化向量。我们做这些限制是因为等一会儿我们要将方向向量插入到一个行矩阵中。因为行向量是正交标准化的，所以该矩阵也就是直交矩阵。回忆一下，直交矩阵有一个特性就是它的逆矩阵等于它的转置矩阵。这在等一下的12.2.1.2节中是很有用的。</li>
-</ul>
-<p>图12.1<br>　　有了这四个向量来描述摄像机，我们的摄像机就能够按照下面六种方式变化了：</p>
-<ul>
-<li>围绕right向量旋转（pitch倾斜）</li>
-<li>围绕up向量旋转（yaw 偏航）</li>
-<li>围绕look向量旋转（roll 滚转）</li>
-<li>沿着right向量平移（strafe）</li>
-<li>沿着up向量飞行（fly）</li>
-<li>沿着look向量移动（move）<br>通过这六种操作，我们能够沿着三个轴移动以及饶着三个轴旋转，这给了我们一个六度的自由。下面的Camera类定义了我们要的描述数据以及想要的方法：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Camera</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">enum</span> CameraType &#123; LANDOBJECT, AIRCRAFT &#125;;</span><br><span class="line">    Camera();</span><br><span class="line">    Camera(CameraType cameraType);</span><br><span class="line">    ~Camera();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">strafe</span><span class="params">(<span class="keyword">float</span> units)</span></span>; <span class="comment">// left/right</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fly</span><span class="params">(<span class="keyword">float</span> units)</span></span>;    <span class="comment">// up/down</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">walk</span><span class="params">(<span class="keyword">float</span> units)</span></span>;   <span class="comment">// forward/backward   </span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">pitch</span><span class="params">(<span class="keyword">float</span> angle)</span></span>; <span class="comment">// rotate on right vector</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">yaw</span><span class="params">(<span class="keyword">float</span> angle)</span></span>;   <span class="comment">// rotate on up vector</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">roll</span><span class="params">(<span class="keyword">float</span> angle)</span></span>;  <span class="comment">// rotate on look vector</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getViewMatrix</span><span class="params">(D3DXMATRIX* V)</span></span>; </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setCameraType</span><span class="params">(CameraType cameraType)</span></span>; </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getPosition</span><span class="params">(D3DXVECTOR3* pos)</span></span>; </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setPosition</span><span class="params">(D3DXVECTOR3* pos)</span></span>; </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getRight</span><span class="params">(D3DXVECTOR3* right)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getUp</span><span class="params">(D3DXVECTOR3* up)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getLook</span><span class="params">(D3DXVECTOR3* look)</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    CameraType  _cameraType;</span><br><span class="line">    D3DXVECTOR3 _right;</span><br><span class="line">    D3DXVECTOR3 _up;</span><br><span class="line">    D3DXVECTOR3 _look;</span><br><span class="line">    D3DXVECTOR3 _pos;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>在类中我们定义了一个还没有讨论的CameraType枚举类型。目前，我们的摄像机支持两种摄像机模式，LANDOBJECT模式和AIRCRAFT模式。AIRCRAFT模式允许我们在空间中完全自由的移动。不过，在有些游戏中，比如第一人称设计游戏，人是不能飞的；因此我们必须限制它在某些轴上的运动。指定为LANDOBJECT模式的摄像机就限制了这些，你可以在下一部分看见。<br>12.2 执行详细资料<br>12.2.1计算视图矩阵<br>　　我们现在演示怎样根据摄像机向量来计算视图矩阵变换的。让 p = (px, py, pz), r = (rx, ry, rz), u = (ux, uy, uz) 以及 d = (dx, dy, dz) 分别表示 position, right, up 以及 look 向量。<br>　　回忆第二章我们所说的，视图空间变换是指在世界坐标系中进行几何变换以便将照相机平移变换到坐标系的源点并把它的方向旋转至朝向Z轴的正方向（如图12.2）。</p>
-<p>图12.2<br>因此，我们希望有一个象这样的变换矩阵V ：</p>
-<ul>
-<li>pV = (0, 0, 0)—矩阵V能将摄像机移动到原点。</li>
-<li>rV = (1, 0, 0)—矩阵V能将摄像机的right向量与世界坐标系中的x轴对齐。</li>
-<li>uV = (0, 1, 0)—矩阵V能将摄像机的up向量与世界坐标系中的y轴对齐。</li>
-<li>dV = (0, 0, 1)—矩阵V能将摄像机的look向量与世界坐标系中的z轴对齐。<br>我们能将变换任务分为两个部分：1）平移部分，将摄像机的位置移动到原点；2）旋转部分，将摄像机的方向向量与世界坐标系的轴对齐。<br>12.2.1.1 第一部分：平移<br>　　平移只需要利用 –p 就可简单地将 p 移动到原点，因为 p–p=0。因此我们能够用下面的矩阵来描述视图变换中的平移部分：<br>　　<br>12.2.1.2 第二部分：旋转<br>　　矫正摄像机的三个方向向量使其与世界坐标系的轴对齐需要更多的工作。我们需要一个3<em>3的旋转矩阵A ，它能将right，up和look分别与x-，y-以及z轴对齐。这个矩阵将满足如下三个等式：<br>　　<br>注意：我们在这里使用3</em>3矩阵来工作是因为现在不需要额外的信息来表现旋转。等一下我们将它增加到常用的4<em>4矩阵。<br>　　因为这三个等式都有一个相同系数矩阵A ，所以我们能够把它们合在一起。我们把它们从新写到一起来：<br>　　<br>　　求A有很多方法，但是我们知道A是B逆矩阵因为BA = BB-1 = I。因为B 是一个直交矩阵（它的行向量是正交标准化的），我们知道它的逆矩阵就是它的转置矩阵。因此，将方向向量和世界坐标系中的坐标轴对齐的变换如下：<br>　　<br>12.2.1.3 将两部分合并<br>　　最后，将A增加为4</em>4矩阵，同时将平移部分合并到旋转部分形成的视图变换矩阵V：</li>
-</ul>
-<p>我们在Camera::getViewMatrix方法中建立这个矩阵：<br>void Camera::getViewMatrix(D3DXMATRIX* V)<br>{<br>    // Keep camera’s axes orthogonal to eachother<br>    D3DXVec3Normalize(&amp;_look, &amp;_look);<br>    D3DXVec3Cross(&amp;_up, &amp;_look, &amp;_right);<br>    D3DXVec3Normalize(&amp;_up, &amp;_up);<br>    D3DXVec3Cross(&amp;_right, &amp;_up, &amp;_look);<br>    D3DXVec3Normalize(&amp;_right, &amp;_right);</p>
-<pre><code>// Build the view matrix:
-float x = -D3DXVec3Dot(&amp;_right, &amp;_pos);
-float y = -D3DXVec3Dot(&amp;_up, &amp;_pos);
-float z = -D3DXVec3Dot(&amp;_look, &amp;_pos);
-
-(*V)(0,0) = _right.x; (*V)(0, 1) = _up.x; (*V)(0, 2) = _look.x; (*V)(0, 3) = 0.0f;
-(*V)(1,0) = _right.y; (*V)(1, 1) = _up.y; (*V)(1, 2) = _look.y; (*V)(1, 3) = 0.0f;
-(*V)(2,0) = _right.z; (*V)(2, 1) = _up.z; (*V)(2, 2) = _look.z; (*V)(2, 3) = 0.0f;
-(*V)(3,0) = x;        (*V)(3, 1) = y;     (*V)(3, 2) = z;       (*V)(3, 3) = 1.0f;
-</code></pre><p>}<br>你可能想知道方法中前面几行代码是干什么的。在几次旋转后，摄像机的方向向量可能变的不相互垂直了。因此，每当该函数被调用时，我们根据look向量从新计算up和right向量，使它们保持相互垂直。新的up向量是这样计算的up = look × right。 接着新的right向量是这样计算的right = up × look。<br>12.2.2围绕任意轴旋转<br>为了实现我们的摄像机旋转方法，我们需要能够绕着任意轴旋转。D3DX库提供下面的函数来解决这个问题：<br>D3DXMATRIX <em>D3DXMatrixRotationAxis(<br>    D3DXMATRIX </em>pOut, // returns rotation matrix<br>    CONST D3DXVECTOR3 *pV, // axis to rotate around<br>    FLOAT Angle // angle, in radians, to rotate<br>);<br>　　<br>　　图12.3<br>例如，假如我们想绕向量（0.707, 0.707, 0）轴旋转π/2角度。我们可以这样写：<br>D3DXMATRIX R;<br>D3DXVECTOR3 axis(0.707f, 0.707f, 0.0f);<br>D3DXMatrixRotationAxis(&amp;R, &amp;axis, D3DX_PI / 2.0f);<br>D3DXMatrixRotationAxis的变换矩阵的来源你可以在Eric Lengyel的 Mathematics for 3D Game Programming &amp;Computer Graphics中找到。<br>12.2.3 Pitch、Yaw和Roll<br>因为方向向量描述了摄像机相对于世界坐标系的方向，我们必须考虑在使用倾斜（pitch）、偏航（yaw）和滚转（roll）时及时更新方向向量。这其实也是非常简单的。图12.4，12.5，12.6分别显示了摄像机的倾斜、偏航和滚转操作。</p>
-<p>图12.4</p>
-<p>图12.5</p>
-<p>图12.6<br>当倾斜（pitch）时，我们需要将up和look向量绕着right向量旋转一定角度。同样的，当偏航（yaw）时，我们需要将look和right向量绕着up向量旋转一定角度。最后，当滚转（roll）时，我们需要将up和right向量绕着look向量旋转一定角度。<br>　　我们现在明白了为什么D3DXMatrixRotationAxis函数是非常必要的，因为这三个向量中的任何一个都可能围绕世界坐标系中的任意轴旋转。<br>　　对于倾斜（pitch）、偏航（yaw）和滚转（roll）的执行我们已经讨论了。然而，对于LANDOBJECT模式就有一些限制。我们在偏航（yaw）方法中只围绕y轴旋转，我们完全屏蔽滚转（roll）。当然你可以根据你的程序需要来改变Camera类。我们这里只是一个示例而已。<br>倾斜（pitch）、偏航（yaw）和滚转（roll）方法代码的具体实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> Camera::pitch(<span class="keyword">float</span> angle)</span><br><span class="line">&#123;</span><br><span class="line">    D3DXMATRIX T;</span><br><span class="line">    D3DXMatrixRotationAxis(&amp;T, &amp;_right, angle);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// rotate _up and _look around _right vector</span></span><br><span class="line">    D3DXVec3TransformCoord(&amp;_up,&amp;_up, &amp;T);</span><br><span class="line">    D3DXVec3TransformCoord(&amp;_look,&amp;_look, &amp;T);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Camera::yaw(<span class="keyword">float</span> angle)</span><br><span class="line">&#123;</span><br><span class="line">    D3DXMATRIX T;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// rotate around world y (0, 1, 0) always for land object</span></span><br><span class="line">    <span class="keyword">if</span>( _cameraType == LANDOBJECT )</span><br><span class="line">        D3DXMatrixRotationY(&amp;T, angle);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// rotate around own up vector for aircraft</span></span><br><span class="line">    <span class="keyword">if</span>( _cameraType == AIRCRAFT )</span><br><span class="line">        D3DXMatrixRotationAxis(&amp;T, &amp;_up, angle);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// rotate _right and _look around _up or y-axis</span></span><br><span class="line">    D3DXVec3TransformCoord(&amp;_right,&amp;_right, &amp;T);</span><br><span class="line">    D3DXVec3TransformCoord(&amp;_look,&amp;_look, &amp;T);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Camera::roll(<span class="keyword">float</span> angle)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// only roll for aircraft type</span></span><br><span class="line">    <span class="keyword">if</span>( _cameraType == AIRCRAFT )</span><br><span class="line">    &#123;</span><br><span class="line">        D3DXMATRIX T;</span><br><span class="line">        D3DXMatrixRotationAxis(&amp;T, &amp;_look,  angle);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// rotate _up and _right around _look vector</span></span><br><span class="line">        D3DXVec3TransformCoord(&amp;_right,&amp;_right, &amp;T);</span><br><span class="line">        D3DXVec3TransformCoord(&amp;_up,&amp;_up, &amp;T);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>12.2.4 Walking、Strafing和Flying<br>当提到walking时，我们的意思是在我们观察的方向上移动位置（也就是说，沿着look向量）。Strafing是说在我们观察方向的左右移动，也就是沿着right向量移动。最后，我们说flying就是沿着up向量移动。为了沿着这些轴移动，我们只需要简单地加一个向量就可以了（如图12.7）。</p>
-<p>图12.7<br>就象旋转一样，我们需要对移动作一些限制。例如，LANDOBJECT不允许飞起来。因此我们把移动限制在xz平面。然而，因为LANDOBJECT能够允许爬楼梯和登山，所以，我们设置Camera::setPosition方法，它允许你手动设置你的摄像机位置来达到你的高度和位置。<br>    移动（walk）、平移（strafe）和飞行（fly）方法代码的具体实现如下：<br>void Camera::walk(float units)<br>{<br>    // move only on xz plane for land object<br>    if( _cameraType == LANDOBJECT )<br>        _pos += D3DXVECTOR3(_look.x, 0.0f, _look.z) <em> units;<br>    if( _cameraType == AIRCRAFT )<br>        _pos += _look </em> units;<br>}<br>void Camera::strafe(float units)<br>{<br>    // move only on xz plane for land object<br>    if( _cameraType == LANDOBJECT )<br>        _pos += D3DXVECTOR3(_right.x, 0.0f, _right.z) <em> units;<br>    if( _cameraType == AIRCRAFT )<br>        _pos += _right </em> units;<br>}<br>void Camera::fly(float units)<br>{<br>    // move only on y-axis for land object<br>    if( _cameraType == LANDOBJECT )<br>        _pos.y += units;<br>    if( _cameraType == AIRCRAFT )<br>        _pos += _up * units;<br>}<br>12.3实例程序：摄像机<br>　　这一章的实例程序是创建和渲染一个如图12.8所示的场景。你能够通过键盘输入在场景中自由地飞行。下面是相应键盘设置：</p>
-<ul>
-<li>W/S—向前/向后移动</li>
-<li>A/D—向左/向右平移</li>
-<li>R/F—向上/向下飞行</li>
-<li>Up/Down方向键—倾斜</li>
-<li>Left/Right方向键—偏航</li>
-<li>N/M—滚转</li>
-</ul>
-<p>图12.8<br>　　例子的执行是非常简单的，因为所有工作都包含在摄像机类中了，这些我们都已经讨论过了。我们在Display函数中获得键盘的输入。记住，我们在全局域中实例化了一个摄像机类对象TheCamera。同样注意我们使用时间变化量来控制移动摄像机；这可以排除帧速度的影响而稳定地移动。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Display</span><span class="params">(<span class="keyword">float</span> timeDelta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( Device )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// Update: Update the camera.</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'W'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.walk(<span class="number">4.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'S'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.walk(<span class="number">-4.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'A'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.strafe(<span class="number">-4.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'D'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.strafe(<span class="number">4.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'R'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.fly(<span class="number">4.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'F'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.fly(<span class="number">-4.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(VK_UP) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.pitch(<span class="number">1.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(VK_DOWN) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.pitch(<span class="number">-1.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(VK_LEFT) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.yaw(<span class="number">-1.0f</span> * timeDelta);           </span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(VK_RIGHT) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.yaw(<span class="number">1.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'N'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.roll(<span class="number">1.0f</span> * timeDelta);</span><br><span class="line">        <span class="keyword">if</span>( ::GetAsyncKeyState(<span class="string">'M'</span>) &amp; <span class="number">0x8000f</span> )</span><br><span class="line">            TheCamera.roll(<span class="number">-1.0f</span> * timeDelta);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Update the view matrix representing the cameras </span></span><br><span class="line">        <span class="comment">// new position/orientation.</span></span><br><span class="line">        D3DXMATRIX V;</span><br><span class="line">        TheCamera.getViewMatrix(&amp;V);</span><br><span class="line">        Device-&gt;SetTransform(D3DTS_VIEW, &amp;V);</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        <span class="comment">// Render</span></span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        Device-&gt;Clear(<span class="number">0</span>, <span class="number">0</span>, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, <span class="number">0x00000000</span>, <span class="number">1.0f</span>, <span class="number">0</span>);</span><br><span class="line">        Device-&gt;BeginScene();</span><br><span class="line">        d3d::DrawBasicScene(Device, <span class="number">1.0f</span>);</span><br><span class="line">        Device-&gt;EndScene();</span><br><span class="line">        Device-&gt;Present(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>注意：我们已经用一个新的函数DrawBasicScene更新了d3d名称空间。这个函数绘制了如图12.8的场景。我们已经将其添加进了d3d名称空间，这是因为对于建立一个基本的场景它是一个非常方便的函数。以后的例子我们就可以集中精力在例子代码中而不需要关注这些不相关的绘制场景的代码了。它是在d3dUtility.h中被声明的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Function references "desert.bmp" internally.  This file must</span></span><br><span class="line"><span class="comment">// be in the working directory.</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">DrawBasicScene</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    IDirect3DDevice9* device,<span class="comment">// Pass in 0 for cleanup.</span></span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">float</span> scale)</span></span>;            <span class="comment">// uniform scale</span></span><br></pre></td></tr></table></figure></p>
-<p>如果该函数不能任何东西也就是什么都显示不出来，你就需要看看相应的代码了。你可以在本章的代码中找到它。注意这个函数需要调用一张desert.bmp图片用作纹理。当然该文件也可以在同一个文件夹下找到。<br>12.4 摘要<br>   我们以四个向量来描述在世界坐标系中照相机的位置和方向：right、up、look、position向量，藉由这个描述, 我们能轻易的实现一个自由的六角度照相机，为游戏中的模拟飞行器、第一人称视角的游戏玩家提供了一个灵活的照相机接口。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Meshes-Part-I/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/Meshes-Part-I/" class="post-title-link" itemprop="url">第十章 网格模型I(Meshes Part I)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-11 15:14:46" itemprop="dateCreated datePublished" datetime="2019-04-11T15:14:46+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="几何信息"><a href="#几何信息" class="headerlink" title="几何信息"></a>几何信息</h1><p>ID3DXBaseMesh接口包含一个用来存储网格顶点的顶点缓存和一个用来定义这些顶点怎样连接在一起组成网格三角形的索引缓存。我们能够通过使用下面的方法来得到这些缓存的指针：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HRESULT ID3DXMesh::GetVertexBuffer(LPDIRECT3DVERTEXBUFFER9* ppVB);</span><br><span class="line">HRESULT ID3DXMesh::GetIndexBuffer(LPDIRECT3DINDEXBUFFER9* ppIB);</span><br></pre></td></tr></table></figure></p>
-<p>这里有一些使用这些方法的例子：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IDirect3DVertexBuffer9* vb = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;GetVertexBuffer( &amp;vb );</span><br><span class="line">IDirect3DIndexBuffer9* ib = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;GetIndexBuffer( &amp;ib );</span><br></pre></td></tr></table></figure></p>
-<p>假如想锁定这些缓存来读写数据，那么我们能够使用下面的方法。注意这些方法锁定整个顶点/索引缓存。<br>HRESULT ID3DXMesh::LockVertexBuffer(DWORD Flags, BYTE<strong> ppData);<br>HRESULT ID3DXMesh::LockIndexBuffer(DWORD Flags, BYTE</strong> ppData);<br>Flags参数描述怎样锁定它。这些Flags参数在第三章中我们介绍过。ppData是函数返回的指向锁定内存的指针的地址。<br>　　当然在你锁定以后一定要记得解锁：<br>HRESULT ID3DXMesh::UnlockVertexBuffer();<br>HRESULT ID3DXMesh::UnlockIndexBuffer();<br>　　下面是另外一些与mesh几何结构有关的ID3DXMesh接口方法：</p>
-<ul>
-<li>DWORD GetFVF() — 返回顶点的格式</li>
-<li>DWORD GetNumVertices() — 返回顶点缓存中的顶点数</li>
-<li>DWORD GetNumBytesPerVertex() — 返回一个顶点所占的字节数</li>
-<li>DWORD GetNumFaces() — 返回在mesh中的面（三角形）数<br>10.2 子集和属性缓存<br>　　一个mesh由一个或数个子集组成。一个子集（subset）是在mesh中的使用相同属性渲染的一组三角形。这里的属性是指材质，纹理和渲染状态。图10.1显示了一座房子mesh可能被分成的几个子集。<br>　　<br>图10.1<br>我们通过给每个子集指定一个唯一非负整数来标识子集。这个值可以是存储在一个DWORD中的任意数值。例如，在图10.1中我们用0，1，2和3来标识子集。<br>　　在mesh中的每个三角形都与一个属性ID相关联，表示该三角形属于该子集。例如，图10.1中组成地板的三角形具有属性ID0，它表示这些三角形属于子集0。同样，组成墙的三角形具有属性ID1，它表示这些三角形属于子集1。<br>　　三角形的属性ID存储在mesh的属性缓存中，它是一个DWORD数组。因为每个面对应属性缓存中的一项，所以属性缓存中的项目数等于mesh中的面的个数。属性缓存中的项目和索引缓存中定义的三角形一一对应。即，属性缓存中的第i项和索引缓存中的第i个三角形相对应。三角形i由下面三个索引缓存中的索引项定义：<br>　　A = i <em> 3<br>　　B = i </em> 3 + 1<br>　　C = i * 3 + 2<br>图10.2显示了这个对应关系：</li>
-</ul>
-<p>图10.2<br>　　我们可以锁定属性缓存，就象下面的代码片段：<br>DWORD* buffer = 0;<br>Mesh-&gt;LockAttributeBuffer(lockingFlags, &amp;buffer);<br>// Read or write to attribute buffer…<br>Mesh-&gt;UnlockAttributeBuffer();<br>10.3 绘制<br>　　ID3DXMesh接口提供了DrawSubset（DWORD AttribId）方法来绘制AttribId指示的子集中的各个三角形。例如，要绘制子集0中的所有三角形，我们将这样写：<br>Mesh-&gt;DrawSubset(0);<br>　　为了绘制整个mesh，我们必须绘制mesh的所有子集。这是非常方便的用0，1，2，…，n-1来标识子集，这里的n是子集的总数。且有一个相对应的材质和纹理数组，即子集i与材质和纹理数组的第i项对应。这就使我们能够简单的用循环来渲染mesh：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numSubsets; i++)</span><br><span class="line">&#123;</span><br><span class="line">    Device-&gt;SetMaterial( mtrls[i] );</span><br><span class="line">    Device-&gt;SetTexture( <span class="number">0</span>, textures[i] );</span><br><span class="line">    Mesh-&gt;DrawSubset(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>10.4 优化<br>　　Mesh的顶点和索引能够被重组以便能更有效的渲染mesh。当我们这样做时，我们说我们优化了一个mesh。我们可以使用下面的方法来进行优化：<br>HRESULT ID3DXMesh::OptimizeInplace(<br>    DWORD Flags,<br>    CONST DWORD<em> pAdjacencyIn,<br>    DWORD</em> pAdjacencyOut,<br>    DWORD<em> pFaceRemap,<br>    LPD3DXBUFFER</em> ppVertexRemap<br>);</p>
-<ul>
-<li>Flags — 表示执行什么类型的优化方法。它可以是下面的一个或几个的组合：</li>
-<li>D3DXMESHOPT_COMPACT — 从mesh中移除没有用的顶点和索引项。</li>
-<li>D3DXMESHOPT_ATTRSORT — 根据属性给三角形排序并调整属性表，这将使DrawSubset执行更有效（参见10.5节）。</li>
-<li>D3DXMESHOPT_VERTEXCACHE — 增加顶点缓存的命中率。</li>
-<li>D3DXMESHOPT_STRIPREORDER — 重组顶点索引使三角带尽可能的长。</li>
-<li>D3DXMESHOPT_IGNOREVERTS — 只优化索引信息；忽略顶点信息。<br>注意：D3DXMESHOPT_VERTEXCACHE和D3DXMESHOPT_STRIPREORDER不能同时使用。</li>
-<li>pAdjacencyIn — 指向没有优化的mesh的邻接数组。</li>
-<li>pAdjacencyOut — 指向一个DWORD数组，它被用来填充优化好了的mesh邻接信息。该数组必须有ID3DXMesh::GetNumFaces() * 3个元素。如果不需要该信息，可以将其设置为0。</li>
-<li>pFaceRemap —指向一个DWORD数组，它被用来填充面重影射信息。该数组必须不小于ID3DXMesh::GetNumFaces()。当一个mesh被优化时，由索引缓存定义的面可能被移动；也就是说，在pFaceRemap中的第i项表示第i个原始面被移动到的面索引值。如果不需要该信息，可以将其设置为0。</li>
-<li>ppVertexRemap — 指向ID3DXBuffer指针的地址（参见11.1节），它被用来填充顶点重影射信息。这个缓存应该包含ID3DXMesh::GetNumVertices()个顶点。当一个mesh被优化后，顶点可能被移动。顶点重影射信息用来说明原来的顶点被移动到新位置；也就是说，在ppVertexRemap中的第i项表示原来的第i个顶点的新位置。如果不需要该信息，可以将其设置为0。<br>　　例子：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Get the adjacency info of the non-optimized mesh.</span></span><br><span class="line">DWORD adjacencyInfo[Mesh-&gt;GetNumFaces() * <span class="number">3</span>];</span><br><span class="line">Mesh-&gt;GenerateAdjacency(<span class="number">0.0f</span>, adjacencyInfo);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Array to hold optimized adjacency info.</span></span><br><span class="line">DWORD optimizedAdjacencyInfo[Mesh-&gt;GetNumFaces() * <span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">Mesh-&gt;OptimizeInplace(</span><br><span class="line">    D3DXMESHOPT_ATTRSORT |</span><br><span class="line">    D3DXMESHOPT_COMPACT |</span><br><span class="line">    D3DXMESHOPT_VERTEXCACHE,</span><br><span class="line">    adjacencyInfo,</span><br><span class="line">    optimizedAdjacencyInfo,</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">     <span class="number">0</span>);</span><br><span class="line">　　一个更简单的方法是Optimize方法，它输出一个优化的mesh，而不是在原来mesh的基础上进行优化：</span><br><span class="line">HRESULT ID3DXMesh::Optimize(</span><br><span class="line">    DWORD Flags,</span><br><span class="line">    CONST DWORD* pAdjacencyIn,</span><br><span class="line">    DWORD* pAdjacencyOut,</span><br><span class="line">    DWORD* pFaceRemap,</span><br><span class="line">    LPD3DXBUFFER* ppVertexRemap,</span><br><span class="line">    LPD3DXMESH* ppOptMesh <span class="comment">// the optimized mesh to be output</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>10.5 属性表<br>　　当一个mesh被使用D3DXMESHOPT_ATTRSORT参数来优化后，mesh的几何信息将按照属性进行排序，这样各个子集的顶点/索引将组成连续的块（如图10.3）。</p>
-<p>图10.3<br>　　除了进行几何信息的排序外，D3DXMESHOPT_ATTRSORT优化项还将创建一个属性表。该表是D3DXATTRIBUTERANGE结构的一个数组。在属性表中的每一项对应mesh的一个子集并指示顶点/索引缓存中的一个连续连续内存块，这个子集的几何信息就包含在这个块中。D3DXATTRIBUTERANGE结构的定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">D3DXATTRIBUTERANGE</span> &#123;</span></span><br><span class="line">    DWORD AttribId;</span><br><span class="line">    DWORD FaceStart;</span><br><span class="line">    DWORD FaceCount;</span><br><span class="line">    DWORD VertexStart;</span><br><span class="line">    DWORD VertexCount;</span><br><span class="line">&#125; D3DXATTRIBUTERANGE;</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>AttribId — 子集的ID。</li>
-<li>FaceStart — 该子集的面的起始值，FaceStart*3就是起始三角形在索引缓存中的序号。</li>
-<li>FaceCount — 在子集中的面（三角形）数。</li>
-<li>VertexStart — 该子集的起始顶点在顶点缓存中的序号。</li>
-<li>VertexCount — 在子集中的顶点数。<br>　　我们能够很容易的明白D3DXATTRIBUTERANGE结构的各个成员，如图10.3。在图10.3中mesh的属性表有三项——它们和各个子集一一对应。<br>　　建立了属性表以后，渲染一个子集就很容易了。仅仅查一下属性表就能找出自己的几何信息。注意如果没有属性表，每渲染一个子集就需要对属性缓存进行一次线性搜索来找出子集包含的几何信息。<br>　　可以使用下面的方法来访问mesh的属性表：<br>HRESULT ID3DXMesh::GetAttributeTable(<br>  D3DXATTRIBUTERANGE<em> pAttribTable,<br>  DWORD</em> pAttribTableSize<br>);<br>　　这个方法能够做两件事情：它可以返回属性表的属性数，也可以用属性数据来填充一个D3DXATTRIBUTERANGE结构数组。<br>　　要得到属性表的元素个数，可以就将第一个参数设置为0：<br>DWORD numSubsets = 0;<br>Mesh-&gt;GetAttributeTable(0, &amp;numSubsets);<br>　　一旦我们知道了属性表的元素个数，我们就能够通过写属性表来填充一个D3DXATTRIBUTERANGE结构数组：<br>D3DXATTRIBUTERANGE table = new D3DXATTRIBUTERANGE [numSubsets];<br>Mesh-&gt;GetAttributeTable( table, &amp;numSubsets );<br>　　我们能够使用ID3DXMesh::SetAttributeTable方法来直接设置属性表。下面的代码就是设置一个有12个子集的属性表：<br>D3DXATTRIBUTERANGE attributeTable[12];<br>// …fill attributeTable array with data<br>Mesh-&gt;SetAttributeTable( attributeTable, 12);<br>10.6 邻接信息<br>　　对于mesh的某些操作，如优化，有必要了解的是三角形之间的邻接信息。Mesh的邻接数组存储了这些信息。<br>　　邻接数组是一个DWORD数组，其中的每一项对应了mesh中的一个三角形。例如，第i项对应的三角形由以下三个索引值定义：<br>A = i ??3<br>B = i ??3 + 1<br>C = i ??3 + 2<br>注意，使用ULONG_MAX = 4294967295表示该边没有邻接三角形。我们也可以用-1来表示，因为-1转换成DWORD就是ULONG_MAX。回想一下，DWORD就是一个unsigned32-bit整数。<br>　　因为每个三角形都有三条边，所以他就有三个邻接三角形（如图10.4）。<br>　　<br>　　图10.4<br>　　因此，邻接数组必须有三项（ID3DXBaseMesh::GetNumFaces()<em>3）—— 在mesh中每个三角形都可能有三个邻接三角形。<br>　　很多D3Dxmesh创造函数都能输出邻接信息，但我们也可以使用下面的方法：<br>HRESULT ID3DXMesh::GenerateAdjacency(<br>  FLOAT fEpsilon,<br>  DWORD</em> pAdjacency<br>);</li>
-<li>fEpsilon — 指示当两个点距离有多近时，可以认为是一个点。当两点间的距离小于epsilon时，可认为它们是同一个点。</li>
-<li><p>pAdjacency — 一个指向填充了邻接信息的DWORD数组指针。<br>　　例子：<br>DWORD adjacencyInfo[Mesh-&gt;GetNumFaces() * 3];<br>Mesh-&gt;GenerateAdjacency(0.001f, adjacencyInfo);<br>10.7 复制<br>　　有时我们需要将一个mesh中的数据拷贝到另一个之中。我们可以使用ID3DXBaseMesh::CloneMeshFVF方法。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HRESULT ID3DXMesh::CloneMeshFVF(</span><br><span class="line">    DWORD Options,</span><br><span class="line">    DWORD FVF,</span><br><span class="line">    LPDIRECT3DDEVICE9 pDevice,</span><br><span class="line">    LPD3DXMESH* ppCloneMesh</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>Options — 用来创建mesh的一个或多个创建标志。要了解所有标志信息请查看sdk文档。现在列出一部分：</p>
-</li>
-<li>D3DXMESH_32BIT — mesh使用32位索引。</li>
-<li>D3DXMESH_MANAGED — mesh数据将被放在受控的内存中。</li>
-<li>D3DXMESH_WRITEONLY — mesh数据只能执行写操作，不能执行读操作。</li>
-<li>D3DXMESH_DYNAMIC — mesh缓存将是动态的。</li>
-<li>FVF — 创建复制mesh的灵活顶点格式。</li>
-<li>pDevice — 与复制mesh有关的设备。</li>
-<li>ppCloneMesh — 输出复制的mesh。<br>　　注意这个方法允许指定与原mesh不同的options和FVF。例如我们有顶点格式为D3DFVF_XYZ的mesh，现在想复制一个顶点格式为D3DFVF_XYZ|D3DFVF_NORMAL的mesh。我们可以这样写：<br>// 假设_mesh和device是有效的<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ID3DXMesh* clone = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;CloneMeshFVF(</span><br><span class="line">    Mesh-&gt;GetOptions(), <span class="comment">// 使用与源模型同样的选项</span></span><br><span class="line">    D3DFVF_XYZ | D3DFVF_NORMAL,<span class="comment">// 指定克隆的FVF</span></span><br><span class="line">    Device,</span><br><span class="line">    &amp;clone</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>10.8 创建一个Mesh（D3DXCreateMeshFVF）<br>　　我们可以使用D3DXCreate*函数来创建mesh物体。然而，我们也可以使用  D3DXCreateMeshFVF函数来创建一个空mesh。所谓空mesh是指我们已经指定了顶点数和面数，函数D3DXCreateMeshFVF也分配了适当大小的内存给顶点、顶点索引、属性缓冲区。有了这些缓冲区后，就可以手动填写上下文数据了（需要分别向顶点缓存，索引缓存、属性缓存提供顶点、索引、属性数据）。<br>　　我们使用D3DXCreateMeshFVF函数来创建空mesh：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">D3DXCreateMeshFVF</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD NumFaces,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD NumVertices,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD Options,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD FVF,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPDIRECT3DDEVICE9 pDevice,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPD3DXMESH* ppMesh</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>NumFaces — mesh将拥有的面数。该值必须大于0。</li>
-<li>NumVertices — mesh将拥有的顶点数。该值必须大于0。</li>
-<li>Options —用来创建mesh的一个或多个创建标志。要了解所有标志信息请查看sdk文档。现在列出一部分：</li>
-<li>D3DXMESH_32BIT — mesh使用32位索引。</li>
-<li>D3DXMESH_MANAGED — mesh数据将被放在受控的内存中。</li>
-<li>D3DXMESH_WRITEONLY — mesh数据只能执行写操作，不能执行读操作。</li>
-<li>D3DXMESH_DYNAMIC — mesh缓存将是动态的。</li>
-<li>FVF — mesh的顶点格式。</li>
-<li>pDevice — 与mesh相关的设备。</li>
-<li>ppMesh — 输出创建好的mesh。<br>　　下一节将给出实例程序，它演示了用这个函数怎样创建一个mesh以及手动填充mesh的数据内容。<br>　　另外，你也可以使用D3DXCreateMesh来创建空mesh。它的原型是：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">D3DXCreateMesh</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD NumFaces,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD NumVertices,</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD Options,</span></span></span><br><span class="line"><span class="function"><span class="params">    CONST LPD3DVERTEXELEMENT9* pDeclaration,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPDIRECT3DDEVICE9 pDevice,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPD3DXMESH* ppMesh</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>　　这些参数和D3DXCreateMeshFVF的参数是非常相似的，除了第四个。作为替代指定的FVF，我们指定一个D3DVERTEXELEMENT9结构，它描述了顶点格式。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">D3DXDeclaratorFromFVF</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    DWORD FVF, <span class="comment">// input format</span></span></span></span><br><span class="line"><span class="function"><span class="params">    D3DVERTEXELEMENT9 Declaration[MAX_FVF_DECL_SIZE]<span class="comment">//output format</span></span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
-<p>注意：D3DVERTEXELEMENT9将在第17章中讨论。<br>　　这个函数通过输入一个FVF返回一个D3DVERTEXELEMENT9结构的数组。注意MAX_FVF_DECL_SIZE的定义如下：<br>typedef enum {<br>    MAX_FVF_DECL_SIZE = 18<br>} MAX_FVF_DECL_SIZE;<br>10.9 实例程序：创建和渲染Mesh<br>这一章的实例程序是渲染一个立方体（如图10.5）</p>
-<p>图10.5<br>它演示了这一章中的大部分功能，包括如下一些操作：</p>
-<ul>
-<li>创建一个空mesh。</li>
-<li>用一个立方体几何信息来填充mesh。</li>
-<li>根据mesh的每个面指定子集。</li>
-<li>产生mesh的邻接信息。</li>
-<li>优化mesh。</li>
-<li>绘制mesh。<br>　　注意，我们忽略一些无关的代码来讨论本例。你能在叫做D3DXCreateMeshFVF的例子中找到全部的代码。<br>　　另外，为了更容易调试和研究mesh的构成，我们执行如下的函数来将内在内容放进文件中：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpVertices</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpIndices</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpAttributeBuffer</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpAdjacencyBuffer</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpAttributeTable</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>　　这些函数的名字就显示了它们的功能。执行这些函数是非常简单的，我们在这里讨论时忽略它们（可以看程序的原代码）。在这一节我们只展示一个dumpAttributeTable函数。<br>　　我们首先来浏览一下该例子，看看如下的一些全局变量：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ID3DXMesh* Mesh = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> DWORD NumSubsets = <span class="number">3</span>;</span><br><span class="line">IDirect3DTexture9* Textures[<span class="number">3</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;<span class="comment">// texture for each subset</span></span><br><span class="line"><span class="built_in">std</span>::ofstream OutFile; <span class="comment">// used to dump mesh data to file</span></span><br></pre></td></tr></table></figure></p>
-<p>　　这里我们定义了一个mesh对象的指针，我们以后要创建的。我们也定义了mesh拥有的子集数——三。在这个例子中，每个子集都用一个不同的纹理来渲染；纹理数组包含每个子集的纹理，如第i个纹理对应mesh的第i个子集。最后，Outfile变量被用来把mesh的内容输出为一个文本文件。<br>　　这个例子的大部分工作是在setup函数中进行。我们首先创建一个空的mesh：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Setup</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    HRESULT hr = <span class="number">0</span>;</span><br><span class="line">    hr = D3DXCreateMeshFVF(</span><br><span class="line">        <span class="number">12</span>,</span><br><span class="line">        <span class="number">24</span>,</span><br><span class="line">        D3DXMESH_MANAGED,</span><br><span class="line">        Vertex::FVF,</span><br><span class="line">        Device,</span><br><span class="line">         &amp;Mesh);</span><br></pre></td></tr></table></figure></p>
-<p>这里我们分配一个有12个面和24个顶点的mesh，这是描述一个盒子所必须的。<br>　　这样的话，mesh是空的，因此我们需要将组成盒子的顶点和索引分别写入顶点缓存和索引缓存。锁定顶点/索引缓存并手动写入数据这是很容易的：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fill in vertices of a box</span></span><br><span class="line">Vertex* v = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;LockVertexBuffer(<span class="number">0</span>, (<span class="keyword">void</span>**)&amp;v);</span><br><span class="line"><span class="comment">// fill in the front face vertex data</span></span><br><span class="line">v[<span class="number">0</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">v[<span class="number">1</span>] = Vertex(<span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line"></span><br><span class="line">v[<span class="number">22</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>);</span><br><span class="line">v[<span class="number">23</span>] = Vertex( <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">Mesh-&gt;UnlockVertexBuffer();</span><br><span class="line"><span class="comment">// Define the triangles of the box</span></span><br><span class="line">WORD* i = <span class="number">0</span>;</span><br><span class="line">Mesh-&gt;LockIndexBuffer(<span class="number">0</span>, (<span class="keyword">void</span>**)&amp;i);</span><br><span class="line"><span class="comment">// fill in the front face index data</span></span><br><span class="line">i[<span class="number">0</span>] = <span class="number">0</span>; i[<span class="number">1</span>] = <span class="number">1</span>; i[<span class="number">2</span>] = <span class="number">2</span>;</span><br><span class="line">i[<span class="number">3</span>] = <span class="number">0</span>; i[<span class="number">4</span>] = <span class="number">2</span>; i[<span class="number">5</span>] = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fill in the right face index data</span></span><br><span class="line">i[<span class="number">30</span>] = <span class="number">20</span>; i[<span class="number">31</span>] = <span class="number">21</span>; i[<span class="number">32</span>] = <span class="number">22</span>;</span><br><span class="line">i[<span class="number">33</span>] = <span class="number">20</span>; i[<span class="number">34</span>] = <span class="number">22</span>; i[<span class="number">35</span>] = <span class="number">23</span>;</span><br><span class="line">Mesh-&gt;UnlockIndexBuffer();</span><br></pre></td></tr></table></figure></p>
-<p>　　一旦mesh的几何信息被写入，我们必须指定每个三角形在哪个子集中。回想一下属性缓存就是存储的在mesh中每个三角形所属的子集信息。在这个例子中，我们指定索引缓存中的前四个三角形子集为0，接着的四个三角形子集为1，最后四个三角形子集为2。代码如下：<br>DWORD<em> attributeBuffer = 0;<br>Mesh-&gt;LockAttributeBuffer(0, &amp;attributeBuffer);<br>for(int a = 0; a &lt; 4; a++) // triangles 1-4<br>    attributeBuffer[a] = 0; // subset 0<br>for(int b = 4; b &lt; 8; b++) // triangles 5-8<br>    attributeBuffer[b] = 1; // subset 1<br>for(int c = 8; c &lt; 12; c++) // triangles 9-12<br>    attributeBuffer[c] = 2; // subset 2<br>Mesh-&gt;UnlockAttributeBuffer();<br>　　现在我们已经创建了一个包含有效数据的mesh。在这一小部分我们将渲染mesh，不过首先还是先将其优化一下。注意虽然这对于一个盒子mesh来说，优化mesh数据没有真正的效果，但是我们还是用ID3DXMesh接口方法来实践一下。为了优化一个mesh，我们首先需要计算mesh的邻接信息：<br>std::vector<dword> adjacencyBuffer(Mesh-&gt;GetNumFaces() </dword></em> 3);<br>Mesh-&gt;GenerateAdjacency(0.0f, &amp;adjacencyBuffer[0]);<br>　　然后我们就能够优化mesh了：<br>hr = Mesh-&gt;OptimizeInplace(<br>        D3DXMESHOPT_ATTRSORT |<br>        D3DXMESHOPT_COMPACT |<br>        D3DXMESHOPT_VERTEXCACHE,<br>        &amp;adjacencyBuffer[0],<br>         0, 0, 0);<br>　　设置好了mesh以后，我们就为渲染它做好了准备。不过在setup函数中还有最后一个问题，也就是在前面我们说的将mesh的内在数据内容写入文件的函数。这能够检查mesh的数据，它能帮助我们调试和学习mesh的结构。<br>OutFile.open(“Mesh Dump.txt”);<br>dumpVertices(OutFile, Mesh);<br>dumpIndices(OutFile, Mesh);<br>dumpAttributeTable(OutFile, Mesh);<br>dumpAttributeBuffer(OutFile, Mesh);<br>dumpAdjacencyBuffer(OutFile, Mesh);<br>OutFile.close();<br>…Texturing loading, setting render states, etc., snipped<br>return true;<br>} // end Setup()<br>　　例如，dumpAttributeTable函数将属性表的数据写入文件。它的具体实现如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpAttributeTable</span><span class="params">(<span class="built_in">std</span>::ofstream&amp; outFile, ID3DXMesh* mesh)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    outFile &lt;&lt; <span class="string">"Attribute Table:"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    outFile &lt;&lt; <span class="string">"----------------"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">// number of entries in the attribute table</span></span><br><span class="line">    DWORD numEntries = <span class="number">0</span>;</span><br><span class="line">    mesh-&gt;GetAttributeTable(<span class="number">0</span>, &amp;numEntries);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;D3DXATTRIBUTERANGE&gt; table(numEntries);</span><br><span class="line">    mesh-&gt;GetAttributeTable(&amp;table[<span class="number">0</span>], &amp;numEntries);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numEntries; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Entry "</span> &lt;&lt; i &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"------"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Subset ID: "</span> &lt;&lt; table[i].AttribId &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Face Start: "</span> &lt;&lt; table[i].FaceStart &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Face Count: "</span> &lt;&lt; table[i].FaceCount &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Vertex Start: "</span> &lt;&lt; table[i].VertexStart &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="string">"Vertex Count: "</span> &lt;&lt; table[i].VertexCount &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">        outFile &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    outFile &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>下面的文本文件来自于通过dumpAttributeTable函数得到的mesh Dump.txt文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Attribute Table:</span><br><span class="line">----------------</span><br><span class="line">Entry 0</span><br><span class="line">------------</span><br><span class="line">Subset ID: 0</span><br><span class="line">Face Start: 0</span><br><span class="line">Face Count: 4</span><br><span class="line">Vertex Start: 0</span><br><span class="line">Vertex Count: 8</span><br><span class="line">Entry 1</span><br><span class="line">------------</span><br><span class="line">Subset ID: 1</span><br><span class="line">Face Start: 4</span><br><span class="line">Face Count: 4</span><br><span class="line">Vertex Start: 8</span><br><span class="line">Vertex Count: 8</span><br><span class="line">Entry 2</span><br><span class="line">------------</span><br><span class="line">Subset ID: 2</span><br><span class="line">Face Start: 8</span><br><span class="line">Face Count: 4</span><br><span class="line">Vertex Start: 16</span><br><span class="line">Vertex Count: 8</span><br></pre></td></tr></table></figure></p>
-<p>我们能够了解到我们为mesh所指定的相匹配的数据——有三个子集且每个子集有4个三角形。建议你去看看本例子Dump.txt的完整信息。该文件在本示例文件目录下。<br>最后，我们使用下面的代码就能够非常容易地渲染mesh了；我们只需要循环每个子集，设置相关联的纹理然后在绘制子集即可。这是非常容易的，因为我们已经为每个子集指定的下标如0，1，2，…，n-1，这里的n就是子集的个数。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">Display</span><span class="params">(<span class="keyword">float</span> timeDelta)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( Device )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//...update frame code snipped</span></span><br><span class="line">        Device-&gt;Clear(<span class="number">0</span>, <span class="number">0</span>, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,<span class="number">0x00000000</span>, <span class="number">1.0f</span>, <span class="number">0</span>);</span><br><span class="line">        Device-&gt;BeginScene();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; NumSubsets; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Device-&gt;SetTexture( <span class="number">0</span>, Textures[i] );</span><br><span class="line">            Mesh-&gt;DrawSubset( i );</span><br><span class="line">        &#125;</span><br><span class="line">        Device-&gt;EndScene();</span><br><span class="line">        Device-&gt;Present(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Fonts/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/Fonts/" class="post-title-link" itemprop="url">第九章 字体(Fonts)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-11 15:12:44" itemprop="dateCreated datePublished" datetime="2019-04-11T15:12:44+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="ID3DXFont"><a href="#ID3DXFont" class="headerlink" title="ID3DXFont"></a>ID3DXFont</h1><p>在D3DX库中提供了一个ID3DXFont接口，它能被用于在Direct3D应用程序中绘制文字。这个接口是使用GDI来绘制文字的，因此我们能够使用这个接口来执行这个操作。无论如何，因为ID3DXFont使用的是GUI，所以它能够联合字体句柄和格式化字体。</p>
-<h2 id="创建一个ID3DXFont"><a href="#创建一个ID3DXFont" class="headerlink" title="创建一个ID3DXFont"></a>创建一个ID3DXFont</h2><p>　　我们能够使用D3DXCreateFontIndirect函数来创建一个ID3DXFont接口。<br>HRESULT D3DXCreateFontIndirect(<br>    LPDIRECT3DDEVICE9 pDevice, // device to be associated with the font<br>    CONST LOGFONT<em> pLogFont, // LOGFONT structure describing the font<br>    LPD3DXFONT</em> ppFont // return the created font<br>);<br>　　下面的代码片段显示了怎样使用这个函数：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">LOGFONT lf;</span><br><span class="line">ZeroMemory(&amp;lf, <span class="keyword">sizeof</span>(LOGFONT));</span><br><span class="line">lf.lfHeight = <span class="number">25</span>; <span class="comment">// in logical units</span></span><br><span class="line">lf.lfWidth = <span class="number">12</span>; <span class="comment">// in logical units</span></span><br><span class="line">lf.lfWeight = <span class="number">500</span>; <span class="comment">// boldness, range 0(light) - 1000(bold)</span></span><br><span class="line">lf.lfItalic = <span class="literal">false</span>;</span><br><span class="line">lf.lfUnderline = <span class="literal">false</span>;</span><br><span class="line">lf.lfStrikeOut = <span class="literal">false</span>;</span><br><span class="line">lf.lfCharSet = DEFAULT_CHARSET;</span><br><span class="line"><span class="built_in">strcpy</span>(lf.lfFaceName, <span class="string">"Times New Roman"</span>); <span class="comment">// font style</span></span><br><span class="line">ID3DXFont* font = <span class="number">0</span>;</span><br><span class="line">D3DXCreateFontIndirect(Device, &amp;lf, &amp;font);</span><br><span class="line">　　我们必须填充一个LOGFONT结构来描述想创建的字体类型。</span><br><span class="line">　　注意：你也能够使用D3DXCreateFont函数来获得一个ID3DXFont接口指针。</span><br><span class="line"><span class="number">9.1</span><span class="number">.2</span>绘制文本</span><br><span class="line">　　一旦我们获得了ID3DXFont接口指针，绘制文本就是很简单的事情了，我们只要调用ID3DXFont::DrawText方法就可以实现了。</span><br><span class="line">INT ID3DXFont::DrawText(</span><br><span class="line">    LPCSTR pString,</span><br><span class="line">    INT Count,</span><br><span class="line">    LPRECT pRect,</span><br><span class="line">    DWORD Format,</span><br><span class="line">    D3DCOLOR Color</span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>pString — 指向要绘制的文字。</li>
-<li>Count — 字符串中特征字符的数量。假如字符是以null结束的字符串则可将其指定为-1。</li>
-<li>pRect — 指向一个RECT结构，它定义一个文字被绘制在屏幕上的范围。</li>
-<li>Format — 可选参数，指定文字怎样被格式化；要获得更详细的信息请查看SDK文档。</li>
-<li>Color — 文字的颜色。<br>　　例子：<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Font-&gt;DrawText(</span><br><span class="line">    <span class="string">"Hello World"</span>, <span class="comment">// String to draw.</span></span><br><span class="line">    <span class="number">-1</span>, <span class="comment">// Null terminating string.</span></span><br><span class="line">    &amp;rect, <span class="comment">// Rectangle to draw the string in.</span></span><br><span class="line">    DT_TOP | DT_LEFT, <span class="comment">// Draw in top-left corner of rect.</span></span><br><span class="line">     <span class="number">0xff000000</span></span><br><span class="line">     ); <span class="comment">// Black.</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>9.1.3计算每秒的渲染帧数<br>　　这一章的ID3DXFont和Cfont例子是计算和显示每秒渲染的帧数（FPS）。这一部分说明怎样计算FPS。<br>　　首先，我们定义如下三个全局变量：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DWORD FrameCnt; <span class="comment">// The number of frames that have occurred.</span></span><br><span class="line"><span class="keyword">float</span> TimeElapsed; <span class="comment">// The time that has elapsed so far.</span></span><br><span class="line"><span class="keyword">float</span> FPS; <span class="comment">// The frames rendered per second.</span></span><br></pre></td></tr></table></figure></p>
-<p>　　我们计算每一秒的FPS；它给我们一个很好的平均。另外，在同一秒中内只保存一个FPS，这给了我们足够时间来读取它，在它再一次改变之前。<br>　　因此每一帧我们增加FrameCnt并且把从上一帧到现在流逝的时间写进TimeElapsed：<br>FrameCnt++;<br>TimeElapsed += timeDelta;<br>这里timeDelta是两帧之间的时间。<br>　　    在一秒种结束以后，我们能够用下面的公式来计算FPS：<br>FPS = (float)FrameCnt / TimeElapsed;<br>我们从新设置FrameCnt和TimeElapsed为计算下一秒的FPS做准备。下面就是合在一起的代码：<br>void CalcFPS(float timeDelta)<br>{<br>    FrameCnt++;<br>    TimeElapsed += timeDelta;<br>    if(TimeElapsed &gt;= 1.0f)<br>    {<br>        FPS = (float)FrameCnt / TimeElapsed;<br>        TimeElapsed = 0.0f;<br>        FrameCnt = 0;<br>    }<br>}<br>9.2 CD3DFont<br>　　DirectX SDK给我们提供了一些很有用的代码，它们在你的DXSDK目录下的\Samples\C++\Commond下。CD3DFont类代码是使用纹理三角形和Direct3D。因为CD3DFont使用Direct3D代替GDI来渲染， 这比ID3DXFont快的多。然而，CD3DFont不能够联合字体句柄和格式化ID3DXFont。假如你追求速度和只需要一些简单的字体，CD3DFont类就能满足你的要求了。<br>　　使用CD3DFont类，你需要添加下列文件到你的程序中：d3dfont.h, d3dfont.cpp, d3dutil.h, d3dutil.cpp, dxutil.h和dxutil.cpp。这些文件可以在刚才所说目录下的Include和Src目录下。<br>9.2.1创建一个CD3DFont<br>　　为了创建一个CD3DFont实例，我们只需要简单地象一般的C++对象那样实例化就可以了；下面是它的构造原型：<br>CD3DFont(const TCHAR* strFontName, DWORD dwHeight, DWORD dwFlags=0L);</p>
-<ul>
-<li>strFontName — 以null结束的字符串，它指定字体类型。</li>
-<li>dwHeight — 字体的高度。</li>
-<li>dwFlags — 可选参数；你能设置该参数为0或者用下面参数；D3DFONT_BOLD, D3DFONT_ITALIC, D3DFONT_ZENABLE。<br>　　实例化一个CD3DFont对象以后，我们必须调用下面的方法来初始化字体：<br>Font = new CD3DFont(“Times New Roman”, 16, 0); // instantiate<br>Font-&gt;InitDeviceObjects( Device );<br>Font-&gt;RestoreDeviceObjects();<br>9.2.2绘制文本<br>　　现在我们已经创建和初始化了一个CD3DFont对象，这已经为绘制文字做好了准备。绘制文字是使用下面的方法：<br>HRESULT CD3DFont::DrawText(FLOAT x, FLOAT y, DWORD dwColor,<br>  const TCHAR* strText, DWORD dwFlags=0L);</li>
-<li>x — 文字在屏幕上开始绘制的x坐标。</li>
-<li>y —文字在屏幕上开始绘制的y坐标。 </li>
-<li>dwColor — 文字的颜色。</li>
-<li>strText — 要绘制的文字。</li>
-<li>dwFlags — 可选参数；你能设置该参数为0或者用下面参数；D3DFONT_CENTERED, D3DFONT_TWOSIDED, D3DFONT_FILTERED。<br>　　例子：<br>   Font-&gt;DrawText(20, 20, 0xff000000, “Hello, World”);<br>9.2.3 清除<br>　　在删除一个CD3DFont对象之前，我们必须首先调用一些清除程序，就象下面列举的代码片段：<br>Font-&gt;InvalidateDeviceObjects();<br>Font-&gt;DeleteDeviceObjects();<br>delete Font;<br>9.3 D3DXCreateText<br>　　最后的函数是被用来创建一个3D 文字网格。图9.1显示了本章FontMes3D实例渲染的3D文字网格。</li>
-</ul>
-<p>图9.1<br>　　该函数的原型是：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">HRESULT <span class="title">D3DXCreateText</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    LPDIRECT3DDEVICE9 pDevice,</span></span></span><br><span class="line"><span class="function"><span class="params">    HDC hDC,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPCTSTR pText,</span></span></span><br><span class="line"><span class="function"><span class="params">    FLOAT Deviation,</span></span></span><br><span class="line"><span class="function"><span class="params">    FLOAT Extrusion,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPD3DXMESH* ppMesh,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPD3DXBUFFER* ppAdjacency,</span></span></span><br><span class="line"><span class="function"><span class="params">    LPGLYPHMETRICSFLOAT pGlyphMetrics</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span>;</span><br></pre></td></tr></table></figure></p>
-<p>这个函数如果调用成功则返回D3D_OK。</p>
-<ul>
-<li>pDevice — 和mesh关联的device。</li>
-<li>hDC — 我们将要用来产生mesh的包含描述字体的设备环境句柄。 </li>
-<li>pText — 指向以null结束的字符串的指针，此字符串是用来指定创建什么文字mesh。</li>
-<li>Deviation — 字型轮廓段数间距。该值必须大于等于0。当它为0时，段数等于字体原始设计单位（该值越接近0，那么字体就越光滑）。</li>
-<li>Extrusion — 文字在z轴方向的深度。</li>
-<li>ppMesh — 返回创建的mesh。</li>
-<li>ppAdjacency — 返回创建mesh的相关信息。假如你不需要它可以将其指定为null。</li>
-<li>pGlyphMetrics — 一个指向LPGLYPHMETRICSFLOAT结构数组的指针，它包含了字型米数据。假如你不关心此数据，你可以把它设置为0。<br>　　 下面的示例代码展示的是使用这个函数来创建一个文字3D 网格模型。<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Obtain a handle to a device context.</span></span><br><span class="line">HDC hdc = CreateCompatibleDC( <span class="number">0</span> );</span><br><span class="line"></span><br><span class="line"><span class="comment">// Fill out a LOGFONT structure that describes the font’s properties.</span></span><br><span class="line">LOGFONT lf;</span><br><span class="line">ZeroMemory(&amp;lf, <span class="keyword">sizeof</span>(LOGFONT));</span><br><span class="line"></span><br><span class="line">lf.lfHeight = <span class="number">25</span>; <span class="comment">// in logical units</span></span><br><span class="line">lf.lfWidth = <span class="number">12</span>; <span class="comment">// in logical units</span></span><br><span class="line">lf.lfWeight = <span class="number">500</span>; <span class="comment">// boldness, range 0(light) - 1000(bold)</span></span><br><span class="line">lf.lfItalic = <span class="literal">false</span>;</span><br><span class="line">lf.lfUnderline = <span class="literal">false</span>;</span><br><span class="line">lf.lfStrikeOut = <span class="literal">false</span>;</span><br><span class="line">lf.lfCharSet = DEFAULT_CHARSET;</span><br><span class="line"><span class="built_in">strcpy</span>(lf.lfFaceName, <span class="string">"Times New Roman"</span>); <span class="comment">// font style</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Create a font and select that font with the device context.</span></span><br><span class="line">HFONT hFont;</span><br><span class="line">HFONT hFontOld;</span><br><span class="line">hFont = CreateFontIndirect(&amp;lf);</span><br><span class="line">hFontOld = (HFONT)SelectObject(hdc, hFont);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create the 3D mesh of text.</span></span><br><span class="line">ID3DXMesh* Text = <span class="number">0</span>;</span><br><span class="line">D3DXCreateText(_device, hdc, <span class="string">"Direct3D"</span>, <span class="number">0.001f</span>, <span class="number">0.4f</span>, &amp;Text, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Reselect the old font, and free resources.</span></span><br><span class="line">SelectObject(hdc, hFontOld);</span><br><span class="line">DeleteObject( hFont );</span><br><span class="line">DeleteDC( hdc );</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>现在你便能简单地调用mesh的DrawSubset方法来渲染一个3D文字：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Text-&gt;DrawSubset(<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2795,7 +2616,7 @@ float z = -D3DXVec3Dot(&amp;_look, &amp;_pos);
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -2806,7 +2627,7 @@ float z = -D3DXVec3Dot(&amp;_look, &amp;_pos);
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

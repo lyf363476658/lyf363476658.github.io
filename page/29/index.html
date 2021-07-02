@@ -145,6 +145,204 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/27/game-framework/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/27/game-framework/" class="post-title-link" itemprop="url">XXSY服务器游戏架构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-27 13:06:51" itemprop="dateCreated datePublished" datetime="2017-10-27T13:06:51+08:00">2017-10-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="总体架构图"><a href="#总体架构图" class="headerlink" title="总体架构图"></a>总体架构图</h3><p><img src="http://oxcvfpext.bkt.clouddn.com/game-framework-1.png"></p>
+<h3 id="大区架构图"><a href="#大区架构图" class="headerlink" title="大区架构图"></a>大区架构图</h3><p><img src="http://oxcvfpext.bkt.clouddn.com/game-framework-2.png"></p>
+<h3 id="逻辑服务器架构图"><a href="#逻辑服务器架构图" class="headerlink" title="逻辑服务器架构图"></a>逻辑服务器架构图</h3><p><img src="http://oxcvfpext.bkt.clouddn.com/game-framework-3.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/27/Apache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/27/Apache/" class="post-title-link" itemprop="url">Apache</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-27 10:08:03" itemprop="dateCreated datePublished" datetime="2017-10-27T10:08:03+08:00">2017-10-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">[1] 安装 httpd.</span><br><span class="line">[root@linuxprobe ~]# yum -y install httpd</span><br><span class="line"># 删除默认欢迎页面</span><br><span class="line">[root@linuxprobe ~]# rm -f /etc/httpd/conf.d/welcome.conf</span><br><span class="line">[2] 配置httpd，将服务器名称替换为您自己的环境</span><br><span class="line">[root@linuxprobe ~]# vim /etc/httpd/conf/httpd.conf</span><br><span class="line"># line 86: 改变管理员的邮箱地址</span><br><span class="line">ServerAdmin root@linuxprobe.org</span><br><span class="line"># line 95: 改变域名信息</span><br><span class="line">ServerName www.linuxprobe.org:80</span><br><span class="line"># line 151: none变成All</span><br><span class="line">AllowOverride All</span><br><span class="line"># line 164: 添加只能使用目录名称访问的文件名</span><br><span class="line">DirectoryIndex index.html index.cgi index.php</span><br><span class="line"># add follows to the end</span><br><span class="line"># server&apos;s response header（安全性）</span><br><span class="line">ServerTokens Prod</span><br><span class="line"># keepalive is ON</span><br><span class="line">KeepAlive On</span><br><span class="line">[root@linuxprobe ~]# systemctl start httpd</span><br><span class="line">[root@linuxprobe ~]# systemctl enable httpd</span><br><span class="line">[3] 如果Firewalld正在运行，请允许HTTP服务。，HTTP使用80 / TCP</span><br><span class="line">[root@linuxprobe ~]# firewall-cmd --add-service=http --permanent</span><br><span class="line">success</span><br><span class="line">[root@linuxprobe ~]# firewall-cmd --reload</span><br><span class="line">success</span><br><span class="line">[4] 创建一个HTML测试页，并使用Web浏览器从客户端PC访问它。如果显示以下页面，是正确的</span><br><span class="line">[root@linuxprobe ~]# vi /var/www/html/index.html</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;div style=&quot;width: 100%; font-size: 40px; font-weight: bold; text-align: center;&quot;&gt;</span><br><span class="line">Welcome access LinuxProbe.org,This is Test Page!</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p><a href="http://blog.csdn.net/wh211212/article/details/52982917" target="_blank" rel="noopener">http://blog.csdn.net/wh211212/article/details/52982917</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/26/vs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/26/vs/" class="post-title-link" itemprop="url">vs</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-26 21:49:19" itemprop="dateCreated datePublished" datetime="2017-10-26T21:49:19+08:00">2017-10-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>$(TargetDir)\XGZS_d.exe<br>../data/cfg/network/cfg_relation.txt</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/26/netstat/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -642,241 +840,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/23/uwa/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/23/uwa/" class="post-title-link" itemprop="url">uwa</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-23 12:07:11" itemprop="dateCreated datePublished" datetime="2017-10-23T12:07:11+08:00">2017-10-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="AssetBundle-lockpersistentmanager开销"><a href="#AssetBundle-lockpersistentmanager开销" class="headerlink" title="AssetBundle lockpersistentmanager开销"></a>AssetBundle lockpersistentmanager开销</h1><p>观察性能曲线，发现某一帧AssetBundle加载中，lockpersistentmanager耗时比较大。请问这块是否能够优化？<br>这说明当前帧或前几帧中存在较大量的资源在通过LoadAsync来进行加载，其本质是所加载的资源过大所致，对自身资源进行合理优化可降低Loading.LockPersistentManager的开销。另外，将异步加载换成同步加载，LockPersistentManager就不会出现了，但其总加载耗时是没有变化的，因为总加载量没变。<br>关于主要资源的加载优化，可参考如下链接：<br><a href="https://blog.uwa4d.com/archives/LoadingPerformance_Texture.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/LoadingPerformance_Texture.html</a><br><a href="https://blog.uwa4d.com/archives/LoadingPerformance_Mesh.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/LoadingPerformance_Mesh.html</a><br><a href="https://blog.uwa4d.com/archives/LoadingPerformance_Shader.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/LoadingPerformance_Shader.html</a><br><a href="https://blog.uwa4d.com/archives/Loading_AnimationClip.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/Loading_AnimationClip.html</a><br><a href="https://blog.uwa4d.com/archives/livebroadcast6-8.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/livebroadcast6-8.html</a></p>
-<pre><code>** IN DIR:3rd, make dep with Makefile_debug.mk dep **
-   make[1]: 进入目录“/root/work_code/3rd”
-   ** IN DIR:cryptlib, make dep with Makefile_debug.mk dep **
-   make[2]: 进入目录“/root/work_code/3rd/cryptlib”
-g++ -DLINUX -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_LARGEFILE_SOURCE -march=core2 -m32 -MM -MT &quot;../temp/debug/cryptlib/cpu.o_d&quot; -MF ../temp/debug/cryptlib/cpu.d_d cpu.cpp -I/usr/include/mysql  -I/root/work_code/3rd -I/root/work_code/3rd/freetype221 -I/root/work_code/src/engine -I/root/work_code/src/svr -I/root/work_code/src/xxsy -I/root/work_code/src/svr/glogger/tlog/linux
-   &lt;built-in&gt;:0:0: 致命错误：打开依赖文件 ../temp/debug/cryptlib/cpu.d_d：没有那个文件或目录
-
--DLINUX                 #define LINUX
--D_FILE_OFFSET_BITS     #define _FILE_OFFSET_BITS
-</code></pre><p>-D_LARGFEFILE64_SOURCE<br>march指定的是当前cpu的架构，而mtune是真正作用于某一型号cpu的选项。<br>    -M 生成文件关联的信息。<br>    -MM 忽略由#include造成的依赖关系<br>    -MF 指一个文件用于存放生成文件的关联信息，这些信息与-M或-MM是一样的，<br>    -MT 指定目标文件名</p>
-<h1 id="Camera-Render里面Animation-RebuildInternalState耗时较多"><a href="#Camera-Render里面Animation-RebuildInternalState耗时较多" class="headerlink" title="Camera.Render里面Animation.RebuildInternalState耗时较多"></a>Camera.Render里面Animation.RebuildInternalState耗时较多</h1><p>之所以出现这一项，主要可以说以下两点：<br>（1）项目用的是Animation老版动画系统；<br>（2）对含有Animation组件的GameObject进行了大量频繁的Active或者Instantiate操作，一般这种情况比较常见于特效、UI HUD、角色/怪物等。</p>
-<h1 id="是否可以针对特定GameObject提升它的物理模拟次数"><a href="#是否可以针对特定GameObject提升它的物理模拟次数" class="headerlink" title="是否可以针对特定GameObject提升它的物理模拟次数"></a>是否可以针对特定GameObject提升它的物理模拟次数</h1><p>我们在做一个尽速项目，发现有时候物理的计算并不是非常准确，在运动速度较快时，依然会和墙体造成部分穿插，这给我们的游戏带来了很不好的体验，我知道可以通过Fixed TimeStep来提升物理系统的每帧的计算速度，目前该值为0.02，也就是1秒计算50次，Edit&gt;Project Settings&gt;Time&gt;Fixed TimeStep=0.02。我们曾将其设置为0.005，穿插问题明显好转，但是看上去该值是对所有GameObject均使用的，所以我想问问能否仅针对某一个GameObject来进行提升它的物理计算频率？<br>这是不行的，因为Fixed TimeStep是Unity引擎物理模块的全局参数。建议题主可以考虑将碰撞检测的模式改为”Continuous Dynamic”，看看是否满足需求。但是，需要说明的是，如果物体的速度确实非常快，那么任何一种碰撞模式都不能100%达到不穿插的效果。建议题主可以考虑增大碰撞体的Size或者通过射线求交的方式来将出现穿插问题的概率降到最低。</p>
-<h1 id="请教AssetBundle-Diff-Patch-方案是否可行"><a href="#请教AssetBundle-Diff-Patch-方案是否可行" class="headerlink" title="请教AssetBundle Diff Patch 方案是否可行"></a>请教AssetBundle Diff Patch 方案是否可行</h1><h2 id="我原先的更新方案是比对AssetBundle文件的hash值直接替换整个AssetBundle和manifest来达到更新效果的，有没有其它方案类似diff-patch-可以减少更新包体，如果可以做diff-patch，资源颗粒度是不是九可以忽略了"><a href="#我原先的更新方案是比对AssetBundle文件的hash值直接替换整个AssetBundle和manifest来达到更新效果的，有没有其它方案类似diff-patch-可以减少更新包体，如果可以做diff-patch，资源颗粒度是不是九可以忽略了" class="headerlink" title="我原先的更新方案是比对AssetBundle文件的hash值直接替换整个AssetBundle和manifest来达到更新效果的，有没有其它方案类似diff patch,可以减少更新包体，如果可以做diff patch，资源颗粒度是不是九可以忽略了"></a>我原先的更新方案是比对AssetBundle文件的hash值直接替换整个AssetBundle和manifest来达到更新效果的，有没有其它方案类似diff patch,可以减少更新包体，如果可以做diff patch，资源颗粒度是不是九可以忽略了</h2><p>基于AB的直接Diff更新目前没有成熟的方案，不过只把完整的Resources库中的部分资源更新的项目，已经做了2个了。<br>思路其实很简单：<br>1、出整包的时候，用ScriptableObject记录下AssetsDataBase中所有被发布资源的MD5码（不能用Unity自己的hash码）。<br>2、用工具调出哪些assets是代码动态Load的，分一个Res包中；找出这些资源的依赖资源，分入一个Share包中，并记录每个Asset所属的AB包。<br>3、出补丁时，对比当前AssetsDataBase中哪些代码中动态Load的资源出现了增加和改动（删除可以无视），包括他们依赖的资源。仍然把代码中动态Load的资源ResPatch中，依赖放入SharePatch中。对于没有变化的资源，仍然维持原来AB名字。<br>4、记录下次补丁之后，更新每个Asset所属的AB包。<br>5、下一次补丁时的Res和Share可能会依赖上一次的补丁的Share。<br>6、运行时，对所有补丁入的Res建立一个字典索引。Load的时候，有限判断这个Asset是否在补丁的Res包中，如果是则读补丁的AB包，并按套路处理依赖包。否则就用二进制版本内建的包</p>
-<p>这种做法的好处是：<br>1、充分利用版本中的已经发布的资源，以减小补丁包的体积<br>2、补丁包的打包规则可以几乎无视完整包的分包规则，方便后续折腾</p>
-<p>当然缺点也是很严重的：</p>
-<ul>
-<li>Reserved Total                 - Unity引擎在内存方面的总体分配量。Unity引擎的内存并不是随用随取，而是预先从操作系统中申请一块，然后再进行使用。</li>
-<li>Uesd Total                     - Unity引擎再内存方面的总体使用量。</li>
-<li>Reserved Unity &amp; Used Unity     - Unity引擎自身各个模块内部的内存分配，宝库偶各个Manager的内存占用、序列化信息的内存站哟个，WebStream/SerializedFile内存占用和部分资源的内存暂用等等。 </li>
-</ul>
-<p>看知乎的时候发现一个好玩的东西，<a href="https://lab.uwa4d.com/lab/5bc42d5404617c5805d4d685" target="_blank" rel="noopener">https://lab.uwa4d.com/lab/5bc42d5404617c5805d4d685</a> UGUI绘制图表工具，一直想做一个性能分析工具。<br>GDC2018中描述了Northlight引擎的内部实现和渲染相关的一些最新进展。<br>前育碧的两位资深老员工成立Second Order公司后，开发了第一款游戏《Claybook》，其中包括了许多创新技术，比如基于GPU渲染的粘土与流体模拟、完全可变性的世界与角色、光线追踪的视觉效果。</p>
-<ul>
-<li>请问Unity的stats窗口上显示的Batches和SnapdragonProfiler转出来的DC差距比较大可能是因为什么？<img src="/2017/10/23/uwa/1.jpg">
-这个Batches的数量其实并不代表DrawCall的数量，他其实和Render面板Total Batches的数量匹配，你如果要看DrawCall的数量，那么可以查看Render面板上面的DrawCall统计，这个统计应该和你SnapdragonProfiler抓出来的差不多。然后再贴一下Rendering面板上几个参数代表啥意思，仅供参考。这是我本机的截图
-Render界面各个参数说明<br>SetPass Calls:shader状态切换次数<br>Draw Calls:绘制调用次数<br>Total Batches:总合批的数量=静态合批+动态合批+实例合批；这个数一定是比Draw Calls的数量小，小的越多说明合并的物体越多。<br>动态合批：Batched Draw calls:表示合批过的mesh数，比如上面显示的60个mesh合批。<br>动态合批：Batched：表示合批的次数，上面截图数据说明60个mesh通过47次合批才完成。其实如果情况好的时候可能几次合批就能够合并掉60个mesh，可惜可能是很多属性不符合动态合并要求。<br>静态合批与实例化与上面动态合批的解释相同。</li>
-<li>so热更新除了只更新il2cpp.so还是修改global-metadata.data，其他的so不需要更新。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/23/gcc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/23/gcc/" class="post-title-link" itemprop="url">gcc</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-23 10:39:28" itemprop="dateCreated datePublished" datetime="2017-10-23T10:39:28+08:00">2017-10-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="extern-static"><a href="#extern-static" class="headerlink" title="extern static"></a>extern static</h1><p>extern 指为导出到其它文件所使用的非statice变量<br>static是当前文件的静态变量<br>二者不能同时定义<br>setarch i386 ./config -m32<br>编译32位的openssh<br>缺少 gnu/stubs-32.h</p>
-<pre><code>yum install glibc-devel.i686
-</code></pre><p>gcc没有找到</p>
-<pre><code>yum install libstdc++-devel.i686
-yum install -y gcc gcc+ gcc-c++
-</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/23/ShaderLab/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/23/ShaderLab/" class="post-title-link" itemprop="url">Unity Shader PBR</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-23 09:50:50" itemprop="dateCreated datePublished" datetime="2017-10-23T09:50:50+08:00">2017-10-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="观察两个空间"><a href="#观察两个空间" class="headerlink" title="观察两个空间"></a>观察两个空间</h1><p>阴影映射(Shadow Mapping)牵涉到两个空间的Z深度比较,一个是灯光空间,一个是相机空间,首先打开ShadowMapping_2下的场景,场景是默认的相机视角,单击下面的Light View按钮,可以切换到灯光视角,<br>13.1.2 两个视角的Z深度<br>分别单机LightView Depth和CamView Depth,然后到Shadow/ShadowMapping工程文件夹下面找到_CamViewZDepth和_LightViewZDepth两张Render Texture,查看一下渲染输出的ZDepth<br>13.1.3 渲染Z深度的材质<br>这两张ZDepth是分别在灯光视角和相机使用Replacement Shader 渲染出来的<br>在vertex函数vert中,主要操作除了对物体形体的必要输出外,就是UNITY_TRANSFERDEPTH(o.depth),打开UnityCG.cginc文件,会发现它一般情况下的操作就是o.depth = o.pos.zw,把物体在投影空间做的zw值赋给o.depth,再将它的值输出到一张Render Texture 之前,通过Linear01Depth(d)函数把Z的值变换到01空间,这样我们可以看到一张对比度更强的Z深度图,就像在上面所看到的那样,而不是一张大多数情况下都朦朦胧胧的Z深度图<br>13.2 投射Z深度<br>13.2.1 准备灯光视角的投影矩阵<br> 在进行映射阴影经典的Z深度比较之前,我们需要把灯光视角ZDepth深度图投射到相机视角.打开ShadowMapping_3下的场景.和上一个场景系相比,附加在Main Camera物体上的ShadowMapping_3.cs<br>13.3.4 对Z值进行偏移<br>显然,Z的精度是个问题,而且通过上述编码操作我们已经解决了Shadow ance的问题,但是主要问题依然,这个现象叫Peter Panning,源自迪尼斯的一部动画主角Peter Pan,他的影子可以脱离自身活动起来,打开</p>
-<ol>
-<li>分开处理反射面的绝缘体特性和金属属性，最后光照应该是Diffuse+Specular</li>
-<li>纯金属没有Diffuse，非金属主要是Diffuse，有一点反射</li>
-<li>光部分主要有3个东西影响：微表面的法线分布（NDF），微表面的入射和反射遮挡（Geometry Function），反射率和入射角的关系（Fresnel反射）。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/28/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/30/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/28/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><span class="page-number current">29</span><a class="page-number" href="/page/30/">30</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/30/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -942,7 +909,7 @@ yum install -y gcc gcc+ gcc-c++
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -953,7 +920,7 @@ yum install -y gcc gcc+ gcc-c++
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

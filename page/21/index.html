@@ -145,6 +145,287 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/21/Android-NDK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/21/Android-NDK/" class="post-title-link" itemprop="url">Andorid NDK</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-21 18:52:00" itemprop="dateCreated datePublished" datetime="2018-07-21T18:52:00+08:00">2018-07-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="JNI"><a href="#JNI" class="headerlink" title="JNI"></a>JNI</h3><p>JNI的全称是Java Native Interface，Java原生接口。提供别的代码调用的一组函数。首先使用C++写出了一些函数，然后将这些函数在Java类中再声明一次（加上关键字native），这样Java类中的函数和C++中的函数就匹配到一起了，我们使用Java类中的函数，其实就是使用C++中的函数。这个在Java类中声明的函数就是一个JNI。</p>
+<h3 id="NDK"><a href="#NDK" class="headerlink" title="NDK"></a>NDK</h3><p>NDK的全称是Native Development Kit，原生开发工具包。</p>
+<h3 id="交叉编译"><a href="#交叉编译" class="headerlink" title="交叉编译"></a>交叉编译</h3><p>交叉编译就是在一个平台上生成另一个平台上的可执行代码。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/21/AndroidManifest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/21/AndroidManifest/" class="post-title-link" itemprop="url">Android Manual</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-21 17:35:00" itemprop="dateCreated datePublished" datetime="2018-07-21T17:35:00+08:00">2018-07-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="AndroidManifest"><a href="#AndroidManifest" class="headerlink" title="AndroidManifest"></a>AndroidManifest</h1><ul>
+<li>为应用的JAVA软件包命名。软件包名称充当应用的唯一标识符</li>
+<li>描述应用的各个组件，包括构成应用的Activity、服务、广播接收器和内容提供程序。它还为实现每个组件的类命名并发布其功能，例如它们可以处理Intent消息。这些声明向Android系统告知有关组件以及可以启动这些组件的条件的信息。</li>
+<li>确定托管应用组件的进程。</li>
+<li>声明应用必须具备哪些权限才能访问API中受保护的部分并与其他应用交互。还声明其他应用与该应用组件交互所需具备的权限。</li>
+<li>列出Instrumentation类，这些类可在应用运行时提供分析和其他信息。这些声明只会在应用处于开发阶段时出现在清单中，在应用发布之前会将移除。</li>
+<li>声明应用所需的最低Android API级别。</li>
+<li>列出应用必须链接到的库</li>
+</ul>
+<h3 id="元素"><a href="#元素" class="headerlink" title="元素"></a><manifest>元素</manifest></h3><p>首先，所有的xml都必须包含<code>&lt;manifest&gt;</code>元素。这是文件的根节点。它必须要包含<code>&lt;application&gt;</code>元素，并且指明xmlns:android和package属性。</p>
+<p>xmlns:android<br>这个属性定义了Android命名空间。必须设置成”<a href="http://schemas.android.com/apk/res/android&quot;。不要手动修改。" target="_blank" rel="noopener">http://schemas.android.com/apk/res/android&quot;。不要手动修改。</a></p>
+<p>package<br>这是一个完整的Java语言风格包名。包名由英文字母（大小写均可）、数字和下划线组成。每个独立的名字必须以字母开头。</p>
+<p>构建APK的时候，构建系统使用这个属性来做两件事：<br>生成R.java类时用这个名字作为命名空间（用于访问APP的资源）比如：package被设置成net.pixelgame.unity3d</p>
+<p>android:name<br>该属性以字符串形式指定了APP要用的硬件或软件功能。</p>
+<p>android:required</p>
+<p>andorid:glEsVersion</p>
+<p><code>&lt;application&gt;</code>元素</p>
+<p>此元素描述了应用的配置。这是一个必备的元素，它包含了很多子元素来描述应用的组件，它的属性影响到所有的子组件。</p>
+<h1 id="Android-Studio快捷键"><a href="#Android-Studio快捷键" class="headerlink" title="Android Studio快捷键"></a>Android Studio快捷键</h1><ol>
+<li>在当前窗口查找文本Ctrl+F</li>
+<li>在当前窗口查找文本Ctrl+Shift+F</li>
+<li>查找类Ctrl+N</li>
+<li>查找文件Ctrl+Shitf+N</li>
+<li>查找项目中的方法或变量Ctrl+Shitf+Alt+N</li>
+<li>查找类/方法/变量引用的地方,先定位光标,右键选择”Find Usages”(或者快捷键Alt+F7)</li>
+<li>Ctrl+o查看所有可以重写的地方</li>
+<li>在类中快速定位某个方法或属性Ctrl+F12</li>
+</ol>
+<h1 id="Android分辨率"><a href="#Android分辨率" class="headerlink" title="Android分辨率"></a>Android分辨率</h1><p>2018.1月手机分辨率<br>2560<em>1440<br>1920</em>1080(16:9)<br>1280<em>720 (16:9)<br>2960</em>1440<br>2040*1080</p>
+<h1 id="如何连接木木模拟器并查看log"><a href="#如何连接木木模拟器并查看log" class="headerlink" title="如何连接木木模拟器并查看log"></a>如何连接木木模拟器并查看log</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adb connect 127.0.0.1:7555 # 连接木木模拟器</span><br><span class="line">adb connect 127.0.0.1:62001 # 连接夜神模拟器</span><br><span class="line">adb shell</span><br><span class="line">logcat</span><br><span class="line">-----</span><br><span class="line">adb devices</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/21/Protocol/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/21/Protocol/" class="post-title-link" itemprop="url">Protocol Buffer</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-21 14:18:00" itemprop="dateCreated datePublished" datetime="2018-07-21T14:18:00+08:00">2018-07-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>高效的二进制方式存储<br>Varint是一种紧凑的表示数字的方法。它用一个或多个字节来表示一个数字，值越少的数字使用越少的字节数。<br>采用这种Key-Pair结构无需使用分隔符来分割不同的Field。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Type</th>
+<th style="text-align:left">Meaning</th>
+<th style="text-align:left">Used For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0</td>
+<td style="text-align:left">Varint</td>
+<td style="text-align:left">int32,int64,uint32,uint64,sint32,sint64,bool,enum</td>
+</tr>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">64-bit</td>
+<td style="text-align:left">fixed64</td>
+<td>sfixed64,double</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">Length-delimi</td>
+<td style="text-align:left">string,bytes,embedded messages,packed repeated fields</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">Start group</td>
+<td style="text-align:left">Groups(deprecated)</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">End group</td>
+<td style="text-align:left">Groups(deprecated)</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">32-bit</td>
+<td style="text-align:left">fixed32,sfixed32,float</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在计算机内，一个负数一般会被表示一个很大的整数，因为计算机定义负数的符号位为数字的最高位。如果采用Varint表示一个负数，那么一定需要5个byte。为此Google Protocol Buffer定义了sint32这种类型，采用zigzag编码。</p>
+<p>Zigzag编码用无符号来表示有符号数字，正数和负数交错，这就是zigzag这个词的含义了。</p>
+<p><img src="http://oxcvfpext.bkt.clouddn.com/Protocol-1.jpg"></p>
+<p>使用zigzag编码，绝对值小的数字，无论正负都可以采用较少的byte来表示，充分利用了Varint这种技术。</p>
+<p>其他的数据类型，比如字符串则采用类似数据库中的varchar的表示方法，即用一个varint表示长度，然后其余部分紧跟在这个长度部分之后即可。</p>
+<h3 id="封解包的速度"><a href="#封解包的速度" class="headerlink" title="封解包的速度"></a>封解包的速度</h3><p>首先来了解一下XML的封解包过程。XML需要从文件中读取字符串，再转换为XML文档对象结构模型。之后，再从XML文档对象结构模型中读取指定节点的字符串，最后再将这个字符串转换成指定类型的变量。这个过程非常复杂，其中将XML文件转换为文档对象结构模型的过程通常需要完成词法文法分析等大量消耗CPU的复杂计算。</p>
+<p>反观Protobuf，它只需要简单地将一个二进制序列，按照指的格式读取到C++对应的结构类型中就可以了。从上一节的描述可以看到消息的decoding过程也可以通过几个位移操作组成的表达式计算即可完成。速度非常快。</p>
+<h3 id="T-L-V的数据存储方式"><a href="#T-L-V的数据存储方式" class="headerlink" title="T-L-V的数据存储方式"></a>T-L-V的数据存储方式</h3><p>Tag-Lenght-Value,标识-长度-字段值存储方式</p>
+<p>标识-长度-字段值表示单个数据，最终将所有数据拼接成一个字节流，从而实现数据存储的功能</p>
+<ul>
+<li>其中Length可选存储，如存储Varint编码数据就不需要存储Length</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/11/CameraEditor/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -417,70 +698,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/05/optimzation_memory_2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/07/05/optimzation_memory_2/" class="post-title-link" itemprop="url">optimzation_memory_2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-07-05 11:25:56" itemprop="dateCreated datePublished" datetime="2018-07-05T11:25:56+08:00">2018-07-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/05/optimzation-memory-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -582,6 +799,70 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/05/optimzation_memory_2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/05/optimzation_memory_2/" class="post-title-link" itemprop="url">optimzation_memory_2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-05 11:25:56" itemprop="dateCreated datePublished" datetime="2018-07-05T11:25:56+08:00">2018-07-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/05/presentandsync/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -647,272 +928,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/01/Unity3D_Game_Design/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/07/01/Unity3D_Game_Design/" class="post-title-link" itemprop="url">Unity</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-07-01 08:47:00" itemprop="dateCreated datePublished" datetime="2018-07-01T08:47:00+08:00">2018-07-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h2><ol>
-<li>模型命名 Max文件中角色模型命名为skin@sk_001武器模型命名为skin@wq_001</li>
-<li>颜色贴图skin@st_001.png 高光贴图skin@st_001_ctr.png</li>
-</ol>
-<h2 id="导入导出"><a href="#导入导出" class="headerlink" title="导入导出"></a>导入导出</h2><h3 id="能够从3DsMax导入Unity3D的资源"><a href="#能够从3DsMax导入Unity3D的资源" class="headerlink" title="能够从3DsMax导入Unity3D的资源"></a>能够从3DsMax导入Unity3D的资源</h3><ul>
-<li>所有节点的位移、旋转、锁方、轴心和命名都将导入</li>
-<li>网格模型包含顶点颜色、法线，一到两个UV通道</li>
-<li>材质包含贴图以及漫反射颜色，以及单个网格的多维材质</li>
-<li>动画（物体移动、旋转、缩放）</li>
-<li>骨骼动画（角色动画）</li>
-</ul>
-<h2 id="角色模型制作规范"><a href="#角色模型制作规范" class="headerlink" title="角色模型制作规范"></a>角色模型制作规范</h2><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><ol>
-<li>选人界面模型面数约4500-5000左右</li>
-<li>游戏内主角模型面数2500-3000左右</li>
-<li>Boss模型面数根据体型大小3000-5000左右</li>
-<li>Npc模型面数900-1200造型简单面数没下限</li>
-<li>武器模型面数250-500 造型简单面数没下限</li>
-<li>模型在不是非常废面的情况下，转折的地方做出厚度，厚度适当夸张。</li>
-<li>地面部分制作成双面或是封闭，小布条类模型做成双面模型</li>
-<li>角色结构整体均衡 比如眼睛部分不需要细致刻画</li>
-</ol>
-<h3 id="贴图"><a href="#贴图" class="headerlink" title="贴图"></a>贴图</h3><p>主角 512*512 png<br>Boss 512*512 png<br>Npc 256*256 png</p>
-<p>武器体积较大的使用256*256 体积较小 128*128 png</p>
-<h4 id="尺寸设定"><a href="#尺寸设定" class="headerlink" title="尺寸设定"></a>尺寸设定</h4><p>制作模型前必须先确保模型尺寸，统一将显示单位与系统单位改为公尺。</p>
-<h3 id="注意正反面关系"><a href="#注意正反面关系" class="headerlink" title="注意正反面关系"></a>注意正反面关系</h3><p>每个模型都包含正面和反面，一般来说引擎只会显示模型的正面，如要反面也一起显示需透过shader来实现，但增加反面显示时会降低性能，因此尽量让模型单面显示就好，而在制作模型时必须确保要显示的模型面是正面即可。</p>
-<h3 id="不要存在破面和迭面"><a href="#不要存在破面和迭面" class="headerlink" title="不要存在破面和迭面"></a>不要存在破面和迭面</h3><p>制作模型时注意顶点是否焊接好，未焊接的顶点可能会导致模型有破面的情形，另外模型面与面之间最好保持距离，不然会发生迭面的情况。</p>
-<h3 id="不要存在多余的顶点和T点"><a href="#不要存在多余的顶点和T点" class="headerlink" title="不要存在多余的顶点和T点"></a>不要存在多余的顶点和T点</h3><p>删除一些没用的顶点，并且避免出现T点。</p>
-<h3 id="删除看不到的面"><a href="#删除看不到的面" class="headerlink" title="删除看不到的面"></a>删除看不到的面</h3><p>制作模型时有些面可能在低下或是在模型里面，都是在场景进行中看不到的面，这些面可以删除，以减少模型面数提高效能。</p>
-<h3 id="物体的轴心"><a href="#物体的轴心" class="headerlink" title="物体的轴心"></a>物体的轴心</h3><p>每个物体都有一个坐标轴心，宜据物体属性设计好物体轴心位置，一般来说轴心都会放置在中心的位置，其他情况如门的轴心可能会在低下角落的位置。</p>
-<h3 id="使用简单几何体来制作复杂对象"><a href="#使用简单几何体来制作复杂对象" class="headerlink" title="使用简单几何体来制作复杂对象"></a>使用简单几何体来制作复杂对象</h3><p>当遇到比较复杂的对象，且对象比较小，左乘模型反而增加了模型的面数，因此可以使用简单的平面模型结合透空贴图来实现复杂的造型，可以将图片存成PSD、PNG、TGA这种带有透明通道属性的贴图档。</p>
-<h3 id="重置模型（ResetXForm）"><a href="#重置模型（ResetXForm）" class="headerlink" title="重置模型（ResetXForm）"></a>重置模型（ResetXForm）</h3><p>制作模型时可能使用了缩放功能或镜像功能，这些指令会使得模型比例错乱以及出现负数轴向的情形，因此在模型制作完毕时最好进行ResetXForm指令，让模型回归最基本的状态。</p>
-<h3 id="制作虚拟碰撞体"><a href="#制作虚拟碰撞体" class="headerlink" title="制作虚拟碰撞体"></a>制作虚拟碰撞体</h3><p>可以为模型制作简单的几何体来当作物体的碰撞体，可以依据物体的重要性与精确性来设计几何体外观。</p>
-<h2 id="材质贴图和UV"><a href="#材质贴图和UV" class="headerlink" title="材质贴图和UV"></a>材质贴图和UV</h2><h3 id="Unity3D支持的Max材质"><a href="#Unity3D支持的Max材质" class="headerlink" title="Unity3D支持的Max材质"></a>Unity3D支持的Max材质</h3><p>Unity3D支持3dsmax的Standard(标准材质)与Muti/Sub-Object(多维/子物体材质)。</p>
-<h3 id="模型汇入Unity后没有贴图？"><a href="#模型汇入Unity后没有贴图？" class="headerlink" title="模型汇入Unity后没有贴图？"></a>模型汇入Unity后没有贴图？</h3><p>当模型汇入Unity前，可以先创建一个Texture文件夹，并事先将贴图导入，这样模型汇入后就会自动读取到贴图。</p>
-<h3 id="模型塌陷"><a href="#模型塌陷" class="headerlink" title="模型塌陷"></a>模型塌陷</h3><p>制作模型时，建议将模型以一栋建筑进行塌陷，接着对模型进行UV拆解，这样可以将一个模型使用一张贴图来完成。</p>
-<h3 id="避免拉伸UV"><a href="#避免拉伸UV" class="headerlink" title="避免拉伸UV"></a>避免拉伸UV</h3><p>调整UV前先将材质球使用棋格 (checkter) 贴图来观看UV比例，调整UV时尽量让棋格维持正方形的形状。</p>
-<h3 id="贴图尺寸"><a href="#贴图尺寸" class="headerlink" title="贴图尺寸"></a>贴图尺寸</h3><p>贴图必须是2的N词放（8、16、32、64、128、256），建议贴图不要超过1024*1024大小。</p>
-<h3 id="绘制UV出血"><a href="#绘制UV出血" class="headerlink" title="绘制UV出血"></a>绘制UV出血</h3><p>绘制材质时绘制出血边缘，可避免出现明显接缝线。</p>
-<h3 id="透空贴图在Unity里的使用"><a href="#透空贴图在Unity里的使用" class="headerlink" title="透空贴图在Unity里的使用"></a>透空贴图在Unity里的使用</h3><h3 id="透空贴图毛边处理技巧"><a href="#透空贴图毛边处理技巧" class="headerlink" title="透空贴图毛边处理技巧"></a>透空贴图毛边处理技巧</h3><h3 id="透空贴图毛边处理技巧（进阶）"><a href="#透空贴图毛边处理技巧（进阶）" class="headerlink" title="透空贴图毛边处理技巧（进阶）"></a>透空贴图毛边处理技巧（进阶）</h3><h3 id="材质与贴图命名"><a href="#材质与贴图命名" class="headerlink" title="材质与贴图命名"></a>材质与贴图命名</h3><h2 id="烘培贴图教学"><a href="#烘培贴图教学" class="headerlink" title="烘培贴图教学"></a>烘培贴图教学</h2><h3 id="3dsMax-LightMap-烘培贴图"><a href="#3dsMax-LightMap-烘培贴图" class="headerlink" title="3dsMax LightMap 烘培贴图"></a>3dsMax LightMap 烘培贴图</h3><h3 id="3dsMax-CompleteMap-烘培贴图"><a href="#3dsMax-CompleteMap-烘培贴图" class="headerlink" title="3dsMax CompleteMap 烘培贴图"></a>3dsMax CompleteMap 烘培贴图</h3><h2 id="Unity烘培贴图"><a href="#Unity烘培贴图" class="headerlink" title="Unity烘培贴图"></a>Unity烘培贴图</h2><h2 id="Unity3D地形制作"><a href="#Unity3D地形制作" class="headerlink" title="Unity3D地形制作"></a>Unity3D地形制作</h2><h3 id="地形编辑器基本功能介绍"><a href="#地形编辑器基本功能介绍" class="headerlink" title="地形编辑器基本功能介绍"></a>地形编辑器基本功能介绍</h3><h3 id="水系统介绍"><a href="#水系统介绍" class="headerlink" title="水系统介绍"></a>水系统介绍</h3><h3 id="天空盒系统介绍"><a href="#天空盒系统介绍" class="headerlink" title="天空盒系统介绍"></a>天空盒系统介绍</h3><h3 id="第一人称导览"><a href="#第一人称导览" class="headerlink" title="第一人称导览"></a>第一人称导览</h3><h2 id="3dsMax角色动画导入与基本控制"><a href="#3dsMax角色动画导入与基本控制" class="headerlink" title="3dsMax角色动画导入与基本控制"></a>3dsMax角色动画导入与基本控制</h2><h3 id="单个角色动画导入"><a href="#单个角色动画导入" class="headerlink" title="单个角色动画导入"></a>单个角色动画导入</h3><h3 id="多个角色动画导入"><a href="#多个角色动画导入" class="headerlink" title="多个角色动画导入"></a>多个角色动画导入</h3><h3 id="角色基本控制"><a href="#角色基本控制" class="headerlink" title="角色基本控制"></a>角色基本控制</h3><h2 id="第三人称角色控制"><a href="#第三人称角色控制" class="headerlink" title="第三人称角色控制"></a>第三人称角色控制</h2><h3 id="角色阴影"><a href="#角色阴影" class="headerlink" title="角色阴影"></a>角色阴影</h3><h2 id="树木与粒子系统"><a href="#树木与粒子系统" class="headerlink" title="树木与粒子系统"></a>树木与粒子系统</h2><h3 id="树木制作"><a href="#树木制作" class="headerlink" title="树木制作"></a>树木制作</h3><h2 id="粒子系统-繁星粒子效果"><a href="#粒子系统-繁星粒子效果" class="headerlink" title="粒子系统-繁星粒子效果"></a>粒子系统-繁星粒子效果</h2><h2 id="粒子系统-雪花粒子效果"><a href="#粒子系统-雪花粒子效果" class="headerlink" title="粒子系统-雪花粒子效果"></a>粒子系统-雪花粒子效果</h2><h2 id="粒子系统-火焰粒子效果"><a href="#粒子系统-火焰粒子效果" class="headerlink" title="粒子系统-火焰粒子效果"></a>粒子系统-火焰粒子效果</h2><h2 id="编辑界面介绍"><a href="#编辑界面介绍" class="headerlink" title="编辑界面介绍"></a>编辑界面介绍</h2><h3 id="创建工程"><a href="#创建工程" class="headerlink" title="创建工程"></a>创建工程</h3><h3 id="打开工程"><a href="#打开工程" class="headerlink" title="打开工程"></a>打开工程</h3><h3 id="Project视图"><a href="#Project视图" class="headerlink" title="Project视图"></a>Project视图</h3><h3 id="Hierarchy视图"><a href="#Hierarchy视图" class="headerlink" title="Hierarchy视图"></a>Hierarchy视图</h3><h3 id="Inspector视图"><a href="#Inspector视图" class="headerlink" title="Inspector视图"></a>Inspector视图</h3><h3 id="Scene视图"><a href="#Scene视图" class="headerlink" title="Scene视图"></a>Scene视图</h3><h4 id="视图介绍"><a href="#视图介绍" class="headerlink" title="视图介绍"></a>视图介绍</h4><h4 id="移动视图"><a href="#移动视图" class="headerlink" title="移动视图"></a>移动视图</h4><h4 id="移动模型"><a href="#移动模型" class="headerlink" title="移动模型"></a>移动模型</h4><h4 id="旋转模型"><a href="#旋转模型" class="headerlink" title="旋转模型"></a>旋转模型</h4><h4 id="缩放模型"><a href="#缩放模型" class="headerlink" title="缩放模型"></a>缩放模型</h4><h4 id="场景工具"><a href="#场景工具" class="headerlink" title="场景工具"></a>场景工具</h4><h4 id="Sence视图控制条"><a href="#Sence视图控制条" class="headerlink" title="Sence视图控制条"></a>Sence视图控制条</h4><h4 id="Game视图"><a href="#Game视图" class="headerlink" title="Game视图"></a>Game视图</h4><h4 id="Game视图控制条"><a href="#Game视图控制条" class="headerlink" title="Game视图控制条"></a>Game视图控制条</h4><h2 id="工程的打包"><a href="#工程的打包" class="headerlink" title="工程的打包"></a>工程的打包</h2><h3 id="导出与导入"><a href="#导出与导入" class="headerlink" title="导出与导入"></a>导出与导入</h3><h3 id="游戏案例1"><a href="#游戏案例1" class="headerlink" title="游戏案例1"></a>游戏案例1</h3><h2 id="Android和iOS版本发布"><a href="#Android和iOS版本发布" class="headerlink" title="Android和iOS版本发布"></a>Android和iOS版本发布</h2><h2 id="Unity3D脚本概述"><a href="#Unity3D脚本概述" class="headerlink" title="Unity3D脚本概述"></a>Unity3D脚本概述</h2><h3 id="Unity3D脚本概述-1"><a href="#Unity3D脚本概述-1" class="headerlink" title="Unity3D脚本概述"></a>Unity3D脚本概述</h3><h3 id="Unity3D的基本语法"><a href="#Unity3D的基本语法" class="headerlink" title="Unity3D的基本语法"></a>Unity3D的基本语法</h3><h4 id="访问其他组件"><a href="#访问其他组件" class="headerlink" title="访问其他组件"></a>访问其他组件</h4><h4 id="访问其他游戏对象"><a href="#访问其他游戏对象" class="headerlink" title="访问其他游戏对象"></a>访问其他游戏对象</h4><h4 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h4><h4 id="成员变量与全局变量"><a href="#成员变量与全局变量" class="headerlink" title="成员变量与全局变量"></a>成员变量与全局变量</h4><h4 id="实例化"><a href="#实例化" class="headerlink" title="实例化"></a>实例化</h4><h4 id="协同程序与中断"><a href="#协同程序与中断" class="headerlink" title="协同程序与中断"></a>协同程序与中断</h4><h4 id="创建游戏对象"><a href="#创建游戏对象" class="headerlink" title="创建游戏对象"></a>创建游戏对象</h4><h4 id="获取游戏对象"><a href="#获取游戏对象" class="headerlink" title="获取游戏对象"></a>获取游戏对象</h4><h4 id="添加组件与修改组件"><a href="#添加组件与修改组件" class="headerlink" title="添加组件与修改组件"></a>添加组件与修改组件</h4><h4 id="脚本组件"><a href="#脚本组件" class="headerlink" title="脚本组件"></a>脚本组件</h4><h4 id="克隆游戏对象"><a href="#克隆游戏对象" class="headerlink" title="克隆游戏对象"></a>克隆游戏对象</h4><h4 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    GUILayout.Label(<span class="string">"当前游戏时间："</span> + Time.time);</span><br><span class="line">    GUILayout.Label(<span class="string">"上一帧所消耗的时间："</span> + Time.deltaTime);</span><br><span class="line">    GUILayout.Label(<span class="string">"固定增量时间："</span> + Time.fixedTime);</span><br><span class="line">    GUILayout.Label(<span class="string">"上一帧所消耗的固定时间："</span> + Time.fixedDeltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h4><h4 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h4><h2 id="Unity3D-GUI界面设计（GUI-amp-NGUI-amp-UGUI）"><a href="#Unity3D-GUI界面设计（GUI-amp-NGUI-amp-UGUI）" class="headerlink" title="Unity3D GUI界面设计（GUI&amp;NGUI&amp;UGUI）"></a>Unity3D GUI界面设计（GUI&amp;NGUI&amp;UGUI）</h2><h3 id="UGUI的网格重建、动静分离"><a href="#UGUI的网格重建、动静分离" class="headerlink" title="UGUI的网格重建、动静分离"></a>UGUI的网格重建、动静分离</h3><p>动静分离：也就是说同一个界面下的UI，可活动的元素放在一个Canvas下，不可活动的元素放在另一个Canvas下。虽然两个Canvas打断了合批，但是却减少了网格重建时间，总体上是有优化的。</p>
-<p>究其原因，是因为在同一个Canvas下的某个元素发生变化时，同一Canvas下的所有元素都会进行网格重建(ReBatch)。井静态的元素在逻辑上是不需要重建的，因为他们都没变过，所以需要分开。</p>
-<h4 id><a href="#" class="headerlink" title=" "></a> </h4><h3 id="GUI常用控件"><a href="#GUI常用控件" class="headerlink" title="GUI常用控件"></a>GUI常用控件</h3><h4 id="GUI-Text"><a href="#GUI-Text" class="headerlink" title="GUI Text"></a>GUI Text</h4><h4 id="GUI-Texture-LazyTexture"><a href="#GUI-Texture-LazyTexture" class="headerlink" title="GUI Texture (LazyTexture)"></a>GUI Texture (LazyTexture)</h4><h4 id="Label控件"><a href="#Label控件" class="headerlink" title="Label控件"></a>Label控件</h4><h4 id="Button控件"><a href="#Button控件" class="headerlink" title="Button控件"></a>Button控件</h4><h4 id="TextField"><a href="#TextField" class="headerlink" title="TextField"></a>TextField</h4><h4 id="ToolBar"><a href="#ToolBar" class="headerlink" title="ToolBar"></a>ToolBar</h4><h4 id="Slider"><a href="#Slider" class="headerlink" title="Slider"></a>Slider</h4><h4 id="ScrollView控件"><a href="#ScrollView控件" class="headerlink" title="ScrollView控件"></a>ScrollView控件</h4><h4 id="群组视图"><a href="#群组视图" class="headerlink" title="群组视图"></a>群组视图</h4><h4 id="窗口"><a href="#窗口" class="headerlink" title="窗口"></a>窗口</h4><h4 id="NGUI-Panel-amp-UGUI-Canvas"><a href="#NGUI-Panel-amp-UGUI-Canvas" class="headerlink" title="NGUI Panel &amp; UGUI Canvas"></a>NGUI Panel &amp; UGUI Canvas</h4><h4 id="图集制作-TexturePacket"><a href="#图集制作-TexturePacket" class="headerlink" title="图集制作(TexturePacket)"></a>图集制作(TexturePacket)</h4><h4 id="UITween动画"><a href="#UITween动画" class="headerlink" title="UITween动画"></a>UITween动画</h4><h4 id="顶点动画"><a href="#顶点动画" class="headerlink" title="顶点动画"></a>顶点动画</h4><h3 id="GUI-Skin"><a href="#GUI-Skin" class="headerlink" title="GUI Skin"></a>GUI Skin</h3><h4 id="自定义风格组件"><a href="#自定义风格组件" class="headerlink" title="自定义风格组件"></a>自定义风格组件</h4><h2 id="Unity3D输入与控制"><a href="#Unity3D输入与控制" class="headerlink" title="Unity3D输入与控制"></a>Unity3D输入与控制</h2><h3 id="键盘事件"><a href="#键盘事件" class="headerlink" title="键盘事件"></a>键盘事件</h3><h4 id="键盘按下事件"><a href="#键盘按下事件" class="headerlink" title="键盘按下事件"></a>键盘按下事件</h4><h4 id="键盘抬起事件"><a href="#键盘抬起事件" class="headerlink" title="键盘抬起事件"></a>键盘抬起事件</h4><h4 id="键盘长按事件"><a href="#键盘长按事件" class="headerlink" title="键盘长按事件"></a>键盘长按事件</h4><h3 id="触摸事件"><a href="#触摸事件" class="headerlink" title="触摸事件"></a>触摸事件</h3><h4 id="触摸按下事件"><a href="#触摸按下事件" class="headerlink" title="触摸按下事件"></a>触摸按下事件</h4><h4 id="触摸抬起事件"><a href="#触摸抬起事件" class="headerlink" title="触摸抬起事件"></a>触摸抬起事件</h4><h4 id="触摸长按事件"><a href="#触摸长按事件" class="headerlink" title="触摸长按事件"></a>触摸长按事件</h4><h3 id="鼠标事件"><a href="#鼠标事件" class="headerlink" title="鼠标事件"></a>鼠标事件</h3><h4 id="鼠标按下事件"><a href="#鼠标按下事件" class="headerlink" title="鼠标按下事件"></a>鼠标按下事件</h4><h4 id="鼠标抬起事件"><a href="#鼠标抬起事件" class="headerlink" title="鼠标抬起事件"></a>鼠标抬起事件</h4><h4 id="鼠标长按事件"><a href="#鼠标长按事件" class="headerlink" title="鼠标长按事件"></a>鼠标长按事件</h4><h3 id="自定义事件"><a href="#自定义事件" class="headerlink" title="自定义事件"></a>自定义事件</h3><h4 id="输入管理器（InputHelper）"><a href="#输入管理器（InputHelper）" class="headerlink" title="输入管理器（InputHelper）"></a>输入管理器（InputHelper）</h4><h4 id="自定义按键事件"><a href="#自定义按键事件" class="headerlink" title="自定义按键事件"></a>自定义按键事件</h4><h4 id="自定义按键轴"><a href="#自定义按键轴" class="headerlink" title="自定义按键轴"></a>自定义按键轴</h4><h4 id="实例练习"><a href="#实例练习" class="headerlink" title="实例练习"></a>实例练习</h4><h3 id="角色模型与动画（Animation-amp-Animator）"><a href="#角色模型与动画（Animation-amp-Animator）" class="headerlink" title="角色模型与动画（Animation&amp;Animator）"></a>角色模型与动画（Animation&amp;Animator）</h3><h4 id="模型的载入"><a href="#模型的载入" class="headerlink" title="模型的载入"></a>模型的载入</h4><h4 id="设置角色动画"><a href="#设置角色动画" class="headerlink" title="设置角色动画"></a>设置角色动画</h4><h4 id="播放3D动画"><a href="#播放3D动画" class="headerlink" title="播放3D动画"></a>播放3D动画</h4><h4 id="动画裁切"><a href="#动画裁切" class="headerlink" title="动画裁切"></a>动画裁切</h4><h4 id="动画的帧"><a href="#动画的帧" class="headerlink" title="动画的帧"></a>动画的帧</h4><h4 id="Tween"><a href="#Tween" class="headerlink" title="Tween"></a>Tween</h4><h3 id="多媒体"><a href="#多媒体" class="headerlink" title="多媒体"></a>多媒体</h3><h4 id="音频"><a href="#音频" class="headerlink" title="音频"></a>音频</h4><h4 id="视频"><a href="#视频" class="headerlink" title="视频"></a>视频</h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/06/30/Shadow_Mapping/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/30/Shadow_Mapping/" class="post-title-link" itemprop="url">阴影映射的原理和实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-06-30 12:20:06" itemprop="dateCreated datePublished" datetime="2018-06-30T12:20:06+08:00">2018-06-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="阴影贴图-Shadwom-mapping"><a href="#阴影贴图-Shadwom-mapping" class="headerlink" title="阴影贴图 (Shadwom mapping)"></a>阴影贴图 (Shadwom mapping)</h1><p>像素与以纹理形式保存的光照深度缓冲区或者深度图像比较，通过这种方式计算像素是否处于光源照射范围之内，从而生成阴影。</p>
-<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>阴影贴图是一种使用深度纹理来为渲染阴影提供解决方法的多通道计算。它的关键是，就是用投影光源代替最终视口来观察场景。通过移动视口到光源位置，可以观察到这个位置每个东西都是明亮的，因为从光的角度来看是没有阴影的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/06/26/Unity3D-Optimize/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/06/26/Unity3D-Optimize/" class="post-title-link" itemprop="url">Unity3D优化专题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-06-26 17:06:02" itemprop="dateCreated datePublished" datetime="2018-06-26T17:06:02+08:00">2018-06-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="一-遮挡剔除OcclusionCulling"><a href="#一-遮挡剔除OcclusionCulling" class="headerlink" title="一 遮挡剔除OcclusionCulling"></a>一 遮挡剔除OcclusionCulling</h1><p>遮挡剔除(Occlusion Culling)功能可在对象因被其他物体遮挡，当前在相机中无法看到时，禁用对象渲染。该功能不会在三维计算机图形中自动开启，因为在大部分情况下，离相机最远的对象最先渲染，离相机的对象覆盖先前的物体（该步骤称之为“重复渲染(overdraw)”）。遮挡剔除(Occlusion Culling)与视锥体剔除(Frustum Culling)不同。视锥体剔除(Frustum Culling)只禁用相机视野外的对象渲染，不禁用视野中被遮挡的任何物体的渲染。注意，使用遮挡剔除(Occlusion Culling)功能时，仍将受益于视锥体剔除(Frustum Culling)。<br>当场景中包含大量模型时，势必会造成渲染效率的降低。如果使用遮挡剔除技术，可以使用那些被阻挡的物体不被渲染，从而达到提高渲染效率的目的。</p>
-<p>遮挡剔除的基本原理是在场景中创建一个遮挡区域，该遮挡区域由单元格组成；每个单元格构成整个场景遮挡区域的一部分，这些单元格会把整个场景拆分为多个部分。当摄像机能够看到该单元格时，单元格中的物体会被渲染出来，而被其他单元格挡住的不被摄像机看到的物体不会被渲染。</p>
-<p>下面，我们来做遮挡剔除的案例</p>
-<h1 id="二-层级消隐"><a href="#二-层级消隐" class="headerlink" title="二 层级消隐"></a>二 层级消隐</h1><p>如果场景中存在大量的小物体，则可以使用层消隐优化场景。层消隐就是在比较远的距离将小物体剔除，减少绘制调用的次数。例如，在比较远的距离，大型建筑物依然可见，但是小型的石块和碎片隐藏掉。可以将小物件单独放入一个层，并且使用Camera.main.layerCullDistance函数设置层的消隐距离。调整摄像机位置进行测试即可。只有在摄像机距离这些物体小于10M的时候，地面上的这些物体才能显示出来。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SeperateControl</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">float</span>[] distance = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">32</span>];</span><br><span class="line">        distances[<span class="number">8</span>] = <span class="number">10</span>;</span><br><span class="line">        Camera.main.layerCullDistances = distances; <span class="comment">// 如果main == null,则设置camera的tag为mainCamera</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="三-层级细节LOD"><a href="#三-层级细节LOD" class="headerlink" title="三 层级细节LOD"></a>三 层级细节LOD</h1><p>层级细节LOD全称为LevelOfDetail,它是根据物体在游戏画面中锁占据的百分比来调用不同复杂度的模型的。简单理解就是当一个物体距离摄像机比较远的时候，使用复杂度低的模型，比较近的时候，使用复杂度高的模型。</p>
-<p>在建模软件中，制作好各个层级的模型，并且根据复杂程度自高向低命名为：模型名称_LOD0,模型名称_LOD1,模型名称_LOD2，数字越低，复杂程度越高。</p>
-<p>我们新建一个场景，构造最简单的LOD模型示例。</p>
-<ol>
-<li>准备3个Unity基本游戏对象，添加必要的材质。</li>
-<li>定义一个空对象，命名为_LOD,添加LODGroup组件</li>
-<li>分别将以上三个基本对象拖拽到LODGroup的各个级别上</li>
-<li>首先添加LOD0的对象，当然中间需要修改父节点，点击确定即可</li>
-<li>在Scene视图中，拖动摄像机分别近距离与远距离观察模型的变化。</li>
-</ol>
-<h1 id="四-DrawCall讲解"><a href="#四-DrawCall讲解" class="headerlink" title="四 DrawCall讲解"></a>四 DrawCall讲解</h1><p>一个DrawCall，表示U3D使用这个材质/纹理，来进行一次渲染，那么这次渲染假设有3个对象，那么当3个对象都使用这一个材质/纹理的时候，就会产生一次DrawCall，可以理解为一次将纹理输送到屏幕上的过程，（实际上引擎大多会使用如双缓冲，缓存这类的手段来优化这个过程，但在这里我们只需要这样认识就可以了），假设3个对象使用不同的材质/纹理，那么无疑会产生3个DrawCall。</p>
-<p>批处理动态物体需要在每个顶点上进行一定的开销，所以动态批处理仅支持小于900顶点的网格物体，如果你的着色器使用顶点位置，法线和UV值三种属性，那么你只能批处理300顶点一下的物体；请注意：属性数量的限制可能会在将来进行改变。</p>
-<ol>
-<li>相同的物体采取相同的材质，修改其缩放比例，观察DrawCall的变化。</li>
-</ol>
-<p>功能描述如下：Static Batching是将标明为Static的静态物件，如果在使用相同材质球的条件下，Unity会自动帮你把这两个物体合并成一个Batch，送往GPU来处理。</p>
-<p>Static Batching可以让引擎降低任何尺寸网格的Draw Call，如下图所示：</p>
-<h1 id="Profile-工具使用"><a href="#Profile-工具使用" class="headerlink" title="Profile 工具使用"></a>Profile 工具使用</h1><p>性能分析工具可以给我们提供游戏性能表现的详细信息。如果我们的游戏存在性能问题，如低帧率或者高内存占用，性能分析工具可以帮助我们法线问题的起因，并协助我们解决问题。</p>
-<p>Profiler布局</p>
-<p>在我们使用Profiler收集游戏数据之前，先打开它熟悉下界面布局。从菜单Window-&gt;Profiler打开。</p>
-<p>在窗口左侧，可以看到一列profilers，每个profiler显示我们游戏的一个方面的信息，分别为cpu使用情况，gpu使用情况，渲染，内存使用情况，声音，物理和网络。</p>
-<p>当开始录制时，窗口上部的每个profiler会随着时间显示数据。性能是随着时间变化的，所以随着时间变化的信息是比仅仅一帧的信息有用的多的。有些性能问题是持续性的，有些问题是仅仅在一帧中出现的，还有一些性能问题是随着时间逐渐显现的。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/20/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/22/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/20/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><span class="page-number current">21</span><a class="page-number" href="/page/22/">22</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/22/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -978,7 +997,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -989,7 +1008,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

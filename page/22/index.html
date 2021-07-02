@@ -145,6 +145,268 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/01/Unity3D_Game_Design/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/01/Unity3D_Game_Design/" class="post-title-link" itemprop="url">Unity</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-01 08:47:00" itemprop="dateCreated datePublished" datetime="2018-07-01T08:47:00+08:00">2018-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h2><ol>
+<li>模型命名 Max文件中角色模型命名为skin@sk_001武器模型命名为skin@wq_001</li>
+<li>颜色贴图skin@st_001.png 高光贴图skin@st_001_ctr.png</li>
+</ol>
+<h2 id="导入导出"><a href="#导入导出" class="headerlink" title="导入导出"></a>导入导出</h2><h3 id="能够从3DsMax导入Unity3D的资源"><a href="#能够从3DsMax导入Unity3D的资源" class="headerlink" title="能够从3DsMax导入Unity3D的资源"></a>能够从3DsMax导入Unity3D的资源</h3><ul>
+<li>所有节点的位移、旋转、锁方、轴心和命名都将导入</li>
+<li>网格模型包含顶点颜色、法线，一到两个UV通道</li>
+<li>材质包含贴图以及漫反射颜色，以及单个网格的多维材质</li>
+<li>动画（物体移动、旋转、缩放）</li>
+<li>骨骼动画（角色动画）</li>
+</ul>
+<h2 id="角色模型制作规范"><a href="#角色模型制作规范" class="headerlink" title="角色模型制作规范"></a>角色模型制作规范</h2><h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><ol>
+<li>选人界面模型面数约4500-5000左右</li>
+<li>游戏内主角模型面数2500-3000左右</li>
+<li>Boss模型面数根据体型大小3000-5000左右</li>
+<li>Npc模型面数900-1200造型简单面数没下限</li>
+<li>武器模型面数250-500 造型简单面数没下限</li>
+<li>模型在不是非常废面的情况下，转折的地方做出厚度，厚度适当夸张。</li>
+<li>地面部分制作成双面或是封闭，小布条类模型做成双面模型</li>
+<li>角色结构整体均衡 比如眼睛部分不需要细致刻画</li>
+</ol>
+<h3 id="贴图"><a href="#贴图" class="headerlink" title="贴图"></a>贴图</h3><p>主角 512*512 png<br>Boss 512*512 png<br>Npc 256*256 png</p>
+<p>武器体积较大的使用256*256 体积较小 128*128 png</p>
+<h4 id="尺寸设定"><a href="#尺寸设定" class="headerlink" title="尺寸设定"></a>尺寸设定</h4><p>制作模型前必须先确保模型尺寸，统一将显示单位与系统单位改为公尺。</p>
+<h3 id="注意正反面关系"><a href="#注意正反面关系" class="headerlink" title="注意正反面关系"></a>注意正反面关系</h3><p>每个模型都包含正面和反面，一般来说引擎只会显示模型的正面，如要反面也一起显示需透过shader来实现，但增加反面显示时会降低性能，因此尽量让模型单面显示就好，而在制作模型时必须确保要显示的模型面是正面即可。</p>
+<h3 id="不要存在破面和迭面"><a href="#不要存在破面和迭面" class="headerlink" title="不要存在破面和迭面"></a>不要存在破面和迭面</h3><p>制作模型时注意顶点是否焊接好，未焊接的顶点可能会导致模型有破面的情形，另外模型面与面之间最好保持距离，不然会发生迭面的情况。</p>
+<h3 id="不要存在多余的顶点和T点"><a href="#不要存在多余的顶点和T点" class="headerlink" title="不要存在多余的顶点和T点"></a>不要存在多余的顶点和T点</h3><p>删除一些没用的顶点，并且避免出现T点。</p>
+<h3 id="删除看不到的面"><a href="#删除看不到的面" class="headerlink" title="删除看不到的面"></a>删除看不到的面</h3><p>制作模型时有些面可能在低下或是在模型里面，都是在场景进行中看不到的面，这些面可以删除，以减少模型面数提高效能。</p>
+<h3 id="物体的轴心"><a href="#物体的轴心" class="headerlink" title="物体的轴心"></a>物体的轴心</h3><p>每个物体都有一个坐标轴心，宜据物体属性设计好物体轴心位置，一般来说轴心都会放置在中心的位置，其他情况如门的轴心可能会在低下角落的位置。</p>
+<h3 id="使用简单几何体来制作复杂对象"><a href="#使用简单几何体来制作复杂对象" class="headerlink" title="使用简单几何体来制作复杂对象"></a>使用简单几何体来制作复杂对象</h3><p>当遇到比较复杂的对象，且对象比较小，左乘模型反而增加了模型的面数，因此可以使用简单的平面模型结合透空贴图来实现复杂的造型，可以将图片存成PSD、PNG、TGA这种带有透明通道属性的贴图档。</p>
+<h3 id="重置模型（ResetXForm）"><a href="#重置模型（ResetXForm）" class="headerlink" title="重置模型（ResetXForm）"></a>重置模型（ResetXForm）</h3><p>制作模型时可能使用了缩放功能或镜像功能，这些指令会使得模型比例错乱以及出现负数轴向的情形，因此在模型制作完毕时最好进行ResetXForm指令，让模型回归最基本的状态。</p>
+<h3 id="制作虚拟碰撞体"><a href="#制作虚拟碰撞体" class="headerlink" title="制作虚拟碰撞体"></a>制作虚拟碰撞体</h3><p>可以为模型制作简单的几何体来当作物体的碰撞体，可以依据物体的重要性与精确性来设计几何体外观。</p>
+<h2 id="材质贴图和UV"><a href="#材质贴图和UV" class="headerlink" title="材质贴图和UV"></a>材质贴图和UV</h2><h3 id="Unity3D支持的Max材质"><a href="#Unity3D支持的Max材质" class="headerlink" title="Unity3D支持的Max材质"></a>Unity3D支持的Max材质</h3><p>Unity3D支持3dsmax的Standard(标准材质)与Muti/Sub-Object(多维/子物体材质)。</p>
+<h3 id="模型汇入Unity后没有贴图？"><a href="#模型汇入Unity后没有贴图？" class="headerlink" title="模型汇入Unity后没有贴图？"></a>模型汇入Unity后没有贴图？</h3><p>当模型汇入Unity前，可以先创建一个Texture文件夹，并事先将贴图导入，这样模型汇入后就会自动读取到贴图。</p>
+<h3 id="模型塌陷"><a href="#模型塌陷" class="headerlink" title="模型塌陷"></a>模型塌陷</h3><p>制作模型时，建议将模型以一栋建筑进行塌陷，接着对模型进行UV拆解，这样可以将一个模型使用一张贴图来完成。</p>
+<h3 id="避免拉伸UV"><a href="#避免拉伸UV" class="headerlink" title="避免拉伸UV"></a>避免拉伸UV</h3><p>调整UV前先将材质球使用棋格 (checkter) 贴图来观看UV比例，调整UV时尽量让棋格维持正方形的形状。</p>
+<h3 id="贴图尺寸"><a href="#贴图尺寸" class="headerlink" title="贴图尺寸"></a>贴图尺寸</h3><p>贴图必须是2的N词放（8、16、32、64、128、256），建议贴图不要超过1024*1024大小。</p>
+<h3 id="绘制UV出血"><a href="#绘制UV出血" class="headerlink" title="绘制UV出血"></a>绘制UV出血</h3><p>绘制材质时绘制出血边缘，可避免出现明显接缝线。</p>
+<h3 id="透空贴图在Unity里的使用"><a href="#透空贴图在Unity里的使用" class="headerlink" title="透空贴图在Unity里的使用"></a>透空贴图在Unity里的使用</h3><h3 id="透空贴图毛边处理技巧"><a href="#透空贴图毛边处理技巧" class="headerlink" title="透空贴图毛边处理技巧"></a>透空贴图毛边处理技巧</h3><h3 id="透空贴图毛边处理技巧（进阶）"><a href="#透空贴图毛边处理技巧（进阶）" class="headerlink" title="透空贴图毛边处理技巧（进阶）"></a>透空贴图毛边处理技巧（进阶）</h3><h3 id="材质与贴图命名"><a href="#材质与贴图命名" class="headerlink" title="材质与贴图命名"></a>材质与贴图命名</h3><h2 id="烘培贴图教学"><a href="#烘培贴图教学" class="headerlink" title="烘培贴图教学"></a>烘培贴图教学</h2><h3 id="3dsMax-LightMap-烘培贴图"><a href="#3dsMax-LightMap-烘培贴图" class="headerlink" title="3dsMax LightMap 烘培贴图"></a>3dsMax LightMap 烘培贴图</h3><h3 id="3dsMax-CompleteMap-烘培贴图"><a href="#3dsMax-CompleteMap-烘培贴图" class="headerlink" title="3dsMax CompleteMap 烘培贴图"></a>3dsMax CompleteMap 烘培贴图</h3><h2 id="Unity烘培贴图"><a href="#Unity烘培贴图" class="headerlink" title="Unity烘培贴图"></a>Unity烘培贴图</h2><h2 id="Unity3D地形制作"><a href="#Unity3D地形制作" class="headerlink" title="Unity3D地形制作"></a>Unity3D地形制作</h2><h3 id="地形编辑器基本功能介绍"><a href="#地形编辑器基本功能介绍" class="headerlink" title="地形编辑器基本功能介绍"></a>地形编辑器基本功能介绍</h3><h3 id="水系统介绍"><a href="#水系统介绍" class="headerlink" title="水系统介绍"></a>水系统介绍</h3><h3 id="天空盒系统介绍"><a href="#天空盒系统介绍" class="headerlink" title="天空盒系统介绍"></a>天空盒系统介绍</h3><h3 id="第一人称导览"><a href="#第一人称导览" class="headerlink" title="第一人称导览"></a>第一人称导览</h3><h2 id="3dsMax角色动画导入与基本控制"><a href="#3dsMax角色动画导入与基本控制" class="headerlink" title="3dsMax角色动画导入与基本控制"></a>3dsMax角色动画导入与基本控制</h2><h3 id="单个角色动画导入"><a href="#单个角色动画导入" class="headerlink" title="单个角色动画导入"></a>单个角色动画导入</h3><h3 id="多个角色动画导入"><a href="#多个角色动画导入" class="headerlink" title="多个角色动画导入"></a>多个角色动画导入</h3><h3 id="角色基本控制"><a href="#角色基本控制" class="headerlink" title="角色基本控制"></a>角色基本控制</h3><h2 id="第三人称角色控制"><a href="#第三人称角色控制" class="headerlink" title="第三人称角色控制"></a>第三人称角色控制</h2><h3 id="角色阴影"><a href="#角色阴影" class="headerlink" title="角色阴影"></a>角色阴影</h3><h2 id="树木与粒子系统"><a href="#树木与粒子系统" class="headerlink" title="树木与粒子系统"></a>树木与粒子系统</h2><h3 id="树木制作"><a href="#树木制作" class="headerlink" title="树木制作"></a>树木制作</h3><h2 id="粒子系统-繁星粒子效果"><a href="#粒子系统-繁星粒子效果" class="headerlink" title="粒子系统-繁星粒子效果"></a>粒子系统-繁星粒子效果</h2><h2 id="粒子系统-雪花粒子效果"><a href="#粒子系统-雪花粒子效果" class="headerlink" title="粒子系统-雪花粒子效果"></a>粒子系统-雪花粒子效果</h2><h2 id="粒子系统-火焰粒子效果"><a href="#粒子系统-火焰粒子效果" class="headerlink" title="粒子系统-火焰粒子效果"></a>粒子系统-火焰粒子效果</h2><h2 id="编辑界面介绍"><a href="#编辑界面介绍" class="headerlink" title="编辑界面介绍"></a>编辑界面介绍</h2><h3 id="创建工程"><a href="#创建工程" class="headerlink" title="创建工程"></a>创建工程</h3><h3 id="打开工程"><a href="#打开工程" class="headerlink" title="打开工程"></a>打开工程</h3><h3 id="Project视图"><a href="#Project视图" class="headerlink" title="Project视图"></a>Project视图</h3><h3 id="Hierarchy视图"><a href="#Hierarchy视图" class="headerlink" title="Hierarchy视图"></a>Hierarchy视图</h3><h3 id="Inspector视图"><a href="#Inspector视图" class="headerlink" title="Inspector视图"></a>Inspector视图</h3><h3 id="Scene视图"><a href="#Scene视图" class="headerlink" title="Scene视图"></a>Scene视图</h3><h4 id="视图介绍"><a href="#视图介绍" class="headerlink" title="视图介绍"></a>视图介绍</h4><h4 id="移动视图"><a href="#移动视图" class="headerlink" title="移动视图"></a>移动视图</h4><h4 id="移动模型"><a href="#移动模型" class="headerlink" title="移动模型"></a>移动模型</h4><h4 id="旋转模型"><a href="#旋转模型" class="headerlink" title="旋转模型"></a>旋转模型</h4><h4 id="缩放模型"><a href="#缩放模型" class="headerlink" title="缩放模型"></a>缩放模型</h4><h4 id="场景工具"><a href="#场景工具" class="headerlink" title="场景工具"></a>场景工具</h4><h4 id="Sence视图控制条"><a href="#Sence视图控制条" class="headerlink" title="Sence视图控制条"></a>Sence视图控制条</h4><h4 id="Game视图"><a href="#Game视图" class="headerlink" title="Game视图"></a>Game视图</h4><h4 id="Game视图控制条"><a href="#Game视图控制条" class="headerlink" title="Game视图控制条"></a>Game视图控制条</h4><h2 id="工程的打包"><a href="#工程的打包" class="headerlink" title="工程的打包"></a>工程的打包</h2><h3 id="导出与导入"><a href="#导出与导入" class="headerlink" title="导出与导入"></a>导出与导入</h3><h3 id="游戏案例1"><a href="#游戏案例1" class="headerlink" title="游戏案例1"></a>游戏案例1</h3><h2 id="Android和iOS版本发布"><a href="#Android和iOS版本发布" class="headerlink" title="Android和iOS版本发布"></a>Android和iOS版本发布</h2><h2 id="Unity3D脚本概述"><a href="#Unity3D脚本概述" class="headerlink" title="Unity3D脚本概述"></a>Unity3D脚本概述</h2><h3 id="Unity3D脚本概述-1"><a href="#Unity3D脚本概述-1" class="headerlink" title="Unity3D脚本概述"></a>Unity3D脚本概述</h3><h3 id="Unity3D的基本语法"><a href="#Unity3D的基本语法" class="headerlink" title="Unity3D的基本语法"></a>Unity3D的基本语法</h3><h4 id="访问其他组件"><a href="#访问其他组件" class="headerlink" title="访问其他组件"></a>访问其他组件</h4><h4 id="访问其他游戏对象"><a href="#访问其他游戏对象" class="headerlink" title="访问其他游戏对象"></a>访问其他游戏对象</h4><h4 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h4><h4 id="成员变量与全局变量"><a href="#成员变量与全局变量" class="headerlink" title="成员变量与全局变量"></a>成员变量与全局变量</h4><h4 id="实例化"><a href="#实例化" class="headerlink" title="实例化"></a>实例化</h4><h4 id="协同程序与中断"><a href="#协同程序与中断" class="headerlink" title="协同程序与中断"></a>协同程序与中断</h4><h4 id="创建游戏对象"><a href="#创建游戏对象" class="headerlink" title="创建游戏对象"></a>创建游戏对象</h4><h4 id="获取游戏对象"><a href="#获取游戏对象" class="headerlink" title="获取游戏对象"></a>获取游戏对象</h4><h4 id="添加组件与修改组件"><a href="#添加组件与修改组件" class="headerlink" title="添加组件与修改组件"></a>添加组件与修改组件</h4><h4 id="脚本组件"><a href="#脚本组件" class="headerlink" title="脚本组件"></a>脚本组件</h4><h4 id="克隆游戏对象"><a href="#克隆游戏对象" class="headerlink" title="克隆游戏对象"></a>克隆游戏对象</h4><h4 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h4><figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    GUILayout.Label(<span class="string">"当前游戏时间："</span> + Time.time);</span><br><span class="line">    GUILayout.Label(<span class="string">"上一帧所消耗的时间："</span> + Time.deltaTime);</span><br><span class="line">    GUILayout.Label(<span class="string">"固定增量时间："</span> + Time.fixedTime);</span><br><span class="line">    GUILayout.Label(<span class="string">"上一帧所消耗的固定时间："</span> + Time.fixedDeltaTime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h4><h4 id="四元数"><a href="#四元数" class="headerlink" title="四元数"></a>四元数</h4><h2 id="Unity3D-GUI界面设计（GUI-amp-NGUI-amp-UGUI）"><a href="#Unity3D-GUI界面设计（GUI-amp-NGUI-amp-UGUI）" class="headerlink" title="Unity3D GUI界面设计（GUI&amp;NGUI&amp;UGUI）"></a>Unity3D GUI界面设计（GUI&amp;NGUI&amp;UGUI）</h2><h3 id="UGUI的网格重建、动静分离"><a href="#UGUI的网格重建、动静分离" class="headerlink" title="UGUI的网格重建、动静分离"></a>UGUI的网格重建、动静分离</h3><p>动静分离：也就是说同一个界面下的UI，可活动的元素放在一个Canvas下，不可活动的元素放在另一个Canvas下。虽然两个Canvas打断了合批，但是却减少了网格重建时间，总体上是有优化的。</p>
+<p>究其原因，是因为在同一个Canvas下的某个元素发生变化时，同一Canvas下的所有元素都会进行网格重建(ReBatch)。井静态的元素在逻辑上是不需要重建的，因为他们都没变过，所以需要分开。</p>
+<h4 id><a href="#" class="headerlink" title=" "></a> </h4><h3 id="GUI常用控件"><a href="#GUI常用控件" class="headerlink" title="GUI常用控件"></a>GUI常用控件</h3><h4 id="GUI-Text"><a href="#GUI-Text" class="headerlink" title="GUI Text"></a>GUI Text</h4><h4 id="GUI-Texture-LazyTexture"><a href="#GUI-Texture-LazyTexture" class="headerlink" title="GUI Texture (LazyTexture)"></a>GUI Texture (LazyTexture)</h4><h4 id="Label控件"><a href="#Label控件" class="headerlink" title="Label控件"></a>Label控件</h4><h4 id="Button控件"><a href="#Button控件" class="headerlink" title="Button控件"></a>Button控件</h4><h4 id="TextField"><a href="#TextField" class="headerlink" title="TextField"></a>TextField</h4><h4 id="ToolBar"><a href="#ToolBar" class="headerlink" title="ToolBar"></a>ToolBar</h4><h4 id="Slider"><a href="#Slider" class="headerlink" title="Slider"></a>Slider</h4><h4 id="ScrollView控件"><a href="#ScrollView控件" class="headerlink" title="ScrollView控件"></a>ScrollView控件</h4><h4 id="群组视图"><a href="#群组视图" class="headerlink" title="群组视图"></a>群组视图</h4><h4 id="窗口"><a href="#窗口" class="headerlink" title="窗口"></a>窗口</h4><h4 id="NGUI-Panel-amp-UGUI-Canvas"><a href="#NGUI-Panel-amp-UGUI-Canvas" class="headerlink" title="NGUI Panel &amp; UGUI Canvas"></a>NGUI Panel &amp; UGUI Canvas</h4><h4 id="图集制作-TexturePacket"><a href="#图集制作-TexturePacket" class="headerlink" title="图集制作(TexturePacket)"></a>图集制作(TexturePacket)</h4><h4 id="UITween动画"><a href="#UITween动画" class="headerlink" title="UITween动画"></a>UITween动画</h4><h4 id="顶点动画"><a href="#顶点动画" class="headerlink" title="顶点动画"></a>顶点动画</h4><h3 id="GUI-Skin"><a href="#GUI-Skin" class="headerlink" title="GUI Skin"></a>GUI Skin</h3><h4 id="自定义风格组件"><a href="#自定义风格组件" class="headerlink" title="自定义风格组件"></a>自定义风格组件</h4><h2 id="Unity3D输入与控制"><a href="#Unity3D输入与控制" class="headerlink" title="Unity3D输入与控制"></a>Unity3D输入与控制</h2><h3 id="键盘事件"><a href="#键盘事件" class="headerlink" title="键盘事件"></a>键盘事件</h3><h4 id="键盘按下事件"><a href="#键盘按下事件" class="headerlink" title="键盘按下事件"></a>键盘按下事件</h4><h4 id="键盘抬起事件"><a href="#键盘抬起事件" class="headerlink" title="键盘抬起事件"></a>键盘抬起事件</h4><h4 id="键盘长按事件"><a href="#键盘长按事件" class="headerlink" title="键盘长按事件"></a>键盘长按事件</h4><h3 id="触摸事件"><a href="#触摸事件" class="headerlink" title="触摸事件"></a>触摸事件</h3><h4 id="触摸按下事件"><a href="#触摸按下事件" class="headerlink" title="触摸按下事件"></a>触摸按下事件</h4><h4 id="触摸抬起事件"><a href="#触摸抬起事件" class="headerlink" title="触摸抬起事件"></a>触摸抬起事件</h4><h4 id="触摸长按事件"><a href="#触摸长按事件" class="headerlink" title="触摸长按事件"></a>触摸长按事件</h4><h3 id="鼠标事件"><a href="#鼠标事件" class="headerlink" title="鼠标事件"></a>鼠标事件</h3><h4 id="鼠标按下事件"><a href="#鼠标按下事件" class="headerlink" title="鼠标按下事件"></a>鼠标按下事件</h4><h4 id="鼠标抬起事件"><a href="#鼠标抬起事件" class="headerlink" title="鼠标抬起事件"></a>鼠标抬起事件</h4><h4 id="鼠标长按事件"><a href="#鼠标长按事件" class="headerlink" title="鼠标长按事件"></a>鼠标长按事件</h4><h3 id="自定义事件"><a href="#自定义事件" class="headerlink" title="自定义事件"></a>自定义事件</h3><h4 id="输入管理器（InputHelper）"><a href="#输入管理器（InputHelper）" class="headerlink" title="输入管理器（InputHelper）"></a>输入管理器（InputHelper）</h4><h4 id="自定义按键事件"><a href="#自定义按键事件" class="headerlink" title="自定义按键事件"></a>自定义按键事件</h4><h4 id="自定义按键轴"><a href="#自定义按键轴" class="headerlink" title="自定义按键轴"></a>自定义按键轴</h4><h4 id="实例练习"><a href="#实例练习" class="headerlink" title="实例练习"></a>实例练习</h4><h3 id="角色模型与动画（Animation-amp-Animator）"><a href="#角色模型与动画（Animation-amp-Animator）" class="headerlink" title="角色模型与动画（Animation&amp;Animator）"></a>角色模型与动画（Animation&amp;Animator）</h3><h4 id="模型的载入"><a href="#模型的载入" class="headerlink" title="模型的载入"></a>模型的载入</h4><h4 id="设置角色动画"><a href="#设置角色动画" class="headerlink" title="设置角色动画"></a>设置角色动画</h4><h4 id="播放3D动画"><a href="#播放3D动画" class="headerlink" title="播放3D动画"></a>播放3D动画</h4><h4 id="动画裁切"><a href="#动画裁切" class="headerlink" title="动画裁切"></a>动画裁切</h4><h4 id="动画的帧"><a href="#动画的帧" class="headerlink" title="动画的帧"></a>动画的帧</h4><h4 id="Tween"><a href="#Tween" class="headerlink" title="Tween"></a>Tween</h4><h3 id="多媒体"><a href="#多媒体" class="headerlink" title="多媒体"></a>多媒体</h3><h4 id="音频"><a href="#音频" class="headerlink" title="音频"></a>音频</h4><h4 id="视频"><a href="#视频" class="headerlink" title="视频"></a>视频</h4>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/06/30/Shadow_Mapping/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/30/Shadow_Mapping/" class="post-title-link" itemprop="url">阴影映射的原理和实现</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-30 12:20:06" itemprop="dateCreated datePublished" datetime="2018-06-30T12:20:06+08:00">2018-06-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="阴影贴图-Shadwom-mapping"><a href="#阴影贴图-Shadwom-mapping" class="headerlink" title="阴影贴图 (Shadwom mapping)"></a>阴影贴图 (Shadwom mapping)</h1><p>像素与以纹理形式保存的光照深度缓冲区或者深度图像比较，通过这种方式计算像素是否处于光源照射范围之内，从而生成阴影。</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>阴影贴图是一种使用深度纹理来为渲染阴影提供解决方法的多通道计算。它的关键是，就是用投影光源代替最终视口来观察场景。通过移动视口到光源位置，可以观察到这个位置每个东西都是明亮的，因为从光的角度来看是没有阴影的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/06/26/Unity3D-Optimize/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/26/Unity3D-Optimize/" class="post-title-link" itemprop="url">Unity3D优化专题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-06-26 17:06:02" itemprop="dateCreated datePublished" datetime="2018-06-26T17:06:02+08:00">2018-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="一-遮挡剔除OcclusionCulling"><a href="#一-遮挡剔除OcclusionCulling" class="headerlink" title="一 遮挡剔除OcclusionCulling"></a>一 遮挡剔除OcclusionCulling</h1><p>遮挡剔除(Occlusion Culling)功能可在对象因被其他物体遮挡，当前在相机中无法看到时，禁用对象渲染。该功能不会在三维计算机图形中自动开启，因为在大部分情况下，离相机最远的对象最先渲染，离相机的对象覆盖先前的物体（该步骤称之为“重复渲染(overdraw)”）。遮挡剔除(Occlusion Culling)与视锥体剔除(Frustum Culling)不同。视锥体剔除(Frustum Culling)只禁用相机视野外的对象渲染，不禁用视野中被遮挡的任何物体的渲染。注意，使用遮挡剔除(Occlusion Culling)功能时，仍将受益于视锥体剔除(Frustum Culling)。<br>当场景中包含大量模型时，势必会造成渲染效率的降低。如果使用遮挡剔除技术，可以使用那些被阻挡的物体不被渲染，从而达到提高渲染效率的目的。</p>
+<p>遮挡剔除的基本原理是在场景中创建一个遮挡区域，该遮挡区域由单元格组成；每个单元格构成整个场景遮挡区域的一部分，这些单元格会把整个场景拆分为多个部分。当摄像机能够看到该单元格时，单元格中的物体会被渲染出来，而被其他单元格挡住的不被摄像机看到的物体不会被渲染。</p>
+<p>下面，我们来做遮挡剔除的案例</p>
+<h1 id="二-层级消隐"><a href="#二-层级消隐" class="headerlink" title="二 层级消隐"></a>二 层级消隐</h1><p>如果场景中存在大量的小物体，则可以使用层消隐优化场景。层消隐就是在比较远的距离将小物体剔除，减少绘制调用的次数。例如，在比较远的距离，大型建筑物依然可见，但是小型的石块和碎片隐藏掉。可以将小物件单独放入一个层，并且使用Camera.main.layerCullDistance函数设置层的消隐距离。调整摄像机位置进行测试即可。只有在摄像机距离这些物体小于10M的时候，地面上的这些物体才能显示出来。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SeperateControl</span> : <span class="title">MonoBehaviour</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">float</span>[] distance = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">32</span>];</span><br><span class="line">        distances[<span class="number">8</span>] = <span class="number">10</span>;</span><br><span class="line">        Camera.main.layerCullDistances = distances; <span class="comment">// 如果main == null,则设置camera的tag为mainCamera</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="三-层级细节LOD"><a href="#三-层级细节LOD" class="headerlink" title="三 层级细节LOD"></a>三 层级细节LOD</h1><p>层级细节LOD全称为LevelOfDetail,它是根据物体在游戏画面中锁占据的百分比来调用不同复杂度的模型的。简单理解就是当一个物体距离摄像机比较远的时候，使用复杂度低的模型，比较近的时候，使用复杂度高的模型。</p>
+<p>在建模软件中，制作好各个层级的模型，并且根据复杂程度自高向低命名为：模型名称_LOD0,模型名称_LOD1,模型名称_LOD2，数字越低，复杂程度越高。</p>
+<p>我们新建一个场景，构造最简单的LOD模型示例。</p>
+<ol>
+<li>准备3个Unity基本游戏对象，添加必要的材质。</li>
+<li>定义一个空对象，命名为_LOD,添加LODGroup组件</li>
+<li>分别将以上三个基本对象拖拽到LODGroup的各个级别上</li>
+<li>首先添加LOD0的对象，当然中间需要修改父节点，点击确定即可</li>
+<li>在Scene视图中，拖动摄像机分别近距离与远距离观察模型的变化。</li>
+</ol>
+<h1 id="四-DrawCall讲解"><a href="#四-DrawCall讲解" class="headerlink" title="四 DrawCall讲解"></a>四 DrawCall讲解</h1><p>一个DrawCall，表示U3D使用这个材质/纹理，来进行一次渲染，那么这次渲染假设有3个对象，那么当3个对象都使用这一个材质/纹理的时候，就会产生一次DrawCall，可以理解为一次将纹理输送到屏幕上的过程，（实际上引擎大多会使用如双缓冲，缓存这类的手段来优化这个过程，但在这里我们只需要这样认识就可以了），假设3个对象使用不同的材质/纹理，那么无疑会产生3个DrawCall。</p>
+<p>批处理动态物体需要在每个顶点上进行一定的开销，所以动态批处理仅支持小于900顶点的网格物体，如果你的着色器使用顶点位置，法线和UV值三种属性，那么你只能批处理300顶点一下的物体；请注意：属性数量的限制可能会在将来进行改变。</p>
+<ol>
+<li>相同的物体采取相同的材质，修改其缩放比例，观察DrawCall的变化。</li>
+</ol>
+<p>功能描述如下：Static Batching是将标明为Static的静态物件，如果在使用相同材质球的条件下，Unity会自动帮你把这两个物体合并成一个Batch，送往GPU来处理。</p>
+<p>Static Batching可以让引擎降低任何尺寸网格的Draw Call，如下图所示：</p>
+<h1 id="Profile-工具使用"><a href="#Profile-工具使用" class="headerlink" title="Profile 工具使用"></a>Profile 工具使用</h1><p>性能分析工具可以给我们提供游戏性能表现的详细信息。如果我们的游戏存在性能问题，如低帧率或者高内存占用，性能分析工具可以帮助我们法线问题的起因，并协助我们解决问题。</p>
+<p>Profiler布局</p>
+<p>在我们使用Profiler收集游戏数据之前，先打开它熟悉下界面布局。从菜单Window-&gt;Profiler打开。</p>
+<p>在窗口左侧，可以看到一列profilers，每个profiler显示我们游戏的一个方面的信息，分别为cpu使用情况，gpu使用情况，渲染，内存使用情况，声音，物理和网络。</p>
+<p>当开始录制时，窗口上部的每个profiler会随着时间显示数据。性能是随着时间变化的，所以随着时间变化的信息是比仅仅一帧的信息有用的多的。有些性能问题是持续性的，有些问题是仅仅在一帧中出现的，还有一些性能问题是随着时间逐渐显现的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/06/09/BRDF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -938,241 +1200,10 @@ float4(a,b,c,d).xxy 等价于 float4(a,a,b)
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/26/Unity-Stencil-Buffer-Stencil-Test/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/26/Unity-Stencil-Buffer-Stencil-Test/" class="post-title-link" itemprop="url">Shader模板缓冲和模板测试</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-26 17:33:58" itemprop="dateCreated datePublished" datetime="2018-04-26T17:33:58+08:00">2018-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在图形学种一个像素会有如下缓存：</p>
-<ul>
-<li>颜色缓存color buffer/pixel buffer : 存储该点即将显示地颜色，RGBA值</li>
-<li>深度缓存depth buffer/z buffer:存储该点地深度，z</li>
-<li>模板缓存stencil buffer： 通常用作限制渲染区域。更高级用法需结合深度缓冲，例如某像素地模板缓冲值会随着其是否通过深度缓冲测试而改变。</li>
-<li>累计缓存Accumulation Buffer:与颜色缓存类似，同样储存一个RGBA值。累计缓存是为合成多幅图像而设计地，累计缓存提供了一种在保持好地颜色分辨率下实现在场景中”多重曝光(multiple exposures”地方法。使用累计缓存可以产生许多图像效果来提高图像的真实性，其中包括：反走样，运动模糊，软阴影，深度域（景深）和卷积。要产生这些效果，必须将图像渲染多次，对场景位置（或所选的物体）进行微小的、渐增的改变，然后累计结果。</li>
-</ul>
-<p>stencil与颜色缓冲区和深度缓存区类似，模板缓存区可以为屏幕上的每个像素点保存一个无符号整数值（通常是个八位整数）。这个值的具体意义视程序的具体应用而定。在渲染的过程中，可以用这个值与一个预先设定的参考值相比较，根据比较的结果来决定是否更新相应的像素点的颜色值。这个比较的过程成为模板测试Stencil Test。模板测试发生在透明度测试(alpha test)之后。如果模板测试通过，则相应的像素点更新，否则不更新。图形渲染管线中，基于单个像素的测试操作的顺序如下图<br><img src="http://oxcvfpext.bkt.clouddn.com/Unity-Stencil-Buffer-Stencil-Test-1.jpg"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/26/Unity-Lerp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/26/Unity-Lerp/" class="post-title-link" itemprop="url">Unity Lerp</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-26 16:54:28" itemprop="dateCreated datePublished" datetime="2018-04-26T16:54:28+08:00">2018-04-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>有时，我们在做游戏时会发现有些跟随动作不够圆滑或者需要一个缓冲的效果，这时，一般会考虑到插值。（比如摄像机跟随主角）</p>
-<p>插值是数学上的一个概念，公式： from + (to - from) * t;<br>from是起始地位置，to是目标位置，按照数字t在from到to之间插值。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/04/21/CG-Input-Output-And-Semantic-Bind/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/04/21/CG-Input-Output-And-Semantic-Bind/" class="post-title-link" itemprop="url">CG-Input-Output-And-Semantic-Bind</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-04-21 19:26:35" itemprop="dateCreated datePublished" datetime="2018-04-21T19:26:35+08:00">2018-04-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>先复习一下GPU的工作流程，第三章从CPU运行原理和数据流程的角度阐述了顶点着色器程序和片段着色程序的输入输出，即，应用程序(宿主程序)将图元信息(顶点位置、法向量、纹理坐标等)传递给顶点着色程序；顶点着色程序基于图元信息进行坐标空间变换，运算得到的数据传递到片段着色程序中；片段着色程序还可以接受从应用程序中传递的纹理信息，将这些信息综合起来计算每个片段的颜色值，最后将这些颜色值输送到帧缓冲区(或颜色缓冲区)中。<br><img src="http://oxcvfpext.bkt.clouddn.com/CG-Input-Output-And-Semantic-Bind-1.jpg"><br>这一章中，我们将讲解Cg语言通过何种机制确定数据类型和传递形式。<br>三个问题：<br>1、从应用程序传递到GPU的数据，分为图元信息数据(在GPU处理的基本数据如顶点位置信息等)和其他的离散数据(在GPU运行流程中不会发生变化，如材质对光的反射、折射信息)，这两种输入数据如何区分？<br>2、从应用程序传递到GPU中的图元信息如何区分类型，即，顶点程序怎么知道一个数据是位置数据，而不是法线量数据？<br>3、顶点着色程序与片段着色程序之间的数据传递如何进行？<br>cg关键字不但用于指定输入图元的数据含义(是位置信息，还是法向量信息),本质也则对应着这些图元数据存放的硬件资源(寄存器或者纹理)，称之为语义词(Semantics),通常也根据其用法称之为绑定语义词(binging semantics)。</p>
-<p>除语义词外，Cg中还提供了三个关键字，int、out、inout，用于表示函数的输入参数的传递方式，称为输入/输出关键字，这组关键字可以和语义词合用表达硬件上不同的存储位置，即同一个语义词，使用in关键字修饰和out关键词修饰，表示的图形硬件上不同的寄存器。</p>
-<p>Cg语言还提供两个修饰符：uniform,用于指定变量的数据初始化方式；const关键字的含义与C/C++中相同，表示被修饰变量为常量变量。</p>
-<h3 id="uniform"><a href="#uniform" class="headerlink" title="uniform"></a>uniform</h3><p>Cg语言将输入输出数据流分为两类：</p>
-<ol>
-<li>Varying inputs,即数据流输入图元信息的各种组成要素。从应用程序输入到GPU的数据除了顶点位置数据，还有顶点的法向量数据，纹理坐标数据等。</li>
-<li>Uniform inputs,表示一些与三维渲染有关的离散信息数据，这些数据通常由应用程序传入，并通常不会随着图元信息的变化而变化，如材质对光的反射信息、运动矩阵等。Uniform修饰一个参数，表示该参数的值由外部应用程序初始化并传入。<br>使用Uniform修饰的变量，除了数据来源不同外，与其他变量是完全一样的。需要注意的一点是：uniform修辞的变量是从外部传入的，所以在Cg程序(顶点程序和片段程序)中通常所有uniform参数修辞函数形参，不容许声明一个uniform修辞的局部变量！</li>
-</ol>
-<p>Cg语言中参数传递方式同样分为”值传递”和”引用传递”，但指针机制并不被GPU硬件支持，所以Cg语言采用不同的语法修辞符来区别”值传递”和”引用传递”.这些修辞符分别为：</p>
-<ol>
-<li>in   :修辞一个形参只是用于输入，进入函数体时被初始化，且该形参值的改变不会影响实参值，这是典型的值传递方式。</li>
-<li>out  :修辞一个形参只是用于输出的，进入函数体时并没有被初始化，这种类型的形参一般是一个函数的运行结果；</li>
-<li>inout:修辞一个形参即用于输入也用于输出，这是典型的引用传递。<br>例如： void myFunction(float x); //等价于in float x，这种用法和C/C++完全一致<br>语义词(Semantic)与语义绑定(Binding semantics)</li>
-</ol>
-<p>语义词，表示输入图元的数据含义(是位置信息，还是法向量信息)，也表明这些图元数据存放的硬件资源(寄存器或者纹理缓存区)。顶点着色程序和片段着色程序中Varying inputs类型的输入，必须和一个语义词相绑定，这称之为绑定语义(binding semantics)。</p>
-<p>记住这一点：语义，是两个处理阶段(顶点程序、片段程序)之间的输入/输出数据和寄存器之间的桥梁，同时语义通常也表示数据的含义，如POSITION一般表示参数存放的数据是顶点位置。</p>
-<p>语义，只对两个处理阶段的输入/输出数据有意义，也就是说，语义只有在入口函数中才有效，在内部函数(一个阶段的内部处理函数，和下一个阶段没有数据传递关系)无效，被忽略。</p>
-<p>顶点着色程序必须声明一个输出变量，并绑定POSITION语义词，该变量中的数据将被用于且至被用于光栅化！</p>
-<p>为了保持顶点程序输出语义和片段程序输入语义的一致性，通常使用相同的struct类型数据作为两者之间的传递，这是一种非常方便的写法，推荐使用。</p>
-<p>注意：当使用struct结构中成员变量绑定语义时，需要主要到顶点着色程序中使用的POSITION语义词，是不会被片段程序所使用的。</p>
-<p>都要记住vertex program中的绑定语义(POSITION除外)的输出形参中的数据会传递到fragment program中绑定相同语义的输入形参中。</p>
-<p>片段着色器的输出语义词较少，通常是COLOR。这是因为片段着色程序运行完毕后，就基本到了GPU流水线的末端了。片段程序必须声明一个out向量(三元或四元),绑定语义词COLOR，这个值将被用作该片段的最终颜色值。</p>
-<h3 id="语义绑定方法"><a href="#语义绑定方法" class="headerlink" title="语义绑定方法"></a>语义绑定方法</h3><p>绑定语义放在函数的参数列表的参数声明后面中：</p>
-<pre><code>[const][int|out|inout]&lt;type&gt;&lt;identifier&gt;[:&lt;binding-semantic&gt;][=&lt;initializer&gt;]
-</code></pre><p>绑定语义可以放在结构体(struct)的成员变量后面：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">struct &lt;struct-tag&gt;</span><br><span class="line">&#123;</span><br><span class="line">    &lt;type&gt;&lt;identifier&gt; [:&lt;binding-semantic&gt;];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>绑定语义词可以放在函数声明的后面，其形式为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt; &lt;identifier&gt;(&lt;parameter-list&gt;)[:&lt;binding-semantic&gt;]</span><br><span class="line">&#123;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>最后一种语义绑定的方法是，将绑定语义词放在全局非静态变量的声明后面。其形式为：</p>
-<pre><code>&lt;type&gt; &lt;identifer&gt;[:&lt;binding-semantic&gt;][=&lt;initializer&gt;];
-</code></pre>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/21/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/23/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/21/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><span class="page-number current">22</span><a class="page-number" href="/page/23/">23</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/23/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1238,7 +1269,7 @@ float4(a,b,c,d).xxy 等价于 float4(a,a,b)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1249,7 +1280,7 @@ float4(a,b,c,d).xxy 等价于 float4(a,a,b)
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

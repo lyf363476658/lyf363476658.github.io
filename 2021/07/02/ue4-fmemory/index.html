@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.8.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zentia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"W8FJT5MTZU","apiKey":"f4ca7ae2408d2e27ffc8269ad8d34273","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。 FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。UE4的window平台直接用的是GenericPlatformMemory，IOS中间有一层包装，但是最后也是走的是GenericPlatformMemory，Andro">
+<meta name="keywords" content="UE4">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UE4的内存分配">
+<meta property="og:url" content="http://zentia.github.io/2021/07/02/ue4-fmemory/index.html">
+<meta property="og:site_name" content="liyanfeng">
+<meta property="og:description" content="起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。 FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。UE4的window平台直接用的是GenericPlatformMemory，IOS中间有一层包装，但是最后也是走的是GenericPlatformMemory，Andro">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2021-07-02T03:59:27.637Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UE4的内存分配">
+<meta name="twitter:description" content="起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。 FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。UE4的window平台直接用的是GenericPlatformMemory，IOS中间有一层包装，但是最后也是走的是GenericPlatformMemory，Andro">
+
+<link rel="canonical" href="http://zentia.github.io/2021/07/02/ue4-fmemory/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>UE4的内存分配 | liyanfeng</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liyanfeng</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/07/02/ue4-fmemory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          UE4的内存分配
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-07-02 10:00:23 / 修改时间：11:59:27" itemprop="dateCreated datePublished" datetime="2021-07-02T10:00:23+08:00">2021-07-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UE4/" itemprop="url" rel="index"><span itemprop="name">UE4</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。</p>
+<p>FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。<br>UE4的window平台直接用的是<code>GenericPlatformMemory</code>，IOS中间有一层包装，但是最后也是走的是<code>GenericPlatformMemory</code>，Android也是，所以其实也还好？</p>
+<p>好吧，我们还是从头开始看吧。</p>
+<h1 id="FMemory"><a href="#FMemory" class="headerlink" title="FMemory"></a>FMemory</h1><p>这个第一个接口是<code>FMemory::GCreateMalloc</code>这里面主要调的是<code>FMemory_GCreateMalloc_ThreadUnsafe</code>，在这里面我们逐步分析。</p>
+<p>第一步先取统计接口<code>FPlatformMemory::GetStats()</code> ，但是这里有个非MAC的判定，不知道为啥。</p>
+<p>然后就是取<code>GMalloc</code>这里是通过一些模式和命令行在加上架构去分析的，太偏底层的不太熟悉了，有熟悉的大佬可以在下方留言提醒。</p>
+<p>在然后就是拉取Crash助手叫做<code>FPlatformMallocCrash</code>它有以下职责：</p>
+<ul>
+<li>当内存分配低于16字节对齐的时候会触发crash。</li>
+<li>分配器的线程只能是当前线程。</li>
+</ul>
+<p>接着就是判断<code>GMalloc-&gt;IsInternallyThreadSafe()</code>里面针对不同的malloc做一些判定是否是线程安全的，这块不是太懂。</p>
+<p>接着就是跑内存分析器，这里有个奇怪的宏是<code>IS_MONOLIGHTIC</code>是和mono相关的吗？先不管了。</p>
+<p>下一步又判断了以下<code>GMalloc-&gt;IsInternallyThreadSafe()</code>这个感觉是针对profile的，就是说你如果非要非线程安全的，那我就帮你搞一个代理吧，叫<code>FMallocThreadSafeProxy</code>。<br>反正怎么说呢，我认为哈，所以的proxy都是认为，你把握不住的东西，我帮你搞一层代理，容易把你绕晕的地方你就不用管了，也不要瞎搞了。交给我吧。<br>然后在所有的内存操作之前都会做一个同步锁。</p>
+<p>下一步又有一个校验器，里面又加了一把锁，外面通过宏切换开关，以我浅薄的认识，这两个可能是不会同时开启的，不然两把锁没有意义呀。<br>这个的作用注释上面写着是过滤无效的指针，原理就是存储了一下指针，做了校验。这个平时开发最好一直开启着。然后暴露出来。</p>
+<p>下一步是检查内存泄露的，我猜测和上面的使用方式差不多。<br>不过里面逻辑还是挺多了，首先分配完内存之后，要先判断当前线程是否开启检查，是否开启捕获alloc，是否申请内存高于阈值，小内存你就不考虑了吗？<br>然后又是一把锁，果然很多线程呀。然后里面纪录了一件事情，就是记录内存申请的堆栈，这里感觉和AssetService很相似呀。</p>
+<p>下一步就是叫啥有害内存分配代理<code>FMallocPosionProxy</code>又是代理，看到没，人与人之前的就这么不信任的吗？<br>这个主要职责就很简单了，因为我们内存基本都是从池子里面取出来的，可能还会残留一些之前的数据，如果你不清理的话又不赋值直接使用的话，可能会引用到一些奇奇怪怪的东西，<br>我们调试的时候看到空，就知道，哦，他们的忘记赋值了，一看到奇怪的内容，我擦，这是什么意思，怎么会这样呢，害人又害己。</p>
+<p>下一步是打印了程序能用到多少内存。</p>
+<p>下一步是搞一个看起来像是为了dump搞得，有点没看明白，直接贴代码<code>GMalloc = FMallocDoubleFreeFinder::OverrideIfEnabled(GMalloc)</code></p>
+<p>下一个就是分析统计的<code>GMalloc = FMallocFrameProfiler::OverrideIfEnabled(GMalloc)</code></p>
+<h2 id="分配器"><a href="#分配器" class="headerlink" title="分配器"></a>分配器</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FMemory::Malloc(SIZE_T Count, uint32 Alignment)</span><br></pre></td></tr></table></figure>
+<p>使用其实比较简单的，就是根据不同的分配器去分配内存，<a href="https://zhuanlan.zhihu.com/p/81481072" target="_blank" rel="noopener">知乎的大佬</a> 举了一个<code>MallocTBB</code>的例子。</p>
+<p>他大概是说分配超出了就回调<code>GetOutOfMemoryDelegate</code>，然后这里字节对齐是8字节的。超过就16字节，这里小伙伴可能会疑惑，你有个<code>FPlatformMallocCrash</code>上面不是说16字节的吗？是的，<br>但是其实这些是针对平台的，我看的那个实例其实是<code>FGenericPlatformMallocCrash</code>，聪明的小伙伴一看这个字面量就知道什么意思了，我这个是针对通用平台的逻辑，而他这个分配器应该是特殊平台的，<br>所以并不冲突。</p>
+<p>好了，现在我们回到我们的问题，两个有什么区分，GameCore由于时间问题和一些其它原因，我就不便介绍了，基本可以按照自研项目那一套方式，底层采用操作系统接口，加一下统计分析逻辑，代码的兼容性和健全性肯定是没法和UE4的比了。</p>
+<p>好吧，就这样了。时间原因我没法做太多的分析。</p>
+<p>水一篇文章吧。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/UE4/" rel="tag"># UE4</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/07/02/spine-ue4/" rel="prev" title="Spine UE4">
+      <i class="fa fa-chevron-left"></i> Spine UE4
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FMemory"><span class="nav-number">1.</span> <span class="nav-text">FMemory</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分配器"><span class="nav-number">1.1.</span> <span class="nav-text">分配器</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liyanfeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liyanfeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+</body>
+</html>

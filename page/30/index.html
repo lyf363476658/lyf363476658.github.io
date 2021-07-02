@@ -145,6 +145,237 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/23/uwa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/23/uwa/" class="post-title-link" itemprop="url">uwa</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-23 12:07:11" itemprop="dateCreated datePublished" datetime="2017-10-23T12:07:11+08:00">2017-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="AssetBundle-lockpersistentmanager开销"><a href="#AssetBundle-lockpersistentmanager开销" class="headerlink" title="AssetBundle lockpersistentmanager开销"></a>AssetBundle lockpersistentmanager开销</h1><p>观察性能曲线，发现某一帧AssetBundle加载中，lockpersistentmanager耗时比较大。请问这块是否能够优化？<br>这说明当前帧或前几帧中存在较大量的资源在通过LoadAsync来进行加载，其本质是所加载的资源过大所致，对自身资源进行合理优化可降低Loading.LockPersistentManager的开销。另外，将异步加载换成同步加载，LockPersistentManager就不会出现了，但其总加载耗时是没有变化的，因为总加载量没变。<br>关于主要资源的加载优化，可参考如下链接：<br><a href="https://blog.uwa4d.com/archives/LoadingPerformance_Texture.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/LoadingPerformance_Texture.html</a><br><a href="https://blog.uwa4d.com/archives/LoadingPerformance_Mesh.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/LoadingPerformance_Mesh.html</a><br><a href="https://blog.uwa4d.com/archives/LoadingPerformance_Shader.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/LoadingPerformance_Shader.html</a><br><a href="https://blog.uwa4d.com/archives/Loading_AnimationClip.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/Loading_AnimationClip.html</a><br><a href="https://blog.uwa4d.com/archives/livebroadcast6-8.html" target="_blank" rel="noopener">https://blog.uwa4d.com/archives/livebroadcast6-8.html</a></p>
+<pre><code>** IN DIR:3rd, make dep with Makefile_debug.mk dep **
+   make[1]: 进入目录“/root/work_code/3rd”
+   ** IN DIR:cryptlib, make dep with Makefile_debug.mk dep **
+   make[2]: 进入目录“/root/work_code/3rd/cryptlib”
+g++ -DLINUX -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOURCE -D_LARGEFILE_SOURCE -march=core2 -m32 -MM -MT &quot;../temp/debug/cryptlib/cpu.o_d&quot; -MF ../temp/debug/cryptlib/cpu.d_d cpu.cpp -I/usr/include/mysql  -I/root/work_code/3rd -I/root/work_code/3rd/freetype221 -I/root/work_code/src/engine -I/root/work_code/src/svr -I/root/work_code/src/xxsy -I/root/work_code/src/svr/glogger/tlog/linux
+   &lt;built-in&gt;:0:0: 致命错误：打开依赖文件 ../temp/debug/cryptlib/cpu.d_d：没有那个文件或目录
+
+-DLINUX                 #define LINUX
+-D_FILE_OFFSET_BITS     #define _FILE_OFFSET_BITS
+</code></pre><p>-D_LARGFEFILE64_SOURCE<br>march指定的是当前cpu的架构，而mtune是真正作用于某一型号cpu的选项。<br>    -M 生成文件关联的信息。<br>    -MM 忽略由#include造成的依赖关系<br>    -MF 指一个文件用于存放生成文件的关联信息，这些信息与-M或-MM是一样的，<br>    -MT 指定目标文件名</p>
+<h1 id="Camera-Render里面Animation-RebuildInternalState耗时较多"><a href="#Camera-Render里面Animation-RebuildInternalState耗时较多" class="headerlink" title="Camera.Render里面Animation.RebuildInternalState耗时较多"></a>Camera.Render里面Animation.RebuildInternalState耗时较多</h1><p>之所以出现这一项，主要可以说以下两点：<br>（1）项目用的是Animation老版动画系统；<br>（2）对含有Animation组件的GameObject进行了大量频繁的Active或者Instantiate操作，一般这种情况比较常见于特效、UI HUD、角色/怪物等。</p>
+<h1 id="是否可以针对特定GameObject提升它的物理模拟次数"><a href="#是否可以针对特定GameObject提升它的物理模拟次数" class="headerlink" title="是否可以针对特定GameObject提升它的物理模拟次数"></a>是否可以针对特定GameObject提升它的物理模拟次数</h1><p>我们在做一个尽速项目，发现有时候物理的计算并不是非常准确，在运动速度较快时，依然会和墙体造成部分穿插，这给我们的游戏带来了很不好的体验，我知道可以通过Fixed TimeStep来提升物理系统的每帧的计算速度，目前该值为0.02，也就是1秒计算50次，Edit&gt;Project Settings&gt;Time&gt;Fixed TimeStep=0.02。我们曾将其设置为0.005，穿插问题明显好转，但是看上去该值是对所有GameObject均使用的，所以我想问问能否仅针对某一个GameObject来进行提升它的物理计算频率？<br>这是不行的，因为Fixed TimeStep是Unity引擎物理模块的全局参数。建议题主可以考虑将碰撞检测的模式改为”Continuous Dynamic”，看看是否满足需求。但是，需要说明的是，如果物体的速度确实非常快，那么任何一种碰撞模式都不能100%达到不穿插的效果。建议题主可以考虑增大碰撞体的Size或者通过射线求交的方式来将出现穿插问题的概率降到最低。</p>
+<h1 id="请教AssetBundle-Diff-Patch-方案是否可行"><a href="#请教AssetBundle-Diff-Patch-方案是否可行" class="headerlink" title="请教AssetBundle Diff Patch 方案是否可行"></a>请教AssetBundle Diff Patch 方案是否可行</h1><h2 id="我原先的更新方案是比对AssetBundle文件的hash值直接替换整个AssetBundle和manifest来达到更新效果的，有没有其它方案类似diff-patch-可以减少更新包体，如果可以做diff-patch，资源颗粒度是不是九可以忽略了"><a href="#我原先的更新方案是比对AssetBundle文件的hash值直接替换整个AssetBundle和manifest来达到更新效果的，有没有其它方案类似diff-patch-可以减少更新包体，如果可以做diff-patch，资源颗粒度是不是九可以忽略了" class="headerlink" title="我原先的更新方案是比对AssetBundle文件的hash值直接替换整个AssetBundle和manifest来达到更新效果的，有没有其它方案类似diff patch,可以减少更新包体，如果可以做diff patch，资源颗粒度是不是九可以忽略了"></a>我原先的更新方案是比对AssetBundle文件的hash值直接替换整个AssetBundle和manifest来达到更新效果的，有没有其它方案类似diff patch,可以减少更新包体，如果可以做diff patch，资源颗粒度是不是九可以忽略了</h2><p>基于AB的直接Diff更新目前没有成熟的方案，不过只把完整的Resources库中的部分资源更新的项目，已经做了2个了。<br>思路其实很简单：<br>1、出整包的时候，用ScriptableObject记录下AssetsDataBase中所有被发布资源的MD5码（不能用Unity自己的hash码）。<br>2、用工具调出哪些assets是代码动态Load的，分一个Res包中；找出这些资源的依赖资源，分入一个Share包中，并记录每个Asset所属的AB包。<br>3、出补丁时，对比当前AssetsDataBase中哪些代码中动态Load的资源出现了增加和改动（删除可以无视），包括他们依赖的资源。仍然把代码中动态Load的资源ResPatch中，依赖放入SharePatch中。对于没有变化的资源，仍然维持原来AB名字。<br>4、记录下次补丁之后，更新每个Asset所属的AB包。<br>5、下一次补丁时的Res和Share可能会依赖上一次的补丁的Share。<br>6、运行时，对所有补丁入的Res建立一个字典索引。Load的时候，有限判断这个Asset是否在补丁的Res包中，如果是则读补丁的AB包，并按套路处理依赖包。否则就用二进制版本内建的包</p>
+<p>这种做法的好处是：<br>1、充分利用版本中的已经发布的资源，以减小补丁包的体积<br>2、补丁包的打包规则可以几乎无视完整包的分包规则，方便后续折腾</p>
+<p>当然缺点也是很严重的：</p>
+<ul>
+<li>Reserved Total                 - Unity引擎在内存方面的总体分配量。Unity引擎的内存并不是随用随取，而是预先从操作系统中申请一块，然后再进行使用。</li>
+<li>Uesd Total                     - Unity引擎再内存方面的总体使用量。</li>
+<li>Reserved Unity &amp; Used Unity     - Unity引擎自身各个模块内部的内存分配，宝库偶各个Manager的内存占用、序列化信息的内存站哟个，WebStream/SerializedFile内存占用和部分资源的内存暂用等等。 </li>
+</ul>
+<p>看知乎的时候发现一个好玩的东西，<a href="https://lab.uwa4d.com/lab/5bc42d5404617c5805d4d685" target="_blank" rel="noopener">https://lab.uwa4d.com/lab/5bc42d5404617c5805d4d685</a> UGUI绘制图表工具，一直想做一个性能分析工具。<br>GDC2018中描述了Northlight引擎的内部实现和渲染相关的一些最新进展。<br>前育碧的两位资深老员工成立Second Order公司后，开发了第一款游戏《Claybook》，其中包括了许多创新技术，比如基于GPU渲染的粘土与流体模拟、完全可变性的世界与角色、光线追踪的视觉效果。</p>
+<ul>
+<li>请问Unity的stats窗口上显示的Batches和SnapdragonProfiler转出来的DC差距比较大可能是因为什么？<img src="/2017/10/23/uwa/1.jpg">
+这个Batches的数量其实并不代表DrawCall的数量，他其实和Render面板Total Batches的数量匹配，你如果要看DrawCall的数量，那么可以查看Render面板上面的DrawCall统计，这个统计应该和你SnapdragonProfiler抓出来的差不多。然后再贴一下Rendering面板上几个参数代表啥意思，仅供参考。这是我本机的截图
+Render界面各个参数说明<br>SetPass Calls:shader状态切换次数<br>Draw Calls:绘制调用次数<br>Total Batches:总合批的数量=静态合批+动态合批+实例合批；这个数一定是比Draw Calls的数量小，小的越多说明合并的物体越多。<br>动态合批：Batched Draw calls:表示合批过的mesh数，比如上面显示的60个mesh合批。<br>动态合批：Batched：表示合批的次数，上面截图数据说明60个mesh通过47次合批才完成。其实如果情况好的时候可能几次合批就能够合并掉60个mesh，可惜可能是很多属性不符合动态合并要求。<br>静态合批与实例化与上面动态合批的解释相同。</li>
+<li>so热更新除了只更新il2cpp.so还是修改global-metadata.data，其他的so不需要更新。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/23/gcc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/23/gcc/" class="post-title-link" itemprop="url">gcc</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-23 10:39:28" itemprop="dateCreated datePublished" datetime="2017-10-23T10:39:28+08:00">2017-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="extern-static"><a href="#extern-static" class="headerlink" title="extern static"></a>extern static</h1><p>extern 指为导出到其它文件所使用的非statice变量<br>static是当前文件的静态变量<br>二者不能同时定义<br>setarch i386 ./config -m32<br>编译32位的openssh<br>缺少 gnu/stubs-32.h</p>
+<pre><code>yum install glibc-devel.i686
+</code></pre><p>gcc没有找到</p>
+<pre><code>yum install libstdc++-devel.i686
+yum install -y gcc gcc+ gcc-c++
+</code></pre>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/23/ShaderLab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/23/ShaderLab/" class="post-title-link" itemprop="url">Unity Shader PBR</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-23 09:50:50" itemprop="dateCreated datePublished" datetime="2017-10-23T09:50:50+08:00">2017-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="观察两个空间"><a href="#观察两个空间" class="headerlink" title="观察两个空间"></a>观察两个空间</h1><p>阴影映射(Shadow Mapping)牵涉到两个空间的Z深度比较,一个是灯光空间,一个是相机空间,首先打开ShadowMapping_2下的场景,场景是默认的相机视角,单击下面的Light View按钮,可以切换到灯光视角,<br>13.1.2 两个视角的Z深度<br>分别单机LightView Depth和CamView Depth,然后到Shadow/ShadowMapping工程文件夹下面找到_CamViewZDepth和_LightViewZDepth两张Render Texture,查看一下渲染输出的ZDepth<br>13.1.3 渲染Z深度的材质<br>这两张ZDepth是分别在灯光视角和相机使用Replacement Shader 渲染出来的<br>在vertex函数vert中,主要操作除了对物体形体的必要输出外,就是UNITY_TRANSFERDEPTH(o.depth),打开UnityCG.cginc文件,会发现它一般情况下的操作就是o.depth = o.pos.zw,把物体在投影空间做的zw值赋给o.depth,再将它的值输出到一张Render Texture 之前,通过Linear01Depth(d)函数把Z的值变换到01空间,这样我们可以看到一张对比度更强的Z深度图,就像在上面所看到的那样,而不是一张大多数情况下都朦朦胧胧的Z深度图<br>13.2 投射Z深度<br>13.2.1 准备灯光视角的投影矩阵<br> 在进行映射阴影经典的Z深度比较之前,我们需要把灯光视角ZDepth深度图投射到相机视角.打开ShadowMapping_3下的场景.和上一个场景系相比,附加在Main Camera物体上的ShadowMapping_3.cs<br>13.3.4 对Z值进行偏移<br>显然,Z的精度是个问题,而且通过上述编码操作我们已经解决了Shadow ance的问题,但是主要问题依然,这个现象叫Peter Panning,源自迪尼斯的一部动画主角Peter Pan,他的影子可以脱离自身活动起来,打开</p>
+<ol>
+<li>分开处理反射面的绝缘体特性和金属属性，最后光照应该是Diffuse+Specular</li>
+<li>纯金属没有Diffuse，非金属主要是Diffuse，有一点反射</li>
+<li>光部分主要有3个东西影响：微表面的法线分布（NDF），微表面的入射和反射遮挡（Geometry Function），反射率和入射角的关系（Fresnel反射）。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/23/newindex/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -719,237 +950,10 @@ Lua设计的初衷之一就为了最好的和宿主系统相结合。它是一�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/16/www/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/16/www/" class="post-title-link" itemprop="url">www</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-16 10:27:44" itemprop="dateCreated datePublished" datetime="2017-10-16T10:27:44+08:00">2017-10-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>StartCoroutine开启一个协程，yield return是迭代器返回调用迭代的地方。<br>协程至少产生十几还是多少B的GC具体是多少我忘记了，至少在5.3.8f2之前的版本是，未来如果有时间和有机会我会讲解一个可以避免掉GC的办法。CoroutineTool，本篇不再介绍范围内。<br>一个协程的执行可以在任何地方用yield语句来暂停，yield return的值决定了什么时候协程恢复执行。<br>WWW的加载方式，本身会增加FileSystem的崩溃率，然后还增加显存占用提高了Present的崩溃率。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/16/Jenkins/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/16/Jenkins/" class="post-title-link" itemprop="url">Jenkins</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-16 00:39:14" itemprop="dateCreated datePublished" datetime="2017-10-16T00:39:14+08:00">2017-10-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>添加Jenkins的源（repository）<br> sudo wget -O /etc/yum.repos.d/jenkins.repo <a href="http://jenkins-ci.org/redhat/jenkins.repo" target="_blank" rel="noopener">http://jenkins-ci.org/redhat/jenkins.repo</a><br> sudo rpm —import <a href="http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key" target="_blank" rel="noopener">http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key</a></li>
-<li>安装/检查JDK<br> java —version # 这个必须安装成功<br> sudo yum install java-1.6.0-openjdk # 我用的1.8</li>
-<li>安装Jenkins:<br> sudo yum install jenkins</li>
-</ol>
-<p>安装完成后，有如下相关目录：<br>/usr/lib/jenkins/ :jenkins安装目录，WAR包会放在这里。<br>    cd /usr/lib/jenkins<br>    ll</p>
-<ol>
-<li>启动Jenkins<br> echo &amp;JAVA_HOME<br> /usr/java/…(懒的复制了)<br>昨天还好好的，今天不知道为什么访问不了，各种查最后通过<br> service jenkins start<br>搞定了，但是昨天一直没关，ps -aux | grep “jenkins” 也能找到。奇怪。<br>不过使用service jenkins start之后多了一个。</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/15/makefile/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/15/makefile/" class="post-title-link" itemprop="url">makefile</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-15 15:35:44" itemprop="dateCreated datePublished" datetime="2017-10-15T15:35:44+08:00">2017-10-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="make-Nothing-to-be-done-for-xxxx"><a href="#make-Nothing-to-be-done-for-xxxx" class="headerlink" title="make: Nothing to be done for xxxx"></a>make: Nothing to be done for xxxx</h1><h1 id="中间文件、链接文件"><a href="#中间文件、链接文件" class="headerlink" title="中间文件、链接文件"></a>中间文件、链接文件</h1><p>C、C++要把源文件编译成中间代码文件，在Windows是.obj文件，在Linux是.o文件，即Object File，这一步叫做编译。然后把这些Object File合成可执行文件，这一步叫做链接(link)。<br>编译时，编译器需要的是语法正确，函数和变量声明正确，然后编译中中间目标文件。一般来说每个源文件都对应一个中间目标文件（O文件或者OBJ文件）。链接主要是链接函数和全局变量，所以我们可以使用这些中间目标文件来链接我们的可执行文件。链接器并不考虑源文件，只考虑中间目标文件（OBJ文件），大点的项目文件成千上百，导致会变成生成太多的中间文件，而链接时需要明确指出中间目标文件名，这对于编译很不方便，所以出现了库文件来合并这些目标文件windows下“库文件”（Library File）.lib文件，在Liunx下叫Archive File（.a）文件，所以一般包Link 错误就是指没有找到这个中间文件，即没有找到该声明的实现（一般情况下）。</p>
-<h1 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h1><p>make命令执行时，需要一个Makefile（一般是.mk 缺省Makefile或者makefile，作者习惯Makefile.mk）文件，告诉make命令如何编译和链接程序。<br>规则：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target ... : prerequisites ...</span><br><span class="line">    command</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure></p>
-<p>target也就是一个目标文件，可是是Object File，也可以是执行文件。还可以是一个标签（Label）。<br>prerequisites就是，要生成那个target所需要的文件或目标。<br>command是make需要执行的命令。（Shell命令）<br>这是一个依赖关系，就是说，target这一个或多个目标文件依赖于prerequisties中的文件，而规则是由command决定的。也就是说，prerequisites中如果有一个以上的文件比target文件要新的话，command所定义的命令就会被执行。这就是Makefile的规则。</p>
-<ol>
-<li>ifeq的用法<br> ifeq($(SRCFILE),)<br> else ifeq()<br> endif<br>如果没有变量值，则判断是否定义，有则判断是否相等<br>./test.sh -f config.conf -v —prefix=/home<br>我们称-f为选项，它需要一个参数，即config.conf，-v也是一个选项，但它不需要参数。<br>—prefix我们称之为长选项，即选项本身多余一个字符，它也需要一个参数，用等号连接，当然等号不是必须的，/home可以直接卸载—prefix后面，即—prefix/home。<h1 id="伪目标、虚目标"><a href="#伪目标、虚目标" class="headerlink" title="伪目标、虚目标"></a>伪目标、虚目标</h1>伪目标不是一个真正的文件名，在执行make时可以指定这个目标执行</li>
-<li><p>如果我们需要书写这样一个规则：规则所定义的命令不是去创建目标文件，而是使用make指定具体的目标来执行一些特定的命令。像下边那样：<br> clean:<br> rm <em>.o temp<br>规则中”rm”不是创建文件”clean”的命令，只是删除当前目录下的所有.O文件和temp文件。在工作目录下不存在”clean”这个文件时，我们输入”make clean”后，”rm </em>.o temp”总会被执行。这是我们的初衷。<br>但当前工作目录下存在”clean”时情况就不一样了，在我们输入”make clean”时。规则没有依赖文件，所以目标被认为是最新的而不去执行规则所定义的命令，命令”rm”将不会被执行。这并不是我们的初衷。为了避免这个问题，我们可以将目标”clean”明确声明为伪目标。讲一个目标声明为伪目标需要将它作为特殊目标.PHONY的依赖。如下：<br> .PHONY: dummy_help all dep obj cleanobj cleanint cleanout clean veryclean verycleanint install dirint dirout dirs pch cleanpch<br>这样dummy_help等就是一些伪目标或者说是虚目标，无论当前目录下是否存在”clean”这个文件。我们输入”make clean”之后，”rm”命令都会被执行。而且当一个目标被声明为伪目标后，make在执行规则时不会试图去查找隐含规则来创建这个目标。这样也提高了make的执行效率，同时我们也不用担心由于目标和文件名重名而使我们的期望失败。在书写伪目标规则时，首先需要声明目标是一个伪目标，之后才是伪目标的规则定义。目标”clean”书写格式应该如下：<br> .PHONY: clean<br> cleanint: cleanobj</p>
-<h1 id="移除所有临时文件-目标文件、依赖文件"><a href="#移除所有临时文件-目标文件、依赖文件" class="headerlink" title="移除所有临时文件(目标文件、依赖文件)"></a>移除所有临时文件(目标文件、依赖文件)</h1><pre><code> $(RM) -f $(DEPFILE_TO_DEL)
-</code></pre><p> cleanout:<br> ifeq ($(ISWHAT),LIB)</p>
-<h1 id="库"><a href="#库" class="headerlink" title="库"></a>库</h1><pre><code>     $(RM) -f $(TargetOutFile).*
-</code></pre><p> else<br> ifeq ($(ISWHAT),EXE)</p>
-<h1 id="EXE文件"><a href="#EXE文件" class="headerlink" title="EXE文件"></a>EXE文件</h1><pre><code>     $(RM) -f $(TargetOutFile)
-</code></pre><p> else</p>
-<h1 id="DLL或其他"><a href="#DLL或其他" class="headerlink" title="DLL或其他"></a>DLL或其他</h1><pre><code>     $(RM) -f $(TargetOutFile).*
-</code></pre><p> ifneq ($(OutDirLib),)</p>
-<pre><code>     $(RM) -f $(TargetOutFileLib).*
-</code></pre><p> endif<br> endif<br> endif</p>
-<p> cleanpch:</p>
-<pre><code>     $(RM) -f $(PchFile)
-</code></pre><p> clean: cleanint cleanout cleanpch</p>
-<pre><code>     @echo ==== clean now ====
-</code></pre></li>
-</ol>
-<h1 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h1><p>通配符是一种特殊语句，主要有星号(*)和问号(?)，用来模糊搜索文件</p>
-<h1 id="Makefile中的wildcard用法"><a href="#Makefile中的wildcard用法" class="headerlink" title="Makefile中的wildcard用法"></a>Makefile中的wildcard用法</h1><p>在Makefile规则中，通配符会被自动展开。但在变量的定义和函数引用时，通配符将失效。这种情况下如果需要通配符有效，就需要使用函数”wildcard”，它的用法是：$(wildcard PATTERN…)。在Makefile中，它被展开为已经存在的、使用空格分开的、匹配此模式的所有文件列表。如果不存在任何符合此模式的文件，函数会忽略模式字符并返回空。需要</p>
-<h1 id="Linux-make-保存错误日志"><a href="#Linux-make-保存错误日志" class="headerlink" title="Linux make 保存错误日志"></a>Linux make 保存错误日志</h1><p>$mkdbg all 2&gt;&amp;1|tee xxx.log<br>这条命令是编译并保存打印信息。在Linux Shell的设备定义中，“0”表示标准输入，“1”表示标准输出，“2”表示标准出错信息输出。2&gt;&amp;1表示把2设备的信息重定向到1设 备；“|”是管道符号，把标准输出的信息直接传递给后面的命令；tee是创建文件并保存信息的工具；xxx.log是文件名。<br>这种管道的用法在Linux Shell命令中使用非常普遍。编译过程中都可以使用这个方法，生成日志文件，保存到buildlogs目录下。<br>  1 # 编译模式名<br>  2 ConfigurationName               := debug<br>  3 # 用于体现该编译模式的文件标记<br>  4 # (对于debug版来说，比如目标文件后缀就会变成._do)<br>  5 CfgFileTag                              := _d<br>  6 # 编译选项<br>  7 #CCFlag                                 := -Wall -g -D_DEBUG -march=native<br>  8 CFlag                                   := -Wall -Wno-multichar -g -D_DEBUG -DPG_MEMORY_DISABLE_POOL -march=core2 -m32 -rdynamic<br>  9 CCFlag                                  := $(CFlag) -std=c++0x<br> 10<br> 11 #CCFlag                                 := -finput-charset=gb2312 -Wall -g -D_DEBUG<br> 12 # 连接选项<br> 13 #LNFlag                                 := -lpthread -march=native<br> 14 LNFlag                                  := -lpthread -ldl -lrt -march=prescott</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/29/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/31/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/29/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/page/31/">31</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/31/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1015,7 +1019,7 @@ Lua设计的初衷之一就为了最好的和宿主系统相结合。它是一�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1026,7 +1030,7 @@ Lua设计的初衷之一就为了最好的和宿主系统相结合。它是一�
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

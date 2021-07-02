@@ -145,6 +145,248 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/06/StandardShaderMaterialParamterOcclusionMap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/" class="post-title-link" itemprop="url">Occlusion Map（环境光散射贴图）</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-06 10:12:53" itemprop="dateCreated datePublished" datetime="2019-09-06T10:12:53+08:00">2019-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderParameterOcclusion.png">
+<p>The occlusion map is used to provide information about which areas of the model should receive high or low indirect lighting.Indirect lighting comes from ambient lighting and reflections,and so steep concave parts of your model such as a crack or fold would not realistically receive much indirect light.</p>
+<p>Occlusion texture maps are normally calculated by 3D applications directly from the 3D model using the modeller or third party software.</p>
+<p>An occlusion map is a greyscale image（灰度图像）,with white indicating areas（白色显示区域） that should receive full indirect lighting（间接光照）,and black indicating（指示） no indirect lighting.Sometimes this is as simple as a greyscale hightmap,for simple surface(such as the knobbly stone wall（有节的石墙）texture shown in the heightmap example above).</p>
+<p>At other times,generating the correct occlusion texture is slightly more complex（稍微复杂的）.For example,if a character in you scene is wearing a hood（戴着头巾）,the inside edegs of the hood should be set to very low indirect lighting（头巾外围应该设置很低的间接光）,or none at all（或者一点也没有）.In these situations（状况）,occlusion maps will be often be produced by artists,using 3D applications to automaticalyy generate an occlusion map based on the model.</p>
+<img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderOcclusionMapTexture.jpg">
+<p>This occlusion map identifies ares on a character’s sleeve（头套）that are exposed（暴露）or hidden from ambient lighting.It is used on the model pictured below.（它用在下面的模型）</p>
+<img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderOcclusionMap.jpg">
+<p>Before and after applying an occlusion map.The areas that partially obscured,（部分模糊的区域）particularly in the folds of fabric around the neck.（特别是在脖子周围的织物褶皱上）are lit too brightly on the left.After the ambient occlusion map is assigned,these ares are no longer lit by the green ambient light from the surrounding wooded envirnoment.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/" class="post-title-link" itemprop="url">纹理过滤模式中的Bilinear、Trilinear以及Anistropic Filtering</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-05 21:02:39" itemprop="dateCreated datePublished" datetime="2019-09-05T21:02:39+08:00">2019-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="为什么在纹理采样时需要texture-filter（纹理过滤）"><a href="#为什么在纹理采样时需要texture-filter（纹理过滤）" class="headerlink" title="为什么在纹理采样时需要texture filter（纹理过滤）"></a>为什么在纹理采样时需要texture filter（纹理过滤）</h1><p>我们的纹理是要贴到三维图形表面的，而三维图形上的pixel中心和纹理上的texel中心点并不一致（pixel不一定对应texture的采样中心texel），大小也不一定一致。当纹理大于三维图形表面时，导致一个像素被映射到许多纹理像素上；当纹理小于三维图形表面时，许多个像素都映射到同一个纹理。<br>当这些情况发生时，贴图就会变得模糊或发生错位，马赛克。要解决此类问题，必须通过技术平滑texel和pixel之间的对应。这种技术就叫纹理滤波。<br>不同的过滤模式，计算复杂度不一样，会得到不同的效果。过滤模式由简单到复杂包括：Nearest Point Sampling（最近采样点），Bilinear（双线性过滤），Trilinear（三线性过滤）、Anisotropic Filtering（各项异性过滤）。</p>
+<h1 id="什么是各向同性和各向异性？"><a href="#什么是各向同性和各向异性？" class="headerlink" title="什么是各向同性和各向异性？"></a>什么是各向同性和各向异性？</h1><p>当需要贴图的三维表面平行于屏幕（viewport），则是各向同性的。当要贴图的三维表面与屏幕有一定角度的倾斜，则是各向异性的。</p>
+<h1 id="Nearest-Point-Sampling（最近点采样）"><a href="#Nearest-Point-Sampling（最近点采样）" class="headerlink" title="Nearest Point Sampling（最近点采样）"></a>Nearest Point Sampling（最近点采样）</h1><p>这个最简单，每个像素的纹理坐标，并不是刚好对应Texture上的一个采样点texel，怎么办呢？最近点采样取最接近的texel进行采样。<br>当纹理的大小与贴图的三维图形的大小差不多时，这种方法非常有效和快捷。如果大小不同，纹理就需要进行放大或缩小，这样，结果就会变得矮胖、变形或模糊。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/05/GPU-Gems-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/05/GPU-Gems-2/" class="post-title-link" itemprop="url">GPU Gems 2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-09-05 16:13:08" itemprop="dateCreated datePublished" datetime="2019-09-05T16:13:08+08:00">2019-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GPU-Gems/" itemprop="url" rel="index"><span itemprop="name">GPU Gems</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>《GPU Gems 2》这本书除了丰富的内容之外，还有两个特点。</p>
+<ul>
+<li>虚幻引擎之父Tim Sweeney为《GPU Gems 2》作序。作为Epic Games的创始人，Unreal Engine早期主要开发者，Tim也在序中展示了《GPU Gems 2》出版伊始（2005年3月）时开发完成的Unreal Engine 3。UE3可谓是开创了一个时代。随后包括《新鬼泣》在内的100+款大作（2005年~2015年），都是基于UE3开发。</li>
+<li>《GPU Gems 2》的中文版是龚大2005年，但可以不夸张地说，书中介绍的很多方法技巧trick，哪怕是放到现在，依然非常值得学习和借鉴。</li>
+</ul>
+<p>ok，篇幅原因，开场话就不多说了，放一张本文的核心内容，真是感植物渲染的图，我们就直接开始正题。<br><img src="/2019/09/05/GPU-Gems-2/1.png"></p>
+<h1 id="实现照片级真实感的虚拟植物（Toward-Photorealism-in-Virtual-Botany）"><a href="#实现照片级真实感的虚拟植物（Toward-Photorealism-in-Virtual-Botany）" class="headerlink" title="实现照片级真实感的虚拟植物（Toward Photorealism in Virtual Botany）"></a>实现照片级真实感的虚拟植物（Toward Photorealism in Virtual Botany）</h1><h2 id="内容概览"><a href="#内容概览" class="headerlink" title="内容概览"></a>内容概览</h2><p>众所周知，植物的渲染需要很多的视觉深度和细节才能令人信服。</p>
+<p>本章即关于渲染逼真自然场景的技术，描述了对实时游戏引擎友好的、用于渲染更真实的自然场景的策略。讲述了在不需要大量CPU或GPU占用的前提下渲染出包含大量植物和树组成的绿色植物场景。</p>
+<p>内容安排方面，这章从管理大型户外场景数据这一基础开始描述。然后，提供一些细节，例如关于如何最大化GPU吞吐量，以便可以看到密集的草丛。接下来扩展这些技术，增加地面杂物和大型植物，如树，将阴影和环境影响组合进去。</p>
+<p>一些真实感植物渲染的效果图：</p>
+<img src="/2019/09/05/GPU-Gems-2/2.png">
+<img src="/2019/09/05/GPU-Gems-2/3.png">
+<img src="/2019/09/05/GPU-Gems-2/4.png">
+<h2 id="场景管理（Scene-Management）"><a href="#场景管理（Scene-Management）" class="headerlink" title="场景管理（Scene Management）"></a>场景管理（Scene Management）</h2><p>任何3D游戏引擎都应该有环境相关渲染技术的管理和组织。</p>
+<p>游戏引擎必须管理其渲染技术，以适合于它们希望看到的环境范围。以自然场景为主的游戏由上千棵树，灌木和可能上百万片草叶组成。直接分开渲染会出现数据管理问题，只有解决了这一问题才能以交互的帧率实时渲染。</p>
+<p>我们的目标是在一个逼真的室外场景中大范围地移动游戏相机，而不需要在任务管理上花费过多的存储器资源。</p>
+<h2 id="种植栅格（The-Planting-Grid）"><a href="#种植栅格（The-Planting-Grid）" class="headerlink" title="种植栅格（The Planting Grid）"></a>种植栅格（The Planting Grid）</h2><p>场景管理方面，首先是使用了虚拟栅格的思想。</p>
+<p>我们在相机周围建立一个世界空间固定的栅格，来管理每一层的植物和其他自然物体的种植数据。每个栅格单元包含渲染它所在物理空间层的所有数据。特别是，单元数据结构存储了对应的顶点、索引缓冲区和材质信息来再现需要绘制的内容。</p>
+<p>对植物的每个层，建立相机到层的距离，层需要用它来产生视觉效果，这决定了虚拟栅格的大小。相机移动，虚拟栅格也随之移动。当一个栅格单元不再在虚拟栅格中时，丢弃它，并在需要维护完成栅格结构的地方添加新的单元。在添加每个单元格时，用一种种植算法把渲染所需的数据填充到层。如下图。<br><img src="/2019/09/05/GPU-Gems-2/5.png" title="一个虚拟栅格"><br>图注：内层有一个世界空间对齐的固定大小的栅格。深绿的单元表现为活动单元。当相机向前移动时，丢弃标记为X的单元，添加新的单元（显示为亮绿色）以维持虚拟栅格的大小，实现过程中有用的改进是使用栅格单元池且循环使用，因为当一个旧单元被丢弃时，总会增加一个新单元。</p>
+<h3 id="种植策略（Planting-Strategy）"><a href="#种植策略（Planting-Strategy）" class="headerlink" title="种植策略（Planting Strategy）"></a>种植策略（Planting Strategy）</h3><p>对于充满自然物体的每个单元，需要在地面上选择需要放置物体的适当位置。采用试探的方法根据被防止对象对象类型来选择这些点。通常，需要的密度随机选点，然后看地面上的对应点是否适合要种植的东西。而地面多边形的材质决定了一个层是否适用。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/05/GPU-Architectures/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -746,222 +988,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/03/MatCap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/03/MatCap/" class="post-title-link" itemprop="url">MatCap</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-03 13:03:57" itemprop="dateCreated datePublished" datetime="2019-09-03T13:03:57+08:00">2019-09-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity-Community-Wiki/" itemprop="url" rel="index"><span itemprop="name">Unity Community Wiki</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <img src="/2019/09/03/MatCap/MatCap.png">
-<h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><p>MatCap (Material Capture) shader,for displaying objects with reflective materials with uniform surface coloring,like Zbrush or Mudbox can.It uses an image of a sphere as a view-space environment map.It’s very cheap,and looks great when the camera doesn’t rotate.<br>用于均一表面反射材质的着色器，在Zbrush/Mudbox等软件中被广泛运用。它借助一幅含有球面的图片作为视线空间的环境映射，计算成本非常低廉，当相机不转动时视觉效果极其出色。<br><img src="/2019/09/03/MatCap/2.jpg"></p>
-<h1 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h1><p>Use a regular normal map for your object, and a render or a photo of a sphere for the MatCap.<br>Matcap的原理并不复杂，就是使用一张中间为球面的图片作为不同法线方向的光照颜色，然后将这些颜色根据模型的法线信息渲染到相应的位置。</p>
-<p>例如下图图二（黑白）中，球形就是Matcap贴图，箭头代表了右下朝向的法线，车与人模型发现朝向此相同方向时，就会渲染为球形贴图上相应点的颜色——白色。<br><img src="/2019/09/03/MatCap/3.jpg"></p>
-<h1 id="ShaderLab-MatCap-shader"><a href="#ShaderLab-MatCap-shader" class="headerlink" title="ShaderLab-MatCap.shader"></a>ShaderLab-MatCap.shader</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">"MatCap Bumped"</span>&#123;</span><br><span class="line">    Properties &#123;</span><br><span class="line">        _Color (<span class="string">"Main Color"</span>, Color)=(<span class="number">0.5</span>,<span class="number">0.5</span>,<span class="number">0.5</span>,<span class="number">1</span>)</span><br><span class="line">        _BumpMap(<span class="string">"BumpMap (RGB)"</span>,<span class="number">2</span>D)=<span class="string">"bump"</span>&#123;&#125;</span><br><span class="line">        _MatCap(<span class="string">"MatCap (RGB)"</span>,<span class="number">2</span>D)=<span class="string">"white"</span>&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    SUbShader&#123;</span><br><span class="line">        Tags &#123;<span class="string">"RenderType"</span>=<span class="string">"Queue"</span>&#125;</span><br><span class="line">        Fog &#123;Color [_AddFog]&#125;</span><br><span class="line">        Pass &#123;</span><br><span class="line">            Name <span class="string">"BASE"</span></span><br><span class="line">            Tags &#123;<span class="string">"LightMode"</span>=<span class="string">"Always"</span>&#125;</span><br><span class="line">            </span><br><span class="line">            CGPROGRAM</span><br><span class="line">            #pragma exclude_renderers xbox360</span><br><span class="line">            #pragma vertex vert</span><br><span class="line">            #pragma fragment frag</span><br><span class="line">            #pragma fragmentoption ARB_fog_exp2</span><br><span class="line">            #pragma fragmentoption ARB_precision_hint_fastes</span><br><span class="line">            #include <span class="string">"UnityCG.cginc"</span></span><br><span class="line">            </span><br><span class="line">            struct v2f&#123;</span><br><span class="line">                float4 pos : SV_POSITION;</span><br><span class="line">                float2 vu : TEXCOORD0;</span><br><span class="line">                float3 TtoV0 : TEXCOODR1;</span><br><span class="line">                float3 TtoV1 : TEXCOORD2;</span><br><span class="line">            &#125;;</span><br><span class="line">            </span><br><span class="line">            uniform float4 _BumpMap_ST;</span><br><span class="line">            <span class="function">v2f <span class="title">vert</span><span class="params">(appdata_tan v)</span></span>&#123;</span><br><span class="line">                v2f o;</span><br><span class="line">                o.pos = mul(UNITY_MATRIX_MVP,v.vertex);</span><br><span class="line">                o.uv = TRANSFORM_TEX(v.texcoord,_BumpMap);</span><br><span class="line">                TANGENT_SPACE_ROTATION</span><br><span class="line">                o.TtoV0 = mul(rotation,UNITY_MATRIX_IT_MV[<span class="number">0</span>].xyz);</span><br><span class="line">                o.TtoV1 = mul(rotation,UNITY_MATRIX_IT_MV[<span class="number">1</span>].xyz);</span><br><span class="line">                <span class="keyword">return</span> o;</span><br><span class="line">            &#125;</span><br><span class="line">            uniform float4 _Color;</span><br><span class="line">            uniform sampler2D _BumpMap;</span><br><span class="line">            uniform sampler2D _MatCap;</span><br><span class="line">            float4 frag (v2f i) : Color</span><br><span class="line">            &#123;</span><br><span class="line">                float3 normal = UnpackNormal(tex2D(_BumpMap,i.uv);</span><br><span class="line">                half2 vn;</span><br><span class="line">                vn.x = dot(i.TtoV0,normal);</span><br><span class="line">                vn.y = dot(i.TtoV1,normal);</span><br><span class="line">                float4 matcapLookup = tex2D(_MatCap,vn*<span class="number">0.5</span>+<span class="number">0.5</span>);</span><br><span class="line">                matcapLookup.a = <span class="number">1</span>;</span><br><span class="line">                <span class="keyword">return</span> _Color*mapcapLookup*<span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/03/Matcap-Shader/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/03/Matcap-Shader/" class="post-title-link" itemprop="url">Matcap Shader</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-03 13:00:26" itemprop="dateCreated datePublished" datetime="2019-09-03T13:00:26+08:00">2019-09-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Matcap Shader是一种在某些层面能替代甚至超越PBR的次时代渲染方案。<br>它的效率极高、计算成本极低，显示效果极佳，却能完美运行于不通的移动平台，并兼容AR、VR设备。<br>但Matcap也有很多局限性和缺点，此系列文章就是用于讲解Matcap的实现方法针对其问题的优化。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/03/Finite-State-Machine/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/03/Finite-State-Machine/" class="post-title-link" itemprop="url">Finite State Machine</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-03 12:27:23" itemprop="dateCreated datePublished" datetime="2019-09-03T12:27:23+08:00">2019-09-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h1><p>This is Deterministic Finite State Machine framework based on chapter 3.1 of Game Programming Gems 1 by Eric Dybsend. There are two classes and two enums.Include them in your project and follow the explanations to get the FSM working properly.There’s also a complete example script at the end of this page.</p>
-<h1 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h1><ul>
-<li><strong>Transition enum</strong>:This enum contains the labels to the transition that can be fired by the system.Don’t change the first label,NullTransition,as the FSMSystem class uses it.</li>
-<li><strong>StateID enum</strong>:This is the ID of the states the game may have.You could use references to the real State’s classes but using enums makes the system less susceptible to have code having access to objects it is not supposed to.All the state’s ids should be placed here.Don’t change the first label,NullStateID,as the FSMSystem class uses it.</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1027,7 +1057,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1038,7 +1068,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

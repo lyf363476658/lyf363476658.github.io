@@ -145,6 +145,247 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/07/02/ue4-fmemory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/02/ue4-fmemory/" class="post-title-link" itemprop="url">UE4的内存分配</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-07-02 10:00:23 / 修改时间：11:59:27" itemprop="dateCreated datePublished" datetime="2021-07-02T10:00:23+08:00">2021-07-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UE4/" itemprop="url" rel="index"><span itemprop="name">UE4</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。</p>
+<p>FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。<br>UE4的window平台直接用的是<code>GenericPlatformMemory</code>，IOS中间有一层包装，但是最后也是走的是<code>GenericPlatformMemory</code>，Android也是，所以其实也还好？</p>
+<p>好吧，我们还是从头开始看吧。</p>
+<h1 id="FMemory"><a href="#FMemory" class="headerlink" title="FMemory"></a>FMemory</h1><p>这个第一个接口是<code>FMemory::GCreateMalloc</code>这里面主要调的是<code>FMemory_GCreateMalloc_ThreadUnsafe</code>，在这里面我们逐步分析。</p>
+<p>第一步先取统计接口<code>FPlatformMemory::GetStats()</code> ，但是这里有个非MAC的判定，不知道为啥。</p>
+<p>然后就是取<code>GMalloc</code>这里是通过一些模式和命令行在加上架构去分析的，太偏底层的不太熟悉了，有熟悉的大佬可以在下方留言提醒。</p>
+<p>在然后就是拉取Crash助手叫做<code>FPlatformMallocCrash</code>它有以下职责：</p>
+<ul>
+<li>当内存分配低于16字节对齐的时候会触发crash。</li>
+<li>分配器的线程只能是当前线程。</li>
+</ul>
+<p>接着就是判断<code>GMalloc-&gt;IsInternallyThreadSafe()</code>里面针对不同的malloc做一些判定是否是线程安全的，这块不是太懂。</p>
+<p>接着就是跑内存分析器，这里有个奇怪的宏是<code>IS_MONOLIGHTIC</code>是和mono相关的吗？先不管了。</p>
+<p>下一步又判断了以下<code>GMalloc-&gt;IsInternallyThreadSafe()</code>这个感觉是针对profile的，就是说你如果非要非线程安全的，那我就帮你搞一个代理吧，叫<code>FMallocThreadSafeProxy</code>。<br>反正怎么说呢，我认为哈，所以的proxy都是认为，你把握不住的东西，我帮你搞一层代理，容易把你绕晕的地方你就不用管了，也不要瞎搞了。交给我吧。<br>然后在所有的内存操作之前都会做一个同步锁。</p>
+<p>下一步又有一个校验器，里面又加了一把锁，外面通过宏切换开关，以我浅薄的认识，这两个可能是不会同时开启的，不然两把锁没有意义呀。<br>这个的作用注释上面写着是过滤无效的指针，原理就是存储了一下指针，做了校验。这个平时开发最好一直开启着。然后暴露出来。</p>
+<p>下一步是检查内存泄露的，我猜测和上面的使用方式差不多。<br>不过里面逻辑还是挺多了，首先分配完内存之后，要先判断当前线程是否开启检查，是否开启捕获alloc，是否申请内存高于阈值，小内存你就不考虑了吗？<br>然后又是一把锁，果然很多线程呀。然后里面纪录了一件事情，就是记录内存申请的堆栈，这里感觉和AssetService很相似呀。</p>
+<p>下一步就是叫啥有害内存分配代理<code>FMallocPosionProxy</code>又是代理，看到没，人与人之前的就这么不信任的吗？<br>这个主要职责就很简单了，因为我们内存基本都是从池子里面取出来的，可能还会残留一些之前的数据，如果你不清理的话又不赋值直接使用的话，可能会引用到一些奇奇怪怪的东西，<br>我们调试的时候看到空，就知道，哦，他们的忘记赋值了，一看到奇怪的内容，我擦，这是什么意思，怎么会这样呢，害人又害己。</p>
+<p>下一步是打印了程序能用到多少内存。</p>
+<p>下一步是搞一个看起来像是为了dump搞得，有点没看明白，直接贴代码<code>GMalloc = FMallocDoubleFreeFinder::OverrideIfEnabled(GMalloc)</code></p>
+<p>下一个就是分析统计的<code>GMalloc = FMallocFrameProfiler::OverrideIfEnabled(GMalloc)</code></p>
+<h2 id="分配器"><a href="#分配器" class="headerlink" title="分配器"></a>分配器</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FMemory::Malloc(SIZE_T Count, uint32 Alignment)</span><br></pre></td></tr></table></figure>
+<p>使用其实比较简单的，就是根据不同的分配器去分配内存，<a href="https://zhuanlan.zhihu.com/p/81481072" target="_blank" rel="noopener">知乎的大佬</a> 举了一个<code>MallocTBB</code>的例子。</p>
+<p>他大概是说分配超出了就回调<code>GetOutOfMemoryDelegate</code>，然后这里字节对齐是8字节的。超过就16字节，这里小伙伴可能会疑惑，你有个<code>FPlatformMallocCrash</code>上面不是说16字节的吗？是的，<br>但是其实这些是针对平台的，我看的那个实例其实是<code>FGenericPlatformMallocCrash</code>，聪明的小伙伴一看这个字面量就知道什么意思了，我这个是针对通用平台的逻辑，而他这个分配器应该是特殊平台的，<br>所以并不冲突。</p>
+<p>好了，现在我们回到我们的问题，两个有什么区分，GameCore由于时间问题和一些其它原因，我就不便介绍了，基本可以按照自研项目那一套方式，底层采用操作系统接口，加一下统计分析逻辑，代码的兼容性和健全性肯定是没法和UE4的比了。</p>
+<p>好吧，就这样了。时间原因我没法做太多的分析。</p>
+<p>水一篇文章吧。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/07/02/spine-ue4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/02/spine-ue4/" class="post-title-link" itemprop="url">Spine UE4</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-07-02 09:26:08 / 修改时间：09:57:31" itemprop="dateCreated datePublished" datetime="2021-07-02T09:26:08+08:00">2021-07-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spine/" itemprop="url" rel="index"><span itemprop="name">Spine</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。</p>
+<p>explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘）</p>
+<h1 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h1><p>好吧，google搜spine基本都是如何导入UE4的一些操作，只能自己看代码了。<br>spine分为两个部分，一个是spine底层的通用C++层，一个是对UE4的包装。我这边也分为两部分讲解。</p>
+<h2 id="通用C-层"><a href="#通用C-层" class="headerlink" title="通用C++层"></a>通用C++层</h2><p>这里面结构其实都是这一套，动画，图集，附件，骨骼，颜色，约束，事件，IK反向动力学，蒙皮，很奇怪的是里面的代码明显是按照UE4去做的，比如直接用UE_LOG打日志，所以就比较搞不懂，为什么在github是分开的。</p>
+<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>看到一个有意思的东西，之前看别人说是FString里面是按照4字节存储的，但是如果我们只是存储非宽字节，可以自己写一套，而他这个就是很好的参考。</p>
+<h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><p>这里很简单的就是一个长度，一个缓存区，然后里面采用的FMemory做一些内存分配器。简单，高效。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/07/01/ue4-anim-system/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/01/ue4-anim-system/" class="post-title-link" itemprop="url">UE4 动画系统 源码及原理刨析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-01 20:21:38" itemprop="dateCreated datePublished" datetime="2021-07-01T20:21:38+08:00">2021-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-02 09:24:48" itemprop="dateModified" datetime="2021-07-02T09:24:48+08:00">2021-07-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UE4/" itemprop="url" rel="index"><span itemprop="name">UE4</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a href="https://blog.csdn.net/qq_23030843/article/details/109103433" target="_blank" rel="noopener">https://blog.csdn.net/qq_23030843/article/details/109103433</a><br>大佬原文，本文主要是对原文的二次解析和做一个备份，垃圾的CSDN，谁知道那天倒闭呢。<br>其实内心挺想分享给别人的，但是感觉这种东西大家都可以查得到，还是算了吧。内向的人果然精神内耗很严重。<br>原文其实分了两个，一块是解算每一帧的动作位置，一块是渲染。所以我这边也是按照这两块来讲。<br>其实看了一遍，怎么说呢，纸上得来终觉浅，绝知此事要躬行吧。所以这边先简单摸一下字面意思，下次在加工一下。<br>我这边也分两块分析</p>
+<h1 id="解算动作"><a href="#解算动作" class="headerlink" title="解算动作"></a>解算动作</h1><p>先知道解算这块是可以开启多线程加快运算的，具体如何加快，看原文。<br>还有一个概念，AnimInstance是一个数据和运算集中性业务，外面把握不住，所以推出AnimInstanceProxy来配合使用。<br>再有一点是虽然主要讲的是骨骼蒙皮，即skeletonMesh，但是StaticMesh其实也包含进去了。只不过没讲，怎么说呢，其实都属于一块的，只不过没有动，所以就是一个简单的模型处理了。</p>
+<h1 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/30/ue4-rendering-part-6-adding-a-newshading-model/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -168,10 +409,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-06-30 20:55:59 / 修改时间：19:48:23" itemprop="dateCreated datePublished" datetime="2021-06-30T20:55:59+08:00">2021-06-30</time>
+              <time title="创建时间：2021-06-30 20:55:59" itemprop="dateCreated datePublished" datetime="2021-06-30T20:55:59+08:00">2021-06-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-01 09:33:21" itemprop="dateModified" datetime="2021-07-01T09:33:21+08:00">2021-07-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -193,9 +440,160 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>原文地址：<a href="https://medium.com/@lordned/ue4-rendering-part-6-adding-a-new-shading-model-e2972b40d72d" target="_blank" rel="noopener">https://medium.com/@lordned/ue4-rendering-part-6-adding-a-new-shading-model-e2972b40d72d</a></p>
+          <p>带翻译的文章：<a href="https://80.lv/articles/river-editor-water-simulation-in-real-time/" target="_blank" rel="noopener">https://80.lv/articles/river-editor-water-simulation-in-real-time/</a> 水<br><a href="https://wickedengine.net/2018/05/21/scalabe-gpu-fluid-simulation/" target="_blank" rel="noopener">https://wickedengine.net/2018/05/21/scalabe-gpu-fluid-simulation/</a> 流体<br><a href="https://necessarydisorder.wordpress.com/2017/11/15/drawing-from-noise-and-then-making-animated-loopy-gifs-from-there/" target="_blank" rel="noopener">https://necessarydisorder.wordpress.com/2017/11/15/drawing-from-noise-and-then-making-animated-loopy-gifs-from-there/</a> 各种噪声，不玩了，深陷其中了</p>
+<p>原文地址：<a href="https://medium.com/@lordned/ue4-rendering-part-6-adding-a-new-shading-model-e2972b40d72d" target="_blank" rel="noopener">https://medium.com/@lordned/ue4-rendering-part-6-adding-a-new-shading-model-e2972b40d72d</a></p>
+<p>注意，译文和原文出入已经很大了，译文主要是按照4.26来操作的，如果有疑问，最好看着原文去操作，不过我想原文的版本大家应该都没有把。</p>
 <p>（如果你没有读本系列的第五节，<a href="https://medium.com/@lordned/unreal-engine-4-rendering-part-5-shader-permutations-2b975e503dd4" target="_blank" rel="noopener">请点击这里</a>）</p>
 <h2 id="添加一个新的渲染模型"><a href="#添加一个新的渲染模型" class="headerlink" title="添加一个新的渲染模型"></a>添加一个新的渲染模型</h2><p>UE支持几种通用的开箱即用的渲染模型来针对大多数游戏。UE不仅支持微面元反射的默认光照，同时也支持高质量的头发和眼睛效果。但是这些可能不是最合适的对于你的游戏或者你希望修改或者新增对于你的游戏，尤其是对于高度风格化的游戏。</p>
+<img src="/2021/06/30/ue4-rendering-part-6-adding-a-newshading-model/1.png" title="使用阶梯照明处理的着色模型">
+<p>集成一个新的光照模型只需要少量的代码但是编译引擎可能花费点时间。当你决定要增加之前，最好看一下上一节，这可能会节省10分钟左右的迭代时间。</p>
+<p>大部分的代码是基于FelixK的blog，但是已经打不开了。</p>
+<p>我们需要修改3个地方来支持新的渲染模型，材质编辑器，材质和一些shader代码。</p>
+<h3 id="修改材质编辑器"><a href="#修改材质编辑器" class="headerlink" title="修改材质编辑器"></a>修改材质编辑器</h3><p>首先打开EngineTypes.h文件，然后找到EMaterialShadingModel。这个枚举决定了在材质编辑器显示那些渲染模型。我们添加一个新的枚举<code>MSM_StylizedShadow</code>在<code>MSM_MAX</code>之前。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Note: Check UMaterialInstance::Serialize if changed!</span></span><br><span class="line">UENUM()</span><br><span class="line"><span class="keyword">enum</span> EMaterialShadingModel</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// … Previous entries omitted for brevity</span></span><br><span class="line">    MSM_Eye UMETA(DisplayName=”Eye”),</span><br><span class="line">    MSM_StylizedShadow UMETA(DisplayName=”Stylized Shadow”),</span><br><span class="line">    MSM_MAX,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>枚举可能是按照名字序列化的（如果存在？），但对于引擎来说任何地方的序列化的都加在最后。</p>
+<p>UE在<code>UMaterialShadingModel</code>枚举警告开发者检查<code>UMaterialInstance::Serialize</code>函数如果我们改变了枚举。看起来我们不需要更改任何东西，当我们添加了新的渲染模型，所以我们忽略这个警告。（如果你却是对这个函数感到兴趣，它确实是改变了一些资产的加载顺序）</p>
+<img src="/2021/06/30/ue4-rendering-part-6-adding-a-newshading-model/2.png" title="下拉可以看到我们新加的渲染模型">
+<p>当我们编译完成之后（译者注：裂开了，不知道为什么要编译两千多个文件）我们可以在材质编辑器的下拉框中看到我们新加的渲染模型选项，但是它啥事也不能做。FelixK使用<code>Custom Data 0</code>来允许艺术家设置光照衰减的范围。我们需要修改代码来使<code>Custom Data 0</code>起效在我们自定的渲染模型中。</p>
+<p>打开Material.cpp（不是Lightmass项目中的那个）然后查找<code>UMaterial::IsPropertyActive_Internal</code>(4.26是这个函数，有点慌，不知道这个文档能不能跟着做下去)函数。材质上的每个可能的引脚（PIN不知道咋翻译，知道的老铁留个言）每次都会去调用它。如果你尝试正在修改材质域（domain暂时不知道指的是啥，虽然源码中也有这个概念，等我以后知道了就改掉这块）（比如贴花，后处理等），你将需要特别小心的处理该函数的第一部分，查看他们的域对于那些引脚应该启用。如果你和我一样正在修改渲染模型，这里可能有点复杂，<br>你需要搞一个switch-case来针对不同的引脚做不同的处理。（我好像可以理解引脚这个概念，其实就是不同的情况吧）</p>
+<p>在我们这个case，我们想开启<code>MP_CustomData0</code>这个引脚，我们找到<code>MP_CustomData0</code>然后添加<code>MSM_StylizedShadow</code>来结束它。<br>当你可以改变渲染模型在风格化窗口中的时候，说明这个引脚已经被开启了，允许你连接它在你的材质蓝图。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> MP_CustomData0:</span><br><span class="line">    Active = ShadingModels.HasAnyShadingModel(&#123; MSM_ClearCoat, MSM_Hair, MSM_Cloth, MSM_Eye, MSM_StyleizedShadow &#125;);</span><br><span class="line">    <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+<p>以上是4.26的写法。</p>
+<p>理解这段代码的修改UI在材质编辑器上是重要的。<br>然后你还要确保你的数据支持这些引脚在你的shader上。</p>
+<p>注意：<code>Custom Data 0</code>和<code>Custom Data 1</code>是单通道的float属性，这个可能是不够支撑你扩展你的自定义渲染模型。<a href="https://twitter.com/stoopdapoop" target="_blank" rel="noopener">Javad Kouchakzadeh</a> 指出你可以创建一个新的引脚，<br>这将让你选择如何生成你的hlsl代码。不过这有点超出我们的教程了，而且也不是这个文章的主题。你如果想体验一下，可以看一下MaterialShared.cpp文件中<code>InitializeAttributeMap()</code>这个函数。</p>
+<h3 id="修改HLSL预处理器定义"><a href="#修改HLSL预处理器定义" class="headerlink" title="修改HLSL预处理器定义"></a>修改HLSL预处理器定义</h3><p>一旦我们在材质编辑器上选择了我们自己的渲染模型之后，我们得需要让我们的shader知道我们做了这件事。</p>
+<p>HLSLMaterialTranslator.cpp然后查找<code>FHLSLMaterialTranslator::GetMaterialEnvironment(EShaderPlatform InPlatform, FShaderCompilerEnvironment&amp; OutEnvironment)</code>函数。<br>(用RIDER直接两个shift就直接找函数吧。)这个函数可以看到各种变量配置（各种属性在你的材质上）然后修改<code>OutEnvironment</code>变量来添加定义。</p>
+<p>在我们特殊的案例中我们滑倒最后的部分在switch的<code>Property</code>并且添加我们的<code>MSM_StylizedShadow</code>Case，给它一个名字在允许的匹配中。文档与当前的引擎差异已经很大了，我这都是按照语义改的，不知道是否正确，主要是引擎编译起来有点痛苦。我先不加，等全部翻译完在加。试试。</p>
+<p>现在，我们把<code>MSM_StylizedShadow</code>设置到HLSL编译器将通过<code>MATERIAL_SHADINGMODEL_STYLEIZED_SHADOW</code>作为一个预定义的。<br>它将允许我们使用<code>#if MATERIAL_SHADINGMODEL_STYLIZED_SHADOW</code>在HLSL代码里面。</p>
+<h3 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h3><p>这里需要修改C++代码，我们已经添加我们的渲染模型在编辑器中，我们也已经改变引脚使用自定义数据，我们也保证了shader能告诉我们在这个模式。不过编译engine的代码需要花费大量时间（早说啊）。<br>我们也不想更改.ush/.usf文件当我们打开编辑器的时候，这回导致重新编译我们的shader。（这里好坑）</p>
+<h3 id="更新GBuffer-Shading-Model-ID"><a href="#更新GBuffer-Shading-Model-ID" class="headerlink" title="更新GBuffer Shading Model ID"></a>更新GBuffer Shading Model ID</h3><p>现在他是可能的构建shader的排列（a permutation of排列是啥意思呀）通过使用我们的光照模型通过使用<code>MATERIAL_SHADINGMODEL_STYLEIZED_SHADOW</code>。第一件事情，我们需要写一个新的Shading Model ID到GBuffer。<br>当运行光照计算的时候，允许DeferredLIghtPixelShader知道切换那个shading model在使用着。</p>
+<p>打开 ShadingCommon.ush然后找到<code>#define SHADINGMODELID_UNLIT</code>。在这里我们定义自己的Shading Model ID，然后更新<code>SHADINGMODELID_NUM</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SHADINGMODELID_STYLEIZED_SHADOW 12</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SHADINGMODELID_NUM 13</span></span><br></pre></td></tr></table></figure>
+<p>我们需要告诉shader来写shading Model ID到GBuffer，在离开这个文件之前我们应该更新Buffer Visualization &gt; Shading Model 颜色以便告诉那个像素在你的场景是来自你的shading model的渲染的。</p>
+<p>在下面可以找到 <code>float3 GetShadingModelColor(uint ShadingModelID)</code>。</p>
+<p>我们添加一个入口在<code>switch(ShadingModelID)</code>里面。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span>(ShadingModelID)</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/29/LevelSequencer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/29/LevelSequencer/" class="post-title-link" itemprop="url">LevelSequencer</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-06-29 20:55:59" itemprop="dateCreated datePublished" datetime="2021-06-29T20:55:59+08:00">2021-06-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-30 19:56:53" itemprop="dateModified" datetime="2021-06-30T19:56:53+08:00">2021-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UE4/" itemprop="url" rel="index"><span itemprop="name">UE4</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="LevelSequence（关卡序列）使用说明"><a href="#LevelSequence（关卡序列）使用说明" class="headerlink" title="LevelSequence（关卡序列）使用说明"></a>LevelSequence（关卡序列）使用说明</h1><p>以下文档都来自官方文档，但是我这边还是单独拿出来分析以下，足以证明，这块还是很有意思的。</p>
+<h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/ReferenceEditor/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/ReferenceEditor/</a></p>
+<p>仔细看文档，基础操作，没啥说的，但是要注意，文档和引擎有些许差异，影响不大。</p>
+<h2 id="从摄像机导轨拍摄"><a href="#从摄像机导轨拍摄" class="headerlink" title="从摄像机导轨拍摄"></a>从摄像机导轨拍摄</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CameraRigRail/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CameraRigRail/</a></p>
+<h2 id="在Sequencer中使用帧标记"><a href="#在Sequencer中使用帧标记" class="headerlink" title="在Sequencer中使用帧标记"></a>在Sequencer中使用帧标记</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/FrameMarkers/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/FrameMarkers/</a><br>一个书签的东西，运行时不会用，随便搞。</p>
+<p>挺有意思的，但是感觉可以用其它方式代替。不过可以试试。</p>
+<h2 id="切换Sequencer中Actor的材质"><a href="#切换Sequencer中Actor的材质" class="headerlink" title="切换Sequencer中Actor的材质"></a>切换Sequencer中Actor的材质</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MaterialAnimation/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MaterialAnimation/</a></p>
+<p>没啥好说的，跟着做就好。</p>
+<h2 id="混合动画属性"><a href="#混合动画属性" class="headerlink" title="混合动画属性"></a>混合动画属性</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CharacterAnimation/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CharacterAnimation/</a></p>
+<h2 id="使用模板序列"><a href="#使用模板序列" class="headerlink" title="使用模板序列"></a>使用模板序列</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TemplateSequences/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TemplateSequences/</a></p>
+<p>单个轨道复用的，相当于做一个template sequencer可以给多个level sequencer使用。<br>制作的时候可以想清楚，如果有复用的情况下可以用这个。</p>
+<p>没啥好说的，两个动画做blend，可以选如何插值。</p>
+<h2 id="CineCameraActor（电影摄像机Actor）"><a href="#CineCameraActor（电影摄像机Actor）" class="headerlink" title="CineCameraActor（电影摄像机Actor）"></a>CineCameraActor（电影摄像机Actor）</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CineCameraActors/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CineCameraActors/</a></p>
+<p>这个镜头我还是非常喜欢的，如果项目中可以使用，我是极力推荐的。</p>
+<ul>
+<li>启用观看跟踪（Enable Look at Tracking） -选取此选项可以让摄像机跟踪Actor。</li>
+<li>提取调试观看跟踪位置（Draw Debug Look at Tracking Position）-选取此项可以让我们看到摄像机正在观看的位置。</li>
+<li>要跟踪的Actor（Actor to Track）-将此项设置为ThirdPersonCharacter，因为我们希望在镜头中跟踪此角色。</li>
+<li>相对偏移（Relative Offset）-将Z设置为60以将跟踪位置从默认跟踪位置稍微提高。<br>在CineCameraActor的细节（Details）面板中，将菲林版设置（Filmback Settings）设置为使用Super 16mm。菲林板设置（Filmback Settings）提供了不同的格式，虽然我没看懂是啥意思，但是实验了一下，感觉镜头拉的更近了。</li>
+</ul>
+<h2 id="淡入淡出场景"><a href="#淡入淡出场景" class="headerlink" title="淡入淡出场景"></a>淡入淡出场景</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksFade/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksFade/</a></p>
+<p>使用的轨道是Fade Track</p>
+<h2 id="关卡可见性轨道（项目包装可能与此不同，谨慎使用）"><a href="#关卡可见性轨道（项目包装可能与此不同，谨慎使用）" class="headerlink" title="关卡可见性轨道（项目包装可能与此不同，谨慎使用）"></a>关卡可见性轨道（项目包装可能与此不同，谨慎使用）</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksLevelVisibility/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksLevelVisibility/</a></p>
+<p>使用的轨道是Level Visibility Track<br>简单来说其实就是卸载一个关卡，在加载另一个关卡的表现形式，但是项目的关卡定义方式可能会与此不同，不过即使不同，我们应该也会有类似的实现方式。所以原理可以参考。<br>做过长动画用这个感觉挺好的。</p>
+<h2 id="为材质参数集（Material-Parameter-Collections）设置动画"><a href="#为材质参数集（Material-Parameter-Collections）设置动画" class="headerlink" title="为材质参数集（Material Parameter Collections）设置动画"></a>为材质参数集（Material Parameter Collections）设置动画</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksMaterialParameter/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksMaterialParameter/</a></p>
+<p>使用的轨道是Material Parameter Collection Track<br>设置材质的一些参数。</p>
+<h2 id="调整场景的播放速率"><a href="#调整场景的播放速率" class="headerlink" title="调整场景的播放速率"></a>调整场景的播放速率</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksPlayRate/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksPlayRate/</a></p>
+<p>使用的轨道是Time Dilation，这有点坑，文档上面写着是Play Rate，用的时候要注意，这个之前磊子哥用的挺多的，在AGE中叫SetTimeScale。</p>
+<h2 id="创建镜头和副镜头"><a href="#创建镜头和副镜头" class="headerlink" title="创建镜头和副镜头"></a>创建镜头和副镜头</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksShot/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksShot/</a></p>
+<h2 id="关于蒙太奇"><a href="#关于蒙太奇" class="headerlink" title="关于蒙太奇"></a>关于蒙太奇</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MatineeConversionTool/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MatineeConversionTool/</a></p>
+<p>上面这个文档没啥用，他的意思是说之前有蒙太奇的过场动画，说是一个轻量的，但是后来官方不维护了，就没用了。一堆废话，总之，代码还在，但是我们不用了。<br>跟着官方做，没有找到方法，但是找了一个可以把蒙太奇录入到subsequence里面，也是蛮方便的。录入的前提是需要在运行中录入的，非运行时录入应该也可以，但是这时候你如果可以把这个蒙太奇动起来就可以录入吧，我猜的。</p>
+<p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/SequenceRecorder/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/SequenceRecorder/</a></p>
+<p>真正的是看这个文档，说的很清楚就是运行游戏，然后开始录制，不过这个不是录制视频，而是level sequencer，挺好的。感觉可以做新手引导之类的东西，或者找一个样本，然后二次加工。</p>
+<h2 id="使用音频轨迹"><a href="#使用音频轨迹" class="headerlink" title="使用音频轨迹"></a>使用音频轨迹</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksAudio/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksAudio/</a></p>
+<p>说是要用wwise，做demo感觉可以用这个，不过不管吧，毕竟没啥需求，将来加了wwise，可以在加一个wwise的音频轨道，也好加。</p>
+<h2 id="自动关键帧"><a href="#自动关键帧" class="headerlink" title="自动关键帧"></a>自动关键帧</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingAutoKey/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingAutoKey/</a></p>
+<p>没啥可说的，K帧最基本的东西。</p>
+<h2 id="保留或存储通过Sequencer进行的修改"><a href="#保留或存储通过Sequencer进行的修改" class="headerlink" title="保留或存储通过Sequencer进行的修改"></a>保留或存储通过Sequencer进行的修改</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/WhenFinished/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/WhenFinished/</a></p>
+<p>没啥可说的，播完之后选择如何设置绑定对象或者全局的状态。</p>
+<h2 id="媒体轨道"><a href="#媒体轨道" class="headerlink" title="媒体轨道"></a>媒体轨道</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingMediaTracks/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingMediaTracks/</a></p>
+<h2 id="使用摄像机镜头切换"><a href="#使用摄像机镜头切换" class="headerlink" title="使用摄像机镜头切换"></a>使用摄像机镜头切换</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksCameraCut/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksCameraCut/</a></p>
+<p>这个东西，反正我挺喜欢的，不过按照AGE来说，我们可能只会用一个镜头，但是说实在的，一个镜头却是靠操控性会差很多。而且程序这边还需要传一个主相机。<br>其实level sequencer和age来比，或者age和其它编辑器来说，最大的优势其实是多种坐标系这个概念，让发生的过场动画，跟你的环境不是受太大的影响。然后引导你去这种编辑一些东西。<br>但是其实这种不太好。美术做的东西本来就很容易受环境影响，不同的环境表现力肯定是不相同的，所以我比较倾向程序尽量少传递这些比如镜头和角色等之类的东西，如果在性能可以hold的情况下。</p>
+<h2 id="使用动态变形创建关卡序列"><a href="#使用动态变形创建关卡序列" class="headerlink" title="使用动态变形创建关卡序列"></a>使用动态变形创建关卡序列</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/DynamicTransforms/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/DynamicTransforms/</a></p>
+<p>标题有点难受，其实就是指定坐标原点，相对坐标系那种思路。但是这个是个全局的概念，而不是age那种可以指向到某个轨道上去。</p>
+<h2 id="通过Sequencer混合动画蓝图"><a href="#通过Sequencer混合动画蓝图" class="headerlink" title="通过Sequencer混合动画蓝图"></a>通过Sequencer混合动画蓝图</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/BlendingAnimBPs/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/BlendingAnimBPs/</a></p>
+<p>讲道理来说，我们项目是不推荐使用自带蓝图的，在项目自己的蓝图中没有出来的时候，可以使用这种方式。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用几何体缓存轨迹"><a href="#使用几何体缓存轨迹" class="headerlink" title="使用几何体缓存轨迹"></a>使用几何体缓存轨迹</h3><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/GeometryCacheTrack/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/GeometryCacheTrack/</a></p>
+<p>有点秀操作的东西，但是我们应该用不上。</p>
+<h3 id="非线性动画和混合工具"><a href="#非线性动画和混合工具" class="headerlink" title="非线性动画和混合工具"></a>非线性动画和混合工具</h3><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/AnimationBlendingTools/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/AnimationBlendingTools/</a></p>
+<p>反正官方说是测试功能，不建议使用，我们也就不要使用了吧。大概意思是说，在动画的过渡区域，普通的混合会出现由于骨骼的控制权的归属和权重控制问题导致的错乱。而这个主要是处理这个问题的。但是由于是测试功能，说明还是有些坑没有解决掉的。</p>
 
       
     </div>
@@ -215,7 +613,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/30/UE4_Macro/">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/29/UE4_Macro/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -229,7 +627,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/06/30/UE4_Macro/" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/2021/06/29/UE4_Macro/" class="post-title-link" itemprop="url">UE4常见宏</a>
         </h2>
 
         <div class="post-meta">
@@ -238,9 +636,24 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-06-30 14:41:56 / 修改时间：19:29:56" itemprop="dateCreated datePublished" datetime="2021-06-30T14:41:56+08:00">2021-06-30</time>
+              <time title="创建时间：2021-06-29 20:55:59" itemprop="dateCreated datePublished" datetime="2021-06-29T20:55:59+08:00">2021-06-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-30 19:54:56" itemprop="dateModified" datetime="2021-06-30T19:54:56+08:00">2021-06-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UE4/" itemprop="url" rel="index"><span itemprop="name">UE4</span></a>
+                </span>
             </span>
 
           
@@ -473,114 +886,6 @@
 <p>如果COMPLIE_SHADERS_FOR_DEVELOPMENT是真的（并且平台支持它），则为true</p>
 </li>
 </ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/06/28/LevelSequencer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/28/LevelSequencer/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-06-28 15:57:10 / 修改时间：21:10:59" itemprop="dateCreated datePublished" datetime="2021-06-28T15:57:10+08:00">2021-06-28</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="LevelSequence（关卡序列）使用说明"><a href="#LevelSequence（关卡序列）使用说明" class="headerlink" title="LevelSequence（关卡序列）使用说明"></a>LevelSequence（关卡序列）使用说明</h1><p>以下文档都来自官方文档，但是我这边还是单独拿出来分析以下，足以证明，这块还是很有意思的。</p>
-<h2 id="基础操作"><a href="#基础操作" class="headerlink" title="基础操作"></a>基础操作</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/ReferenceEditor/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/ReferenceEditor/</a></p>
-<p>仔细看文档，基础操作，没啥说的，但是要注意，文档和引擎有些许差异，影响不大。</p>
-<h2 id="从摄像机导轨拍摄"><a href="#从摄像机导轨拍摄" class="headerlink" title="从摄像机导轨拍摄"></a>从摄像机导轨拍摄</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CameraRigRail/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CameraRigRail/</a></p>
-<h2 id="在Sequencer中使用帧标记"><a href="#在Sequencer中使用帧标记" class="headerlink" title="在Sequencer中使用帧标记"></a>在Sequencer中使用帧标记</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/FrameMarkers/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/FrameMarkers/</a><br>一个书签的东西，运行时不会用，随便搞。</p>
-<p>挺有意思的，但是感觉可以用其它方式代替。不过可以试试。</p>
-<h2 id="切换Sequencer中Actor的材质"><a href="#切换Sequencer中Actor的材质" class="headerlink" title="切换Sequencer中Actor的材质"></a>切换Sequencer中Actor的材质</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MaterialAnimation/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MaterialAnimation/</a></p>
-<p>没啥好说的，跟着做就好。</p>
-<h2 id="混合动画属性"><a href="#混合动画属性" class="headerlink" title="混合动画属性"></a>混合动画属性</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CharacterAnimation/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CharacterAnimation/</a></p>
-<h2 id="使用模板序列"><a href="#使用模板序列" class="headerlink" title="使用模板序列"></a>使用模板序列</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TemplateSequences/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TemplateSequences/</a></p>
-<p>单个轨道复用的，相当于做一个template sequencer可以给多个level sequencer使用。<br>制作的时候可以想清楚，如果有复用的情况下可以用这个。</p>
-<p>没啥好说的，两个动画做blend，可以选如何插值。</p>
-<h2 id="CineCameraActor（电影摄像机Actor）"><a href="#CineCameraActor（电影摄像机Actor）" class="headerlink" title="CineCameraActor（电影摄像机Actor）"></a>CineCameraActor（电影摄像机Actor）</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CineCameraActors/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/CineCameraActors/</a></p>
-<p>这个镜头我还是非常喜欢的，如果项目中可以使用，我是极力推荐的。</p>
-<ul>
-<li>启用观看跟踪（Enable Look at Tracking） -选取此选项可以让摄像机跟踪Actor。</li>
-<li>提取调试观看跟踪位置（Draw Debug Look at Tracking Position）-选取此项可以让我们看到摄像机正在观看的位置。</li>
-<li>要跟踪的Actor（Actor to Track）-将此项设置为ThirdPersonCharacter，因为我们希望在镜头中跟踪此角色。</li>
-<li>相对偏移（Relative Offset）-将Z设置为60以将跟踪位置从默认跟踪位置稍微提高。<br>在CineCameraActor的细节（Details）面板中，将菲林版设置（Filmback Settings）设置为使用Super 16mm。菲林板设置（Filmback Settings）提供了不同的格式，虽然我没看懂是啥意思，但是实验了一下，感觉镜头拉的更近了。</li>
-</ul>
-<h2 id="淡入淡出场景"><a href="#淡入淡出场景" class="headerlink" title="淡入淡出场景"></a>淡入淡出场景</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksFade/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksFade/</a></p>
-<p>使用的轨道是Fade Track</p>
-<h2 id="关卡可见性轨道（项目包装可能与此不同，谨慎使用）"><a href="#关卡可见性轨道（项目包装可能与此不同，谨慎使用）" class="headerlink" title="关卡可见性轨道（项目包装可能与此不同，谨慎使用）"></a>关卡可见性轨道（项目包装可能与此不同，谨慎使用）</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksLevelVisibility/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksLevelVisibility/</a></p>
-<p>使用的轨道是Level Visibility Track<br>简单来说其实就是卸载一个关卡，在加载另一个关卡的表现形式，但是项目的关卡定义方式可能会与此不同，不过即使不同，我们应该也会有类似的实现方式。所以原理可以参考。<br>做过长动画用这个感觉挺好的。</p>
-<h2 id="为材质参数集（Material-Parameter-Collections）设置动画"><a href="#为材质参数集（Material-Parameter-Collections）设置动画" class="headerlink" title="为材质参数集（Material Parameter Collections）设置动画"></a>为材质参数集（Material Parameter Collections）设置动画</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksMaterialParameter/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksMaterialParameter/</a></p>
-<p>使用的轨道是Material Parameter Collection Track<br>设置材质的一些参数。</p>
-<h2 id="调整场景的播放速率"><a href="#调整场景的播放速率" class="headerlink" title="调整场景的播放速率"></a>调整场景的播放速率</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksPlayRate/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksPlayRate/</a></p>
-<p>使用的轨道是Time Dilation，这有点坑，文档上面写着是Play Rate，用的时候要注意，这个之前磊子哥用的挺多的，在AGE中叫SetTimeScale。</p>
-<h2 id="创建镜头和副镜头"><a href="#创建镜头和副镜头" class="headerlink" title="创建镜头和副镜头"></a>创建镜头和副镜头</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksShot/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksShot/</a></p>
-<h2 id="关于蒙太奇"><a href="#关于蒙太奇" class="headerlink" title="关于蒙太奇"></a>关于蒙太奇</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MatineeConversionTool/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/MatineeConversionTool/</a></p>
-<p>上面这个文档没啥用，他的意思是说之前有蒙太奇的过场动画，说是一个轻量的，但是后来官方不维护了，就没用了。一堆废话，总之，代码还在，但是我们不用了。<br>跟着官方做，没有找到方法，但是找了一个可以把蒙太奇录入到subsequence里面，也是蛮方便的。录入的前提是需要在运行中录入的，非运行时录入应该也可以，但是这时候你如果可以把这个蒙太奇动起来就可以录入吧，我猜的。</p>
-<p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/SequenceRecorder/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/SequenceRecorder/</a></p>
-<p>真正的是看这个文档，说的很清楚就是运行游戏，然后开始录制，不过这个不是录制视频，而是level sequencer，挺好的。感觉可以做新手引导之类的东西，或者找一个样本，然后二次加工。</p>
-<h2 id="使用音频轨迹"><a href="#使用音频轨迹" class="headerlink" title="使用音频轨迹"></a>使用音频轨迹</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksAudio/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksAudio/</a></p>
-<p>说是要用wwise，做demo感觉可以用这个，不过不管吧，毕竟没啥需求，将来加了wwise，可以在加一个wwise的音频轨道，也好加。</p>
-<h2 id="自动关键帧"><a href="#自动关键帧" class="headerlink" title="自动关键帧"></a>自动关键帧</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingAutoKey/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingAutoKey/</a></p>
-<p>没啥可说的，K帧最基本的东西。</p>
-<h2 id="保留或存储通过Sequencer进行的修改"><a href="#保留或存储通过Sequencer进行的修改" class="headerlink" title="保留或存储通过Sequencer进行的修改"></a>保留或存储通过Sequencer进行的修改</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/WhenFinished/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/WhenFinished/</a></p>
-<p>没啥可说的，播完之后选择如何设置绑定对象或者全局的状态。</p>
-<h2 id="媒体轨道"><a href="#媒体轨道" class="headerlink" title="媒体轨道"></a>媒体轨道</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingMediaTracks/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/UsingMediaTracks/</a></p>
-<h2 id="使用摄像机镜头切换"><a href="#使用摄像机镜头切换" class="headerlink" title="使用摄像机镜头切换"></a>使用摄像机镜头切换</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksCameraCut/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/TracksCameraCut/</a></p>
-<p>这个东西，反正我挺喜欢的，不过按照AGE来说，我们可能只会用一个镜头，但是说实在的，一个镜头却是靠操控性会差很多。而且程序这边还需要传一个主相机。<br>其实level sequencer和age来比，或者age和其它编辑器来说，最大的优势其实是多种坐标系这个概念，让发生的过场动画，跟你的环境不是受太大的影响。然后引导你去这种编辑一些东西。<br>但是其实这种不太好。美术做的东西本来就很容易受环境影响，不同的环境表现力肯定是不相同的，所以我比较倾向程序尽量少传递这些比如镜头和角色等之类的东西，如果在性能可以hold的情况下。</p>
-<h2 id="使用动态变形创建关卡序列"><a href="#使用动态变形创建关卡序列" class="headerlink" title="使用动态变形创建关卡序列"></a>使用动态变形创建关卡序列</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/DynamicTransforms/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/DynamicTransforms/</a></p>
-<p>标题有点难受，其实就是指定坐标原点，相对坐标系那种思路。但是这个是个全局的概念，而不是age那种可以指向到某个轨道上去。</p>
-<h2 id="通过Sequencer混合动画蓝图"><a href="#通过Sequencer混合动画蓝图" class="headerlink" title="通过Sequencer混合动画蓝图"></a>通过Sequencer混合动画蓝图</h2><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/BlendingAnimBPs/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/BlendingAnimBPs/</a></p>
-<p>讲道理来说，我们项目是不推荐使用自带蓝图的，在项目自己的蓝图中没有出来的时候，可以使用这种方式。</p>
-<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="使用几何体缓存轨迹"><a href="#使用几何体缓存轨迹" class="headerlink" title="使用几何体缓存轨迹"></a>使用几何体缓存轨迹</h3><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/GeometryCacheTrack/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/HowTo/GeometryCacheTrack/</a></p>
-<p>有点秀操作的东西，但是我们应该用不上。</p>
-<h3 id="非线性动画和混合工具"><a href="#非线性动画和混合工具" class="headerlink" title="非线性动画和混合工具"></a>非线性动画和混合工具</h3><p><a href="https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/AnimationBlendingTools/" target="_blank" rel="noopener">https://docs.unrealengine.com/4.26/zh-CN/AnimatingObjects/Sequencer/AnimationBlendingTools/</a></p>
-<p>反正官方说是测试功能，不建议使用，我们也就不要使用了吧。大概意思是说，在动画的过渡区域，普通的混合会出现由于骨骼的控制权的归属和权重控制问题导致的错乱。而这个主要是处理这个问题的。但是由于是测试功能，说明还是有些坑没有解决掉的。</p>
 
       
     </div>
@@ -881,252 +1186,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/06/StandardShaderMaterialParamterOcclusionMap/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/" class="post-title-link" itemprop="url">Occlusion Map（环境光散射贴图）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-06 10:12:53" itemprop="dateCreated datePublished" datetime="2019-09-06T10:12:53+08:00">2019-09-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderParameterOcclusion.png">
-<p>The occlusion map is used to provide information about which areas of the model should receive high or low indirect lighting.Indirect lighting comes from ambient lighting and reflections,and so steep concave parts of your model such as a crack or fold would not realistically receive much indirect light.</p>
-<p>Occlusion texture maps are normally calculated by 3D applications directly from the 3D model using the modeller or third party software.</p>
-<p>An occlusion map is a greyscale image（灰度图像）,with white indicating areas（白色显示区域） that should receive full indirect lighting（间接光照）,and black indicating（指示） no indirect lighting.Sometimes this is as simple as a greyscale hightmap,for simple surface(such as the knobbly stone wall（有节的石墙）texture shown in the heightmap example above).</p>
-<p>At other times,generating the correct occlusion texture is slightly more complex（稍微复杂的）.For example,if a character in you scene is wearing a hood（戴着头巾）,the inside edegs of the hood should be set to very low indirect lighting（头巾外围应该设置很低的间接光）,or none at all（或者一点也没有）.In these situations（状况）,occlusion maps will be often be produced by artists,using 3D applications to automaticalyy generate an occlusion map based on the model.</p>
-<img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderOcclusionMapTexture.jpg">
-<p>This occlusion map identifies ares on a character’s sleeve（头套）that are exposed（暴露）or hidden from ambient lighting.It is used on the model pictured below.（它用在下面的模型）</p>
-<img src="/2019/09/06/StandardShaderMaterialParamterOcclusionMap/StandardShaderOcclusionMap.jpg">
-<p>Before and after applying an occlusion map.The areas that partially obscured,（部分模糊的区域）particularly in the folds of fabric around the neck.（特别是在脖子周围的织物褶皱上）are lit too brightly on the left.After the ambient occlusion map is assigned,these ares are no longer lit by the green ambient light from the surrounding wooded envirnoment.</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/05/Bilinear-Trilinear-Anistropic-Filtering/" class="post-title-link" itemprop="url">纹理过滤模式中的Bilinear、Trilinear以及Anistropic Filtering</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-05 21:02:39" itemprop="dateCreated datePublished" datetime="2019-09-05T21:02:39+08:00">2019-09-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="为什么在纹理采样时需要texture-filter（纹理过滤）"><a href="#为什么在纹理采样时需要texture-filter（纹理过滤）" class="headerlink" title="为什么在纹理采样时需要texture filter（纹理过滤）"></a>为什么在纹理采样时需要texture filter（纹理过滤）</h1><p>我们的纹理是要贴到三维图形表面的，而三维图形上的pixel中心和纹理上的texel中心点并不一致（pixel不一定对应texture的采样中心texel），大小也不一定一致。当纹理大于三维图形表面时，导致一个像素被映射到许多纹理像素上；当纹理小于三维图形表面时，许多个像素都映射到同一个纹理。<br>当这些情况发生时，贴图就会变得模糊或发生错位，马赛克。要解决此类问题，必须通过技术平滑texel和pixel之间的对应。这种技术就叫纹理滤波。<br>不同的过滤模式，计算复杂度不一样，会得到不同的效果。过滤模式由简单到复杂包括：Nearest Point Sampling（最近采样点），Bilinear（双线性过滤），Trilinear（三线性过滤）、Anisotropic Filtering（各项异性过滤）。</p>
-<h1 id="什么是各向同性和各向异性？"><a href="#什么是各向同性和各向异性？" class="headerlink" title="什么是各向同性和各向异性？"></a>什么是各向同性和各向异性？</h1><p>当需要贴图的三维表面平行于屏幕（viewport），则是各向同性的。当要贴图的三维表面与屏幕有一定角度的倾斜，则是各向异性的。</p>
-<h1 id="Nearest-Point-Sampling（最近点采样）"><a href="#Nearest-Point-Sampling（最近点采样）" class="headerlink" title="Nearest Point Sampling（最近点采样）"></a>Nearest Point Sampling（最近点采样）</h1><p>这个最简单，每个像素的纹理坐标，并不是刚好对应Texture上的一个采样点texel，怎么办呢？最近点采样取最接近的texel进行采样。<br>当纹理的大小与贴图的三维图形的大小差不多时，这种方法非常有效和快捷。如果大小不同，纹理就需要进行放大或缩小，这样，结果就会变得矮胖、变形或模糊。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/05/GPU-Gems-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/05/GPU-Gems-2/" class="post-title-link" itemprop="url">GPU Gems 2</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-05 16:13:08" itemprop="dateCreated datePublished" datetime="2019-09-05T16:13:08+08:00">2019-09-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GPU-Gems/" itemprop="url" rel="index"><span itemprop="name">GPU Gems</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>《GPU Gems 2》这本书除了丰富的内容之外，还有两个特点。</p>
-<ul>
-<li>虚幻引擎之父Tim Sweeney为《GPU Gems 2》作序。作为Epic Games的创始人，Unreal Engine早期主要开发者，Tim也在序中展示了《GPU Gems 2》出版伊始（2005年3月）时开发完成的Unreal Engine 3。UE3可谓是开创了一个时代。随后包括《新鬼泣》在内的100+款大作（2005年~2015年），都是基于UE3开发。</li>
-<li>《GPU Gems 2》的中文版是龚大2005年，但可以不夸张地说，书中介绍的很多方法技巧trick，哪怕是放到现在，依然非常值得学习和借鉴。</li>
-</ul>
-<p>ok，篇幅原因，开场话就不多说了，放一张本文的核心内容，真是感植物渲染的图，我们就直接开始正题。<br><img src="/2019/09/05/GPU-Gems-2/1.png"></p>
-<h1 id="实现照片级真实感的虚拟植物（Toward-Photorealism-in-Virtual-Botany）"><a href="#实现照片级真实感的虚拟植物（Toward-Photorealism-in-Virtual-Botany）" class="headerlink" title="实现照片级真实感的虚拟植物（Toward Photorealism in Virtual Botany）"></a>实现照片级真实感的虚拟植物（Toward Photorealism in Virtual Botany）</h1><h2 id="内容概览"><a href="#内容概览" class="headerlink" title="内容概览"></a>内容概览</h2><p>众所周知，植物的渲染需要很多的视觉深度和细节才能令人信服。</p>
-<p>本章即关于渲染逼真自然场景的技术，描述了对实时游戏引擎友好的、用于渲染更真实的自然场景的策略。讲述了在不需要大量CPU或GPU占用的前提下渲染出包含大量植物和树组成的绿色植物场景。</p>
-<p>内容安排方面，这章从管理大型户外场景数据这一基础开始描述。然后，提供一些细节，例如关于如何最大化GPU吞吐量，以便可以看到密集的草丛。接下来扩展这些技术，增加地面杂物和大型植物，如树，将阴影和环境影响组合进去。</p>
-<p>一些真实感植物渲染的效果图：</p>
-<img src="/2019/09/05/GPU-Gems-2/2.png">
-<img src="/2019/09/05/GPU-Gems-2/3.png">
-<img src="/2019/09/05/GPU-Gems-2/4.png">
-<h2 id="场景管理（Scene-Management）"><a href="#场景管理（Scene-Management）" class="headerlink" title="场景管理（Scene Management）"></a>场景管理（Scene Management）</h2><p>任何3D游戏引擎都应该有环境相关渲染技术的管理和组织。</p>
-<p>游戏引擎必须管理其渲染技术，以适合于它们希望看到的环境范围。以自然场景为主的游戏由上千棵树，灌木和可能上百万片草叶组成。直接分开渲染会出现数据管理问题，只有解决了这一问题才能以交互的帧率实时渲染。</p>
-<p>我们的目标是在一个逼真的室外场景中大范围地移动游戏相机，而不需要在任务管理上花费过多的存储器资源。</p>
-<h2 id="种植栅格（The-Planting-Grid）"><a href="#种植栅格（The-Planting-Grid）" class="headerlink" title="种植栅格（The Planting Grid）"></a>种植栅格（The Planting Grid）</h2><p>场景管理方面，首先是使用了虚拟栅格的思想。</p>
-<p>我们在相机周围建立一个世界空间固定的栅格，来管理每一层的植物和其他自然物体的种植数据。每个栅格单元包含渲染它所在物理空间层的所有数据。特别是，单元数据结构存储了对应的顶点、索引缓冲区和材质信息来再现需要绘制的内容。</p>
-<p>对植物的每个层，建立相机到层的距离，层需要用它来产生视觉效果，这决定了虚拟栅格的大小。相机移动，虚拟栅格也随之移动。当一个栅格单元不再在虚拟栅格中时，丢弃它，并在需要维护完成栅格结构的地方添加新的单元。在添加每个单元格时，用一种种植算法把渲染所需的数据填充到层。如下图。<br><img src="/2019/09/05/GPU-Gems-2/5.png" title="一个虚拟栅格"><br>图注：内层有一个世界空间对齐的固定大小的栅格。深绿的单元表现为活动单元。当相机向前移动时，丢弃标记为X的单元，添加新的单元（显示为亮绿色）以维持虚拟栅格的大小，实现过程中有用的改进是使用栅格单元池且循环使用，因为当一个旧单元被丢弃时，总会增加一个新单元。</p>
-<h3 id="种植策略（Planting-Strategy）"><a href="#种植策略（Planting-Strategy）" class="headerlink" title="种植策略（Planting Strategy）"></a>种植策略（Planting Strategy）</h3><p>对于充满自然物体的每个单元，需要在地面上选择需要放置物体的适当位置。采用试探的方法根据被防止对象对象类型来选择这些点。通常，需要的密度随机选点，然后看地面上的对应点是否适合要种植的东西。而地面多边形的材质决定了一个层是否适用。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1192,7 +1255,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1203,7 +1266,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

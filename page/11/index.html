@@ -145,6 +145,511 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/24/protobuf-net-no-gc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/24/protobuf-net-no-gc/" class="post-title-link" itemprop="url">Unity3D游戏GC优化总结---protobuf-net无GC版本优化实践</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-24 10:44:29" itemprop="dateCreated datePublished" datetime="2019-04-24T10:44:29+08:00">2019-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="protobuf-net优化效果图"><a href="#protobuf-net优化效果图" class="headerlink" title="protobuf-net优化效果图"></a>protobuf-net优化效果图</h1><p>protobuf-net是Unity3D游戏开发中被广泛使用的Google Protocol Buffer库的c#版本，之所以c#版本被广泛使用，是因为c++版本的源代码不支持Unity3D游戏在各个平台上的动态库构建。它是一个网络传输层协议，对应的lua版本有两个可用的库：一个是proto-gen-lua，由tolua作者开发，另外一个是protoc，由云风开发。protobuf-net在GC上有很大的问题，在一个高频率网络通讯的状态同步游戏中使用发现GC过高，所以对它进行了一次比较彻底的GC优化。下面是优化前后的对比图：<br><img src="/2019/04/24/protobuf-net-no-gc/1.jpg" title="protobuf-net优化前GC和性能效果图"><br><img src="/2019/04/24/protobuf-net-no-gc/2.jpg" title="protobuf-net优化后GC和性能效果图"></p>
+<h1 id="Unity3D游戏GC优化概述"><a href="#Unity3D游戏GC优化概述" class="headerlink" title="Unity3D游戏GC优化概述"></a>Unity3D游戏GC优化概述</h1><p>有关Unity3D垃圾回收的基本概念和优化策略Unity官网有发布过文章：<a href="https://unity3d.com/de/learn/tutorials/topics/performance-optimization/optimizing-garbage-collection-unity-games?playlist=44069" target="_blank" rel="noopener">Optimizing garbage collection in Unity games</a>&gt;。这篇文章讲述了Unity3D垃圾回收机制，和一些简单的优化策略，讨论的不是特别深入，但是广度基本上算是够了。</p>
+<ol>
+<li>C#变量分为两种类型：值类型和引用类型，值类型分配在栈区，引用类型分配在堆区，GC关注引用类型</li>
+<li>GC卡顿原因：堆内存垃圾回收，向系统申请新的堆内存</li>
+<li>GC触发条件：堆内存分配而当内存不足时、按频率自动触发、手动强行触发（一般用在场景切换）</li>
+<li>GC负面效果：内存碎片（导致内存变大，GC触发更加频繁）、游戏顿卡</li>
+<li>GC优化方向：减少GC次数、降低单次GC运行时间、场景切换时主动GC</li>
+<li>GC优化策略：减少对内存分配次数和引用次数、降低堆内存分配和回收频率</li>
+<li>善用缓存：对有堆内存分配的函数，缓存其调用结果，不要反复去调用</li>
+<li>清除列表：而不要每次都去new一个新的列表</li>
+<li>用对象池：必用</li>
+<li>慎用串拼接：缓存、Text组件拆分、使用StringBuild、Debug.Log接口封装（打Conditional标签）</li>
+<li>警惕Unity函数调用：GameObject.name、GameObject.tag、FindObjectsOfType<t>()等众多函数都有堆内存分配，实测为准</t></li>
+<li>避免装箱：慎用object形参、多用泛型版本（如List<t>）等，这里的细节问题很多，实测为准</t></li>
+<li>警惕协程：StartCoroutine有GC、yield return带返回值有GC、yield return new xxx有GC（最好自己做一套协程管理）</li>
+<li>foreach：unity5.5之前版本有GC，使用for循环或者获取迭代器</li>
+<li>减少引用：建立管理类统一管理，使用ID作为访问token</li>
+<li>慎用LINQ：这东西最好不用，GC很高</li>
+<li>结构体数组：如果结构体中含有引用类型变量，对结构体数组进行拆分，避免GC时遍历所有结构体成员</li>
+<li>在游戏空闲（如场景切换时）强制执行GC</li>
+</ol>
+<h1 id="protobuf-net-GC分析"><a href="#protobuf-net-GC分析" class="headerlink" title="protobuf-net GC分析"></a>protobuf-net GC分析</h1><h2 id="protobuf-net序列化"><a href="#protobuf-net序列化" class="headerlink" title="protobuf-net序列化"></a>protobuf-net序列化</h2><p>先分析下序列化GC，deep profile如下：<br><img src="/2019/04/24/protobuf-net-no-gc/3.jpg"></p>
+<p>打开PropertyDecorator.cs脚本，找到Write函数如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Write</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span>, ProtoWriter dest</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Helpers.DebugAssert(<span class="keyword">value</span> != <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">value</span> = property.GetValue(<span class="keyword">value</span>, <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">value</span> != <span class="literal">null</span>) Tail.Write(<span class="keyword">value</span>, dest);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这里MonoProperty.GetValue产生GC的原因是因为反射的使用；而ListDecorator.Write对应于代码Tail.Write，继续往下看：<br><img src="/2019/04/24/protobuf-net-no-gc/4.jpg"><br>找到对应源代码：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Write</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span>, ProtoWriter dest</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    SubItemToken token;</span><br><span class="line">    <span class="keyword">bool</span> writePacked = WritePacked;</span><br><span class="line">    <span class="keyword">if</span> (writePacked)</span><br><span class="line">    &#123;</span><br><span class="line">        ProtoWriter.WriteFieldHeader(fieldNumber, WireType.String, dest);</span><br><span class="line">        token = ProtoWriter.StartSubItem(<span class="keyword">value</span>, dest);</span><br><span class="line">        ProtoWriter.SetPackedField(fieldNumber, dest);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        token = <span class="keyword">new</span> SubItemToken(); <span class="comment">// default</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">bool</span> checkForNull = !SupportNull;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="function"><span class="keyword">object</span> subItem <span class="title">in</span> (<span class="params">IEnumerable</span>)<span class="keyword">value</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (checkForNull &amp;&amp; subItem == <span class="literal">null</span>) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> NullReferenceException(); &#125;</span><br><span class="line">        Tail.Write(subItem, dest);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (writePacked)</span><br><span class="line">    &#123;</span><br><span class="line">        ProtoWriter.EndSubItem(token, dest);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到这里的GC是由list遍历的foreach引起的。继续往内展开，产生GC的点全部是这两个原因上。</p>
+<h2 id="protobuf-net反序列化"><a href="#protobuf-net反序列化" class="headerlink" title="protobuf-net反序列化"></a>protobuf-net反序列化</h2><p>找到第一个产生GC的分支：<br><img src="/2019/04/24/protobuf-net-no-gc/5.jpg"></p>
+<p>同上述分析，MonoProperty.GetValue、MonoProperty.SetValue产生GC原因是反射。而Int32Serializer.Read()代码如下：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">object</span> <span class="title">Read</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span>, ProtoReader source</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Helpers.DebugAssert(<span class="keyword">value</span> == <span class="literal">null</span>); <span class="comment">// since replaces</span></span><br><span class="line">    <span class="keyword">return</span> source.ReadInt32();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可见产生GC的原因是因为装箱。继续往下展开ListDecorateor.Read函数：<br><img src="/2019/04/24/protobuf-net-no-gc/6.jpg"><br>由Activator.CreateInstance得出这里产生GC的原因是实例的创建。继续往下展开：<br><img src="/2019/04/24/protobuf-net-no-gc/7.jpg"><br>反射和装箱产生GC上面已经提到，看ProtoReader.AppendBytes代码：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] <span class="title">AppendBytes</span>(<span class="params"><span class="keyword">byte</span>[] <span class="keyword">value</span>, ProtoReader reader</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (reader == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> ArgumentNullException(<span class="string">"reader"</span>);</span><br><span class="line">    <span class="keyword">switch</span> (reader.wireType)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> WireType.String:</span><br><span class="line">            <span class="keyword">int</span> len = (<span class="keyword">int</span>)reader.ReadUInt32Variant(<span class="literal">false</span>);</span><br><span class="line">            reader.wireType = WireType.None;</span><br><span class="line">            <span class="keyword">if</span> (len == <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">value</span> == <span class="literal">null</span> ? EmptyBlob : <span class="keyword">value</span>;</span><br><span class="line">            <span class="keyword">int</span> offset;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">value</span> == <span class="literal">null</span> || <span class="keyword">value</span>.Length == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                offset = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">value</span> = <span class="keyword">new</span> <span class="keyword">byte</span>[len];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                offset = <span class="keyword">value</span>.Length;</span><br><span class="line">                <span class="keyword">byte</span>[] tmp = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="keyword">value</span>.Length + len];</span><br><span class="line">                Helpers.BlockCopy(<span class="keyword">value</span>, <span class="number">0</span>, tmp, <span class="number">0</span>, <span class="keyword">value</span>.Length);</span><br><span class="line">                <span class="keyword">value</span> = tmp;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// value is now sized with the final length, and (if necessary)</span></span><br><span class="line">            <span class="comment">// contains the old data up to "offset"</span></span><br><span class="line">            reader.position += len; <span class="comment">// assume success</span></span><br><span class="line">            <span class="keyword">while</span> (len &gt; reader.available)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (reader.available &gt; <span class="number">0</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="comment">// copy what we *do* have</span></span><br><span class="line">                    Helpers.BlockCopy(reader.ioBuffer, reader.ioIndex, <span class="keyword">value</span>, offset, reader.available);</span><br><span class="line">                    len -= reader.available;</span><br><span class="line">                    offset += reader.available;</span><br><span class="line">                    reader.ioIndex = reader.available = <span class="number">0</span>; <span class="comment">// we've drained the buffer</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//  now refill the buffer (without overflowing it)</span></span><br><span class="line">                <span class="keyword">int</span> count = len &gt; reader.ioBuffer.Length ? reader.ioBuffer.Length : len;</span><br><span class="line">                <span class="keyword">if</span> (count &gt; <span class="number">0</span>) reader.Ensure(count, <span class="literal">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// at this point, we know that len &lt;= available</span></span><br><span class="line">            <span class="keyword">if</span> (len &gt; <span class="number">0</span>)</span><br><span class="line">            &#123;   <span class="comment">// still need data, but we have enough buffered</span></span><br><span class="line">                Helpers.BlockCopy(reader.ioBuffer, reader.ioIndex, <span class="keyword">value</span>, offset, len);</span><br><span class="line">                reader.ioIndex += len;</span><br><span class="line">                reader.available -= len;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">value</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">throw</span> reader.CreateWireTypeException();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可见，这里产生GC的原因是因为new byte[]操作。</p>
+<h2 id="Protobuf-net-GC优化方案"><a href="#Protobuf-net-GC优化方案" class="headerlink" title="Protobuf-net GC优化方案"></a>Protobuf-net GC优化方案</h2><p>protobuf-net在本次协议测试中GC产生的原因总结如下：</p>
+<ol>
+<li>反射</li>
+<li>forearch</li>
+<li>装箱</li>
+<li>创建新的pb对象</li>
+<li>创建新的字节数组</li>
+</ol>
+<h3 id="去反射"><a href="#去反射" class="headerlink" title="去反射"></a>去反射</h3><p>用过lua的人都知道，不管是tolua还是xlua，去反射的方式是生成wrap文件，这里去反射可以借鉴同样的思想。<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> CustomDataStruct;</span><br><span class="line"><span class="keyword">using</span> ProtoBuf.Serializers;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">battle</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">sealed</span> <span class="keyword">class</span> <span class="title">NtfBattleFrameDataDecorator</span> : <span class="title">ICustomProtoSerializer</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetValue</span>(<span class="params"><span class="keyword">object</span> target, <span class="keyword">object</span> <span class="keyword">value</span>, <span class="keyword">int</span> fieldNumber</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            ntf_battle_frame_data data = target <span class="keyword">as</span> ntf_battle_frame_data;</span><br><span class="line">            <span class="keyword">if</span> (data == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">switch</span> (fieldNumber)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                    data.time = ValueObject.Value&lt;<span class="keyword">int</span>&gt;(<span class="keyword">value</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                    data.slot_list.Add((ntf_battle_frame_data.one_slot)<span class="keyword">value</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">                    data.server_from_slot = ValueObject.Value&lt;<span class="keyword">int</span>&gt;(<span class="keyword">value</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">                    data.server_to_slot = ValueObject.Value&lt;<span class="keyword">int</span>&gt;(<span class="keyword">value</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">                    data.server_curr_frame = ValueObject.Value&lt;<span class="keyword">int</span>&gt;(<span class="keyword">value</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">                    data.is_check_frame = ValueObject.Value&lt;<span class="keyword">int</span>&gt;(<span class="keyword">value</span>);</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">default</span>:</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">object</span> <span class="title">GetValue</span>(<span class="params"><span class="keyword">object</span> target, <span class="keyword">int</span> fieldNumber</span>)</span></span><br><span class="line"><span class="function"></span>        &#123;</span><br><span class="line">            ntf_battle_frame_data data = target <span class="keyword">as</span> ntf_battle_frame_data;</span><br><span class="line">            <span class="keyword">if</span> (data == <span class="literal">null</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">switch</span> (fieldNumber)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                    <span class="keyword">return</span> ValueObject.Get(data.time);</span><br><span class="line">                <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                    <span class="keyword">return</span> data.slot_list;</span><br><span class="line">                <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">                    <span class="keyword">return</span> ValueObject.Get(data.server_from_slot);</span><br><span class="line">                <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">                    <span class="keyword">return</span> ValueObject.Get(data.server_to_slot);</span><br><span class="line">                <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">                    <span class="keyword">return</span> ValueObject.Get(data.server_curr_frame);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>反射产生的地方在protobuf-net的装饰类中，具体是PropertyDecorator，我这里并没有去写工具自动生成Wrap文件，而是对指定的协议进行了Hook。</p>
+<h3 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h3><p>foreach对列表来说改写遍历方式就好了，我这里没有对它进行优化，因为Unity5.5以后版本这个问题就不存在了。篇首优化后的效果图中还有一点残留就是因为这里捣鬼。</p>
+<h3 id="无GC装箱"><a href="#无GC装箱" class="headerlink" title="无GC装箱"></a>无GC装箱</h3><p>要消除这里的装箱操作，需要重构代码，而protobuf-net内部大量使用了object进行参数传递，这使得用泛型编程来消除GC变得不太现实。我这里是自己实现了一个无GC版本的装箱拆箱类ValueObject，使用方式十分简单，类似：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">object</span> <span class="title">Read</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span>, ProtoReader source</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Helpers.DebugAssert(<span class="keyword">value</span> == <span class="literal">null</span>); <span class="comment">// since replaces</span></span><br><span class="line">    <span class="keyword">return</span> ValueObject.Get(source.ReadInt32());</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Write</span>(<span class="params"><span class="keyword">object</span> <span class="keyword">value</span>, ProtoWriter dest</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ProtoWriter.WriteInt32(ValueObject.Value&lt;<span class="keyword">int</span>&gt;(<span class="keyword">value</span>), dest);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中ValueObject.Get是装箱，而ValueObject.Value<t>是拆箱，装箱和拆箱的步骤必须一一对应。</t></p>
+<h3 id="使用对象池"><a href="#使用对象池" class="headerlink" title="使用对象池"></a>使用对象池</h3><p>对于protobuf-net反序列化的时候会创建pb对象这一点，最合理的方式是使用对象池，Hook住protobuf-net创建对象的地方，从对象池中取对象，而不是新建对象，用完以后再执行回收。池接口如下：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 说明：proto网络数据缓存池需要实现的接口</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> </span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> @by wsh 2017-07-01</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">IProtoPool</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 获取数据</span></span><br><span class="line">    <span class="function"><span class="keyword">object</span> <span class="title">Get</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 回收数据</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Recycle</span>(<span class="params"><span class="keyword">object</span> data</span>)</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 清除指定数据</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ClearData</span>(<span class="params"><span class="keyword">object</span> data</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 深拷贝指定数据</span></span><br><span class="line">    <span class="function"><span class="keyword">object</span> <span class="title">DeepCopy</span>(<span class="params"><span class="keyword">object</span> data</span>)</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 释放缓存池</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"></span>)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用字节缓存池"><a href="#使用字节缓存池" class="headerlink" title="使用字节缓存池"></a>使用字节缓存池</h3><p>对于new byte[]操作的GC优化也是一样的，只不过这里使用的缓存池是针对字节数组而非pb对象，我这里是自己实现了一套通用的字节流与字节buffer缓存池StreamBufferPool，每次需要字节buffer时从中取，用完以后放回。</p>
+<h1 id="protobuf-net-GC优化实践"><a href="#protobuf-net-GC优化实践" class="headerlink" title="protobuf-net GC优化实践"></a>protobuf-net GC优化实践</h1><p>以上关键的优化方案都已经有了，具体怎么部署到protobuf-net的细节问题这里不再多说，有兴趣的朋友自己去看下源代码。这里就优化以后的protobuf-net使用方式做下介绍，首先是目录结构：<br><img src="/2019/04/24/protobuf-net-no-gc/8.jpg" title="protobuf-net-gc-optimization工程结构"></p>
+<ol>
+<li>CustomDatastruct：自定义的数据结构</li>
+<li>Protobuf-extension/Protocol：测试协议</li>
+<li>Protobuf-extension/ProtoFactory：包含两个部分，其中ProtoPool是pb对象池，而ProtoSerializer是对protobuf-net装饰器的扩展，用于特定协议的去反射</li>
+<li>ProtoBufSerializer：Protobuf-net对外接口的封装。</li>
+</ol>
+<p>主要看下ProtoBufSerializer脚本：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> battle;</span><br><span class="line"><span class="keyword">using</span> CustomDataStruct;</span><br><span class="line"><span class="keyword">using</span> ProtoBuf.Serializers;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 说明：ProtoBuf初始化、缓存等管理；序列化、反序列化等封装</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> </span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> @by wsh 2017-07-01</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"></span><br><span class="line">public class ProtoBufSerializer : Singleton&lt;ProtoBufSerializer&gt;</span><br><span class="line">&#123;</span><br><span class="line">    ProtoBuf.Meta.RuntimeTypeModel model;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Init</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">base</span>.Init();</span><br><span class="line"></span><br><span class="line">        model = ProtoBuf.Meta.RuntimeTypeModel.Default;</span><br><span class="line">        AddCustomSerializer();</span><br><span class="line">        AddProtoPool();</span><br><span class="line">        model.netDataPoolDelegate = ProtoFactory.Get;</span><br><span class="line">        model.bufferPoolDelegate = StreamBufferPool.GetBuffer;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        model = <span class="literal">null</span>;</span><br><span class="line">        ClearCustomSerializer();</span><br><span class="line">        ClearProtoPool();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Serialize</span>(<span class="params">Stream dest, <span class="keyword">object</span> instance</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        ProtoBufSerializer.instance.model.Serialize(dest, instance);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">public</span> <span class="keyword">object</span> <span class="title">Deserialize</span>(<span class="params">Stream source, System.Type type, <span class="keyword">int</span> length = <span class="number">-1</span></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> ProtoBufSerializer.instance.model.Deserialize(source, <span class="literal">null</span>, type, length, <span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">AddCustomSerializer</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">// 自定义Serializer以避免ProtoBuf反射</span></span><br><span class="line">        CustomSetting.AddCustomSerializer(<span class="keyword">typeof</span>(ntf_battle_frame_data), <span class="keyword">new</span> NtfBattleFrameDataDecorator());</span><br><span class="line">        CustomSetting.AddCustomSerializer(<span class="keyword">typeof</span>(ntf_battle_frame_data.one_slot), <span class="keyword">new</span> OneSlotDecorator());</span><br><span class="line">        CustomSetting.AddCustomSerializer(<span class="keyword">typeof</span>(ntf_battle_frame_data.cmd_with_frame), <span class="keyword">new</span> CmdWithFrameDecorator());</span><br><span class="line">        CustomSetting.AddCustomSerializer(<span class="keyword">typeof</span>(one_cmd), <span class="keyword">new</span> OneCmdDecorator());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ClearCustomSerializer</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        CustomSetting.CrearCustomSerializer();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">AddProtoPool</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">// 自定义缓存池以避免ProtoBuf创建实例</span></span><br><span class="line">        ProtoFactory.AddProtoPool(<span class="keyword">typeof</span>(ntf_battle_frame_data), <span class="keyword">new</span> NtfBattleFrameDataPool());</span><br><span class="line">        ProtoFactory.AddProtoPool(<span class="keyword">typeof</span>(ntf_battle_frame_data.one_slot), <span class="keyword">new</span> OneSlotPool());</span><br><span class="line">        ProtoFactory.AddProtoPool(<span class="keyword">typeof</span>(ntf_battle_frame_data.cmd_with_frame), <span class="keyword">new</span> CmdWithFramePool());</span><br><span class="line">        ProtoFactory.AddProtoPool(<span class="keyword">typeof</span>(one_cmd), <span class="keyword">new</span> OneCmdPool());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ClearProtoPool</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        ProtoFactory.ClearProtoPool();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ol>
+<li>AddCustomSerializer：用于添加自定义的装饰器到protobuf-net</li>
+<li>AddProtoPool：用于添加自定义对象池到protobuf-net</li>
+<li>Serialize：提供给逻辑层使用的序列化接口</li>
+<li>Deserialize：提供给逻辑层使用的反序列化接口</li>
+</ol>
+<p>使用示例：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> SENF_BUFFER_LEN = <span class="number">64</span> * <span class="number">1024</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> REVIVE_BUFFER_LEN = <span class="number">128</span> * <span class="number">1024</span>;</span><br><span class="line">MemoryStream msSend = <span class="keyword">new</span> MemoryStream(sendBuffer, <span class="number">0</span>, SENF_BUFFER_LEN, <span class="literal">true</span>, <span class="literal">true</span>);;</span><br><span class="line">MemoryStream msRecive = <span class="keyword">new</span> MemoryStream(reciveBuffer, <span class="number">0</span>, REVIVE_BUFFER_LEN, <span class="literal">true</span>, <span class="literal">true</span>);;</span><br><span class="line"></span><br><span class="line">msSend.SetLength(SENF_BUFFER_LEN);</span><br><span class="line">msSend.Seek(<span class="number">0</span>, SeekOrigin.Begin);</span><br><span class="line"></span><br><span class="line">ntf_battle_frame_data dataTmp = ProtoFactory.Get&lt;ntf_battle_frame_data&gt;();</span><br><span class="line">ntf_battle_frame_data.one_slot oneSlot = ProtoFactory.Get&lt;ntf_battle_frame_data.one_slot&gt;();</span><br><span class="line">ntf_battle_frame_data.cmd_with_frame cmdWithFrame = ProtoFactory.Get&lt;ntf_battle_frame_data.cmd_with_frame&gt;();</span><br><span class="line">one_cmd oneCmd = ProtoFactory.Get&lt;one_cmd&gt;();</span><br><span class="line">cmdWithFrame.cmd = oneCmd;</span><br><span class="line">oneSlot.cmd_list.Add(cmdWithFrame);</span><br><span class="line">dataTmp.slot_list.Add(oneSlot);</span><br><span class="line">DeepCopyData(data, dataTmp);</span><br><span class="line">ProtoBufSerializer.Serialize(msSend, dataTmp);</span><br><span class="line">ProtoFactory.Recycle(dataTmp);<span class="comment">//*************回收，很重要</span></span><br><span class="line"></span><br><span class="line">msSend.SetLength(msSend.Position);<span class="comment">//长度一定要设置对</span></span><br><span class="line">msSend.Seek(<span class="number">0</span>, SeekOrigin.Begin);<span class="comment">//指针一定要复位</span></span><br><span class="line"><span class="comment">//msRecive.SetLength(msSend.Length);//同理，但是如果Deserialize指定长度，则不需要设置流长度</span></span><br><span class="line">msRecive.Seek(<span class="number">0</span>, SeekOrigin.Begin);<span class="comment">//同理</span></span><br><span class="line"></span><br><span class="line">Buffer.BlockCopy(msSend.GetBuffer(), <span class="number">0</span>, msRecive.GetBuffer(), <span class="number">0</span>, (<span class="keyword">int</span>)msSend.Length);</span><br><span class="line"></span><br><span class="line">dataTmp = ProtoBufSerializer.Deserialize(msRecive, <span class="keyword">typeof</span>(ntf_battle_frame_data), (<span class="keyword">int</span>)msSend.Length) <span class="keyword">as</span> ntf_battle_frame_data;</span><br><span class="line"></span><br><span class="line">PrintData(dataTmp);</span><br><span class="line">ProtoFactory.Recycle(dataTmp);<span class="comment">//*************回收，很重要</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="Unity3D游戏GC优化实践"><a href="#Unity3D游戏GC优化实践" class="headerlink" title="Unity3D游戏GC优化实践"></a>Unity3D游戏GC优化实践</h1><p>protobuf-net的GC优化实践要说的就这么多，其实做GC优化的大概步骤就是这些：GC分析，优化方案，最后再重构代码。这里再补充一些其它的内容，CustomDatastruct中包含了：</p>
+<ol>
+<li>BetterDelegate：泛型委托包装类，针对深层函数调用树中使用泛型委托作为函数参数进行传递时代码编写困难的问题。</li>
+<li>BetterLinkedList：无GC链表</li>
+<li>BetterStringBuilder：无GC版StrigBuilder</li>
+<li>StreamBufferPool：字节流与字节buffer缓存池</li>
+<li>ValueObject：无GC装箱拆箱</li>
+<li>ObjPool：通用对象池</li>
+</ol>
+<p>　　其中protobuf-net的无GC优化用到了StreamBufferPool、ValueObject与ObjPool，主要是对象池和免GC装箱，其它的在源代码中有详细注释。TestScenes下包含了各种测试场景：<br><img src="/2019/04/24/protobuf-net-no-gc/9.jpg"><br>这里对其中关键的几个结论给下说明：</p>
+<ol>
+<li>LinkedList当自定义结构做链表节点，必须实现IEquatable<t>、IComparable<t>接口，否则Roemove、Cotains、Find、FindLast每次都有GC产生。</t></t></li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 重要：对于自定义结构一定要继承IEquatable&lt;T&gt;接口并实现它</span></span><br><span class="line"><span class="comment">// 此外：对于Sort，实现IComparable&lt;T&gt;接口，则在传入委托的时候可以和系统简单值类型一样</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> CustomStruct : IEquatable&lt;CustomStruct&gt;, IComparable&lt;CustomStruct&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> a;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> b;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CustomStruct</span>(<span class="params"><span class="keyword">int</span> a, <span class="keyword">string</span> b</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">this</span>.a = a;</span><br><span class="line">        <span class="keyword">this</span>.b = b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">Equals</span>(<span class="params">CustomStruct other</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> a == other.a &amp;&amp; b == other.b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">CompareTo</span>(<span class="params">CustomStruct other</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a != other.a)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> a.CompareTo(other.a);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (b != other.b)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> b.CompareTo(other.b);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 说明：测试正确性用的，不是必须</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">string</span> <span class="title">ToString</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">string</span>.Format(<span class="string">"&lt;a = &#123;0&#125;, b = &#123;1&#125;&gt;"</span>, a, b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>所有委托必须缓存，产生GC的测试一律是因为每次调用都生成了一个新的委托</li>
+</ol>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">TestDelegateGC</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> <span class="title">TestDelegate</span>(<span class="params">GameObject go, <span class="keyword">string</span> str, <span class="keyword">int</span> num</span>)</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">delegate</span> <span class="keyword">void</span> TestTDelegate&lt;T,U,V&gt;(T go, U str, V num);</span><br><span class="line"></span><br><span class="line">    Delegate mDelegate1;</span><br><span class="line">    Delegate mDelegate2;</span><br><span class="line">    TestDelegate mDelegate3;</span><br><span class="line">    TestTDelegate&lt;GameObject, <span class="keyword">string</span>, <span class="keyword">int</span>&gt; mDelegate4;</span><br><span class="line">    TestDelegate mDelegate5;</span><br><span class="line">    Comparison&lt;<span class="keyword">int</span>&gt; mDelegate6;</span><br><span class="line">    Comparison&lt;<span class="keyword">int</span>&gt; mDelegate7;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> mTestPriviteData = <span class="number">100</span>; </span><br><span class="line">    List&lt;<span class="keyword">int</span>&gt; mTestList = <span class="keyword">new</span> List&lt;<span class="keyword">int</span>&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Use this for initialization</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Start</span> (<span class="params"></span>)</span> &#123;</span><br><span class="line">        mDelegate1 = (TestDelegate)DelegateFun;</span><br><span class="line">        mDelegate2 = Delegate.CreateDelegate(<span class="keyword">typeof</span>(TestDelegate), <span class="keyword">this</span>, <span class="string">"DelegateFun"</span>);</span><br><span class="line">        mDelegate3 = DelegateFun;</span><br><span class="line">        mDelegate4 = TDelegateFun;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//static</span></span><br><span class="line">        mDelegate5 = <span class="keyword">new</span> TestDelegate(StaticDelegateFun);</span><br><span class="line">        mDelegate6 = SortByXXX;</span><br><span class="line">        mDelegate7 = TSortByXXX&lt;<span class="keyword">int</span>&gt;;</span><br><span class="line"></span><br><span class="line">        mTestList.Add(<span class="number">1</span>);</span><br><span class="line">        mTestList.Add(<span class="number">2</span>);</span><br><span class="line">        mTestList.Add(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Update is called once per frame</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Update</span> (<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="comment">// 不使用泛型</span></span><br><span class="line">        TestFun(DelegateFun); </span><br><span class="line">        TestFun(mDelegate1 <span class="keyword">as</span> TestDelegate); <span class="comment">//无GC</span></span><br><span class="line">        TestFun(mDelegate2 <span class="keyword">as</span> TestDelegate); <span class="comment">//无GC</span></span><br><span class="line">        TestFun(mDelegate3); <span class="comment">//无GC，推荐</span></span><br><span class="line">        TestFun(mDelegate5); <span class="comment">//无GC</span></span><br><span class="line">        <span class="comment">// 使用泛型，更加通用</span></span><br><span class="line">        TestTFun(TDelegateFun, gameObject, <span class="string">"test"</span>, <span class="number">1000</span>);<span class="comment">//每次调用产生104B垃圾</span></span><br><span class="line">        TestTFun(mDelegate4, gameObject, <span class="string">"test"</span>, <span class="number">1000</span>);<span class="comment">// 无GC，更通用，极力推荐***********</span></span><br><span class="line">        <span class="comment">// Sort测试</span></span><br><span class="line">        mTestList.Sort();<span class="comment">//无GC</span></span><br><span class="line">        TestSort(SortByXXX);<span class="comment">//每次调用产生104B垃圾</span></span><br><span class="line">        TestSort(mDelegate6);<span class="comment">//无GC</span></span><br><span class="line">        TestSort(TSortByXXX);<span class="comment">//每次调用产生104B垃圾</span></span><br><span class="line">        TestSort(TSortByXXX);<span class="comment">//每次调用产生104B垃圾</span></span><br><span class="line">        TestSort(mDelegate7);<span class="comment">//无GC</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TestFun</span>(<span class="params">TestDelegate de</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        de(gameObject, <span class="string">"test"</span>, <span class="number">1000</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> TestTFun&lt;T, U, V&gt;(TestTDelegate&lt;T, U, V&gt; de, T arg0, U arg1, V arg2)</span><br><span class="line">    &#123;</span><br><span class="line">        de(arg0, arg1, arg2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> TestSort&lt;T&gt;(List&lt;T&gt; list, Comparison&lt;T&gt; sortFunc)</span><br><span class="line">    &#123;</span><br><span class="line">        list.Sort(sortFunc);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">TestSort</span>(<span class="params">Comparison&lt;<span class="keyword">int</span>&gt; sortFunc</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        mTestList.Sort(sortFunc);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DelegateFun</span>(<span class="params">GameObject go, <span class="keyword">string</span> str, <span class="keyword">int</span> num</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> TDelegateFun&lt;T, U, V&gt;(T go, U str, V num)</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">StaticDelegateFun</span>(<span class="params">GameObject go, <span class="keyword">string</span> str, <span class="keyword">int</span> num</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">SortByXXX</span>(<span class="params"><span class="keyword">int</span> x, <span class="keyword">int</span> y</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="keyword">return</span> x.CompareTo(y);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> TSortByXXX&lt;T&gt;(T x, T y) <span class="keyword">where</span> T : IComparable&lt;T&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> x.CompareTo(y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>List<t>对于自定义结构做列表项，必须实现IEquatable<t>、IComparable<t>接口，否则Roemove、Cotains、IndexOf、sort每次都有GC产生；对于Sort，需要传递一个委托。这两点的实践上面都已经说明。</t></t></t></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/22/KCP-CSharp-README/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/22/KCP-CSharp-README/" class="post-title-link" itemprop="url">KCP C#版</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-22 19:48:49" itemprop="dateCreated datePublished" datetime="2019-04-22T19:48:49+08:00">2019-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="KCP-C-版"><a href="#KCP-C-版" class="headerlink" title="KCP C#版"></a>KCP C#版</h1><p>支持目标框架:  </p>
+<ul>
+<li>dotnetstandard2.0</li>
+<li>dotnetstandard1.1</li>
+</ul>
+<p>开箱即用。也可以使用Nuget 搜索KCP。</p>
+<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p>c: skywind3000 <a href="https://github.com/skywind3000/kcp" target="_blank" rel="noopener">KCP</a><br>go: xtaci <a href="https://github.com/xtaci/kcp-go" target="_blank" rel="noopener">kcp-go</a>  </p>
+<h1 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h1><p>请参考C版本文档。</p>
+<h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><ul>
+<li><p>内部使用了unsafe代码和非托管内存，所以kcpsegment运行时不会alloc，不会对gc造成压力。</p>
+</li>
+<li><p>对于output回调和TryRecv函数。使用RentBuffer回调，从外部分配内存。请参考<a href="https://docs.microsoft.com/en-us/dotnet/standard/memory-and-spans/memory-t-usage-guidelines" target="_blank" rel="noopener">IMemoryOwner</a>用法。</p>
+</li>
+<li>支持<code>Span&lt;byte&gt;</code></li>
+</ul>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><p><a href="Image/deadlock.jpg">[已修复]<del>同一个进程两个Kcp echo测试，至少使用3个线程，否则可能死锁。</del></a></p>
+<p>在UnitTestProject1路径下执行 dotnet test 可进行多框架测试。（需要安装notnetcoreSDK）</p>
+<h1 id="相对C版的一些变化"><a href="#相对C版的一些变化" class="headerlink" title="相对C版的一些变化"></a>相对C版的一些变化</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>差异变化</th>
+<th>C版</th>
+<th>C#版</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据结构</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>acklist</td>
+<td>数组</td>
+<td>ConcurrentQueue</td>
+</tr>
+<tr>
+<td>snd_queue</td>
+<td>双向链表</td>
+<td>ConcurrentQueue</td>
+</tr>
+<tr>
+<td>snd_buf</td>
+<td>双向链表</td>
+<td>LinkedList</td>
+</tr>
+<tr>
+<td>rcv_buf</td>
+<td>双向链表</td>
+<td>LinkedList</td>
+</tr>
+<tr>
+<td>rcv_queue</td>
+<td>双向链表</td>
+<td>List</td>
+</tr>
+<tr>
+<td>———————</td>
+<td>———————</td>
+<td>———————</td>
+</tr>
+<tr>
+<td>回调函数</td>
+<td></td>
+<td>增加了RentBuffer回调，当KCP需要时可以从外部申请内存。</td>
+</tr>
+<tr>
+<td>多线程</td>
+<td></td>
+<td>增加了线程安全。</td>
+</tr>
+<tr>
+<td>流模式</td>
+<td></td>
+<td>由于数据结构变动，移除了流模式。</td>
+</tr>
+<tr>
+<td>interval最小间隔</td>
+<td>10ms</td>
+<td>0ms(在特殊形况下允许CPU满负荷运转)</td>
+</tr>
+<tr>
+<td>———————</td>
+<td>———————</td>
+<td>———————</td>
+</tr>
+<tr>
+<td>API变动</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>增加大小端编码设置。默认小端编码。</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>增加TryRecv函数，当可以Recv时只peeksize一次。</td>
+</tr>
+<tr>
+<td></td>
+<td>ikcp_ack_push</td>
+<td>删除了此函数（已内联）</td>
+</tr>
+<tr>
+<td></td>
+<td>ikcp_ack_get</td>
+<td>删除了此函数（已内联）</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/22/KCP-README/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/22/KCP-README/" class="post-title-link" itemprop="url">KCP - A Fast and Reliable ARQ Protocol</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-22 19:48:48" itemprop="dateCreated datePublished" datetime="2019-04-22T19:48:48+08:00">2019-04-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a href="https://github.com/skywind3000/kcp" target="_blank" rel="noopener"><img src="http://skywind3000.github.io/word/images/kcp.svg" alt="Powered"></a> <a href="https://travis-ci.org/skywind3000/kcp" target="_blank" rel="noopener"><img src="https://api.travis-ci.org/skywind3000/kcp.svg?branch=master" alt="Build Status"></a><br><a href="#backers"><img src="https://opencollective.com/kcp/backers/badge.svg" alt="Backers on Open Collective"></a><br> <a href="#sponsors"><img src="https://opencollective.com/kcp/sponsors/badge.svg" alt="Sponsors on Open Collective"></a> </p>
+<p><a href="https://github.com/skywind3000/kcp/blob/master/README.en.md" target="_blank" rel="noopener">README in English</a> </p>
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>KCP是一个快速可靠协议，能以比 TCP浪费10%-20%的带宽的代价，换取平均延迟降低 30%-40%，且最大延迟降低三倍的传输效果。纯算法实现，并不负责底层协议（如UDP）的收发，需要使用者自己定义下层数据包的发送方式，以 callback的方式提供给 KCP。 连时钟都需要外部传递进来，内部不会有任何一次系统调用。</p>
+<p>整个协议只有 ikcp.h, ikcp.c两个源文件，可以方便的集成到用户自己的协议栈中。也许你实现了一个P2P，或者某个基于 UDP的协议，而缺乏一套完善的ARQ可靠协议实现，那么简单的拷贝这两个文件到现有项目中，稍微编写两行代码，即可使用。</p>
+<h1 id="技术特性"><a href="#技术特性" class="headerlink" title="技术特性"></a>技术特性</h1><p>TCP是为流量设计的（每秒内可以传输多少KB的数据），讲究的是充分利用带宽。而 KCP是为流速设计的（单个数据包从一端发送到一端需要多少时间），以10%-20%带宽浪费的代价换取了比 TCP快30%-40%的传输速度。TCP信道是一条流速很慢，但每秒流量很大的大运河，而KCP是水流湍急的小激流。KCP有正常模式和快速模式两种，通过以下策略达到提高流速的结果：</p>
+<h4 id="RTO翻倍vs不翻倍："><a href="#RTO翻倍vs不翻倍：" class="headerlink" title="RTO翻倍vs不翻倍："></a>RTO翻倍vs不翻倍：</h4><p>   TCP超时计算是RTOx2，这样连续丢三次包就变成RTOx8了，十分恐怖，而KCP启动快速模式后不x2，只是x1.5（实验证明1.5这个值相对比较好），提高了传输速度。</p>
+<h4 id="选择性重传-vs-全部重传："><a href="#选择性重传-vs-全部重传：" class="headerlink" title="选择性重传 vs 全部重传："></a>选择性重传 vs 全部重传：</h4><p>   TCP丢包时会全部重传从丢的那个包开始以后的数据，KCP是选择性重传，只重传真正丢失的数据包。</p>
+<h4 id="快速重传："><a href="#快速重传：" class="headerlink" title="快速重传："></a>快速重传：</h4><p>   发送端发送了1,2,3,4,5几个包，然后收到远端的ACK: 1, 3, 4, 5，当收到ACK3时，KCP知道2被跳过1次，收到ACK4时，知道2被跳过了2次，此时可以认为2号丢失，不用等超时，直接重传2号包，大大改善了丢包时的传输速度。</p>
+<h4 id="延迟ACK-vs-非延迟ACK："><a href="#延迟ACK-vs-非延迟ACK：" class="headerlink" title="延迟ACK vs 非延迟ACK："></a>延迟ACK vs 非延迟ACK：</h4><p>   TCP为了充分利用带宽，延迟发送ACK（NODELAY都没用），这样超时计算会算出较大 RTT时间，延长了丢包时的判断过程。KCP的ACK是否延迟发送可以调节。</p>
+<h4 id="UNA-vs-ACK-UNA："><a href="#UNA-vs-ACK-UNA：" class="headerlink" title="UNA vs ACK+UNA："></a>UNA vs ACK+UNA：</h4><p>   ARQ模型响应有两种，UNA（此编号前所有包已收到，如TCP）和ACK（该编号包已收到），光用UNA将导致全部重传，光用ACK则丢失成本太高，以往协议都是二选其一，而 KCP协议中，除去单独的 ACK包外，所有包都有UNA信息。</p>
+<h4 id="非退让流控："><a href="#非退让流控：" class="headerlink" title="非退让流控："></a>非退让流控：</h4><p>   KCP正常模式同TCP一样使用公平退让法则，即发送窗口大小由：发送缓存大小、接收端剩余接收缓存大小、丢包退让及慢启动这四要素决定。但传送及时性要求很高的小数据时，可选择通过配置跳过后两步，仅用前两项来控制发送频率。以牺牲部分公平性及带宽利用率之代价，换取了开着BT都能流畅传输的效果。</p>
+<h1 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h1><ol>
+<li><p>创建 KCP对象：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化 kcp对象，conv为一个表示会话编号的整数，和tcp的 conv一样，通信双</span></span><br><span class="line"><span class="comment">// 方需保证 conv相同，相互的数据包才能够被认可，user是一个给回调函数的指针</span></span><br><span class="line">ikcpcb *kcp = ikcp_create(conv, user);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置回调函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// KCP的下层协议输出函数，KCP需要发送数据时会调用它</span></span><br><span class="line"><span class="comment">// buf/len 表示缓存和长度</span></span><br><span class="line"><span class="comment">// user指针为 kcp对象创建时传入的值，用于区别多个 KCP对象</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">udp_output</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">int</span> len, ikcpcb *kcp, <span class="keyword">void</span> *user)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ....</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 设置回调函数</span></span><br><span class="line">kcp-&gt;output = udp_output;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>循环调用 update：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以一定频率调用 ikcp_update来更新 kcp状态，并且传入当前时钟（毫秒单位）</span></span><br><span class="line"><span class="comment">// 如 10ms调用一次，或用 ikcp_check确定下次调用 update的时间不必每次调用</span></span><br><span class="line">ikcp_update(kcp, millisec);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>输入一个下层数据包：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 收到一个下层数据包（比如UDP包）时需要调用：</span></span><br><span class="line">ikcp_input(kcp, received_udp_packet, received_udp_size);</span><br></pre></td></tr></table></figure>
+<p>处理了下层协议的输出/输入后 KCP协议就可以正常工作了，使用 ikcp_send 来向<br>远端发送数据。而另一端使用 ikcp_recv(kcp, ptr, size)来接收数据。</p>
+</li>
+</ol>
+<h1 id="协议配置"><a href="#协议配置" class="headerlink" title="协议配置"></a>协议配置</h1><p>协议默认模式是一个标准的 ARQ，需要通过配置打开各项加速开关：</p>
+<ol>
+<li><p>工作模式：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ikcp_nodelay</span><span class="params">(ikcpcb *kcp, <span class="keyword">int</span> nodelay, <span class="keyword">int</span> interval, <span class="keyword">int</span> resend, <span class="keyword">int</span> nc)</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>nodelay ：是否启用 nodelay模式，0不启用；1启用。</li>
+<li>interval ：协议内部工作的 interval，单位毫秒，比如 10ms或者 20ms</li>
+<li>resend ：快速重传模式，默认0关闭，可以设置2（2次ACK跨越将会直接重传）</li>
+<li>nc ：是否关闭流控，默认是0代表不关闭，1代表关闭。</li>
+<li>普通模式： ikcp_nodelay(kcp, 0, 40, 0, 0);</li>
+<li>极速模式： ikcp_nodelay(kcp, 1, 10, 2, 1);</li>
+</ul>
+</li>
+<li><p>最大窗口：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ikcp_wndsize</span><span class="params">(ikcpcb *kcp, <span class="keyword">int</span> sndwnd, <span class="keyword">int</span> rcvwnd)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>该调用将会设置协议的最大发送窗口和最大接收窗口大小，默认为32. 这个可以理解为 TCP的 SND_BUF 和 RCV_BUF，只不过单位不一样 SND/RCV_BUF 单位是字节，这个单位是包。</p>
+</li>
+<li><p>最大传输单元：</p>
+<p>纯算法协议并不负责探测 MTU，默认 mtu是1400字节，可以使用ikcp_setmtu来设置该值。该值将会影响数据包归并及分片时候的最大传输单元。</p>
+</li>
+<li><p>最小RTO：</p>
+<p>不管是 TCP还是 KCP计算 RTO时都有最小 RTO的限制，即便计算出来RTO为40ms，由于默认的 RTO是100ms，协议只有在100ms后才能检测到丢包，快速模式下为30ms，可以手动更改该值：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kcp-&gt;rx_minrto = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="文档索引"><a href="#文档索引" class="headerlink" title="文档索引"></a>文档索引</h1><p>协议的使用和配置都是很简单的，大部分情况看完上面的内容基本可以使用了。如果你需要进一步进行精细的控制，比如改变 KCP的内存分配器，或者你需要更有效的大规模调度 KCP链接（比如 3500个以上），或者如何更好的同 TCP结合，那么可以继续延伸阅读：</p>
+<ul>
+<li><a href="https://github.com/skywind3000/kcp/wiki" target="_blank" rel="noopener">Wiki Home</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/KCP-Best-Practice" target="_blank" rel="noopener">KCP 最佳实践</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/Cooperate-With-Tcp-Server" target="_blank" rel="noopener">同现有TCP服务器集成</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/Network-Encryption" target="_blank" rel="noopener">传输数据加密</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/Flow-Control-for-Users" target="_blank" rel="noopener">应用层流量控制</a></li>
+<li><a href="https://github.com/skywind3000/kcp/wiki/KCP-Benchmark" target="_blank" rel="noopener">性能评测</a></li>
+</ul>
+<h1 id="开源案例"><a href="#开源案例" class="headerlink" title="开源案例"></a>开源案例</h1><ul>
+<li><a href="https://github.com/xtaci/kcptun" target="_blank" rel="noopener">kcptun</a>: 基于 kcp-go做的高速远程端口转发(隧道) ，配合ssh -D，可以比 shadowsocks 更流畅的看在线视频。</li>
+<li><a href="https://github.com/vzex/dog-tunnel" target="_blank" rel="noopener">dog-tunnel</a>: GO开发的网络隧道，使用 KCP极大的改进了传输速度，并移植了一份 GO版本 KCP</li>
+<li><a href="https://www.v2ray.com" target="_blank" rel="noopener">v2ray</a>：著名代理软件，Shadowsocks 代替者，1.17后集成了 kcp协议，使用UDP传输，无数据包特征。</li>
+<li><a href="https://github.com/libinzhangyuan/asio_kcp" target="_blank" rel="noopener">asio-kcp</a>: 使用 KCP的完整 UDP网络库，完整实现了基于 UDP的链接状态管理，会话控制，KCP协议调度等</li>
+<li><a href="https://github.com/hkspirt/kcp-java" target="_blank" rel="noopener">kcp-java</a>：Java版本 KCP协议实现。</li>
+<li><a href="https://github.com/szhnet/kcp-netty" target="_blank" rel="noopener">kcp-netty</a>：kcp的Java语言实现，基于netty。</li>
+<li><a href="https://github.com/xtaci/kcp-go" target="_blank" rel="noopener">kcp-go</a>: 高安全性的kcp的 GO语言实现，包含 UDP会话管理的简单实现，可以作为后续开发的基础库。 </li>
+<li><a href="https://github.com/limpo1989/kcp-csharp" target="_blank" rel="noopener">kcp-csharp</a>: kcp的 csharp移植，同时包含一份回话管理，可以连接上面kcp-go的服务端。</li>
+<li><a href="https://github.com/KumoKyaku/KCP" target="_blank" rel="noopener">kcp-csharp</a>: 新版本 Kcp的 csharp移植。线程安全，运行时无alloc，对gc无压力。</li>
+<li><a href="https://github.com/en/kcp-rs" target="_blank" rel="noopener">kcp-rs</a>: KCP的 rust移植</li>
+<li><a href="https://github.com/Matrix-Zhang/kcp" target="_blank" rel="noopener">kcp-rust</a>：新版本 KCP的 rust 移植</li>
+<li><a href="https://github.com/Matrix-Zhang/tokio_kcp" target="_blank" rel="noopener">tokio-kcp</a>：rust tokio 的 kcp 集成</li>
+<li><a href="https://github.com/linxiaolong/lua-kcp" target="_blank" rel="noopener">lua-kcp</a>: KCP的 Lua扩展，用于 Lua服务器</li>
+<li><a href="https://github.com/leenjewel/node-kcp" target="_blank" rel="noopener">node-kcp</a>: node-js 的 KCP 接口  </li>
+<li><a href="https://github.com/oyyd/nysocks" target="_blank" rel="noopener">nysocks</a>: 基于libuv实现的<a href="https://nodejs.org/api/addons.html" target="_blank" rel="noopener">node-addon</a>，提供nodejs版本的代理服务，客户端接入支持SOCKS5和ss两种协议</li>
+<li><a href="https://github.com/shadowsocks/shadowsocks-android" target="_blank" rel="noopener">shadowsocks-android</a>: Shadowsocks for android 集成了 kcptun 使用 kcp协议加速 shadowsocks，效果不错</li>
+<li><a href="https://github.com/elisaday/kcpuv" target="_blank" rel="noopener">kcpuv</a>: 使用 libuv开发的kcpuv库，目前还在 Demo阶段</li>
+<li><a href="https://getlantern.org/" target="_blank" rel="noopener">Lantern</a>：更好的 VPN，Github 50000 星，使用 kcpgo 加速</li>
+<li><a href="https://github.com/smallnest/rpcx" target="_blank" rel="noopener">rpcx</a> ：RPC 框架，1000+ 星，使用 kcpgo 加速 RPC</li>
+<li><a href="https://github.com/liudf0716/xkcptun" target="_blank" rel="noopener">xkcptun</a>: c语言实现的kcptun，主要用于<a href="https://github.com/openwrt/openwrt" target="_blank" rel="noopener">OpenWrt</a>, <a href="https://github.com/lede-project/source" target="_blank" rel="noopener">LEDE</a>开发的路由器项目上</li>
+<li><a href="https://github.com/egametang/ET" target="_blank" rel="noopener">et-frame</a>: C#前后端框架(前端unity3d)，统一用C#开发游戏，实现了前后端kcp协议</li>
+</ul>
+<h1 id="商业案例"><a href="#商业案例" class="headerlink" title="商业案例"></a>商业案例</h1><ul>
+<li><a href="https://www.taptap.com/app/50664" target="_blank" rel="noopener">明日帝国</a>：Game K17 的 《明日帝国》 （Google Play），使用 KCP 加速游戏消息，让全球玩家流畅联网</li>
+<li><a href="https://www.taptap.com/app/27242" target="_blank" rel="noopener">仙灵大作战</a>：4399 的 MOBA游戏，使用 KCP 优化游戏同步</li>
+<li><a href="http://cc.163.com/" target="_blank" rel="noopener">CC</a>：网易 CC 使用 kcp 加速视频推流，有效提高流畅性</li>
+<li><a href="http://bobo.163.com/" target="_blank" rel="noopener">BOBO</a>：网易 BOBO 使用 kcp 加速主播推流</li>
+<li><a href="http://www.yfcloud.com/" target="_blank" rel="noopener">云帆加速</a>：使用 KCP 加速文件传输和视频推流，优化了台湾主播推流的流畅度</li>
+</ul>
+<p>欢迎告知更多案例</p>
+<h1 id="协议比较"><a href="#协议比较" class="headerlink" title="协议比较"></a>协议比较</h1><p>如果网络永远不卡，那 KCP/TCP 表现类似，但是网络本身就是不可靠的，丢包和抖动无法避免（否则还要各种可靠协议干嘛）。在内网这种几乎理想的环境里直接比较，大家都差不多，但是放到公网上，放到3G/4G网络情况下，或者使用内网丢包模拟，差距就很明显了。公网在高峰期有平均接近10%的丢包，wifi/3g/4g下更糟糕，这些都会让传输变卡。</p>
+<p>感谢 <a href="https://github.com/libinzhangyuan/asio_kcp" target="_blank" rel="noopener">asio-kcp</a> 的作者 <a href="https://github.com/libinzhangyuan" target="_blank" rel="noopener">zhangyuan</a> 对 KCP 与 enet, udt做过的一次横向评测，结论如下：</p>
+<ul>
+<li>ASIO-KCP <strong>has good performace in wifi and phone network(3G, 4G)</strong>.</li>
+<li>The kcp is the <strong>first choice for realtime pvp game</strong>.</li>
+<li>The lag is less than 1 second when network lag happen. <strong>3 times better than enet</strong> when lag happen.</li>
+<li>The enet is a good choice if your game allow 2 second lag.</li>
+<li><strong>UDT is a bad idea</strong>. It always sink into badly situation of more than serval seconds lag. And the recovery is not expected.</li>
+<li>enet has the problem of lack of doc. And it has lots of functions that you may intrest.</li>
+<li>kcp’s doc is chinese. Good thing is the function detail which is writen in code is english. And you can use asio_kcp which is a good wrap.</li>
+<li>The kcp is a simple thing. You will write more code if you want more feature.</li>
+<li>UDT has a perfect doc. UDT may has more bug than others as I feeling.</li>
+</ul>
+<p>具体见：<a href="https://github.com/libinzhangyuan/reliable_udp_bench_mark" target="_blank" rel="noopener">横向比较</a> 和 <a href="https://github.com/skywind3000/kcp/wiki/KCP-Benchmark" target="_blank" rel="noopener">评测数据</a>，为犹豫选择的人提供了更多指引。</p>
+<h1 id="欢迎捐赠"><a href="#欢迎捐赠" class="headerlink" title="欢迎捐赠"></a>欢迎捐赠</h1><p><img src="https://raw.githubusercontent.com/skywind3000/kcp/master/donation.png" alt="欢迎使用支付宝对该项目进行捐赠"></p>
+<p>欢迎使用支付宝手扫描上面的二维码，对该项目进行捐赠。捐赠款项将用于持续优化 KCP协议以及完善文档。</p>
+<p>感谢：明明、星仔、进、帆、颁钊、斌铨、晓丹、余争、虎、晟敢、徐玮、王川、赵刚强、胡知锋、万新朝、何新超、刘旸、侯宪辉、吴佩仪、华斌、如涛、胡坚。。。（早先的名单实在不好意思没记录下来）等同学的捐助与支持。</p>
+<p>欢迎关注</p>
+<p>KCP交流群：364933586（QQ群号），KCP集成，调优，网络传输以及相关技术讨论<br>Gitter 群：<a href="https://gitter.im/skywind3000/KCP" target="_blank" rel="noopener">https://gitter.im/skywind3000/KCP</a></p>
+<p>blog: <a href="http://www.skywind.me" target="_blank" rel="noopener">http://www.skywind.me</a></p>
+<p>zhihu: <a href="https://www.zhihu.com/people/skywind3000" target="_blank" rel="noopener">https://www.zhihu.com/people/skywind3000</a></p>
+<h2 id="Contributors"><a href="#Contributors" class="headerlink" title="Contributors"></a>Contributors</h2><p>This project exists thanks to all the people who contribute.<br><a href="https://github.com/skywind3000/kcp/graphs/contributors" target="_blank" rel="noopener"><img src="https://opencollective.com/kcp/contributors.svg?width=890&button=false"></a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/22/frame-sync/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -854,375 +1359,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/12/RTR-4th-Chapter2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/12/RTR-4th-Chapter2/" class="post-title-link" itemprop="url">RTR 4th Chapter2 图形渲染管线</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-12 23:14:20" itemprop="dateCreated datePublished" datetime="2019-04-12T23:14:20+08:00">2019-04-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/RTR-4th/" itemprop="url" rel="index"><span itemprop="name">RTR-4th</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>整个渲染流水线的目标是实时地通过一个虚拟的camera，把光源，3D物体（包括上面的纹理）等渲染到2D图像上，流水线是并行化执行的，但是会出现stall，直到流水线中最慢的一个阶段完成它的任务<br>整条流水线的架构，主要依次分为四个阶段：<br>Application,Geometry Processing,Rasterization和Pixel Processing</p>
-<p><div align="center"><img src="/2019/04/12/RTR-4th-Chapter2/1.jpg"></div><br>每个阶段内部也有自己的pipeline的。<br>我们要区别“阶段（functional stage）”和具体的实现结构，也就是说具体的某个实现结合可能合并了几个stage的内容到一个单元（unit），使得其过程时间消耗更短。</p>
-<h1 id="简要介绍"><a href="#简要介绍" class="headerlink" title="简要介绍"></a>简要介绍</h1><p>Application阶段主要是在CPU上完成的，可以利用现代CPU的多和特性进行多线程优化，这一部分通常包括碰撞检测，全局加速算法，动画，物理模拟等待，这些取决于application的类型。<br>Geometry Processing阶段主要处理转换（transforms），投影（projections）等等其他所有类型的几何操作，这个阶段计算了什么将会被渲染，怎样被渲染，在哪里被渲染，主要在GPU上完成。<br>Rasterization阶段一般接受三个顶点，构建出一个三角形，找到所有被这个三角形包含着的像素点，然后把这些像素点传递给Pixel Processing阶段，这部分完全在GPU上完成。<br>Pixel Processing阶段执行逐像素的程序，计算每个像素的color，也许会进行Z-Test等进行可见性判断，也许会进行blend操作等，这部分也完全在GPU上完成。</p>
-<h1 id="具体介绍每个阶段"><a href="#具体介绍每个阶段" class="headerlink" title="具体介绍每个阶段"></a>具体介绍每个阶段</h1><h2 id="Application-Stage"><a href="#Application-Stage" class="headerlink" title="Application Stage"></a>Application Stage</h2><p>这部分是开发者完全控制的阶段，因为这部分通常是基于CPU执行的，对于这部分的改变会影响后续阶段的performance（比如这里可以通过算法减低要被渲染的三角形的数量）但是现在在这部分平台上也可以使用计算着色器来借GPU的力量加速。这个阶段的最后，渲染图元（点、线、三角形）传入到Geometry Procssing阶段。<br>这个部分是不能被分割成子部分的，因为这个是基于软件的实现方式，我们最多只能借助CPU的多核编写多线程程序来提升性能<br>这个阶段也是用来处理外接设备的输入，两个物体的碰撞检测，加速算法（比如部分剔除算法）</p>
-<h2 id="Geometry-Processing"><a href="#Geometry-Processing" class="headerlink" title="Geometry Processing"></a>Geometry Processing</h2><p>用来负责逐三角形和逐顶点的操作。这部分可以被分为4个阶段：Vertex Shading，Projection，Clipping和Screen Mapping，下面逐一介绍：<br>Vertex Shading：这个子阶段主要处理两个任务：1.计算顶点位置 2.计算每个顶点包含的其他性质，如发现，纹理坐标等<br>以前会在这里实现逐顶点的光照，所以叫顶点着色器，现在顶点着色器变成了一个更加通用的用来设定与操作每个顶点相关的数据的计算单元（比如可以实现顶点动画等）<br>这个阶段同时是转换坐标的阶段，把坐标从模型空间转换到世界空间，为了便于后续的投影和裁剪，在使用view transform转换到相机空间，同时保存每个顶点对应的material，normal等信息，接下来把它转换到一个单位(-1,-1,-1)(1,1,1)中进行投影（z也可能是[0,1]），首先是进行投影，投影可分为正交投影和透视投影，在进行顶点着色器的操作<br>这个子阶段的输出（包含颜色，纹理坐标等）被送到Rasterization和Pixel Processing阶段被插值，用来计算表面的shading，这一步结束后，z-轴坐标不再存储在image中，而是z-buffer内，也就是说，这一步把3D-&gt;2D。</p>
-<p>Optional Vertex Processing：这个阶段是可选的，而且不同的GPU对这部分的硬件支持程度也是不同的。简单来说依次是曲面细分，几何着色和流输出。</p>
-<p>Clipping：只有那些全部部分在view volume中的渲染图元才能够pass这个阶段进入后续的阶段，使用投影矩阵意味着把transform后的图元裁剪单位立方体中。</p>
-<img src="/2019/04/12/RTR-4th-Chapter2/2.jpg">
-<p>Screen Mapping：把还是3D的坐标转换成屏幕坐标（屏幕坐标原点取决于API）</p>
-<h2 id="Rasterization"><a href="#Rasterization" class="headerlink" title="Rasterization"></a>Rasterization</h2><p>目标：找到所有被渲染图元包含或覆盖的像素点<br>这部分分为两个部分：三角形建立和三角形遍历。把2D的顶点在屏幕空间转换到屏幕上的像素，在这里，三角形通过传入的3个点得以简历，最后把所有图元的像素点传递到Pixel Processing中。这个阶段通常是由硬件实现的。</p>
-<h2 id="Pixel-Processing"><a href="#Pixel-Processing" class="headerlink" title="Pixel Processing"></a>Pixel Processing</h2><p>这个阶段通常分为2个子阶段，分别是Pixel Shading和Mergeing<br>Pixel Shading：所有逐像素的计算都在这里完成，这里的输入是通过shading data的插值得到的。这里是基本上完全可编程的，通过自定义片元着色器（或者叫像素着色器）在GPU上完成光照，纹理等计算<br>Mergeing：每个像素存储来一个叫颜色缓冲的地方，我们需要一个Merge阶段处理片元着色器出来的颜色和buffer中本来存着的颜色之间的关系，这部分也用来负责可见性问题（使用z-buffer算法）<br>模版缓冲是一个离屏缓冲用来记录渲染图元的位置，每个像素通常为8bit，可以用来控制后续图元的渲染情况（通过模版测试的方式）</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/unity-render-optimize/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/unity-render-optimize/" class="post-title-link" itemprop="url">Unity中的渲染优化技术</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-11 20:01:17" itemprop="dateCreated datePublished" datetime="2019-04-11T20:01:17+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity-Shader/" itemprop="url" rel="index"><span itemprop="name">Unity Shader</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="移动平台的特点"><a href="#移动平台的特点" class="headerlink" title="移动平台的特点"></a>移动平台的特点</h1><p>和PC平台相比，移动平台上的GPU架构有很大的不同。由于处理资源等条件的限制，移动设备上的GPU架构专注于尽可能使用更小的带宽和公共能，也由此带来许多和PC平台完全不同的现象。<br>例如，为了尽可能移除那些隐藏的表面，减少overdraw（即一个像素被绘制多次），PowerVR芯片（通常用于iOS设备和某些Android设备）使用了基于瓦片的延迟渲染（Tiled-based Deffered Rendering，TBDR）架构，把所有的渲染图像装入一个个瓦片（tile）中，再由硬件找到可见的片元，而只有这些可见片元才会执行片元着色器。另一些基于瓦片的GPU架构，如Adreno（高通的芯片）和Mali（ARM的芯片）则会使用Early-Z或相似的技术进行一个低精度的深度检测，来剔除那些不需要渲染的片元。还有一些GPU，如Tegra（英伟达的芯片），则使用了传统的架构设计，因为在这些设备上，overdraw更可能造成性能的瓶颈。<br>由于这些芯片架构造成的不同，一些游戏往往需要针对不通的芯片发布不同的版本，以便对每个芯片进行更有针对性的优化。尤其是在Android平台上，不通设备使用的硬件，如图形芯片、屏幕分辨率等，大相径庭，这对图形优化提出了更高的挑战。相比于Android平台，iOS平台的硬件条件则相对统一。</p>
-<h1 id="影响性能的因素"><a href="#影响性能的因素" class="headerlink" title="影响性能的因素"></a>影响性能的因素</h1><p>首先，在学习如何优化之前，我们得先了解影响游戏性能的因素有哪些。对于一个游戏来说，它主要需要使用两种计算资源：CPU和GPU。它们会互相合作，来让我们的游戏可以在预期的帧率和分辨率下工作。其中，CPU主要负责保证帧率，GPU主要负责分辨率相关的一些处理。<br>据此，可以把造成游戏性能瓶颈的主要原因分成以下几个方面。</p>
-<ol>
-<li>CPU<ul>
-<li>过多的draw call</li>
-<li>复杂的脚本或者物理模拟</li>
-</ul>
-</li>
-<li>GPU<ul>
-<li>顶点处理<ul>
-<li>过多的顶点</li>
-<li>过多的逐顶点计算</li>
-</ul>
-</li>
-<li>片元处理<ul>
-<li>过多的片元（既可能是由于分辨率造成的，也可能是由于overdraw造成的）。</li>
-<li>过多的逐片元计算。</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>带宽<ul>
-<li>使用了尺寸很大且未压缩的纹理</li>
-<li>分辨率过高的帧缓存</li>
-</ul>
-</li>
-</ol>
-<p>对于CPU来说，限制它的主要是每一帧draw call的数目。简单来说，就是CPU在每次通知GPU进行渲染之前，都需要提前准备好顶点数据（如位置、法线、颜色、纹理坐标等），然后调用一系列API把它们放到GPU可以访问到的指定位置，最后，调用一个绘制命令，来告诉GPU。而调用一次绘制命令的时候，就会产生一个draw call。过多的draw call会造成CPU的性能瓶颈，这是因为每次调用draw call时，CPU往往都需要改变很多渲染状态的设置，而这些操作是非常耗时的。如果一帧中需要的draw call数目过多的话，就会导致CPU把大部分时间都花费在提交draw call的工作上面了。当然，其他原因也可能造成CPU瓶颈，例如物理、布料模拟、蒙皮、粒子模拟等，这些都是计算量很大的操作。<br>而对于GPU来说，它负责整个渲染流水线。它从处理CPU传递过来的模拟数据开始，进行顶点着色器、片元着色器等一系列工作，最后输出屏幕上的每个像素。因此，GPU的性能瓶颈和需要处理的顶点数目、屏幕分辨率、显存等因素有关。而相关的优化策略可以减少处理的数据（包括顶点数目和片元数目）、减少运算复杂度等方面入手。</p>
-<ol>
-<li>CPU优化<ul>
-<li>使用批处理技术减少draw call数目</li>
-</ul>
-</li>
-<li>GPU优化<ul>
-<li>减少需要处理的顶点数目。<ul>
-<li>优化几何体</li>
-<li>使用模型的LOD（Level of Detail）技术</li>
-<li>使用遮挡剔除（Ovvlusion Culling）技术</li>
-</ul>
-</li>
-<li>减少需要处理的片元数目<ul>
-<li>控制绘制顺序</li>
-<li>警惕透明物体</li>
-<li>减少实时光照</li>
-</ul>
-</li>
-<li>减少计算复杂度<ul>
-<li>使用Shader的LOD（Level Of Deail）技术</li>
-<li>代码方面的优化</li>
-</ul>
-</li>
-<li>节省内存带宽<ul>
-<li>减少纹理大小</li>
-<li>利用分辨率缩放</li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<p>在开始优化之前，我们首先需要知道是哪个步骤造成了性能瓶颈。而这可以利用Unity提供的一些渲染分析工具来实现。</p>
-<h1 id="Unity中的渲染分析工具"><a href="#Unity中的渲染分析工具" class="headerlink" title="Unity中的渲染分析工具"></a>Unity中的渲染分析工具</h1><p>Unity内置了一些工具，来帮助我们方便地查看和渲染相关的各个统计数据。这些数据可以帮助我们分析游戏渲染性能，从而更有针对性的进行优化。这些工具包括了渲染统计窗口（Rendering Statistics Window）、性能分析器（Profiler），以及帧调试器（Frame Debugger）。需要注意的是，在不同的目标平台上，这些工具中显示的数据也会发生变化。</p>
-<h2 id="渲染统计窗口"><a href="#渲染统计窗口" class="headerlink" title="渲染统计窗口"></a>渲染统计窗口</h2><p>渲染统计窗口主要包含了音频（Audio）、图像（Graphics）。这里我们只关心图像相关的渲染统计结果。<br>渲染统计窗口中显示了很多重要的渲染数据，例如FPS、批处理数目、顶点和三角网格的数目等。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>信息名称</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>每帧的时间和FPS</td>
-<td>在Graphic的右侧显示，给出了处理和渲染一帧所需的时间，以及FPS数目</td>
-</tr>
-<tr>
-<td>Batches</td>
-<td>一帧中需要进行的批处理数目</td>
-</tr>
-<tr>
-<td>Saved by batching</td>
-<td>合并的批处理数目，这个数字表明了批处理为我们节省了多少的draw call</td>
-</tr>
-<tr>
-<td>Tris和Verts</td>
-<td>需要绘制的三角面片和顶点数目</td>
-</tr>
-<tr>
-<td>Screen</td>
-<td>屏幕的大小，以及它占用的内存大小</td>
-</tr>
-<tr>
-<td>SetPass calls</td>
-<td>渲染使用的Pass的数目，每个Pass都需要Unity的runtime来绑定一个新的Shader，这可能造成CPU瓶颈</td>
-</tr>
-<tr>
-<td>Shadow casters</td>
-<td>场景中有多少可以投射阴影的物体，一般这些物体都作为场景中光源</td>
-</tr>
-<tr>
-<td>visible skinned meshed</td>
-<td>渲染皮肤网格的数量</td>
-</tr>
-<tr>
-<td>animations</td>
-<td>正在播放动画的数量</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="性能分析器的渲染区域"><a href="#性能分析器的渲染区域" class="headerlink" title="性能分析器的渲染区域"></a>性能分析器的渲染区域</h2><img src="/2019/04/11/unity-render-optimize/1.jpg">
-<p>性能分析器显示了绝大部分在渲染统计窗口中提供的信息，例如，绿线显示了批处理数目、蓝线显示了Pass数目等，同时还给出了许多其他非常有用的信息，例如，draw call数目、动态批处理/静态批处理的数目、渲染纹理的数目和内存占用等。<br>结合渲染统计窗口和性能分析器，我们可以查看与渲染相关的绝大多数重要的数据。一个值得注意的想象是，性能分析器给出的draw call数目和批处理数目、Pass数目并不相等，并且看起来好像要大于我们估算的数目，这是因为Unity在背后需要进行很多工作，例如，初始化各个缓存、为阴影更新深度纹理和阴影映射纹理等，因此需要花费比“预期”更多的draw call。</p>
-<h2 id="帧调试器"><a href="#帧调试器" class="headerlink" title="帧调试器"></a>帧调试器</h2><p><div align="center"><img src="/2019/04/11/unity-render-optimize/2.jpg"></div><br>帧调试器的调试面板上显示了渲染这一帧锁需要的所有的渲染时间，在本例中，事件数目为41，而其中包含了36个draw call事件（其他渲染时间多为清空缓存等）。通过单击面板上的每个事件，我们可以在Game视图查看该时间的绘制结果，同时渲染统计面上的数据也会显示成截至当前事件为止的各个渲染统计数据。</p>
-<h2 id="其他性能分析工具"><a href="#其他性能分析工具" class="headerlink" title="其他性能分析工具"></a>其他性能分析工具</h2><p>对于Android平台来说，高通的Adreno分析工具可以对不同的测试机进行详细的性能分析。英伟达提供的NVPerfHUD工具来帮助我们得到几乎所有需要的性能分析数据，例如，每个draw call的GPU时间，每个shader话费的cycle数目等。<br>对于iOS平台来说，Unity内置的分析器可以得到整个场景的花费的GPU时间。PowerVRaw的PVRUniSCo shader分析器也可以给出一个大致的性能评估。Xcode中的OpenGL ES Driver Instruments可以给出一些宏观上的性能信息，例如，设备利用率、渲染器利用率等。但相对于Android平台，对iOS的性能分析更加困难（工具较少）。而且PowerVR芯片采用了基于瓦片的延迟渲染器，因此，想要得到每个draw call话费的GPU时间是几乎不可能的。这是，一些宏观上统计数据可能更有参考价值。</p>
-<h1 id="减少draw-call数目"><a href="#减少draw-call数目" class="headerlink" title="减少draw call数目"></a>减少draw call数目</h1><p>批处理的实现原理就是为了减少每一帧需要的draw call数目。为了把一个对象渲染到屏幕上，</p>
-<h4 id="动态批处理"><a href="#动态批处理" class="headerlink" title="动态批处理"></a>动态批处理</h4><p>基本原理：每一帧把可以进行批处理的模型网格进行合并，再把合并后的模型数据传递给GPU，然后使用同一个材质对其渲染。动态批处理的一个好处是实现方便，另一个好处是，经过批处理的物体仍然可以移动，这是由于在处理每帧时Unity都会重新合并一次网格。</p>
-<p>条件限制：</p>
-<ul>
-<li>能够进行动态批处理的网格的顶点属性规模要小于900。例如，如果shader中需要使用顶点位置、发现和纹理坐标这3个顶点属性，那么要想让模型能够被动态批处理，它的顶点数目不能超过300。</li>
-<li>多Pass的shader会中断批处理。在前向渲染中，我们有时需要使用额外的Pass来为模型添加更多的光照效果，但这样一来模型就不会被动态批处理了。</li>
-</ul>
-<h4 id="静态批处理"><a href="#静态批处理" class="headerlink" title="静态批处理"></a>静态批处理</h4><p>Unity提供了另一种批处理方式，即静态批处理。相比于动态批处理来说，静态批处理适用于任何大小的几何模式。它的实现原理是，只在运行开始阶段，把需要进行静态批处理的模型合并到一个新的网络结构中，这意味着这些模型不可以在运行时刻被移动。但由于它只需要进行一次合并操作，因此，比动态批处理更加高效。静态批处理的另一个缺点在与，它往往需要占用更多的内存来存储合并后的几何结构。这是因为，如果在静态批处理钱一些物体共享了相同的网格，那么在内存中每一个物体都会对应一个该网格的复制品，即一个网格会变成多个网格在发送给GPU。如果这类使用同一网格的对象很多，那么这就会成为一个性能瓶颈了。例如，如果在一个使用了1000个相同模型的森林中使用静态批处理，那么，就会多使用1000倍的内存，这会造成严重的内存影响。</p>
-<h4 id="共享材质"><a href="#共享材质" class="headerlink" title="共享材质"></a>共享材质</h4><p>无论是静态批处理还是动态批处理，都要求模型之间需要共享同一个材质。但不同的模型之间总会需要有不同的渲染属性，例如，使用不同的纹理、颜色等。这是，我们需要一些策略来尽可能地合并材质。<br>如果两个材质之间只有使用的纹理不同，我们可以把这些纹理合并到一张更大的纹理中，这张更大的纹理被称为是一张图集（atlas）。一旦使用了同一张纹理，我们就可以使用同一个材质，再使用不同的采样坐标对纹理采样即可。<br>但有时，除了纹理不同外，不同的物体在材质上还有一些微小的参数变化，例如，颜色不同、某些浮点属性不同。但是，不管是动态批处理还是静态批处理，它们的前提都是要使用同一个材质。是同一个，而不是使用了同一种Shader的材质，也就是说它们指向的材质必须是同一个实体。这意味着，只要我们调整了参数，就会影响所有使用这个材质的对象，那么想要微小的调整怎么办？一种常用的方法就是使用网格的顶点（最常见的就是顶点颜色数据）来存储这些参数。经过批处理后的物体会被处理成更大的VBO发送给GPU，VBO中的数据可以作为输入传递给顶点着色器，因此，我们可以巧妙地对VBO中的数据进行控制，从而达到不通效果的目的。一个例子是，森林场景中所有的树使用了同一种材质，我们希望它们可以通过批处理来减少draw call，但不同树的颜色可能不同。这么，我们可以利用网格的顶点的颜色数据来调整。</p>
-<h4 id="批处理的注意事项"><a href="#批处理的注意事项" class="headerlink" title="批处理的注意事项"></a>批处理的注意事项</h4><h3 id="减少需要处理的顶点数目"><a href="#减少需要处理的顶点数目" class="headerlink" title="减少需要处理的顶点数目"></a>减少需要处理的顶点数目</h3><h4 id="优化几何体"><a href="#优化几何体" class="headerlink" title="优化几何体"></a>优化几何体</h4><p>移除不必要的硬边以及纹理衔接，避免边界平滑和纹理分离。</p>
-<h4 id="模型的LOD技术"><a href="#模型的LOD技术" class="headerlink" title="模型的LOD技术"></a>模型的LOD技术</h4><h4 id="遮挡剔除技术"><a href="#遮挡剔除技术" class="headerlink" title="遮挡剔除技术"></a>遮挡剔除技术</h4><h3 id="减少需要处理的片元数目"><a href="#减少需要处理的片元数目" class="headerlink" title="减少需要处理的片元数目"></a>减少需要处理的片元数目</h3><h4 id="控制绘制顺序"><a href="#控制绘制顺序" class="headerlink" title="控制绘制顺序"></a>控制绘制顺序</h4><h4 id="时刻警惕透明物体"><a href="#时刻警惕透明物体" class="headerlink" title="时刻警惕透明物体"></a>时刻警惕透明物体</h4><h4 id="减少实时光照和阴影"><a href="#减少实时光照和阴影" class="headerlink" title="减少实时光照和阴影"></a>减少实时光照和阴影</h4><h3 id="节省带宽"><a href="#节省带宽" class="headerlink" title="节省带宽"></a>节省带宽</h3><h4 id="减少纹理大小"><a href="#减少纹理大小" class="headerlink" title="减少纹理大小"></a>减少纹理大小</h4><ul>
-<li>纹理的长宽比最好是正方形，长宽值最好是2的整数幂</li>
-<li>多级渐远纹理技术（mipmapping）和纹理压缩。</li>
-</ul>
-<h4 id="利用分辨率缩放"><a href="#利用分辨率缩放" class="headerlink" title="利用分辨率缩放"></a>利用分辨率缩放</h4><h3 id="减少计算复杂度"><a href="#减少计算复杂度" class="headerlink" title="减少计算复杂度"></a>减少计算复杂度</h3><h4 id="Shader的LOD技术"><a href="#Shader的LOD技术" class="headerlink" title="Shader的LOD技术"></a>Shader的LOD技术</h4><h4 id="代码方面的优化"><a href="#代码方面的优化" class="headerlink" title="代码方面的优化"></a>代码方面的优化</h4><h4 id="根据硬件进行缩放"><a href="#根据硬件进行缩放" class="headerlink" title="根据硬件进行缩放"></a>根据硬件进行缩放</h4>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/physics-base-render/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/physics-base-render/" class="post-title-link" itemprop="url">基于物理的渲染</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-11 16:58:13" itemprop="dateCreated datePublished" datetime="2019-04-11T16:58:13+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity-Shader/" itemprop="url" rel="index"><span itemprop="name">Unity Shader</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="双向反射分布函数（BRDF）"><a href="#双向反射分布函数（BRDF）" class="headerlink" title="双向反射分布函数（BRDF）"></a>双向反射分布函数（BRDF）</h2><p><strong>辐射率（radiance）</strong>是单位面积、单位方向上光源的辐射通量，通常用L表示，被认为是对单一光线的亮度和颜色评估。<font color="red">在渲染中，我们通常会基于表面的入射光线的入射辐射率 $ L<em>i  $ 来计算出射辐射率 $L</em>{0}$ ，这个过程往往也称为<strong>着色（shading）</strong>过程。</font><br>而要得到出射辐射率$L_{o}$，我们需要知道物体表面一点是如何和光进行交互的。而这个过程就可以使用<strong>BRDF（Bidirectional Reflectance Distribution Function，双向反射分布函数）</strong>来定量分析。在大多数情况下，BRDF可以用$f(I,v)$来表示，其中I为入射方向和v为观察方向（双向的含义）。这种情况下，绕着表面法线旋转入射方向或观察方向并不会影响BRDF的结果，这种BRDF被称为是<strong>各项同性（isotropic）</strong>的BRDF。与之对应的则是<strong>各项异性（anisotropic）</strong>的BRDF。</p>
-<p>公式如下：</p>
-<p>$L<em>{o}(p,w</em>{o}) = \int<em>\Omega(k</em>{d}{c \over \pi} + k<em>{s}{DGF \over 4(w</em>{o} \cdot n)(w<em>{i} \cdot n)})L</em>{i}(p,w<em>{i})(w</em>{i} \cdot n)dw_{i}$</p>
-<p>这是PBR的核心，也是主要的劝退点。<br>翻译成自然语言，大概是这样的：</p>
-<p>$输出颜色 = \int<em>\Omega(漫反射比例{纹理颜色 \over \pi} + 镜面反射比例{镜面高光 x 几何遮蔽 x 菲涅尔效应 \over 4(view</em>{Dir} \cdot normal)(lightDir \cdot normal)})光源颜色(lightDir,normal)dw_{i}$</p>
-<p>先解释下这个公式遗留的部分。半球积分($\int<em>\Omega………dw</em>{i}$)</p>
-<h3 id="放置反射探针"><a href="#放置反射探针" class="headerlink" title="放置反射探针"></a>放置反射探针</h3><p>在实时渲染中，我们经常会使用Cubemap来模拟物体的反射效果。例如，在赛车游戏中，我们需要对车身或车窗使用反射映射的技术来模拟它们的反光材质。然而，如果我们永远使用同一个Cubemap，那么，当赛车周围的场景发生较大变化时，就很容易出现“穿帮镜头”，因为车身或车窗的环境反射并没有随环境变化而变换。一种解决办法是可以在脚本中控制何时生成从当前位置观察到的Cubemap，Unity中提供了反射探针<strong>（Reflection Probes）</strong>。反射探针的工作原理和光照探针（Light Probes）类似，它允许我们在场景中的特定位置上对整个场景的环境反射进行采样，并把采样结果存储在每个探针上。当游戏中包含反射效果的物体从这些探针附近经过时，Unity会把这些邻近探针存储的反射结果传递给物体使用的反射纹理。如果物体周围存在多个反射探针，Unity还会在这些反射之间进行插值，来得到平滑渐变的反射效果。实际上，Unity会在场景中放置一个默认的反射探针，这个反射探针粗怒触了对场景使用的Skybox的反射结果，来作为场景的环境光照。如果我们需要让场景中的物体包含额外的反射效果，就需要放置更多的反射探针。<br>反射探针同样有3种类型：Baked，这种类型的反射探针是通过提前烘培来得到该位置使用的Cubemap的，在游戏运行时反射探针中存储的Cubemap并不会发生变化。需要注意的是，这种类型的反射探针在烘培时同样只会处理那些静态物体（即那些被标志为Reflection Probe Static的物体）；Realtime，这种类型则会实时更新当前的Cubemap，并且不受静态物体还是动态物体的影响。当然，这种类型的反射探针需要花费更多的处理时间，因此，在使用时应当非常小心它们的性能。幸运的是，Unity允许我们从脚本中通过触发来精确控制反射探针的更新；最后一种类型是Custom，这种类型的探针即可以让我们从编辑器中烘培它，也可以让我们使用一个自定义的Cubemap来作为反射映射，但自定义的Cubemap不会被实时更新。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1288,7 +1428,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1299,7 +1439,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

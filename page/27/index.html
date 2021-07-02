@@ -145,6 +145,225 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/18/openresty/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/18/openresty/" class="post-title-link" itemprop="url">openresty</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-18 14:03:37" itemprop="dateCreated datePublished" datetime="2018-03-18T14:03:37+08:00">2018-03-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>/usr/local/openresty/luajit:luajit环境，luajit类似于java的jit,即即时编译，lua是一种解释语言，通过luajit可以即时编译lua代码到机器代码，得到很好的性能。<br>/usr/local/openresty/lualib:要使用的lua库，里边提供了一些默认的lua库，如redis,json库等，也可以把自己开发的或者第三方放在这；<br>/usr/local/openresty/nginx:安装的nginx</p>
+<p>/usr/local/openresty/nginx/sbin/nginx -V     查看nginx版本和安装的模块</p>
+<h1 id="启动-nginx"><a href="#启动-nginx" class="headerlink" title="启动 nginx"></a>启动 nginx</h1><pre><code>nginx -p `pwd`/ -c conf/nginx.conf
+</code></pre><h1 id="重启nginx"><a href="#重启nginx" class="headerlink" title="重启nginx"></a>重启nginx</h1><pre><code>/usr/local/openresty/nginx/sbin/nginx -s reload
+</code></pre><h1 id="nginx-pid-no-file"><a href="#nginx-pid-no-file" class="headerlink" title="nginx.pid no file"></a>nginx.pid no file</h1><p>nginx -c /home/www/conf/nginx.conf</p>
+<h1 id="add-header-directive-is-not-allowed-here-in"><a href="#add-header-directive-is-not-allowed-here-in" class="headerlink" title="add_header directive is not allowed here in"></a>add_header directive is not allowed here in</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/13/Unity-PGK/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/13/Unity-PGK/" class="post-title-link" itemprop="url">Unity打包详细流程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-13 18:00:36" itemprop="dateCreated datePublished" datetime="2018-03-13T18:00:36+08:00">2018-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>打包策略：按照目录划分<br>目录进行分类<br>配置文件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;AssetBundleInfo&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;ui.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Art/ResExport/GUI/&quot;,</span><br><span class="line">                &quot;Art/GUI/Atlas/&quot;,</span><br><span class="line">                &quot;res/GUI/res/&quot;,</span><br><span class="line">                &quot;res/GUI/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;ui_font.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/GUI/res/Font/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;particles.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/Particles/&quot;,</span><br><span class="line">                &quot;Art/Particles/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;gfx.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/FX/&quot;,</span><br><span class="line">                &quot;res/SkillWarning/&quot;,</span><br><span class="line">                &quot;res/Shader/&quot;,</span><br><span class="line">                &quot;PluginsScripts/NGUI/Resources/Shaders/&quot;,</span><br><span class="line">                &quot;Art/Graphics/shader/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;misc.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Art/&quot;,</span><br><span class="line">                &quot;res/&quot;,</span><br><span class="line">                &quot;Resources/&quot;,</span><br><span class="line">                &quot;Plugins/&quot;,</span><br><span class="line">                &quot;PluginsScripts/&quot;,</span><br><span class="line">                &quot;Models/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: .bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Scenes/Assets Skyboxes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;assetBundleName&quot;: &quot;scenes.bytes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;res/Scenes/&quot;,</span><br><span class="line">                &quot;Scenes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;PackageInfo&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;cfg&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;cfg/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;lang&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Art/lang&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;code&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;cfg/&quot;,</span><br><span class="line">                &quot;mb/&quot;,</span><br><span class="line">                &quot;Lua/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;gfx&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;FX/&quot;,</span><br><span class="line">                &quot;MaterialEx/&quot;,</span><br><span class="line">                &quot;Shader/&quot;,</span><br><span class="line">                &quot;SkillWarning/&quot;,</span><br><span class="line">                &quot;Textures/&quot;,</span><br><span class="line">                &quot;Still/&quot;,</span><br><span class="line">                &quot;bones/&quot;,</span><br><span class="line">                &quot;weapons/&quot;,</span><br><span class="line">                &quot;Equips/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;gui&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;GUI/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;particles&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Particles/&quot;,</span><br><span class="line">                &quot;Assets/Art/Particles/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Scenes/&quot;,</span><br><span class="line">                &quot;scn/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;sounds&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Sounds/&quot;,</span><br><span class="line">                &quot;Assets/Art/Sounds/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;animations&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Animations/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes_mesh&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Art/Scene/_Mesh/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;scenes_assets&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Scenes/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;models&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/Models/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;misc&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;Assets/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;pkgName&quot;: &quot;pandora&quot;,</span><br><span class="line">            &quot;dirPrefix&quot;: [</span><br><span class="line">                &quot;pandora/&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>不使用Resources的原因是，打包程序的时候会将Resources目录下的全部文件都加密压缩达到包内，这样如果我们想使用assetbundle方式打小包就不行了（比如更新包）。<br>1.多语言文件先导入<br>2.根据配置文件生成包信息，AssetBundleInfo,AssetBundleIndex<br>3.处理Res目录资源<br>4.AssetDatabase.GetDependencies<br><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">string</span> nameParam = <span class="keyword">new</span> <span class="keyword">string</span>[<span class="number">1</span>];</span><br><span class="line"><span class="function"><span class="keyword">string</span>[] <span class="title">GetDirectDeps</span>(<span class="params"><span class="keyword">string</span> uri</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    DepInfo depInfo = <span class="keyword">new</span> DepInfo();</span><br><span class="line">    nameParam[<span class="number">0</span>] = uri;</span><br><span class="line">    <span class="keyword">var</span> deps = AssetDatabase.GetDependenices(nameParem, <span class="literal">true</span>);<span class="comment">//查找这个资源引用了哪些资源,cs和js文件不用处理</span></span><br><span class="line">    depInfos[uri] = depInfo;<span class="comment">//global</span></span><br><span class="line">    <span class="keyword">return</span> deps;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">string</span>[] <span class="title">MakeDepends</span>(<span class="params"><span class="keyword">string</span> uri</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">var</span> deps = GetDirectDeps(uri);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addPkgFile</span>(<span class="params"><span class="keyword">string</span> filePath, <span class="keyword">bool</span> isCompress, <span class="keyword">string</span> accessPath, <span class="keyword">byte</span> fileType, <span class="keyword">byte</span> loadType</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    accessPath = accessPath.ToLower();</span><br><span class="line">    PkgInfo.FileInfo fileInfo = NewPkgFileInfo(filePath, isCompress, accessPath, )</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator <span class="title">ProcessSounds</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    titleText = <span class="string">"处理音频"</span>;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">string</span> soundsDir = Application.dataPath + <span class="string">"/Art/Sounds"</span>;</span><br><span class="line">    <span class="keyword">if</span> (System.IO.Exists(soundsDir))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> rootSize = Application.dataPath.Length - <span class="number">6</span>;<span class="comment">//Assets</span></span><br><span class="line">        <span class="keyword">string</span>[] file = System.IO.Directory.GetFiles(soundsDir, <span class="string">"*.bank"</span>, SearchOption.AllDirectories);</span><br><span class="line">        <span class="keyword">foreach</span> (<span class="keyword">var</span> file <span class="keyword">in</span> files)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">string</span> path = file.SubString(rootSize).ToLower().Replace(<span class="string">'\\'</span>, <span class="string">'/'</span>);</span><br><span class="line">            addPkgFile(path, <span class="literal">false</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            addFileProcessed.Add(path);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> IEnumerator <span class="title">DoProcess</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return <span class="title">ProcessRes</span>(<span class="params">resUri</span>)</span>;</span><br><span class="line">    <span class="keyword">if</span> (!isRuning) <span class="keyword">yield</span> <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">yield</span> return <span class="title">ProcessSounds</span>(<span class="params"></span>)</span>;<span class="comment">//smod,因为unity自带的容易崩溃</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="打包常见问题整理"><a href="#打包常见问题整理" class="headerlink" title="打包常见问题整理"></a>打包常见问题整理</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br></pre></td><td class="code"><pre><span class="line">CommandInvokationFailure: Gradle build failed. </span><br><span class="line">C:\Program Files\Unity_2018.3.0f2\Editor\Data\PlaybackEngines\AndroidPlayer/Tools\OpenJDK\Windows\bin\java.exe -classpath &quot;C:\Program Files\Unity_2018.3.0f2\Editor\Data\PlaybackEngines\AndroidPlayer\Tools\gradle\lib\gradle-launcher-4.6.jar&quot; org.gradle.launcher.GradleMain &quot;-Dorg.gradle.jvmargs=-Xmx4096m&quot; &quot;assembleRelease&quot;</span><br><span class="line"></span><br><span class="line">stderr[</span><br><span class="line"></span><br><span class="line">FAILURE: Build failed with an exception.</span><br><span class="line"></span><br><span class="line">* What went wrong:</span><br><span class="line">A problem occurred configuring root project &apos;gradleOut&apos;.</span><br><span class="line">&gt; Could not resolve all artifacts for configuration &apos;:classpath&apos;.</span><br><span class="line">   &gt; Could not download bcpkix-jdk15on.jar (org.bouncycastle:bcpkix-jdk15on:1.56)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download bcprov-jdk15on.jar (org.bouncycastle:bcprov-jdk15on:1.56)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download fastutil.jar (it.unimi.dsi:fastutil:7.2.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jimfs.jar (com.google.jimfs:jimfs:1.1)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/jimfs/jimfs/1.1/jimfs-1.1.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download guava.jar (com.google.guava:guava:23.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download gson.jar (com.google.code.gson:gson:2.8.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download httpclient.jar (org.apache.httpcomponents:httpclient:4.5.2)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download httpcore.jar (org.apache.httpcomponents:httpcore:4.4.5)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download kotlin-reflect.jar (org.jetbrains.kotlin:kotlin-reflect:1.2.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download antlr4.jar (org.antlr:antlr4:4.5.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download juniversalchardet.jar (com.googlecode.juniversalchardet:juniversalchardet:1.0.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download kotlin-stdlib.jar (org.jetbrains.kotlin:kotlin-stdlib:1.2.20)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.20/kotlin-stdlib-1.2.20.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.20/kotlin-stdlib-1.2.20.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download proguard-base.jar (net.sf.proguard:proguard-base:6.0.3)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download auto-value.jar (com.google.auto.value:auto-value:1.5.2)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download protobuf-java.jar (com.google.protobuf:protobuf-java:3.4.0)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jdom2.jar (org.jdom:jdom2:2.0.6)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download commons-compress.jar (org.apache.commons:commons-compress:1.12)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download commons-codec.jar (commons-codec:commons-codec:1.9)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/commons-codec/commons-codec/1.9/commons-codec-1.9.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/commons-codec/commons-codec/1.9/commons-codec-1.9.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line">   &gt; Could not download jaxb-runtime.jar (org.glassfish.jaxb:jaxb-runtime:2.2.11)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.2.11/jaxb-runtime-2.2.11.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/org/glassfish/jaxb/jaxb-runtime/2.2.11/jaxb-runtime-2.2.11.jar&apos;.</span><br><span class="line">            &gt; Remote host closed connection during handshake</span><br><span class="line">   &gt; Could not download FastInfoset.jar (com.sun.xml.fastinfoset:FastInfoset:1.2.13)</span><br><span class="line">      &gt; Could not get resource &apos;https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.13/FastInfoset-1.2.13.jar&apos;.</span><br><span class="line">         &gt; Could not GET &apos;https://jcenter.bintray.com/com/sun/xml/fastinfoset/FastInfoset/1.2.13/FastInfoset-1.2.13.jar&apos;.</span><br><span class="line">            &gt; Connection reset</span><br><span class="line"></span><br><span class="line">* Try:</span><br><span class="line">Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.</span><br><span class="line"></span><br><span class="line">* Get more help at https://help.gradle.org</span><br><span class="line"></span><br><span class="line">BUILD FAILED in 5m 15s</span><br><span class="line">]</span><br><span class="line">stdout[</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/3.2.0/gradle-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/lint/lint-gradle-api/26.2.0/lint-gradle-api-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-compiler-common/3.2.0/databinding-compiler-common-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/transform-api/2.0.0-deprecated-use-gradle-api/transform-api-2.0.0-deprecated-use-gradle-api.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder/3.2.0/builder-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle-api/3.2.0/gradle-api-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/shared/26.2.0/shared-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/bundletool/0.5.0/bundletool-0.5.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/jetifier/jetifier-core/1.0.0-alpha10/jetifier-core-1.0.0-alpha10.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/jetifier/jetifier-processor/1.0.0-alpha10/jetifier-processor-1.0.0-alpha10.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/crash/26.2.0/crash-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-analysis/6.0/asm-analysis-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm/6.0/asm-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre8/1.2.0/kotlin-stdlib-jre8-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/jopt-simple/jopt-simple/4.9/jopt-simple-4.9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-commons/6.0/asm-commons-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-gradle/6.0.3/proguard-gradle-6.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-util/6.0/asm-util-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-parent/6.0/asm-parent-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-parent/6.0.3/proguard-parent-6.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/ow2/1.3/ow2-1.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/sonatype/oss/oss-parent/7/oss-parent-7.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/sdk-common/26.2.0/sdk-common-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/ddms/ddmlib/26.2.0/ddmlib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/common/26.2.0/common-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/tracker/26.2.0/tracker-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/analytics-library/protos/26.2.0/protos-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/manifest-merger/26.2.0/manifest-merger-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/sdklib/26.2.0/sdklib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-model/3.2.0/builder-model-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/apkzlib/3.2.0/apkzlib-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/apksig/3.2.0/apksig-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/builder-test-api/3.2.0/builder-test-api-3.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/bouncycastle/bcpkix-jdk15on/1.56/bcpkix-jdk15on-1.56.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/ow2/asm/asm-tree/6.0/asm-tree-6.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/it/unimi/dsi/fastutil/7.2.0/fastutil-7.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/bouncycastle/bcprov-jdk15on/1.56/bcprov-jdk15on-1.56.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/squareup/javawriter/2.5.0/javawriter-2.5.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/annotations/26.2.0/annotations-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/guava/guava/23.0/guava-23.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/gson/gson/2.8.0/gson-2.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/gson/gson-parent/2.8.0/gson-parent-2.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/guava/guava-parent/23.0/guava-parent-23.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpclient/4.5.2/httpclient-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcore/4.4.5/httpcore-4.4.5.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpmime/4.5.2/httpmime-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-client/4.5.2/httpcomponents-client-4.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/httpcomponents-core/4.4.5/httpcomponents-core-4.4.5.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/httpcomponents/project/7/project-7.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/13/apache-13.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-reflect/1.2.0/kotlin-reflect-1.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/databinding/baseLibrary/3.2.0/baseLibrary-3.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/androidx/databinding/databinding-common/3.2.0/databinding-common-3.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-io/commons-io/2.4/commons-io-2.4.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/squareup/javapoet/1.8.0/javapoet-1.8.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/antlr/antlr4/4.5.3/antlr4-4.5.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/googlecode/juniversalchardet/juniversalchardet/1.0.3/juniversalchardet-1.0.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-parent/25/commons-parent-25.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/antlr/antlr4-master/4.5.3/antlr4-master-4.5.3.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/sonatype/oss/oss-parent/9/oss-parent-9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/9/apache-9.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib-jre7/1.2.0/kotlin-stdlib-jre7-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jetbrains/kotlin/kotlin-stdlib/1.2.0/kotlin-stdlib-1.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/proguard/proguard-base/6.0.3/proguard-base-6.0.3.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/build/aapt2-proto/0.3.1/aapt2-proto-0.3.1.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/errorprone/error_prone_annotations/2.2.0/error_prone_annotations-2.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/auto/value/auto-value/1.5.2/auto-value-1.5.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-java/3.4.0/protobuf-java-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-java-util/3.4.0/protobuf-java-util-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/auto/auto-parent/3/auto-parent-3.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/protobuf/protobuf-parent/3.4.0/protobuf-parent-3.4.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/errorprone/error_prone_parent/2.2.0/error_prone_parent-2.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/google/1/google-1.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/jdom/jdom2/2.0.6/jdom2-2.0.6.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/dvlib/26.2.0/dvlib-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/layoutlib/layoutlib-api/26.2.0/layoutlib-api-26.2.0.pom</span><br><span class="line">Download https://dl.google.com/dl/android/maven2/com/android/tools/repository/26.2.0/repository-26.2.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-compress/1.12/commons-compress-1.12.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/commons/commons-parent/39/commons-parent-39.pom</span><br><span class="line">Download https://jcenter.bintray.com/org/apache/apache/16/apache-16.pom</span><br><span class="line">Download https://jcenter.bintray.com/javax/inject/javax.inject/1/javax.inject-1.pom</span><br><span class="line">Download https://jcenter.bintray.com/net/sf/kxml/kxml2/2.3.0/kxml2-2.3.0.pom</span><br><span class="line">Download https://jcenter.bintray.com/com/google/code/findbugs/jsr305/1.3.9/jsr305-1.3.9.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-logging/commons-logging/1.2/commons-logging-1.2.pom</span><br><span class="line">Download https://jcenter.bintray.com/commons-codec/co&lt;message truncated&gt;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/13/Mono-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/13/Mono-1/" class="post-title-link" itemprop="url">Mono-1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-13 12:20:06" itemprop="dateCreated datePublished" datetime="2018-03-13T12:20:06+08:00">2018-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Mono主要包含了C#的编译器，CLI(Common Language Infrastructure)实现和一系列相关的开发工具。</p>
+<h1 id="源码结构"><a href="#源码结构" class="headerlink" title="源码结构"></a>源码结构</h1><p>msc:<br>    msc: Mono实现的基于Ecma标准的C#编译器。<br>    class:CLI的C#的实现。类似于Android中的Java蹭，应用程序看到的是这一层提供的接口。这一层是平台无关的。<br>    ilasm:反汇编器，将Native code反汇编成bytecode。<br>mono:<br>    mini:JIT编译器，将bytecode编译成native code。<br>    metadata:Mono的runtime,CLI的Native级的下实现。<br>    io-layer:与操作系统的接口实现，像socket,thread,mutex这些。<br>liggc:GC实现的一部分。</p>
+<h1 id="Mono主要工作框架"><a href="#Mono主要工作框架" class="headerlink" title="Mono主要工作框架"></a>Mono主要工作框架</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">mini/main.c:main()</span><br><span class="line">    mono_main_with_options()</span><br><span class="line">        mono_mian()</span><br><span class="line">            mini_ini()</span><br><span class="line">            mono_assembly_open()</span><br><span class="line">            main_thread_handler()//assembly(也就是bytecode)的编译执行</span><br><span class="line">            mini_cleanup()</span><br><span class="line">main_thread_handler()</span><br><span class="line">    mono_jit_exec()</span><br><span class="line">        mono_assembly_get_image()//得到image信息，如&quot;test.ext&quot;</span><br><span class="line">        mono_image_get_entry_point()//得到类，方法信息</span><br><span class="line">        mono_runtime_run_main(method,argc,argv,NULL)</span><br><span class="line">            mono_thread_set_main(mono_thread_current());//把当前线程设为主线程</span><br><span class="line">            mono_assembly_set_main()</span><br><span class="line">            mono_runtime_exec_main() //编译及调用目标方法</span><br><span class="line">mono_runtime_exec_main()</span><br><span class="line">    mono_runtime_invoke(method, NULL, pa, exc)//要调用的方法，如&quot;ClassName::Main()&quot;</span><br><span class="line">        default_mono_runtime_invoke()//实际上是调用了mono_jit_runtime_invoke()</span><br><span class="line">            info-&gt;compiled_method = mono_jit_compile_method_with_opt(method)//编译目标函数</span><br><span class="line">            info-&gt;runtime_invoke = mono_jit_compile_method()//编译目标函数的runtime wrapper</span><br><span class="line">                mono_jit_compile_method_with_opt(method,default_opt,&amp;ex)</span><br><span class="line">            runtime_invoke=info-&gt;runtime_invoke</span><br><span class="line">            runtime_invoke(obj,pararms,exc,info-&gt;compiled_method)//调用wrapper,wrapper会调用目标方法</span><br><span class="line">mono_jit_compile_method_with_opt()</span><br><span class="line">    mono_jit_compile_method_inner()</span><br><span class="line">        mini_method_compile(method, opt, target_domain, TRUE, FALSE, 0)//通过JIT编译给定方法</span><br><span class="line">        mono_runtime_class_init_full()//初始化方法所在对象</span><br><span class="line">            method=mono_class_get_cctor()//得到类的构造函数</span><br><span class="line">            if(do_initialization)//对象需要初始化</span><br><span class="line">                mono_runtime_invoke()//调用相应构造函数来构造对象，如&quot;System.console:.cctor()&quot;</span><br><span class="line">                    mono_jit_runtime_invoke()</span><br></pre></td></tr></table></figure>
+<h1 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h1><p>垃圾回收(GC)是CLI中很重要的部分，</p>
+<h1 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h1><p>应用程序或者Mono runtime中的一些异步恩物可以交由单独线程完成。Mono中提供了两个线程池:async_tp和async_io_tp。往线程池加线程函数为threadpool_append_jobs()，当第一次试图往里边加线程时，会进行初始化，起一个”Monitor”线程(该线程执行monotor_thread())。现在假设</p>
+<h1 id="Mono内存"><a href="#Mono内存" class="headerlink" title="Mono内存"></a>Mono内存</h1><p>内存占用：</p>
+<ol>
+<li>库代码：Unity库、第三方库</li>
+<li>Native堆：资源、Unity逻辑、第三方逻辑</li>
+<li>Mono堆：C#代码</li>
+</ol>
+<p>Unity游戏逻辑代码所使用的语言为C#，我们知道C#代码所占用的内存又称为mono内存，由于Unity它是通过mono来跨平台解析并运行C#代码的，它在Android系统上面，因此游戏的lib目录下存在的libmono.so文件，就是mono在Android系统上的实现。</p>
+<p>C#的代码是通过mono来解析执行的，所需要的内存字然也是由mono来进行分配管理，下面来介绍一个mono的内存管理策略以及内存泄漏分析。</p>
+<h1 id="Mono内存管理的基本策略"><a href="#Mono内存管理的基本策略" class="headerlink" title="Mono内存管理的基本策略"></a>Mono内存管理的基本策略</h1><p>Mono通过垃圾回收机制(GarbageCollect，简称GC)堆内存进行管理。Mono内存分为两部分，已用内存(used)和堆内存(heap)，已用内存它指的是mono实际需要使用的内存，堆内存指的是mono向操作系统申请的内存，两者的差值就是mono的空闲内存。</p>
+<p>当mono需要分配内存时，首先是会查看空闲内存是否足够，若足够的话，则是直接在空闲内存中分配，否则mono会进行一次GC以释放更多的内存，如果GC之后仍然没有足够的空闲内存，则mono会向操作系统申请内存，并扩充堆内存。</p>
+<p>C/C++ Mono运行时 托管代码(CIL)</p>
+<p>将Mono运行时潜入应用，可以分为三个步骤：</p>
+<ol>
+<li>编译C++程序和链接</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/13/interview-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -817,212 +1036,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/03/note2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/03/note2/" class="post-title-link" itemprop="url">第二部分 光照和阴影</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-03 17:53:18" itemprop="dateCreated datePublished" datetime="2018-03-03T17:53:18+08:00">2018-03-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="第二部分-光照和阴影"><a href="#第二部分-光照和阴影" class="headerlink" title="第二部分 光照和阴影"></a>第二部分 光照和阴影</h1><h2 id="第八章-区域求和的差值阴影贴图"><a href="#第八章-区域求和的差值阴影贴图" class="headerlink" title="第八章 区域求和的差值阴影贴图"></a>第八章 区域求和的差值阴影贴图</h2><h3 id="8-1-介绍"><a href="#8-1-介绍" class="headerlink" title="8.1 介绍"></a>8.1 介绍</h3><h3 id="8-2-相关工作"><a href="#8-2-相关工作" class="headerlink" title="8.2 相关工作"></a>8.2 相关工作</h3><h3 id="8-3-percentage-closer-过滤"><a href="#8-3-percentage-closer-过滤" class="headerlink" title="8.3 percentage-closer 过滤"></a>8.3 percentage-closer 过滤</h3><h3 id="8-4-插值阴影贴图"><a href="#8-4-插值阴影贴图" class="headerlink" title="8.4 插值阴影贴图"></a>8.4 插值阴影贴图</h3><h3 id="8-5-区域求和插值阴影贴图"><a href="#8-5-区域求和插值阴影贴图" class="headerlink" title="8.5 区域求和插值阴影贴图"></a>8.5 区域求和插值阴影贴图</h3><h3 id="8-6-percentage-closer-软阴影"><a href="#8-6-percentage-closer-软阴影" class="headerlink" title="8.6 percentage-closer 软阴影"></a>8.6 percentage-closer 软阴影</h3><h3 id="8-7-结论"><a href="#8-7-结论" class="headerlink" title="8.7 结论"></a>8.7 结论</h3><h3 id="8-8-参考资料"><a href="#8-8-参考资料" class="headerlink" title="8.8 参考资料"></a>8.8 参考资料</h3><h2 id="第九章-使用全局照明实现互动的电影级重光照"><a href="#第九章-使用全局照明实现互动的电影级重光照" class="headerlink" title="第九章 使用全局照明实现互动的电影级重光照"></a>第九章 使用全局照明实现互动的电影级重光照</h2><h3 id="9-1-介绍"><a href="#9-1-介绍" class="headerlink" title="9.1 介绍"></a>9.1 介绍</h3><h3 id="9-2-算法总览"><a href="#9-2-算法总览" class="headerlink" title="9.2 算法总览"></a>9.2 算法总览</h3><h3 id="9-3-聚集样本"><a href="#9-3-聚集样本" class="headerlink" title="9.3 聚集样本"></a>9.3 聚集样本</h3><h3 id="9-4-一次反射的间接照明"><a href="#9-4-一次反射的间接照明" class="headerlink" title="9.4 一次反射的间接照明"></a>9.4 一次反射的间接照明</h3><h3 id="9-5-用于压缩的小波"><a href="#9-5-用于压缩的小波" class="headerlink" title="9.5 用于压缩的小波"></a>9.5 用于压缩的小波</h3><h3 id="9-6-增加多次反射"><a href="#9-6-增加多次反射" class="headerlink" title="9.6 增加多次反射"></a>9.6 增加多次反射</h3><h3 id="9-7-对稀疏矩阵进行压缩"><a href="#9-7-对稀疏矩阵进行压缩" class="headerlink" title="9.7 对稀疏矩阵进行压缩"></a>9.7 对稀疏矩阵进行压缩</h3><h3 id="9-8-基于GPU的重光照引擎"><a href="#9-8-基于GPU的重光照引擎" class="headerlink" title="9.8 基于GPU的重光照引擎"></a>9.8 基于GPU的重光照引擎</h3><h3 id="9-9-结果"><a href="#9-9-结果" class="headerlink" title="9.9 结果"></a>9.9 结果</h3><h3 id="9-10-结论"><a href="#9-10-结论" class="headerlink" title="9.10 结论"></a>9.10 结论</h3><h3 id="9-11-参考资料"><a href="#9-11-参考资料" class="headerlink" title="9.11 参考资料"></a>9.11 参考资料</h3><h2 id="第十章-在可编程的GPU中实现并行分割的阴影贴图"><a href="#第十章-在可编程的GPU中实现并行分割的阴影贴图" class="headerlink" title="第十章 在可编程的GPU中实现并行分割的阴影贴图"></a>第十章 在可编程的GPU中实现并行分割的阴影贴图</h2><h2 id="第十一章-使用层次化的遮挡剔除和几何体着色器得到高效鲁棒的阴影体"><a href="#第十一章-使用层次化的遮挡剔除和几何体着色器得到高效鲁棒的阴影体" class="headerlink" title="第十一章 使用层次化的遮挡剔除和几何体着色器得到高效鲁棒的阴影体"></a>第十一章 使用层次化的遮挡剔除和几何体着色器得到高效鲁棒的阴影体</h2><h2 id="第十二章-高质量的环境遮挡"><a href="#第十二章-高质量的环境遮挡" class="headerlink" title="第十二章 高质量的环境遮挡"></a>第十二章 高质量的环境遮挡</h2><h2 id="第十三章-作为后置处理的体积光照散射"><a href="#第十三章-作为后置处理的体积光照散射" class="headerlink" title="第十三章 作为后置处理的体积光照散射"></a>第十三章 作为后置处理的体积光照散射</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/03/03/GPU-Gems-3-note/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/03/GPU-Gems-3-note/" class="post-title-link" itemprop="url">第一部分 几何体</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-03-03 15:25:02" itemprop="dateCreated datePublished" datetime="2018-03-03T15:25:02+08:00">2018-03-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="第一部分-几何体"><a href="#第一部分-几何体" class="headerlink" title="第一部分 几何体"></a>第一部分 几何体</h1><p>尽管像素和像素着色器更加吸引人们的目光，但几何体才是一切的根源所在。没有了几何体，我们将发现光照、阴影和反射毫无意义。这是为什么呢？因为提高底层几何体的复杂度，将同时像素的质量。该书本部分描述的主题正式“复杂性”，以前需要使用CPU来增强场景复杂度的方法，现在已经能在GPU上实现。很多解决方案由于图形硬件的新功能和DirectX 10的问世变得可能，这些新功能包括几何体着色器（geometry shader）、流输出（stream out）和缓存获取（buffer fetches）。当然，很多文章也改进了那些曾经适用于以前硬件的技术。<br>第1章，“使用GPU生成复杂的程序化地形”，用程序化方法生成复杂几何体，NVIDIA公司的Ryan Geiss阐述了如何使用许多硬件的新功能来生成带有一些特性的地标，而这些特性在使用通常的程序化合成时很少见到。特别值得一提的是，Geiss提议对程序化地形进行控制，从而可以imian程序化方法的最大弊端。<br>第4章，“下一代SpeedTree渲染”，介绍了另一个室外环境几何体的渲染：树。NVIDIA的Alexander Kharlaov、lain Cantlay和Yury Stepanenko共同合作，提供了那些相对靠近观察者的树木的细节表现。本章涉及了渲染的所有方面，从增强几何体到改进光照和阴影。<br>作为树主题的扩展，第6章，即Electronic Arts/Digital lllusions CE 的Renaldas Zioma所写的“GPU生成的树的过程式风吹动画”，阐述了如何改进树的动画效果。过程式的风效果允许开发者超越目前简单的许多应用的限制。<br>处理大量简单动画的功能同样对于改进复杂度意义重大。第2章中“群体动画渲染”</p>
-<h2 id="第一章-使用CPU生成复杂的程序化地形"><a href="#第一章-使用CPU生成复杂的程序化地形" class="headerlink" title="第一章 使用CPU生成复杂的程序化地形"></a>第一章 使用CPU生成复杂的程序化地形</h2><h3 id="1-1介绍"><a href="#1-1介绍" class="headerlink" title="1.1介绍"></a>1.1介绍</h3><pre><code>传统上，程序化地形(procedural terrains)受限于CPU生成的并用GPU进行渲染的高度长(height fields)。然而，生成复杂的地形是一项高度并行化的任务，CPU的串行处理本质并不适合完成这项工作。此外，CPU生成高度场的方法也无法提供吸引人的地形特征（如凹洞和凸起物）。
-为了在交互级的帧速率下，生成高度复杂的程序化地形，我们转而使用GPU。通过使用DirectX 10的新特性，我们可以快速生成大块的复杂程序化地形。最终，这些块共同创建一个大型的、具有细节的多边形网格，以表示当前视锥观察到的地形。
-</code></pre><h3 id="1-2-Marching-Cubes算法和密度函数"><a href="#1-2-Marching-Cubes算法和密度函数" class="headerlink" title="1.2 Marching Cubes算法和密度函数"></a>1.2 Marching Cubes算法和密度函数</h3><pre><code>理论上，地形表面可以用单个函数完整的描述，这个函数被称为密度函数(density function)。对于3D空间的任意一点(x,y,z)，密度函数产生一个单精度浮点值。这些值
-</code></pre><h3 id="1-3-地形生成系统概述"><a href="#1-3-地形生成系统概述" class="headerlink" title="1.3 地形生成系统概述"></a>1.3 地形生成系统概述</h3><h3 id="1-4-在地形块中生成多边形"><a href="#1-4-在地形块中生成多边形" class="headerlink" title="1.4 在地形块中生成多边形"></a>1.4 在地形块中生成多边形</h3><h3 id="1-5-纹理和光影"><a href="#1-5-纹理和光影" class="headerlink" title="1.5 纹理和光影"></a>1.5 纹理和光影</h3><h3 id="1-6-对实际应用的考虑"><a href="#1-6-对实际应用的考虑" class="headerlink" title="1.6 对实际应用的考虑"></a>1.6 对实际应用的考虑</h3><h3 id="1-7-结论"><a href="#1-7-结论" class="headerlink" title="1.7 结论"></a>1.7 结论</h3><h3 id="1-8-参考资源"><a href="#1-8-参考资源" class="headerlink" title="1.8 参考资源"></a>1.8 参考资源</h3><h2 id="第二章-群体动画渲染"><a href="#第二章-群体动画渲染" class="headerlink" title="第二章 群体动画渲染"></a>第二章 群体动画渲染</h2><h3 id="2-1-目的"><a href="#2-1-目的" class="headerlink" title="2.1 目的"></a>2.1 目的</h3><h3 id="2-2-实例化的简单回顾"><a href="#2-2-实例化的简单回顾" class="headerlink" title="2.2 实例化的简单回顾"></a>2.2 实例化的简单回顾</h3><h3 id="2-3-技术细节"><a href="#2-3-技术细节" class="headerlink" title="2.3 技术细节"></a>2.3 技术细节</h3><h3 id="2-4-其它考虑因素"><a href="#2-4-其它考虑因素" class="headerlink" title="2.4 其它考虑因素"></a>2.4 其它考虑因素</h3><h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><h2 id="第三章-DirectX-10-混合形状：打破限制"><a href="#第三章-DirectX-10-混合形状：打破限制" class="headerlink" title="第三章 DirectX 10 混合形状：打破限制"></a>第三章 DirectX 10 混合形状：打破限制</h2><h3 id="3-1-介绍"><a href="#3-1-介绍" class="headerlink" title="3.1 介绍"></a>3.1 介绍</h3><h3 id="Dawn例子的实现"><a href="#Dawn例子的实现" class="headerlink" title="Dawn例子的实现"></a>Dawn例子的实现</h3><h3 id="运行例子"><a href="#运行例子" class="headerlink" title="运行例子"></a>运行例子</h3><h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><h3 id="参考资料-1"><a href="#参考资料-1" class="headerlink" title="参考资料"></a>参考资料</h3><h2 id="第四章-下一代SpeedTree-渲染"><a href="#第四章-下一代SpeedTree-渲染" class="headerlink" title="第四章 下一代SpeedTree 渲染"></a>第四章 下一代SpeedTree 渲染</h2><h3 id="4-1-介绍"><a href="#4-1-介绍" class="headerlink" title="4.1 介绍"></a>4.1 介绍</h3><h3 id="4-2-轮廓裁减"><a href="#4-2-轮廓裁减" class="headerlink" title="4.2 轮廓裁减"></a>4.2 轮廓裁减</h3><h3 id="4-3-阴影"><a href="#4-3-阴影" class="headerlink" title="4.3 阴影"></a>4.3 阴影</h3><h3 id="4-4-树叶光照"><a href="#4-4-树叶光照" class="headerlink" title="4.4 树叶光照"></a>4.4 树叶光照</h3><h3 id="4-5-高动态范围和反锯齿"><a href="#4-5-高动态范围和反锯齿" class="headerlink" title="4.5 高动态范围和反锯齿"></a>4.5 高动态范围和反锯齿</h3><h3 id="4-6-半透明覆盖"><a href="#4-6-半透明覆盖" class="headerlink" title="4.6 半透明覆盖"></a>4.6 半透明覆盖</h3><h3 id="4-7-结论"><a href="#4-7-结论" class="headerlink" title="4.7 结论"></a>4.7 结论</h3><h3 id="4-8-参考资料"><a href="#4-8-参考资料" class="headerlink" title="4.8 参考资料"></a>4.8 参考资料</h3><h2 id="第五章-普遍自适应的网格优化"><a href="#第五章-普遍自适应的网格优化" class="headerlink" title="第五章 普遍自适应的网格优化"></a>第五章 普遍自适应的网格优化</h2><h3 id="5-1-介绍"><a href="#5-1-介绍" class="headerlink" title="5.1 介绍"></a>5.1 介绍</h3><h3 id="5-2-总览"><a href="#5-2-总览" class="headerlink" title="5.2 总览"></a>5.2 总览</h3><h3 id="5-3-自适应优化模式"><a href="#5-3-自适应优化模式" class="headerlink" title="5.3 自适应优化模式"></a>5.3 自适应优化模式</h3><h3 id="5-4-渲染工作流"><a href="#5-4-渲染工作流" class="headerlink" title="5.4 渲染工作流"></a>5.4 渲染工作流</h3><h3 id="5-5-结果"><a href="#5-5-结果" class="headerlink" title="5.5 结果"></a>5.5 结果</h3><h3 id="5-6-结论和改进"><a href="#5-6-结论和改进" class="headerlink" title="5.6 结论和改进"></a>5.6 结论和改进</h3><h3 id="5-7-参考资料"><a href="#5-7-参考资料" class="headerlink" title="5.7 参考资料"></a>5.7 参考资料</h3><h2 id="第六章-GPU生成的树的过程式风动画"><a href="#第六章-GPU生成的树的过程式风动画" class="headerlink" title="第六章 GPU生成的树的过程式风动画"></a>第六章 GPU生成的树的过程式风动画</h2><h3 id="6-1-介绍"><a href="#6-1-介绍" class="headerlink" title="6.1 介绍"></a>6.1 介绍</h3><h3 id="6-2-GPU上的过程式动画"><a href="#6-2-GPU上的过程式动画" class="headerlink" title="6.2 GPU上的过程式动画"></a>6.2 GPU上的过程式动画</h3><h3 id="6-3-现象学方法"><a href="#6-3-现象学方法" class="headerlink" title="6.3 现象学方法"></a>6.3 现象学方法</h3><h3 id="6-4-模拟步骤"><a href="#6-4-模拟步骤" class="headerlink" title="6.4 模拟步骤"></a>6.4 模拟步骤</h3><h3 id="6-5-渲染树"><a href="#6-5-渲染树" class="headerlink" title="6.5 渲染树"></a>6.5 渲染树</h3><h3 id="6-6-分析和比较"><a href="#6-6-分析和比较" class="headerlink" title="6.6 分析和比较"></a>6.6 分析和比较</h3><h3 id="6-7-结论"><a href="#6-7-结论" class="headerlink" title="6.7 结论"></a>6.7 结论</h3><h3 id="6-8-参考资料"><a href="#6-8-参考资料" class="headerlink" title="6.8 参考资料"></a>6.8 参考资料</h3><h2 id="第七章-GPU上基于点的变形球可视化"><a href="#第七章-GPU上基于点的变形球可视化" class="headerlink" title="第七章 GPU上基于点的变形球可视化"></a>第七章 GPU上基于点的变形球可视化</h2><h3 id="7-1-变形球、光滑粒子流体力学和表面粒子"><a href="#7-1-变形球、光滑粒子流体力学和表面粒子" class="headerlink" title="7.1 变形球、光滑粒子流体力学和表面粒子"></a>7.1 变形球、光滑粒子流体力学和表面粒子</h3><h3 id="7-2-限制粒子"><a href="#7-2-限制粒子" class="headerlink" title="7.2 限制粒子"></a>7.2 限制粒子</h3><h3 id="7-3-局部粒子斥力"><a href="#7-3-局部粒子斥力" class="headerlink" title="7.3 局部粒子斥力"></a>7.3 局部粒子斥力</h3><h3 id="7-4-全局粒子传播"><a href="#7-4-全局粒子传播" class="headerlink" title="7.4 全局粒子传播"></a>7.4 全局粒子传播</h3><h3 id="7-5-性能"><a href="#7-5-性能" class="headerlink" title="7.5 性能"></a>7.5 性能</h3><h3 id="7-6-渲染"><a href="#7-6-渲染" class="headerlink" title="7.6 渲染"></a>7.6 渲染</h3><h3 id="7-7-结论"><a href="#7-7-结论" class="headerlink" title="7.7 结论"></a>7.7 结论</h3><h3 id="7-8-参考资料"><a href="#7-8-参考资料" class="headerlink" title="7.8 参考资料"></a>7.8 参考资料</h3>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/12/10/Study_unreal4_Rendering_1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/12/10/Study_unreal4_Rendering_1/" class="post-title-link" itemprop="url">虚幻引擎学习之路：渲染模块之光照系统</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-12-10 12:50:00" itemprop="dateCreated datePublished" datetime="2017-12-10T12:50:00+08:00">2017-12-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>我们准备从三方面来介绍Unreal 4引擎的渲染模块，主要包括：光照系统，材质系统喝图像后处理。本篇文章重点讲解第一部分：光照系统。<br>在对比Unreal 4与Unity两者引擎时，本文分别采用的版本是Unreal 4.18.1和Unity 5.3.8.f1。</p>
-<p>本节将介绍Unreal 4引擎的光照系统。在介绍基础功能时，本文将分四块进行介绍，主要包括：光源、全局光照、阴影以及反射效果。同时，本文将与Unity引擎中的这些功能进行对比。另外，对于Unreal 4引擎中的特殊功能，本文将单独介绍。</p>
-<h1 id="一、光源"><a href="#一、光源" class="headerlink" title="一、光源"></a>一、光源</h1><p>光源对于游戏引擎的光照系统来说时最为基础的功能模块。游戏渲染中光照计算的每一部分都离不开光源。<strong>通常游戏引擎通过三个重要属性对员光源进行了分类：光源类型、实时性以及渲染管线。</strong>对于不同属性的光源，其光照计算方式和复杂程度都有所不同。在接下来的内容中，本文将对Unreal 5和Unity引擎的光源在这三个方面进行比较。</p>
-<h2 id="1、光源类型"><a href="#1、光源类型" class="headerlink" title="1、光源类型"></a>1、光源类型</h2><p>Unreal 4引擎中，可在场景中创建的光源类型有四种：<strong>方向光、点光源、聚光灯和天空光。</strong></p>
-<p>创建方式跟Unity类似，只需通过在Unreal 4地图编辑器中点击左上角的”Modes”页面，选择”Lights”标签，即可在其子菜单选择需要的光源拖放的场景中，如下图所示：<br>Unreal 4引擎中的天空光其作用是：自动获取远处的入射光信息，然后用于场景中物体的光照计算。远处的入射光信息涵盖了”Sky Distance Threshold”设置的距离以外的所有入射光来源，包括远景=天空盒=云雾等。它的实现方式是先将远处的入射光信息渲染到Cube Map中，然后使用这张Cube Map来计算光照。在Unity中也可以在Lighting设置中采用Sky Box作为环境光的输入，但是Unity没有将其作为单独可放入场景的光源。</p>
-<h2 id="2、实时性"><a href="#2、实时性" class="headerlink" title="2、实时性"></a>2、实时性</h2><p>在Unreal 4的光源属性中，有一项Mobility表示光源的可移动性以及光照计算实时性。它包含了三种类型：Static、Stationary以及Movable。它与Unity中光源类型的Static、Mixed、Realtime具有类似含义，如下图所示：</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/26/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/28/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/26/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/26/">26</a><span class="page-number current">27</span><a class="page-number" href="/page/28/">28</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/28/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1088,7 +1105,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1099,7 +1116,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

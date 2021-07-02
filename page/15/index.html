@@ -145,6 +145,239 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/08/Unity-Asset-Bundle-Browser-tool/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/08/Unity-Asset-Bundle-Browser-tool/" class="post-title-link" itemprop="url">Unity-Asset-Bundle-Browser-tool</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-08 00:31:10" itemprop="dateCreated datePublished" datetime="2019-04-08T00:31:10+08:00">2019-04-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/04/memory-release/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/04/memory-release/" class="post-title-link" itemprop="url">托管堆与非托管堆的释放</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-04 12:23:39" itemprop="dateCreated datePublished" datetime="2019-04-04T12:23:39+08:00">2019-04-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CSharp/" itemprop="url" rel="index"><span itemprop="name">CSharp</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="托管堆"><a href="#托管堆" class="headerlink" title="托管堆"></a>托管堆</h1><h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><p>每隔一段时间.net就会检查托管堆，当检查到需要清理堆时，.net就调用垃圾回收器。垃圾回收器会扫描堆上的对象的引用，不再有引用的对象就被删除。<br>垃圾回收器调用的时间是不确定的，除非代码中有调用垃圾回收器（System.GC.Collect()）。</p>
+<h2 id="内存碎片的处理"><a href="#内存碎片的处理" class="headerlink" title="内存碎片的处理"></a>内存碎片的处理</h2><p>由于堆的释放时刻是由堆上对象的生存周期决定的，这就决定了堆的释放顺序是不定的，必然产生内存碎片。就像操作系统的磁盘分配机制一样，若需要给一个新的对象分配空间，CLR需要搜索堆，直到找到足够大的空间来存储新对象。实际上垃圾回收器会避免堆出现碎片的现象。<br>回收器在一次释放动作结束会将堆上剩余的对象在堆顶移动，回收器会更新被移动对象的存储地址。这就又形成了整块的未分配的空间。<br>虽然移动对象并更新地址会消耗一定的性能，但是由于分配速度和访问速度会快很多，足以弥补消耗。</p>
+<h1 id="非托管堆"><a href="#非托管堆" class="headerlink" title="非托管堆"></a>非托管堆</h1><p>回收器不知道如何释放非托管资源，如文件句柄，网络连接、数据库连接等。当非托管对象被托管对象引用时，托管对象被释放时应确保其相关的非托管对象被释放。<br>以下两种方法可解决释放非托管资源的问题：</p>
+<ol>
+<li>在定义类时，声明一个析构函数</li>
+<li>在类中实现System.IDisposable接口<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">MyClass</span>:<span class="title">IDispose</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Dispose</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">// 释放非托管资源</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>两种调用方式</p>
+<ul>
+<li><p>using关键字方式，对象声明周期结束时会自动调用Dispose函数。此using与命名空间无关</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> (MyClass classA = <span class="keyword">new</span> MyClass())</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;<span class="comment">// 对象的声明周期结束</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>主动调用</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    MyClass classA = <span class="keyword">new</span> MyClass();</span><br><span class="line">    <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span></span><br><span class="line">&#123;</span><br><span class="line">    classA.Dispose();<span class="comment">//显示调用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/03/HideFlags/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/03/HideFlags/" class="post-title-link" itemprop="url">HideFlags</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-03 22:49:42" itemprop="dateCreated datePublished" datetime="2019-04-03T22:49:42+08:00">2019-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="DontSave-保留对象到新场景"><a href="#DontSave-保留对象到新场景" class="headerlink" title="DontSave 保留对象到新场景"></a>DontSave 保留对象到新场景</h1><ul>
+<li>如果GameObject对象被HideFlags.DontSave标识，则在新Scene中GameObject的所有组件将被保留下来，但其子类GameObject对象不会被保留到新Scene中。</li>
+<li>不可以对GameObject对象的某个组件如Transform进行HideFlags.DontSave标识，否则无效。</li>
+<li>即使程序已经退出，被HideFlags.DontSave标识的对象会一直存在于程序中，造成内存泄漏，对HideFlags.DontSave标识的对象在不需要或程序退出时需要使用DestroyImmediate手动销毁。</li>
+</ul>
+<h1 id="HideAndDontSave-61"><a href="#HideAndDontSave-61" class="headerlink" title="HideAndDontSave 61"></a>HideAndDontSave 61</h1><p>The GameObject is not shown in the Hierarchy,not saved to to Scenens,and not unloaded by Resources.UnloadUnusedAssets.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/03/transparent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -710,236 +943,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/03/31/DissolveEffect/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/31/DissolveEffect/" class="post-title-link" itemprop="url">溶解</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-31 23:03:23" itemprop="dateCreated datePublished" datetime="2019-03-31T23:03:23+08:00">2019-03-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>溶解，也就是让这个模型逐渐消失。那么，最简单的，直接让这个像素的Fragment Shader操作discard，这个像素就消失了。然后，我们要做的就是让这个溶解的对象一部分消失，另一部分存在，所以，这个时候我们就需要一个Mask图进行控制，然后用这个Mask值与我们设定的一个阀值来进行比较，小于阀值的部分discard，大于的部分正常计算。最终，我们将这个阀值从0逐渐增加到1，就可以实现模型的一部分像素先消失，直至整个模型完全消失的效果。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/03/30/Shader-Bloom/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/30/Shader-Bloom/" class="post-title-link" itemprop="url">Unity Shader 后处理：Bloom全屏泛光</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-30 23:11:43" itemprop="dateCreated datePublished" datetime="2019-03-30T23:11:43+08:00">2019-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Shader/" itemprop="url" rel="index"><span itemprop="name">Shader</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>全屏Bloom效果，也叫Glow效果，中文称作“全屏泛光”，这是一种可以模拟出HDR的全屏后处理效果，但是实现原理和HDR相差很远，效果比HDR差一下，但是性能高很多。</p>
-<h1 id="HDR"><a href="#HDR" class="headerlink" title="HDR"></a>HDR</h1><p>HDR(High Dynamic Range)，高动态范围。High值得是亮度的范围更高。正常屏幕上一个像素是由RGB三原色组成的，每个通道用八位二进制表示，也就是0-255，而真实世界的亮度的最大值要远远超过屏幕上能够显示的最大亮度值，比如太阳的亮度会是屏幕亮度的几万倍，这个就是所谓的High。<br>HDR可以模拟高范围的亮度分布。实现这样功能的技术叫做ToneMapping，翻译为色调映射技术。这种技术会让画面对比度更加柔和，将高的亮度范围更加平滑地缩放到0-255这一低光照范围，主要运用的原理是局部适应性。人眼在比较暗的地方，也能看清东西，但是突然到了一个比较亮的地方，就会感觉模糊，需要一会儿才能适应当前的亮度水平。</p>
-<h1 id="Bloom"><a href="#Bloom" class="headerlink" title="Bloom"></a>Bloom</h1><p>Bloom可以模拟出HDR的效果，但是原理上和HDR是截然不同的。HDR实际上是通过映射技术，来达到整体调整全局亮度属性的，这种调整是颜色、强度等都可以进行调整，而Bloom仅仅是能够将光照范围调高达到过饱和，也就是让亮的地方更亮。不过Bloom效果实现起来简单，性能效果也小，却可以达到不错的效果。</p>
-<p>实现原理：首先需要设置一个泛光的亮度阀值，第一遍处理时，需要对原场景图进行帅选，所有小于这个阀值的像素都被筛掉，所有大于该值的像素都被留下，这样，我们就得到了一张只包含需要泛光部分的贴图，其余部分是黑色的；泛光效果是由衍射效果产生的，我们现实世界中看到的泛光效果，最亮的地方实际上是会向暗的地方扩散的，也就是说在亮的地方，边界是不明显的，所以我们就需要对泛光也就是上一步操作的结果图片进行模糊操作，达到光移除的效果，最后，我们将处理过的图像和原图像紧急性叠加，就得到了最终的效果。<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line">[<span class="meta">ExecuteAlways</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">RenderImage</span> : <span class="title">MonoBehaviour</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 分辨率</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> downSample = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> grayScaleAmout = <span class="number">1.0f</span>;</span><br><span class="line">    <span class="keyword">public</span> Material curMaterial;</span><br><span class="line">    <span class="comment">// 高亮部分提取阀值</span></span><br><span class="line">    <span class="keyword">public</span> Color colorThreshold = Color.gray;</span><br><span class="line">    <span class="comment">// 采样率</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> samplerScale = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// Bloom泛光颜色</span></span><br><span class="line">    <span class="keyword">public</span> Color bloomColor = Color.white;</span><br><span class="line">    <span class="comment">// Bloom权值</span></span><br><span class="line">    [<span class="meta">Range(0.0f, 1.0f)</span>]</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">float</span> bloomFactor = <span class="number">0.5f</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnRenderImage</span>(<span class="params">RenderTexture src, RenderTexture dest</span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        <span class="comment">// 申请两块RT，并且分辨率按照downSample降低</span></span><br><span class="line">        RenderTexture temp1 = RenderTexture.GetTemporary(src.width &gt;&gt; downSample, src.height &gt;&gt; downSample);</span><br><span class="line">        RenderTexture temp2 = RenderTexture.GetTemporary(src.width &gt;&gt; downSample, src.height &gt;&gt; downSample);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 直接将场景图拷贝到低分辨率的RT上达到降分辨率的效果</span></span><br><span class="line">        Graphics.Blit(src, temp1);</span><br><span class="line">        <span class="comment">// 根据阀值提取高亮部分，使用pass0进行高亮提取</span></span><br><span class="line">        curMaterial.SetVector(<span class="string">"_colorThresshold"</span>, colorThreshold);</span><br><span class="line">        Graphics.Blit(temp1, temp2, curMaterial, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 高斯模糊，两次模糊，横向纵向，使用pass1进行高斯模糊</span></span><br><span class="line">        curMaterial.SetVector(<span class="string">"_offsets"</span>, <span class="keyword">new</span> Vector4(<span class="number">0</span>, samplerScale, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">        Graphics.Blit(temp2, temp1, curMaterial, <span class="number">1</span>);</span><br><span class="line">        curMaterial.SetVector(<span class="string">"_offset"</span>, <span class="keyword">new</span> Vector4(samplerScale, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));</span><br><span class="line">        Graphics.Blit(temp1, temp2, curMaterial, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Bloom，将模糊后的图作为Material的Blur图参数</span></span><br><span class="line">        curMaterial.SetTexture(<span class="string">"_BlurTex"</span>, temp2);</span><br><span class="line">        curMaterial.SetVector(<span class="string">"_bloomColor"</span>, bloomColor);</span><br><span class="line">        curMaterial.SetFloat(<span class="string">"_bloomFactor"</span>, bloomFactor);</span><br><span class="line">        <span class="comment">// 使用pass2进行景深效果计算，清晰场景图直接从source输入到shader的_MainTex中</span></span><br><span class="line">        Graphics.Blit(src, dest, curMaterial, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 释放申请的RT</span></span><br><span class="line">        RenderTexture.ReleaseTemporary(temp1);</span><br><span class="line">        RenderTexture.ReleaseTemporary(temp2);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br></pre></td><td class="code"><pre><span class="line">Shader <span class="string">"Hidden/BloomEffect"</span></span><br><span class="line">&#123;</span><br><span class="line">    Properties</span><br><span class="line">    &#123;</span><br><span class="line">        _MainTex (<span class="string">"Texture"</span>, <span class="number">2</span>D) = <span class="string">"white"</span> &#123;&#125;</span><br><span class="line">        _BlurTex(<span class="string">"BlurTex"</span>, <span class="number">2</span>D) = <span class="string">"white"</span> &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    CGINCLUDE</span><br><span class="line">    #include <span class="string">"UnityCG.cginc"</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用于阀值提取亮度部分</span></span><br><span class="line">    struct v2f_threshold</span><br><span class="line">    &#123;</span><br><span class="line">        float4 pos : SV_POSITION;</span><br><span class="line">        float2 uv : TEXCOORD0;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用于blur</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">v2f_blur</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        float4 pos  : SV_POSITION;</span><br><span class="line">        float2 uv   : TEXCOORD0;</span><br><span class="line">        float4 uv01 : TEXCOORD1;</span><br><span class="line">        float4 uv23 : TEXCOORD2;</span><br><span class="line">        float4 uv45 : TEXCOORD3;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 用于bloom</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">v2f_bloom</span></span></span><br><span class="line"><span class="class">    &#123;</span></span><br><span class="line">        float4 pos  : SV_POSITION;</span><br><span class="line">        float2 uv   : TEXCOORD0;</span><br><span class="line">        float2 uv1  : TEXCOORD1; </span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    sampler2D _MainTex;</span><br><span class="line">    float4 _MainTex_TexelSize;</span><br><span class="line">    sampler2D _BlurTex;</span><br><span class="line">    float4 _BlurTex_TexelSize;</span><br><span class="line">    float4 _offsets;</span><br><span class="line">    float4 _colorThreshold;</span><br><span class="line">    float4 _bloomColor;</span><br><span class="line">    <span class="keyword">float</span> _bloomFactor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 高亮部分提取shader</span></span><br><span class="line">    <span class="function">v2f_threshold <span class="title">vert_threshold</span><span class="params">(appdata_img v)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        v2f_threshold o;</span><br><span class="line">        o.pos = UnityObjectToClipPos(v.vertex);</span><br><span class="line">        o.uv = v.texcoord.xy;</span><br><span class="line">        <span class="comment">//dx中纹理从左上角为初始坐标，需要反向</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> UNITY_UV_STARTS_AT_TOP</span></span><br><span class="line">        <span class="keyword">if</span> (_MainTex_TexelSize.y &lt; <span class="number">0</span>)</span><br><span class="line">            o.uv.y = <span class="number">1</span> - o.uv.y;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        <span class="keyword">return</span> o;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fixed4 frag_threshold(v2f_threshold i) : SV_Target</span><br><span class="line">    &#123;</span><br><span class="line">        fixed4 color = tex2D(_MainTex, i.uv);</span><br><span class="line">        <span class="comment">// 仅当color大于设置阀值的时候才输出</span></span><br><span class="line">        <span class="keyword">return</span> saturate(color - _colorThreshold); </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 高斯模糊 vert shader</span></span><br><span class="line">    <span class="function">v2f_blur <span class="title">vert_blur</span><span class="params">(appdata_img v)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        v2f_blur o;</span><br><span class="line">        _offsets *= _MainTex_TexelSize.xyxy;</span><br><span class="line">        o.pos = UnityObjectToClipPos(v.vertex);</span><br><span class="line">        o.uv = v.texcoord.xy;</span><br><span class="line"></span><br><span class="line">        o.uv01 = v.texcoord.xyxy + _offsets.xyxy * float4(<span class="number">1</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>);</span><br><span class="line">        o.uv23 = v.texcoord.xyxy + _offsets.xyxy * float4(<span class="number">1</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>)*<span class="number">2.0</span>;</span><br><span class="line">        o.uv45 = v.texcoord.xyxy + _offsets.xyxy * float4(<span class="number">1</span>,<span class="number">1</span>,<span class="number">-1</span>,<span class="number">-1</span>)*<span class="number">3.0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> o;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 高斯模糊 pixel shader</span></span><br><span class="line">    fixed4 frag_blur(v2f_blur i) :SV_Target</span><br><span class="line">    &#123;</span><br><span class="line">        fixed4 color = fixed4(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">        color += <span class="number">0.40</span> * tex2D(_MainTex, i.uv);</span><br><span class="line">        color += <span class="number">0.15</span> * tex2D(_MainTex, i.uv01.xy);</span><br><span class="line">        color += <span class="number">0.15</span> * tex2D(_MainTex, i.uv01.zw);</span><br><span class="line">        color += <span class="number">0.10</span> * tex2D(_MainTex, i.uv23.xy);</span><br><span class="line">        color += <span class="number">0.10</span> * tex2D(_MainTex, i.uv23.zw);</span><br><span class="line">        color += <span class="number">0.05</span> * tex2D(_MainTex, i.uv45.xy);</span><br><span class="line">        color += <span class="number">0.05</span> * tex2D(_MainTex, i.uv45.zw);</span><br><span class="line">        <span class="keyword">return</span> color;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Bloom效果 vertex shader</span></span><br><span class="line">    <span class="function">v2f_bloom <span class="title">vert_bloom</span><span class="params">(appdata_img v)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        v2f_bloom o;</span><br><span class="line">        o.pos = UnityObjectToClipPos(v.vertex);</span><br><span class="line">        o.uv.xy = v.texcoord.xy;</span><br><span class="line">        o.uv1.xy = o.uv.xy;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> UNITY_UV_STARTS_AT_TOP</span></span><br><span class="line">        <span class="keyword">if</span> (_MainTex_TexelSize.y &lt; <span class="number">0</span>)</span><br><span class="line">            o.uv.y = <span class="number">1</span> - o.uv.y;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        <span class="keyword">return</span> o;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    fixed4 frag_bloom(v2f_bloom i) : SV_Target</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 取原始清晰图片进行uv采样</span></span><br><span class="line">        fixed4 ori = tex2D(_MainTex, i.uv1);</span><br><span class="line">        <span class="comment">// 取模糊图片进行uv采样</span></span><br><span class="line">        fixed4 blur = tex2D(_BlurTex, i.uv);</span><br><span class="line">        <span class="comment">// 输出 = 原始图像叠加bloom权值*bloom颜色*泛光颜色</span></span><br><span class="line">        fixed4 final = ori + _bloomFactor * blur * _bloomColor;</span><br><span class="line">        <span class="keyword">return</span> final;</span><br><span class="line">    &#125;</span><br><span class="line">    ENDCG</span><br><span class="line">    SubShader</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// pass 0: 提取高光部分</span></span><br><span class="line">        Pass</span><br><span class="line">        &#123;</span><br><span class="line">            ZTest Off</span><br><span class="line">            Cull Off</span><br><span class="line">            ZWrite Off</span><br><span class="line">            Fog&#123; Mode Off &#125;</span><br><span class="line"></span><br><span class="line">            CGPROGRAM</span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> vertex vert_threshold</span></span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> fragment  frag_threshold </span></span><br><span class="line">            ENDCG </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// pass 1: 高斯模糊</span></span><br><span class="line">        Pass</span><br><span class="line">        &#123;</span><br><span class="line">            ZTest Off</span><br><span class="line">            Cull Off</span><br><span class="line">            ZWrite Off</span><br><span class="line">            Fog&#123; Mode Off &#125;</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> vertex vert_blur</span></span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> fragment frag_blur</span></span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// pass 2: 泛光颜色</span></span><br><span class="line">        Pass</span><br><span class="line">        &#123;</span><br><span class="line">            ZTest Off</span><br><span class="line">            Cull Off</span><br><span class="line">            ZWrite Off</span><br><span class="line">            Fog &#123; Mode Off &#125;</span><br><span class="line">            CGPROGRAM</span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> vertex vert_bloom</span></span><br><span class="line">            <span class="meta">#<span class="meta-keyword">pragma</span> fragment frag_bloom</span></span><br><span class="line">            ENDCG</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/03/30/Unity-2018-Lighting/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/30/Unity-2018-Lighting/" class="post-title-link" itemprop="url">Unity2018照明流程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-30 22:58:30" itemprop="dateCreated datePublished" datetime="2019-03-30T22:58:30+08:00">2019-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity-2018/" itemprop="url" rel="index"><span itemprop="name">Unity-2018</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>目前Unity提供了多种渲染管道，两种全局照明系统，四种照明模式，三种灯光模式，以及两种Shadowmask模式，为开发者在创建面向高配PC，主机，移动和XR设备项目的过程中提供了高度灵活性。</p>
-<p>渲染管线决定对象如何在场景中呈现出来，分为以下三个阶段<br>第一阶段：剔除（Culling）。在此阶段列出需要被渲染的对象，优先呈现摄像机可见的范围，以及未被其它物体遮挡的对象。<br>第二阶段：渲染（rendering）。在此阶段，根据光照设置以及相关的灯光属性，将对象绘制到基于像素的缓冲区种。<br>第三阶段：后处理（post-processing）。一般在缓冲区上执行操作，比如应用ColorGrading、Bloom、Depth of Field等效果，将最终输出到每一帧。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/14/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/34/">34</a><a class="extend next" rel="next" href="/page/16/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1005,7 +1012,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">330</span>
+          <span class="site-state-item-count">333</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1016,7 +1023,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">97</span>
+        <span class="site-state-item-count">98</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
