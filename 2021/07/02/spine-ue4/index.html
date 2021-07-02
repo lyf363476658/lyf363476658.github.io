@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -20,18 +20,18 @@
     var CONFIG = {"hostname":"zentia.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"LAEJN7HTXI","apiKey":"db483f3dceb8b9b4ac8ca1fcf782c13e","indexName":"hexo","hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。 explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘） 开篇好吧，google搜spine基本都是如何导入UE4的一些操作，只能自己看代码了。spine分为两个部分，一个是spine底层的通用C++">
+  <meta name="description" content="之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。 explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘）">
 <meta name="keywords" content="Spine">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spine UE4">
 <meta property="og:url" content="http://zentia.github.io/2021/07/02/spine-ue4/index.html">
 <meta property="og:site_name" content="liyanfeng">
-<meta property="og:description" content="之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。 explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘） 开篇好吧，google搜spine基本都是如何导入UE4的一些操作，只能自己看代码了。spine分为两个部分，一个是spine底层的通用C++">
+<meta property="og:description" content="之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。 explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘）">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-07-02T01:57:31.870Z">
+<meta property="og:updated_time" content="2021-07-02T06:30:21.524Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spine UE4">
-<meta name="twitter:description" content="之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。 explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘） 开篇好吧，google搜spine基本都是如何导入UE4的一些操作，只能自己看代码了。spine分为两个部分，一个是spine底层的通用C++">
+<meta name="twitter:description" content="之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。 explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘）">
 
 <link rel="canonical" href="http://zentia.github.io/2021/07/02/spine-ue4/">
 
@@ -200,7 +200,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-07-02 09:26:08 / 修改时间：09:57:31" itemprop="dateCreated datePublished" datetime="2021-07-02T09:26:08+08:00">2021-07-02</time>
+              <time title="创建时间：2021-07-02 09:26:08 / 修改时间：14:30:21" itemprop="dateCreated datePublished" datetime="2021-07-02T09:26:08+08:00">2021-07-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,11 +239,14 @@
       
         <p>之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。</p>
 <p>explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘）</p>
+<a id="more"></a>
 <h1 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h1><p>好吧，google搜spine基本都是如何导入UE4的一些操作，只能自己看代码了。<br>spine分为两个部分，一个是spine底层的通用C++层，一个是对UE4的包装。我这边也分为两部分讲解。</p>
 <h2 id="通用C-层"><a href="#通用C-层" class="headerlink" title="通用C++层"></a>通用C++层</h2><p>这里面结构其实都是这一套，动画，图集，附件，骨骼，颜色，约束，事件，IK反向动力学，蒙皮，很奇怪的是里面的代码明显是按照UE4去做的，比如直接用UE_LOG打日志，所以就比较搞不懂，为什么在github是分开的。</p>
 <h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>看到一个有意思的东西，之前看别人说是FString里面是按照4字节存储的，但是如果我们只是存储非宽字节，可以自己写一套，而他这个就是很好的参考。</p>
 <h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><p>这里很简单的就是一个长度，一个缓存区，然后里面采用的FMemory做一些内存分配器。简单，高效。</p>
-
+<h3 id="Timeline"><a href="#Timeline" class="headerlink" title="Timeline"></a>Timeline</h3><p>是个基类<br>看着像是平时的那个Timeline的轨道的概念，不过这个里面包含的东西很少，访问者模式，外部传递参数，他去处理。主要处理的骨骼的变化和事件的触发。</p>
+<p><code>Vector&lt;PropertyId&gt; _propertyIds;</code>初步看是animation拿着这些属性去计算一些东西，总感觉是单线程，总感觉可以改成Anim System那种多线程的方式，不过想想，算了，不至于，稳点。<br><code>Vector&lt;float&gt; _frames;</code>总的帧数，除以下面的的_frameEntries就是单条轨迹的帧数。<br><code>size_t _frameEntries;</code>初步估计是轨道中轨迹的数量，（我拿着AGE去类别，然后创造一些概念，希望可以理解）</p>
+<h3 id="CurveTimeline-Timeline"><a href="#CurveTimeline-Timeline" class="headerlink" title="CurveTimeline : Timeline"></a>CurveTimeline : Timeline</h3><h3 id="RGBATimeline-CurveTimeline"><a href="#RGBATimeline-CurveTimeline" class="headerlink" title="RGBATimeline : CurveTimeline"></a>RGBATimeline : CurveTimeline</h3>
     </div>
 
     
@@ -327,7 +330,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开篇"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通用C-层"><span class="nav-number">1.1.</span> <span class="nav-text">通用C++层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动画"><span class="nav-number">1.1.1.</span> <span class="nav-text">动画</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#String"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">String</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开篇"><span class="nav-number">1.</span> <span class="nav-text">开篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通用C-层"><span class="nav-number">1.1.</span> <span class="nav-text">通用C++层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动画"><span class="nav-number">1.1.1.</span> <span class="nav-text">动画</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#String"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">String</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Timeline"><span class="nav-number">1.1.2.</span> <span class="nav-text">Timeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CurveTimeline-Timeline"><span class="nav-number">1.1.3.</span> <span class="nav-text">CurveTimeline : Timeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RGBATimeline-CurveTimeline"><span class="nav-number">1.1.4.</span> <span class="nav-text">RGBATimeline : CurveTimeline</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -341,18 +344,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

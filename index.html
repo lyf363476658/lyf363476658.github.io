@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -170,6 +170,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/07/02/ue5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/02/ue5/" class="post-title-link" itemprop="url">Unreal Engine 5</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-07-02 14:33:03 / 修改时间：16:00:03" itemprop="dateCreated datePublished" datetime="2021-07-02T14:33:03+08:00">2021-07-02</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/UE5/" itemprop="url" rel="index"><span itemprop="name">UE5</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/07/02/ue5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/07/02/ue5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>中国区技术总监的演讲，这里做一下笔记、<br></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/02/ue5/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2021/07/02/ue4-fmemory/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -195,7 +284,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-07-02 10:00:23 / 修改时间：11:59:27" itemprop="dateCreated datePublished" datetime="2021-07-02T10:00:23+08:00">2021-07-02</time>
+              <time title="创建时间：2021-07-02 10:00:23 / 修改时间：14:02:22" itemprop="dateCreated datePublished" datetime="2021-07-02T10:00:23+08:00">2021-07-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -235,30 +324,14 @@
           <p>起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。</p>
 <p>FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。<br>UE4的window平台直接用的是<code>GenericPlatformMemory</code>，IOS中间有一层包装，但是最后也是走的是<code>GenericPlatformMemory</code>，Android也是，所以其实也还好？</p>
 <p>好吧，我们还是从头开始看吧。</p>
-<h1 id="FMemory"><a href="#FMemory" class="headerlink" title="FMemory"></a>FMemory</h1><p>这个第一个接口是<code>FMemory::GCreateMalloc</code>这里面主要调的是<code>FMemory_GCreateMalloc_ThreadUnsafe</code>，在这里面我们逐步分析。</p>
-<p>第一步先取统计接口<code>FPlatformMemory::GetStats()</code> ，但是这里有个非MAC的判定，不知道为啥。</p>
-<p>然后就是取<code>GMalloc</code>这里是通过一些模式和命令行在加上架构去分析的，太偏底层的不太熟悉了，有熟悉的大佬可以在下方留言提醒。</p>
-<p>在然后就是拉取Crash助手叫做<code>FPlatformMallocCrash</code>它有以下职责：</p>
-<ul>
-<li>当内存分配低于16字节对齐的时候会触发crash。</li>
-<li>分配器的线程只能是当前线程。</li>
-</ul>
-<p>接着就是判断<code>GMalloc-&gt;IsInternallyThreadSafe()</code>里面针对不同的malloc做一些判定是否是线程安全的，这块不是太懂。</p>
-<p>接着就是跑内存分析器，这里有个奇怪的宏是<code>IS_MONOLIGHTIC</code>是和mono相关的吗？先不管了。</p>
-<p>下一步又判断了以下<code>GMalloc-&gt;IsInternallyThreadSafe()</code>这个感觉是针对profile的，就是说你如果非要非线程安全的，那我就帮你搞一个代理吧，叫<code>FMallocThreadSafeProxy</code>。<br>反正怎么说呢，我认为哈，所以的proxy都是认为，你把握不住的东西，我帮你搞一层代理，容易把你绕晕的地方你就不用管了，也不要瞎搞了。交给我吧。<br>然后在所有的内存操作之前都会做一个同步锁。</p>
-<p>下一步又有一个校验器，里面又加了一把锁，外面通过宏切换开关，以我浅薄的认识，这两个可能是不会同时开启的，不然两把锁没有意义呀。<br>这个的作用注释上面写着是过滤无效的指针，原理就是存储了一下指针，做了校验。这个平时开发最好一直开启着。然后暴露出来。</p>
-<p>下一步是检查内存泄露的，我猜测和上面的使用方式差不多。<br>不过里面逻辑还是挺多了，首先分配完内存之后，要先判断当前线程是否开启检查，是否开启捕获alloc，是否申请内存高于阈值，小内存你就不考虑了吗？<br>然后又是一把锁，果然很多线程呀。然后里面纪录了一件事情，就是记录内存申请的堆栈，这里感觉和AssetService很相似呀。</p>
-<p>下一步就是叫啥有害内存分配代理<code>FMallocPosionProxy</code>又是代理，看到没，人与人之前的就这么不信任的吗？<br>这个主要职责就很简单了，因为我们内存基本都是从池子里面取出来的，可能还会残留一些之前的数据，如果你不清理的话又不赋值直接使用的话，可能会引用到一些奇奇怪怪的东西，<br>我们调试的时候看到空，就知道，哦，他们的忘记赋值了，一看到奇怪的内容，我擦，这是什么意思，怎么会这样呢，害人又害己。</p>
-<p>下一步是打印了程序能用到多少内存。</p>
-<p>下一步是搞一个看起来像是为了dump搞得，有点没看明白，直接贴代码<code>GMalloc = FMallocDoubleFreeFinder::OverrideIfEnabled(GMalloc)</code></p>
-<p>下一个就是分析统计的<code>GMalloc = FMallocFrameProfiler::OverrideIfEnabled(GMalloc)</code></p>
-<h2 id="分配器"><a href="#分配器" class="headerlink" title="分配器"></a>分配器</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FMemory::Malloc(SIZE_T Count, uint32 Alignment)</span><br></pre></td></tr></table></figure>
-<p>使用其实比较简单的，就是根据不同的分配器去分配内存，<a href="https://zhuanlan.zhihu.com/p/81481072" target="_blank" rel="noopener">知乎的大佬</a> 举了一个<code>MallocTBB</code>的例子。</p>
-<p>他大概是说分配超出了就回调<code>GetOutOfMemoryDelegate</code>，然后这里字节对齐是8字节的。超过就16字节，这里小伙伴可能会疑惑，你有个<code>FPlatformMallocCrash</code>上面不是说16字节的吗？是的，<br>但是其实这些是针对平台的，我看的那个实例其实是<code>FGenericPlatformMallocCrash</code>，聪明的小伙伴一看这个字面量就知道什么意思了，我这个是针对通用平台的逻辑，而他这个分配器应该是特殊平台的，<br>所以并不冲突。</p>
-<p>好了，现在我们回到我们的问题，两个有什么区分，GameCore由于时间问题和一些其它原因，我就不便介绍了，基本可以按照自研项目那一套方式，底层采用操作系统接口，加一下统计分析逻辑，代码的兼容性和健全性肯定是没法和UE4的比了。</p>
-<p>好吧，就这样了。时间原因我没法做太多的分析。</p>
-<p>水一篇文章吧。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/02/ue4-fmemory/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -302,7 +375,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-07-02 09:26:08 / 修改时间：09:57:31" itemprop="dateCreated datePublished" datetime="2021-07-02T09:26:08+08:00">2021-07-02</time>
+              <time title="创建时间：2021-07-02 09:26:08 / 修改时间：14:30:21" itemprop="dateCreated datePublished" datetime="2021-07-02T09:26:08+08:00">2021-07-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -341,11 +414,14 @@
       
           <p>之前看的Spine都是Unity相关的，最近由于项目要转UE4，所以研究一下UE4下的Spine，然后分析一下手游中的Spine的规格是如何的。</p>
 <p>explicit 指定构造函数或转换函数（C++11起）为显式，即踏板不能用于隐式转换和复制初始化。（老是忘）</p>
-<h1 id="开篇"><a href="#开篇" class="headerlink" title="开篇"></a>开篇</h1><p>好吧，google搜spine基本都是如何导入UE4的一些操作，只能自己看代码了。<br>spine分为两个部分，一个是spine底层的通用C++层，一个是对UE4的包装。我这边也分为两部分讲解。</p>
-<h2 id="通用C-层"><a href="#通用C-层" class="headerlink" title="通用C++层"></a>通用C++层</h2><p>这里面结构其实都是这一套，动画，图集，附件，骨骼，颜色，约束，事件，IK反向动力学，蒙皮，很奇怪的是里面的代码明显是按照UE4去做的，比如直接用UE_LOG打日志，所以就比较搞不懂，为什么在github是分开的。</p>
-<h3 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h3><p>看到一个有意思的东西，之前看别人说是FString里面是按照4字节存储的，但是如果我们只是存储非宽字节，可以自己写一套，而他这个就是很好的参考。</p>
-<h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><p>这里很简单的就是一个长度，一个缓存区，然后里面采用的FMemory做一些内存分配器。简单，高效。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/02/spine-ue4/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1261,96 +1337,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/09/06/ArchitecturalShadow/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/09/06/ArchitecturalShadow/" class="post-title-link" itemprop="url">建筑场景的阴影实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-09-06 10:46:24" itemprop="dateCreated datePublished" datetime="2019-09-06T10:46:24+08:00">2019-09-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity/" itemprop="url" rel="index"><span itemprop="name">Unity</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/09/06/ArchitecturalShadow/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/09/06/ArchitecturalShadow/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>首先看一下我们的效果需求，我们是一款SLG游戏，主程中的建筑都是3D的建筑，玩家到后期主城内有上百个建筑，而且建筑都是可以让玩家随意摆放的。我们的建筑要实现自身的阴影和在地面上的投影。如下图：<br><img src="/2019/09/06/ArchitecturalShadow/v2-6477cf3cf37a266372d7e8e09c763991_r.jpg"><br>一般我们在游戏中要实现建筑的阴影有两种方案：1.灯光的实时影音；2.使用Lightmap烘培阴影信息。</p>
-<p>方案1在移动端使用的很少，如果没有实时光影的变化，类似天气系统之类的需求，基本上是不会使用的。要多一个pass去计算阴影，相当于场景中的三角面数翻倍。</p>
-<p>方案2是目前大多数移动端上使用的，开销的话只是用第二套UV去采样一次Lightmap贴图而已。但是这种方法烘培Lightmap</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1420,18 +1406,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

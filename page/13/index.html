@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -166,6 +166,444 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/Basic-Terrain-Rendering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/11/Basic-Terrain-Rendering/" class="post-title-link" itemprop="url">第十三章 地形渲染基础(Basic Terrain Rendering)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-04-11 15:21:54" itemprop="dateCreated datePublished" datetime="2019-04-11T15:21:54+08:00">2019-04-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Direct3D/" itemprop="url" rel="index"><span itemprop="name">Direct3D</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/04/11/Basic-Terrain-Rendering/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/Basic-Terrain-Rendering/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>实际上，地形网格不比三角形网格复杂，图13.1.(a)所示，网络的每个顶点指定了高度，格子模型用这种方式显示从山脉到河流的平滑过渡。图13.1 (b)，模拟自然地形。当然，我们可以用漂亮的纹理表现沙石地，绿色的山丘。图13.1.(c)雪山效果。</p>
+<p>图 13.1: (a) 三角网格. (b) 平滑高度过渡的三角网格. (c) 光和纹理，我们在这一章节中写的例子的一个屏幕截图。<br>   这一章的内容是实现一个Terrain（地形）类。这个类的功能很强。我们的意思是，它只是储存整个地形的顶点/索引数据，然后渲染它。因为如果游戏需要一个小的地形，那么它能够在现代图形卡支持的硬件顶点处理下工作。然而实际上，游戏需要大量的地形，你必须对细节做某种（级别）程度的捡选，因为模型需要大量的几何数据，这样大的地形对于再强大的处理方法也是无法处理的。</p>
+<p>目标 </p>
+<ul>
+<li>学习怎样生成地形的高度信息，它能使山丘、河流等地带的平滑的过度，模拟自然界的地形。</li>
+<li>了解怎样生成地形的顶点和三角形数据。</li>
+<li>学习使用地形的纹理和光照.</li>
+<li>找到控制地形上照相机位置的方法，以便模拟在地形上走动。</li>
+</ul>
+<p>13.1 Heightmaps（高度图）<br>   我们使用高度图去描述地形上的山丘、河流。高度图是一个数组，数组中的每个成员指定地形顶点描述中的高度信息。我们经常把高度图想像成一个矩阵，因为每个元素都一一对应于每个地形网格中的顶点。<br>   当我们保存高度图到磁盘上时，我们通常为高度图的每个元素分配1个byte的内存，所以高度的范围是0..255，0..255的范围对于地形的高度之间保持平滑过渡是足够用的。但为了在我们的程序中匹配3D世界中的物体，可能需要的范围在0..255以外。例如，我们在3D世界中的测量单位是英尺，那么0..255的范围对于表现任何有趣的东西是不够的。因此，当我们读取数据进应用程序时，给每个高度元素分配一个整型数（或浮点型），它允许我们很好的缩放0..255范围之外的任何大小的物品。<br>   高度图图形表示法这一是灰度图(grayscale map)。较黑的值表示地形中较低的地方，较白的值表现地形中较高的地方。</p>
+<pre><code> 图13.2: 高度图的灰度图表示
+</code></pre><p>13.1.1 创建高度图（Heightmap）<br>   高度图不是用程序生成就是用图像编辑器生成，比如：Adobe Photoshop。使用图像编辑器大概是最容易的方法了。当你想生成地形时，可以交互式的可视化的创建。你可以利用图像编辑器的功能，比如：过滤器，创建一个有趣的高度图，图13.3显示了一个用Adobe Photoshop图像编辑器的工具创建的金字塔形的高度图。注意：当创建图像时我们指定一个灰度图类型。</p>
+<pre><code> 图13.3 一幅用Adobe Photoshop创建的灰度图
+ 一但你画完了你的高度图，你必须将它保存为一个8bit的RAW文件。RAW文件只图像的逐个字节。我们的应用程序可以非常容易的读这样的图像。你的软件可能告诉你保存的RAW文件是有文件头的还是没有文件头的。
+ 注意：用RAW格式保存高度信息不是必须的；你可以用符合你需要的任何格式。RAW格式是我们能使用的的格式之一。我决定使用RAW格式是因为很多流行的图像编辑器支持导出这种格式，而且应用程序读取RAW文件的数据非常简单。这章中有使用8-bit RAW文件的例子。
+</code></pre><p>13.1.2 读取RAW文件<br>   RAW文件与一段连续的bit内存块没什么分别。我们能用很简单的方法读取这段内存块，注意：变量_heightmap是Terrain类的一个成员，定义如下 ：<br>std::vector<int> _heightmap;<br>bool Terrain::readRawFile(std::string fileName)<br>{<br>     // A height for each vertex<br>     std::vector<byte> in(  numVertices );<br>     std::ifstream inFile(fileName.c_str(), std::ios_base::binary);<br>     if( inFile == 0 )<br>          return false;<br>     inFile.read(<br>          (char*)&amp;in[0], // buffer<br>          in.size());// number of bytes to read into buffer<br>     inFile.close();</byte></int></p>
+<pre><code> // copy BYTE vector to int vector
+ _heightmap.resize( _numVertices );
+ for(int i = 0; i &lt; in.size(); i++)
+      _heightmap[i] = in[i];
+
+ return true;
+</code></pre><p>}<br>我们COPY一个bytes向量到一个整形向量，这样做我们能够缩放 [0,255]以外的高度。这个方法唯一限制是：RAW文件必须读入至少与地形的顶点数一样多的高度信息。因此，如果你读取一个256x256 的RAW文件，你的地形也必须包含256x256个顶点。</p>
+<p>13.1.3 访问与修改Heightmap<br>     Terrain类提供以下2个方法访问和修改Heightmap的入口。<br>int Terrain::getHeightmapEntry(int row, int col)<br>{<br>      return _heightmap[row * _numVertsPerRow + col];<br>}</p>
+<p>void Terrain::setHeightmapEntry(int row, int col, int value)<br>{<br>     _heightmap[row * _numVertsPerRow + col] = value;<br>}<br>   这些方法允许我们以行和列来访问入口，并且隐藏方法。当使用它去描述矩阵时，我们必须将一个线性数组编入索引。<br>（These methods allow us to refer to an entry by row and column and hide the way we must index a linear array when using it to describe a matrix）</p>
+<p>13.2 生成地形几何数据<br>   图13.4显示Terrain类的一些属性、词汇和我们提到的一些关键点。我们定义地形的大小，指定每行、每列顶点的数量，和单元的间隔。传递这些值到Terrain类的构造器中。另外，也传递地形所关联的设备，一个包含高度图数据的字符串文件名，一个用来缩放高度图成员的高度缩放值。</p>
+<pre><code>     图13.4：三角形网络的属性，延着方格线上的点是地形的顶点。
+</code></pre><p>class Terrain<br>{<br>public:<br>     Terrain(<br>          IDirect3DDevice9* device,<br>          std::string heightmapFileName,<br>          int numVertsPerRow,<br>          int numVertsPerCol,<br>          int cellSpacing,    // space between cells<br>          float heightScale); // value to scale heights by</p>
+<pre><code> ... methods snipped
+</code></pre><p>private:<br>     …device/vertex buffer etc snipped</p>
+<pre><code> int _numVertsPerRow;
+ int _numVertsPerCol;
+ int _cellSpacing;
+
+ int _numCellsPerRow;
+ int _numCellsPerCol;
+ int _width;
+ int _depth;
+ int _numVertices;
+ int _numTriangles;
+
+ float _heightScale;
+</code></pre><p>};<br>Terrain类定义的全部的源代码，实在是太多了，无法在这里全部包含进来。根据传递给构造器的值，我们能够计算Terrain类的其他变量：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_numCellsPerRow  = _numVertsPerRow - <span class="number">1</span>;</span><br><span class="line">_numCellsPerCol  = _numVertsPerCol - <span class="number">1</span>;</span><br><span class="line">_width           = _numCellsPerRow * _cellSpacing;</span><br><span class="line">_depth           = _numCellsPerCol * _cellSpacing;</span><br><span class="line">_numVertices     = _numVertsPerRow * _numVertsPerCol;</span><br><span class="line">_numTriangles    = _numCellsPerRow * _numCellsPerCol * <span class="number">2</span>;</span><br></pre></td></tr></table></figure></p>
+<p>Terrain类定义的顶点结构：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">TerrainVertex</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">     TerrainVertex()&#123;&#125;</span><br><span class="line">     TerrainVertex(<span class="keyword">float</span> x, <span class="keyword">float</span> y, <span class="keyword">float</span> z, <span class="keyword">float</span> u, <span class="keyword">float</span> v)</span><br><span class="line">     &#123;</span><br><span class="line">          _x = x; _y = y; _z = z; _u = u; _v = v;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">float</span> _x, _y, _z;</span><br><span class="line">     <span class="keyword">float</span> _u, _v;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">static</span> <span class="keyword">const</span> DWORD FVF;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>   注意：TerrainVertex是Terrain类内部的一个嵌套类（译者：看样子是结构啊？），之所以这么做，是因为它在Terrain类外部基本没有什么用处。<br>13.2.1 计算顶点<br>   在图13.4中，计算三角形网格上的顶点，我们只是在开始产生顶点的地方，一行一行的生成顶点数据，直到结束为止。单元格的顶点与顶点之间有一块空白区域，这会让我们取得x、z坐标，但y坐标是什么呢？得到y坐标很容易，当读取高度图数据结构时会找到对应的入口。<br>   注意：这个操作使用一个巨大的顶点缓存去保存所有地形上的所有顶点。这可能会引起硬件局限性的问题。例如：一个原始计数界限的最大值和3D设备设定的最大的顶点索引界限。检查MaxPrimitiveCount和D3DCAPS9结构的MaxVertexlndex成员，查看你的设备的限定值，在13.7节讨论，使用顶点缓存时存在问题和解决方法。<br>   计算纹理坐标，看图13.5，给我们一个简单的设定，允许我们用(u, v)纹理坐标去对应地形顶点坐标。</p>
+<p>   图13.5：地形顶点与纹理顶点之间一一对应。<br>   u = j uCoordIncrementSize<br>   v = i vCoordIncrementSize<br>   And where:</p>
+<p>   最后，用代码生成顶点：<br>bool Terrain::computeVertices()<br>{<br>     HRESULT hr = 0;</p>
+<pre><code> hr = _device-&gt;CreateVertexBuffer(
+      _numVertices * sizeof(TerrainVertex),
+      D3DUSAGE_WRITEONLY,
+      TerrainVertex::FVF,
+      D3DPOOL_MANAGED,
+      &amp;_vb,
+      0);
+
+ if(FAILED(hr))
+      return false;
+
+ // 对应第一个生成的顶点坐标
+ int startX = -_width / 2;
+ int startZ =  _depth / 2;
+
+ // 对应最后一个生成的顶点坐标
+ int endX =  _width / 2;
+ int endZ = -_depth / 2;
+
+ // compute the increment size of the texture coordinates
+ // from one vertex to the next.
+ float uCoordIncrementSize = 1.0f / (float)_numCellsPerRow;
+ float vCoordIncrementSize = 1.0f / (float)_numCellsPerCol;
+
+ TerrainVertex* v = 0;
+ _vb-&gt;Lock(0, 0, (void**)&amp;v, 0);
+
+ int i = 0;
+ for(int z = startZ; z &gt;= endZ; z -= _cellSpacing)
+ {
+      int j = 0;
+      for(int x = startX; x &lt;= endX; x += _cellSpacing)
+      {
+           // compute the correct index into the vertex buffer
+           // and heightmap based on where we are in the nested
+           // loop.
+           int index = i * _numVertsPerRow + j;
+
+           v[index] = TerrainVertex(
+                (float)x,
+                (float)_heightmap[index],
+                (float)z,
+                (float)j * uCoordIncrementSize,
+                (float)i * vCoordIncrementSize);
+
+           j++; // next column
+      }
+      i++; // next row
+ }
+
+ _vb-&gt;Unlock();
+
+ return true;
+</code></pre><p>}</p>
+<p>13.2.2 计算索引-定义三角形<br>   计算三角形网格的索引，只需要循环访问每一个格子，从左上到右下，如图13.4，并且计算组成格子的2个三角形。</p>
+<p>这里的技巧是：提取出计算第ij格子的2个三角形的公式。用图13.6去推导公式，找到第ij的格子：</p>
+<p>?ABC = {i · numVertsPerRow + j i·numVertsPerRow + j + 1 (i + 1). numVertsPerRow + j}<br>?CBD = {(i + 1) numVertsPerRow + j i·numVertsPerRow + j + 1 (i·l) numVertsPerRow + j + 1} </p>
+<p>图13.6 方格的顶点</p>
+<p>代码生成索引：<br>bool Terrain::computeIndices()<br>{<br>     HRESULT hr = 0;</p>
+<pre><code> hr = _device-&gt;CreateIndexBuffer(
+      _numTriangles * 3 * sizeof(WORD), // 每个三角形有3个索引
+      D3DUSAGE_WRITEONLY,
+      D3DFMT_INDEX16,
+      D3DPOOL_MANAGED,
+      &amp;_ib,
+      0);
+
+ if(FAILED(hr))
+      return false;
+
+ WORD* indices = 0;
+ _ib-&gt;Lock(0, 0, (void**)&amp;indices, 0);
+
+ // 将组成一个方格的2个三角形的一组6个索引的开始位置编入索引
+ int baseIndex = 0;
+
+ // 从头到尾计算每一个格子中的三角形
+ for(int i = 0; i &lt; _numCellsPerCol; i++) //行循环
+ {
+      for(int j = 0; j &lt; _numCellsPerRow; j++) //列循环
+      {
+           indices[baseIndex]     =   i   * _numVertsPerRow + j;
+           indices[baseIndex + 1] =   i   * _numVertsPerRow +
+                                                 j + 1;
+           indices[baseIndex + 2] = (i+1) * _numVertsPerRow + j;
+
+           indices[baseIndex + 3] = (i+1) * _numVertsPerRow + j;
+           indices[baseIndex + 4] =   i   * _numVertsPerRow +
+                                                 j + 1;
+           indices[baseIndex + 5] = (i+1) * _numVertsPerRow +
+                                                 j + 1;
+
+           // next quad
+           baseIndex += 6;
+      }
+ }
+ _ib-&gt;Unlock();
+
+ return true;
+</code></pre><p>};</p>
+<h1 id="纹理"><a href="#纹理" class="headerlink" title="纹理"></a>纹理</h1><p>Terrain类提供2个方法去处理地形的纹理。最简单的方法是简单地读取一个已经制作好的纹理文件并使用它，下面的方法使用Terrain类实现将一个文件读取纹理到_tex成员中，然后指向一个IDirect3DTexture9接口的指针。关键是，在地形渲染之前先用Terrain: :draw方法设置_tex。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> Terrain::loadTexture(<span class="built_in">std</span>::<span class="built_in">string</span> fileName)</span><br><span class="line">&#123;</span><br><span class="line">     HRESULT hr = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">     hr = D3DXCreateTextureFromFile(</span><br><span class="line">          _device,</span><br><span class="line">          fileName.c_str(),</span><br><span class="line">          &amp;_tex);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span>(FAILED(hr))</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>13.3.1 程序上的处理方法<br>   一个可选择的方法是用程序计算地形的纹理，就是说，我们创建一个空纹理，根据定义的参数用代码计算每一个部分的颜色，在例子中，参数是地形的高度。<br>   我们用Terrain::genTexture方法用程序去生成纹理，首先用D3DXCreateTexture方法创建一个空的纹理，锁定高度级别（top level，纹理图的一个成员，有多个级别），不断的循环每一个texel（图素）并给它上色，texel的颜色取决于与方格对应的高度（近似高度）。我们的想法是：地形中较低的地方是沙滩色，中间的地方像是绿色的小山丘，较高的地方颜色好像雪山。我们定义的高度是方格中左上角的近似高度。<br>   一旦每个texel都有了颜色，我们想让每一个texel变暗或是变亮，这基于光打在格子中对应的texel上的角度，由Terrain::lightTerrain方法实现。（Once we have a color for each texel, we want to darken or brighten each texel based on the angle at which sunlight (modeled by a directional light) strikes the cell to which the texel corresponds. This is done in the Terrain::lightTerrain method）<br>   Terrain::genTexture方法通过计算lower mipmap级别的texels来得出结论，它是通过D3DXFilterTexture函数实现。用代码生成纹理：<br>bool Terrain::genTexture(D3DXVECTOR3* directionToLight)<br>{<br>     // Method fills the top surface of a texture procedurally. Then<br>     // lights the top surface. Finally, it fills the other mipmap<br>     // surfaces based on the top surface data using<br>     // D3DXFilterTexture.</p>
+<pre><code> HRESULT hr = 0;
+
+ // texel for each quad cell
+ int texWidth  = _numCellsPerRow;
+ int texHeight = _numCellsPerCol;
+
+ // create an empty texture
+ hr = D3DXCreateTexture(
+      _device,
+      texWidth, texHeight,  // dimensions
+      0,                    // create a complete mipmap chain
+      0,                    // usage - none
+      D3DFMT_X8R8G8B8,      // 32-bit XRGB format
+      D3DPOOL_MANAGED,      // memory pool
+      &amp;_tex);
+
+ if(FAILED(hr))
+      return false;
+
+ D3DSURFACE DESC textureDesc;
+ _tex-&gt;GetLevelDesc(0 /*level*/, &amp;textureDesc);
+
+ // make sure we got the requested format because our code
+ // that fills the texture is hard coded to a 32-bit pixel depth.
+ if( textureDesc.Format != D3DFMT_X8R8G8B8 )
+      return false;
+
+ D3DLOCKED_RECT lockedRect;
+ _tex-&gt;LockRect(0/*lock top surface*/, &amp;lockedRect,
+       0 /* lock entire tex*/, 0/*flags*/);
+
+ // fill the texture
+ DWORD* imageData = (DWORD*)lockedRect.pBits;
+ for(int i = 0; i &lt; texHeight; i++)
+ {
+      for(int j = 0; j &lt; texWidth; j++)
+      {
+      D3DXCOLOR c;
+
+      // get height of upper-left vertex of quad.
+      float height = (float)getHeightmapEntry(i, j)/_heightScale;
+
+      // set the color of the texel based on the height
+      // of the quad it corresponds to.
+      if( (height) &lt; 42.5f )       c = d3d::BEACH SAND;
+      else if( (height) &lt; 85.0f )  c = d3d::LIGHT YELLOW GREEN;
+      else if( (height) &lt; 127.5f ) c = d3d::PUREGREEN;
+      else if( (height) &lt; 170.0f ) c = d3d::DARK YELLOW GREEN;
+      else if( (height) &lt; 212.5f ) c = d3d::DARKBROWN;
+      else                         c = d3d::WHITE;
+
+      // fill locked data, note we divide the pitch by four
+      // because the pitch is given in bytes and there are
+      // 4 bytes per DWORD.
+      imageData[i * lockedRect.Pitch / 4 + j] = (D3DCOLOR)c;
+      }
+ }
+
+ _tex-&gt;UnlockRect(0);
+
+ // light the terrain
+ if(!lightTerrain(directionToLight))
+ {
+       ::MessageBox(0, &quot;lightTerrain() - FAILED&quot;, 0, 0);
+       return false;
+ }
+
+ // fill mipmaps
+ hr = D3DXFilterTexture(
+      _tex,// texture to fill mipmap levels
+      0,   // default palette
+       0,   // use top level as source for lower levels
+       D3DX_DEFAULT); // default filter
+
+ if (FAILED (hr))
+ {
+       ::MessageBox(0, &quot;D3DXFilterTexture() - FAILED&quot;, 0, 0);
+       return false;
+ }
+
+ return true;
+</code></pre><p>}</p>
+<p>注意：颜色常量BEACH_SAND等定义在d3dUtility.h.文件中。</p>
+<p>13.4 光照<br>   Terrain::genTexture方法会调用Terrain::lightTerrain，顾名思义，光照使地形更接近于现实。当我们已经计算完地形纹理以后，我们只需要计算阴影系数（shade factor），使一个定义了光源的地形区域变亮或变暗。在这一节中，我们检验这样一个技巧，你会惊讶于为什么我们照亮地图却没有让Direct3D来做。我们自己来计算有三个好处：</p>
+<ul>
+<li>内存中不必保存顶点法线。</li>
+<li>因为纹理是静态的，所以不能随意的移动光源。虽然我们可以重新计算光源，但因此采用Direct3D实时的照亮地形是很耗时的。</li>
+<li>我们获得了一些数学上的经验，熟悉了一些基本的光照概念，并且是用Direct3D函数实践的。</li>
+</ul>
+<p>13.4.1概览(OVERVIEW)<br>   光照是计算地形阴影（shade）的一个最基本的技巧之一，一般认为的光是漫射光（diffuse lighting），我们定义一个平行光源，指定光的方向，延着光线的相反方向是散发平行光的光源。因此，如果我们想让光线从空中笔直落下，那么lightRaysDirection = (0, -1, 0)，按相反的方向：directionToLight = (0, 1, 0)。注意：创建光照向量要使用单位向量。<br>   注意：虽然指定方向的光是从光源发射出来的，这么说更直接一点，指定方向的光在计算上要比漫谢光更合得来。<br>   对于地形中的每个方格，我们计算光的向量与方格的面法线之间的角度。<br>   在图13.7中我们看到，当角度变得比较大时，方格的面离光源越来越远，接收的光越少。反过来说，角度变小，方格的面则离光源越来越近，相应的会接收更多的光。注意：一旦光向量与法线角度大于90度，表面就接收不到光。</p>
+<p>   图13.7 光向量与平面法线的关系，我们能够创建一个阴影（shading） 标量，用0..1之间的范围来表示表面能接收到光的多少。使用阴影标量，角度大则标量接近于0。当颜色与一个阴影标量接近0的值相乘时，得到的结果是：颜色变暗。相反，乘以一个阴影标量的值接近1的值时，颜色则接近于原始亮度。</p>
+<p>13.4.2 计算方格的阴影（Shade）<br>   光源的方向是一个单位向量，为了计算光源方向与面法线间的夹角，首先需要找到面法线，这是叉积的一小部分应用，但首先必须在方格里找到二个共面的非0并且不平行的向量。看图 13.8有两个这样的向量：</p>
+<p>   图13.8: 计算在同一方格中的共面的二个向量</p>
+<p>u = (cellSpacing, by - ay, 0)<br>v = (0, cy, -ay, -cellSpacing) </p>
+<p>关于u和v，方格的法线N = u × v，当然要把N标准化：</p>
+<p>找到光线与法线的夹角，回忆一下点积，是二个3维空间中的单位向量组成的夹角的余弦。</p>
+<p>   它的标量是在-1..1的范围，因为-1..0的sin值符合夹角角度且大于90度，在图13.7中接受不到光照，如果它在-1..0之间那么夹角是0度。<br>float cosine = D3DXVec3Dot(&amp;n, directionToLight);</p>
+<p>if(cosine &lt; 0.0f)<br>     cosine = 0.0f;</p>
+<p>   现在s的夹角大于90度，s的阴影标量将在0..1之间。因为光线与法线的角度从0增加到90度时，s的值将从1到降到0。这是我们想要的结果，具体讲解请看13.4.1节。<br>   给指定的格子计算阴影系数用Terrain::computeShade方法，它需要参数：行和列来确定方格，还有平行方向光的光源。<br>float Terrain::computeShade(int cellRow, int cellCol,<br>                            D3DXVECTOR3* directionToLight)<br>{<br>     // 取得方格中三个顶点的高度（从高度图中）<br>     float heightA = getHeightmapEntry(cellRow,   cellCol);<br>     float heightB = getHeightmapEntry(cellRow,   cellCol+1);<br>     float heightC = getHeightmapEntry(cellRow+1, cellCol);</p>
+<pre><code> // 创建方格中的二个顶点
+ D3DXVECTOR3 u( cellSpacing, heightB - heightA, 0.0f);
+ D3DXVECTOR3 v(0.0f, heightC - heightA, - cellSpacing);
+
+ //用方格中的二个向量的叉积找到面法线
+ D3DXVECTOR3 n;
+ D3DXVec3Cross(&amp;n, &amp;u, &amp;v);
+ D3DXVec3Normalize(&amp;n, &amp;n);
+
+ float cosine = D3DXVec3Dot(&amp;n, directionToLight);
+
+ if(cosine &lt; 0.0f)
+      cosine = 0.0f;
+
+ return cosine;
+</code></pre><p>}</p>
+<p>13.4.3 地形阴影（Shading）<br>   一旦知道了如何给指定的方格加阴影，我们就能给地形上所有的方格加阴影。只要遍例每一个方格，计算方格的阴影值，并测量方格对应的texel颜色。光照少则方格会变暗。下面一段代码展示了Terrain::lightTerrain方法的重要部分：</p>
+<p>DWORD<em> imageData = (DWORD</em>)lockedRect.pBits;<br>for(int i = 0; i &lt; textureDesc.Height; i++)<br>{<br>     for(int j = 0; j &lt; textureDesc.Width; j++)<br>     {<br>          int index = i * lockedRect.Pitch / 4 + j;</p>
+<pre><code>      // get current color of cell
+      D3DXCOLOR c( imageData[index] );
+
+      // shade current cell
+      c *= computeShade(i, j, lightDirection);;
+
+      // save shaded color
+      imageData[index] = (D3DCOLOR)c;
+ }
+</code></pre><p>}</p>
+<p>13.5 在地形上“行走”<br>   构造了一个地形以后，我们想要有移动照相机的能力，以便模拟在地形上行走的效果。我们需要调整照相机的高度，这依赖于地形部分的知识，好的，我们继续往下看。我们首先需要找到照相机所在的方格的位置，并给出x轴和z轴坐标，Terrain::getHeight函数能做到这些，它能提供x轴、y轴坐标参数，返回照相机需要被设置在地形上的高度值，现在看实现部分。<br>float Terrain::getHeight(float x, float z)<br>{<br>     // Translate on xz-plane by the transformation that takes<br>     // the terrain START point to the origin.<br>     x = ((float) width / 2.0f) + x;<br>     z = ((float) depth / 2.0f) - z;</p>
+<pre><code> // Scale down by the transformation that makes the
+ // cellspacing equal to one. This is given by
+ // 1 / cellspacing since cellspacing * 1 / cellspacing = 1.
+ x /= (float) cellSpacing;
+ z /= (float)_cellSpacing;
+</code></pre><p>   我们首先转换地形的起始点为原点，然后，我们按反方向去测量空间变量（we scale by the inverse of the cell spacing variable），设置单元空间间隔为1。我们切换到一个新的参考框架，z轴正方向是向下的。当然，没有代码转换参考框架，但现在我们知道+z是向下的。图13.9显示了这些步骤：</p>
+<p>图13.9：地形网格在转换前的第一个点，转换后为原点。单元格的空间为1，转换z轴。<br>我们看到我们转换的坐标系统与矩阵的行和列相对应，也就是说左上为原点，列数的增加向右，行数的增加向下。因此，在图13.9中我们知道了单元格的空间是1，通过以下的方法我们马上就能得到单元格行和列：<br>float col = ::floorf(x);<br>float row = ::floorf(z);</p>
+<p>换句话说，在x轴部分列是整数，z轴部分行也是整数。回忆floor(t)函数，。<br>现在我们将取得方格的四个顶点的高度。<br>        //  A   B<br>        //  <em>—</em><br>        //  | / |<br>        //  <em>—</em><br>        //  C   D<br>float A = getHeightmapEntry(row,   col);<br>float B = getHeightmapEntry(row,   col+1);<br>float C = getHeightmapEntry(row+1, col);<br>float D = getHeightmapEntry(row+1, col+1);</p>
+<p>   现在我们知道了方格的四个顶点的高度，我们需要找到照相机所在的位置的方格的高度，因为一个方格可能同时向几个方向倾斜，这可能会稍微难一点，见图 13.10:</p>
+<p>图13.10: 照相机所在的位置的方格的高度<br>   为了找到高度，我们需要知道我们在方格中的哪个三角形里。方格是由二个三角形渲染成的，找到我们所在的三角形，我们要取得我们所在的方格并且转换它，它的左上点是原点。<br>   自从用行和列来描述我们所在的方格左上顶点的位置以来，我们必须转换列x轴与行z轴，转换x、z坐标：<br>   float dx = x - col;<br>   float dz = z - row;</p>
+<p>图13.11: 我们所在的方格在转换前与转换后，左上顶点变成了原点。<br>   .现在解释当我们在方格中的上三角形时如何找到高度，这和在下三角形是相似的。马上你会看到这两种情况的代码。在上三角形时，构造2个向量：u = (cellSpacing, B -A, 0) and v = (0, C - A, - cellSpacing)，三角形的边上并且在矢量q = (qx, A, qz)终点点开始的地方，如图13.12(a)。</p>
+<p>   图13.12 (a) 计算三角形的邻边和对边这两个向量。 (b)使用线性差值创建高度<br>   注意：我们只关心改变的高度值，我们只修改y值，忽视其他部分，因此，Height=sum A + dxuy + dzvy<br>   以下是Terrian::getHeight函数的实现代码：<br>   （Note that since we are only concerned about the interpolated height value, we can just interpolate the y-components and ignore the other components. Thus, the height is obtained by the sum A + dxuy + dzvy.）<br>if(dz &lt; 1.0f - dx) // upper triangle ABC<br>     {<br>          float uy = B - A; // A-&gt;B<br>          float vy = C - A; // A-&gt;C</p>
+<pre><code>      height = A + d3d::Lerp(0.0f, uy, dx) +
+                   d3d::Lerp(0.0f, vy, dz) ;
+ }
+ else // lower triangle DCB
+ {
+      float uy = C - D; // D-&gt;C
+      float vy = B - D; // D-&gt;B
+
+      height = D + d3d::Lerp(0.0f, uy, 1.0f - dx) +
+                   d3d::Lerp(0.0f, vy, 1.0f - dz);
+ }    return height;
+</code></pre><p>}</p>
+<p>   Lerp函数是一个沿着一维直线的基本线性插值算法，实现如下：<br>float d3d::Lerp(float a, float b, float t)<br>{<br>     return a - (a<em>t) + (b</em>t);<br>}</p>
+<p>13.6 例子程序: Terrain<br>   这章的例子是用一个包含高度信息的RAW文件创建一个地形，纹理和光源。用方向键在地形上行走。注意，下列函数中不相关的代码被省略了，被省略的代码用(…)表示，依赖你的硬件，这个例子可能运行得很慢，请偿试运行一个小地形。<br>   首先，增加全局变量：地形、照相机、每秒帧数。<br>Terrain<em> TheTerrain = 0;<br>Camera   TheCamera(Camera::LANDOBJECT);<br>FPSCounter</em> FPS = 0;</p>
+<p>   下面是框架函数：<br>bool Setup()<br>{<br>     D3DXVECTOR3 lightDirection(0.0f, -1.0f, 0.0f);<br>     TheTerrain = new Terrain(Device, “coastMountain256.raw”,<br>                              256, 256, 10, 1.0f);<br>     TheTerrain-&gt;genTexture();<br>     TheTerrain-&gt;lightTerrain(&amp;directionToLight);<br>     …</p>
+<pre><code> return true;
+</code></pre><p>}</p>
+<p>void Cleanup()<br>{<br>     d3d::Delete<terrain*>(TheTerrain);<br>     d3d::Delete<fpscounter*>(FPS);<br>}</fpscounter*></terrain*></p>
+<p>bool Display(float timeDelta)<br>{<br>     if( Device )<br>     {<br>          // Update the scene:<br>          …[snipped input checking]</p>
+<pre><code>      // Walking on the terrain: Adjust camera&#39;s height so we
+      // are standing 5 units above the cell point we are
+      // standing on.
+      D3DXVECTOR3 pos;
+      TheCamera.getPosition(&amp;pos);
+
+      float height = TheTerrain-&gt;getHeight( pos.x, pos.z );
+
+      pos.y = height + 5.0f;
+
+      TheCamera.setPosition(&amp;pos);
+
+      D3DXMATRIX V;
+      TheCamera.getViewMatrix(&amp;V);
+      Device-&gt;SetTransform(D3DTS VIEW, &amp;V);
+
+      // Draw the scene:
+      Device-&gt;Clear(0, 0, D3DCLEAR TARGET | D3DCLEAR ZBUFFER,
+                    0xff000000, 1.0f, 0);
+      Device-&gt;BeginScene();
+
+      D3DXMATRIX I;
+      D3DXMatrixIdentity(&amp;I);
+
+      if( TheTerrain )
+          TheTerrain-&gt;draw(&amp;I, false);
+
+      if( FPS )
+          FPS-&gt;render(0xffffffff, timeDelta);
+
+      Device-&gt;EndScene();
+      Device-&gt;Present(0, 0, 0, 0);
+ }
+ return true;
+</code></pre><p>}</p>
+<p>13.7 一些改进<br>   Terrain读取顶点数据到一个很大的缓存，在多重的顶点缓存中划分地形结构，在速度和可测量性方面都十分有利。为我们提出一个问题：顶点缓存最大支持多大？回答是，这依赖于你的硬件。所以你必须先检测。<br>   将地图划分为许多小的顶点缓存是重要的练习，然后将类似矩阵的数据结构编入索引，并且管理数据，这不需要引入新的概念。我们不必详细讨论它。简单的说，你基本上站在地形中一个我们叫做“blocks”的矩阵上,每个block是地形的一个矩形区域。另外，每个block区域（在它自己的顶点索引缓存中）的下方包含地形中的几何信息，为了画它在地形中的位置。<br>   另外，你可以读取地形到一个很大的ID3DXMesh接口。使用D3D函数D3DXSplitMesh划分地形为许多小的Mesh, 以下是D3DXSplitMesh函数原型：<br>void D3DXSplitMesh(<br>    const LPD3DXMESH pMeshIn,<br>    const DWORD <em>pAdjacencyIn,<br>    const DWORD MaxSize,<br>    const DWORD Options,<br>    DWORD </em>pMeshesOut,<br>    LPD3DXBUFFER <em>ppMeshArrayOut,<br>    LPD3DXBUFFER </em>ppAdjacencyArrayOut,<br>    LPD3DXBUFFER <em>ppFaceRemapArrayOut,<br>    LPD3DXBUFFER </em>ppVertRemapArrayOut<br>);<br>       这个函数将一个源Mesh划分多个小的Mesh,，pMeshIn参数是一个指针，指向想划分的Mesh，pAdjacencyIn指向一个邻接数组，MaxSize参数指定作为结果返回的最大顶点数，为返回的Meshe使用指定的创建标记，pMeshesOut参数返回ppMeshArrayOut数组中的Mesh数量，最后3个参数是可选的（可以指定为null），返回邻接信息的数组。<br>13.8 摘要</p>
+<ul>
+<li>我们能用三角形网格和不同的高度值来模拟地形，创建山丘、河流。</li>
+<li>Heightmap数据包含地形顶点的高度值。</li>
+<li>我们能通过程序使用磁盘上的图像文件生成地形上的纹理。</li>
+<li>我们能照亮地形，通过计算阴影系数来使每个格子变亮或变暗，阴影系数是由光照在格子上的角度决定的。</li>
+<li>使照相机在地形上走动，我们需要找到我们站立的三角形。我们计算三角形上的邻边和对边这两个向量，高度是通过…（线性插值在这些向量中每个使用x、z对应的单位向量，以左高顶点为原点为参数。）找到的。<br>（The height is then found by linearly interpolating on each of these vectors using the x- and z-coordinates in a normalized cell with an upper-left vertex at the origin as parameters.）</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1508,159 +1946,6 @@ float z = -D3DXVec3Dot(&amp;_look, &amp;_pos);
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/04/11/graphics-learn-step/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/graphics-learn-step/" class="post-title-link" itemprop="url">图形学习步骤</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-04-11 08:27:42" itemprop="dateCreated datePublished" datetime="2019-04-11T08:27:42+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/图形学/" itemprop="url" rel="index"><span itemprop="name">图形学</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/04/11/graphics-learn-step/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/04/11/graphics-learn-step/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>3D图形学分3大块的学习内容:<br>a.空间几何数学:   空间几何变换, 加速算法, 多边形技术, 曲线和曲面, 相交测试, 碰撞测试。<br>b.光照着色系统:   光照, 纹理贴图, 高级象素着色光照, 艺术性渲染.<br>c.程序技术性应用: 公告板, 精灵, 天空盒, 体绘制, 材质系统, 场景图, 渲染队列</li>
-<li>在实际学习过程中,3个部分相互制约,故不能单方面突进,应保持一种平衡发展,使得相互促进,深化理解,达到比较流畅的学习曲线.</li>
-<li>相对重要性以a,b,c序减(时间将无情淘汰现有的程序技术性应用),深刻掌握图形学基础才是王道。</li>
-<li>3个部分都略有小成后,大量快速阅读网上各方面的杂家资料,应用基础知识去分析理解,在短时间内掌握各种程序性技巧。</li>
-<li>再次通观全局基础,遍览所有细节,以图有更深的理解.</li>
-</ol>
-<p>如何学习API (OpenGL/Direct3D等)<br>首先，我认为API是工具，不是本质，OpenGL/Direct3D的本质是图形学,而不是OpenGL/Direct3D的本身,API的本身只是一些Interface而已.如果你明白图形学的原理.那么你很容易这些接口的作用,以及为什么要有这些接口的存在.所以,我要说的第一点是:你要学习3D编程,不是学会了OpenGL/Direct3D就可以了。甚至会不会这些API都不是那么的重要(虽然这么说,或许很多人不太赞同).最重要的,最根本的是,你要明白这些API背后的图形学的原理—-因为那才是根本中的根本.</p>
-<p>下面我来介绍我对API学习的看法.</p>
-<p>我认为API的学习有两种方法:一是正向学习.二是反向学习.</p>
-<p>一:正向学习,所谓的正向学习,就是学习API的本身.我觉得这种方法是一种Brute Force行为.不是很好.我们只要看看API的特性,有那些部分.就可以了。比如学习Direct3D的时候,我们要知道它如何初始化,以及它和操作系统的结合.它在Direct3D8里引入了VS/PS.最后就是创建一个Direct3D应用的步骤和方法.这些就足够了。要不然.Direct3D那么多的函数,一个几十个参数。每一个都会要了我的命.</p>
-<p>正向学习的第二个作用就是你在熟悉了图形学和大概了解了API后,有空就来看看API的细节,然后思索一下API里提供的一些特性对你的程序有什么作用.比如Direct3D里的Two Side Stencil.OpenGL里的TextureCombine等。</p>
-<p>二:逆向学习.这是根本的方法,到了这一步,你就可以真正的算是图形学入门了。这要求你要有一定的图形学基础.比如,你现在开始做一个demo.你预计你的demo里有一堆眩眩的效果,当然你也要明白你的这些眩眩的效果要怎么实现的.然后你去找API里对应的功能,我想如果你的想法正常,一般的功能在Direct3D/OpenGL里应该都会有的.当然你也会碰到你想要的功能在这些API里没有,但是这不重要,重要的是你又学到新东西了—-这个特性在XX API里不支持。</p>
-<p>通常我是采用先正向,再逆向,同时再进行正向学习的方法.希望以上的建议,对各位初学者有一定的帮助.</p>
-<h1 id="关于计算机图形学的学习"><a href="#关于计算机图形学的学习" class="headerlink" title="关于计算机图形学的学习"></a>关于计算机图形学的学习</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>什么是计算机图形学？ 本文尽量避免给它做严格的定义，但是通常来说，计算机图形学是数字图象处理的逆过程，这只是一个不确切的定义，后面我们会看到，实际上，计算机图形学、数字图象处理和计算机视觉在很多地方的区别不是非常清晰的，很多概念是相通的。<br>计算机图形学是用计算机来画东西的学科，数字图象处理是把外界获得的图象用计算机进行处理的学科。<br>如何学习计算机图形学呢？除了计算机图形学的基础知识以外，你还需要有以下的知识。</p>
-<ul>
-<li>英语， 你一定要把英语学好，如果你想学习计算机图形学的话，尽量看英文的书籍和资料</li>
-<li>数学， 计算机图形学里面的数学用的比较多，，我们可以列举一些常用的：<br>高等数学，数值分析，微分几何，拓扑，概率， 插值理论，（偏）微分方程…</li>
-<li>物理， 如果你要进行基于物理的建模，一些物理理论是要学习的：<br>力学（运动学，动力学，流体力学…），光学，有限元…</li>
-<li>编程语言： C或C++是计算机图形学最通用的‘普通话’，</li>
-<li>数据结构： 你需要数据结构来描述你的图形对象，除了通用的链表、树等数据结构外，图形学还有自己特殊的数据结构</li>
-<li>其他类别： 有的时候你需要其他学科的知识，根据你的需要去学习吧</li>
-</ul>
-<p>上面列举的不是你必须学习的东西，而是计算机图形学可能会用到的东西，一定要记住，不要指望通过一本教材就学会计算机图形学，它比你想象的要复杂的多。</p>
-<h2 id="图形学的问题"><a href="#图形学的问题" class="headerlink" title="图形学的问题"></a>图形学的问题</h2><p>每个学科都有自己学科的特定问题，图形学要解决的是如何画出图来，得到需要的效果，当然这是图形学最大的一个问题。<br>在开始学习计算机图形学的时候，找一本简单的书看，对计算机图形学有个大概的认识，你就可以开始图形学之旅了：</p>
-<p>OpenGL Programming Guide: The Official Guide to Learning OpenGL, Version 1.4, Fourth Edition<br>OpenGL SuperBible (3rd Edition) </p>
-<p>是比较好的学习计算机图形学的入门教材，在练中去学，一开始就去啃</p>
-<p>Foley的Computer Graphics: Principles and Practice, Second Edition in C<br>不是好主意，会看的一头雾水，一本什么都讲的书的结果往往是什么都没讲清楚。<br>当你把OpenGL的基本内容掌握之后，你对图形学就有了大概的了解了</p>
-<p>那么下面你可以来学习一下计算机图形学的数据结构和算法，下面的书比较适合Joseph O’Rourke 的Computational Geometry in C，书里面有C的源代码，讲述简单，清晰，适合程序员学习</p>
-<p>总的来说，计算机图形学涉及到2大部分：建模和渲染</p>
-<h3 id="建模"><a href="#建模" class="headerlink" title="建模"></a>建模</h3><p>你想画一个东西，首先要有它的几何模型，那么这个几何模型从什么地方来呢？下面的书很不错的：<br>Gerald Farin 的Curves and Surfaces for CAGD: A Practical Guide</p>
-<p>这本书算是CAGD (计算机辅助几何设计)的经典图书，CAGD方面的全貌，还有2本很好的讲述曲面的书Bezier和Nurbs的书</p>
-<p>Les A. Piegl, Wayne Tiller 的The Nurbs Book<br>书里面有NURBS曲线、曲面的程序伪代码，很容易改成C的，书讲的通俗、易懂，但是你要有耐心看的：）</p>
-<p>曲线与曲面的数学<br>这本书是法国人写的中文翻译版，里面还有Bezie本人写的序J，翻译的很不错的，看了你就掌握Bezier曲面技术了<br>注意：在后面会有这样的章节，标明<br>里面是我认为的一些高级话题，跳过他们不影响你学习计算机图形学，但是要学好就要注意了，呵呵<br>还有其他的一些造型技术，比如：<br>隐式曲面(Implicit Surface)的造型：<br>就是用函数形式为F( x ,y ,z ) = 0的曲面进行造型，这样的造型技术适合描述动物器官一样的肉乎乎的东西，有2本书推荐大家<br>Jules Bloomenthal编辑的Introduction to Implicit Surfaces，是一本专著，讲述了Implicit Surface建模型(Modeling)，面片化(Polygonization)，渲染(Rendering)的问题<br>Luiz Velho 的 Implicit Objects Computer Graphics 也是一本专著，讲述个更新的一些进展</p>
-<p>细分曲面（Subdivision Surface）造型<br>当用NURBS做造型的时候，曲面拼接是复杂的问题，在动画的时候，可能产生撕裂或者褶皱，Subdivision Surface用来解决这个问题<br>Joe Warren的Subdivision Methods for Geometric Design: A Constructive Approach就是这方面的专著</p>
-<p>从实际物体中得到造型，现在的技术可以用三维扫描仪得到物体表面的点，然后根据这些点把物体的表面计算出来，称为重建(Reconstruction)，因为这些技术之在文章中论述，所以我们省略对它的描述<br>下面还是一个高级话题<br>在你的几何模型做好之后，有一些问题需要对这个模型进一步处理，得到适合的模型，当面片很多的时候，或者模型很复杂的时候，需要对几何模型进行简化，才可以满足一些实时绘制的需要，这个技术叫做层次细节（LOD-Level of Detail）。下面的书就是讲这个的：<br>David Luebke编著的 Level of Detail for 3D Graphics</p>
-<h3 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h3><p>有了模型，怎么把这个几何模型画出来呢？这个步骤就是渲染<br>如果你看了上面的OpenGL的书，那么你就知道一些渲染的知识了，但是别高兴的太早，OpenGL使用的是局部光照模型（Local Illumination Model），不要被这个词吓住了</p>
-<p>Local illumination Model指的是在做渲染的时候只考虑光源和物体之间的相互作用，不考虑物体和物体之间的影响，所以OpenGL不支持阴影，一个（半）透明物体的效果..，这些需要考虑物体之间的影响才可以实现。</p>
-<p>OpenGL本身不支持，但是通过一些方法可以实现的，用Google搜索一下<br>Shadow Volume, OpenGL就找到答案啦</p>
-<p>Global Illumination Model 这类模型考虑的就比较全啦。现在关于Global Illumination的技术有3大类，具体的技术就不在这里介绍了，如果想了解，可以联系我，大家一起讨论：</p>
-<p>光线追踪(Ray Tracing)<br>关于Ray Tracing的好书有2本：<br>Andrew Glassner 的An Introduction to Ray tracing<br>Glasser是图形界的名人，这本书也是Ray Tracing的经典<br>R. Keith Morley, Peter Shirley 的Realistic Ray Tracing, Second Edition<br>这本书第一版是伪代码，第二版是C代码。它的结构不是很清楚，虎头蛇尾的感觉。<br>辐射度(Radiosity)<br>关于Radiosity的好书有4本：<br>Michael Cohen 的Radiosity and Realistic Image Synthesis ， Cohen获得SIGGRAPH 1998计算机图形学成就奖，他把Radiosity变成实际可用，现在Cohen在MSR图形 <a href="http://research.microsoft.com/~cohen/CohenSmallBW2.jpg" target="_blank" rel="noopener">http://research.microsoft.com/~cohen/CohenSmallBW2.jpg</a></p>
-<p>Francois X. Sillion的Radiosity and Global Illumination ， Sillion是法国人，他的主要研究方向是Radiosity，这本书写的很不错的，非常清晰</p>
-<p>Philip Dutre 的新书Advanced Global Illumination ，看起来还不错，刚拿到手，还没看，呵呵，所以不好评价</p>
-<p>Ian Ashdown的Radiosity: A Programmer’s Perspective </p>
-<p>Photon mapping<br>Henrik Wann Jensen的Realistic Image Synthesis Using Photon Mapping<br>Henrik Wann Jensen是Photon mapping技术的发明者</p>
-<h3 id="这些也是图形学吗？-图形和图象的区别模糊了"><a href="#这些也是图形学吗？-图形和图象的区别模糊了" class="headerlink" title="这些也是图形学吗？ 图形和图象的区别模糊了"></a>这些也是图形学吗？ 图形和图象的区别模糊了</h3><h4 id="非真实性图形学（Non-Photorealistic-Graphics）"><a href="#非真实性图形学（Non-Photorealistic-Graphics）" class="headerlink" title="非真实性图形学（Non-Photorealistic Graphics）"></a>非真实性图形学（Non-Photorealistic Graphics）</h4><p>真实性不是计算机图形学的唯一要求，比如：你给我画一个卡通效果的图出来，或者我要用计算机画水彩画怎么办？或者：把图象用文字拼出来怎么做？，解决这些问题要用到非真实性图形学， 好书继续推荐！！！<br>Bruce Gooch, Amy Ashurst Gooch的 Non-Photorealistic Rendering </p>
-<h4 id="体图形学-Volume-Graphics"><a href="#体图形学-Volume-Graphics" class="headerlink" title="体图形学(Volume Graphics)"></a>体图形学(Volume Graphics)</h4><p>用CT机做很多切片（比如头骨），那么能通过这些切片得到3D的头骨吗？Volume Graphics就是解决这样的问题的<br>Min Chen 编著的Volume Graphics<br>上面的2个图形学技术就和图象的界限不明显了，实际上他们是图形图象的综合</p>
-<h2 id="还有其他的书吗"><a href="#还有其他的书吗" class="headerlink" title="还有其他的书吗"></a>还有其他的书吗</h2><p>Graphics Gems I ~ V，一大帮子人写的书，包括研究人员，程序员…<br>有计算机图形学的各种数据结构，编程技巧</p>
-<p>Tomas Akenine-Moller 等人编著的Real-Time Rendering (2nd Edition)<br>许多最新的计算机图形学进展</p>
-<p>David Ebert等人的Texturing &amp; Modeling: A Procedural Approach, Third Edition<br>讲述如何通过程序实现纹理、山、地形等图形学要素<br>F. Kenton Musgrave号称分形狂(Fractal Mania)<br>Ken Perlin就是Perlin噪声的发明者，用过3d软件的人对Perlin Noise不会陌生的</p>
-<p>关于图形学的特定对象，有特定的专题图书，<br>Evan Pipho Focus On 3D Models,对于图形学的常用模型格式，进行了讲解<br>Trent Polack的 Focus On 3D Terrain Programming ，讲地形的<br>Donald H. House 的Cloth Modeling and Animation ，讲布料的<br>Nik Lever的Real-time 3D Character Animation with Visual C++ ，讲角色动画的</p>
-<p>Richard Parent的 Computer Animation: Algorithms and Techniques，当然是讲动画的啦，呵呵。<br>David H. Eberly的3D Game Engine Design : A Practical Approach to Real-Time Computer Graphics ，有代码的啊！呵呵：）</p>
-<p>最后，没事情的时候，看看下面的书吧<br>Alan H. Watt， 3D Computer Graphics (3rd Edition) </p>
-<p>James D. Foley等人的 Computer Graphics: Principles and Practice in C (2nd Edition) ，这本圣经没事的时候再看吧，呵呵</p>
-<h1 id="游戏程序员养成计划"><a href="#游戏程序员养成计划" class="headerlink" title="游戏程序员养成计划"></a>游戏程序员养成计划</h1><p>与玩游戏相比,写游戏要复杂上千万倍,除了需要掌握通用的编程技巧以外，还要有相当的图形学，物理，数学基础，特别是在国内，由于相关资料的缺乏，更是让初学者无从下手。下面总结了一些入门方法和比较容易入手的资料。</p>
-<p>首先你要精通一门高级语言，比如C++或者C#，其次，要有良好的英文阅读能力。对游戏开发者来说英文阅读能力是最重要也是最基本的工具之一，因为你遇到的大部分资源都将是英文的，不要总等着别人为你翻译。慢慢尝试着阅读英文资料，你会发现其实也并没有那么难:)</p>
-<p>刚开始，你要做的就是选择一门图形API，一般就是DirectX或者OpenGL之间选一个。如果考虑到跨平台，那么OGL是首选. 如果只在ms的平台，则DX是首选。我对OGL并不是很了解，所以下面大部门资料都是和DX相关的。</p>
-<p>当然，作为准备工作之一，你首先要到DirectX Develop Center下载最新版的DirectX SDK。</p>
-<p>入门书籍非常重要，推荐&lt;<introduction to 3d game programming with directx 9.0>&gt;（好像去年出了中文版）也就是传说中的龙书，这可以说是最好的DX入门教材，Frank Luna从浅入深，讨论了DX的方方面面。另外再配上&lt;&lt; Advanced 3D Game Programming With DirectX 9.0&gt;&gt;，书名虽然是advanced，但实际上没有多少advanced级别的内容。看完这两本书，你基本上已经对DirectX比较熟悉了。如果你希望学习XNA，也是一样的，毕竟XNA是以DX为基础。</introduction></p>
-<p>不要一开始就看图形学的书，这个时候你对图形编程还没有一个基本的感性认识，因此八成看的云里雾里。不要以网上的教程和论坛提问作为主要学习途径，找一本好书，系统学习，效率才最高。不要马上看SDK里的例子，很多图形学的基本原理仅仅通过读代码是不会明白的。某些年代太过久远的书就不要看了，比如《windows游戏编程大师技巧》（总看到有人在找这本书）。有人说基本的思想总是不变的，可惜对于现代GPU来说，很多早期的技术和优化技巧早就过时了。图形编程是发展的非常快的技术，看看GPU的发展速度，1~2年就是一代产品的革新。</p>
-<p>好了，入门之后，是你巩固和拓展视野的阶段。现在看计算机图形学就比较合适了。吐血推荐&lt;<real-time-rendering>&gt;,这本书算得上是所有图形程序员的必读书籍和参考手册了。最近刚出了第三版。可惜国内只有第二版，稍微有点老，如果实在找不到第三版，还是值得一读。国内其他所有以图形学命名的书都有一个共同点：枯燥，过时。只需看看其中二维三维变换和曲线曲面表示的部分即可。如果这个时候发现你当年数学没有学好，那么有三本数学书是为游戏程序员量身定制的：&lt;<3d math primer for graphics and game development>&gt;, &lt;<mathematics for 3d game programming and computer graphics>&gt;和&lt;<essential mathematics guide 2nd edition>&gt;，第一本书有中文版，最后一本则是08年才出的新书。</essential></mathematics></3d></real-time-rendering></p>
-<p>其实入门之后，就没有固定的学习路线了，最好根据你感兴趣的方向来学习。</p>
-<p>Shader方面：《Cg_tutorial》和《The Complete Effect and HLSL Guide》都是不错的入门材料，当然还有SDK文档。&lt;<shaders for game programmers and artists>&gt;有大量入门的例子。&lt;<advanced lighting and materials with shaders>&gt;详细介绍了各种光照模型和技术。&lt;<gpu gems>&gt; 1~3册肯定是必读的，虽然有1，2有中文版，但某些翻译并不是很理想，强烈建议直接看英文版。ShaderX系列也是很经典的系列，每年出版一本，包含了最新的实时渲染技术，如今已经出了第6册了。不过网络上只能找到1~3册。1，2册大部分shader都是用asm写的，不过看懂原理，转换为HLSL也并不难。另外Nvidia SDK和ATI SDK也是学习shader的重要资源。最后还有刚出的&lt;&lt; Programming Vertex, Geometry, and Pixel Shaders&gt;&gt;</gpu></advanced></shaders></p>
-<p>地形：&lt;<real time 3d terrain engines using c++ and dx9>&gt;非常全面的讨论了关于地形渲染的各种技术，至少应该把第5~9章都浏览一遍。之后便可以 到virtual terrain查阅近期的地形渲染技术。</real></p>
-<p>模型导入和动画：&lt;<advanced animation with directx>&gt;，仅此一本足以。</advanced></p>
-<p>物理：&lt;<game physics>&gt;和&lt;<game physics engine development>&gt;都不错。&lt;<real-time collision detection>&gt;是碰撞检测方面最好的书，可惜目前还没有电子版。<br>LOD：&lt;<level of detail for 3d graphics>&gt;<br>Ray tracing:&lt;&lt; Physical-Based Rendering - From Theory to Implementation&gt;&gt;<br>引擎设计：说实话，这方面还没有特别好的书，大概越是核心的内容，越少有人愿意写吧。&lt;<3d game engine architecture engineering real-time applications with wild magic>&gt;只有第三章值得一读。&lt;<3d game engine programming>&gt;可以选部分感兴趣的章节看看，不过总的来说，讲的比较浅。<br>AI：&lt;<programming game ai by example>&gt;非常不错，好像还有中文版，备选&lt;<artificial intelligence for games>&gt;。当然&lt;<ai programming wisdom>&gt;系列也是必读作品，不过目前网络上只有1～2册。<br>综合：&lt;<game programming gems>&gt;系列，不过由于内容涉及的过于广泛，文章质量参差不齐，选择性阅读就可以了。历年GDC, Gamefest t,Siggraph等大型会议的paper也是应该关注的。<br>除了书以外，再推荐一些不错的网络资源：<br>www.GameDev.NET 除了大量教程以外，论坛里多年累计下来的内容保罗万象。好好利用论坛搜索，你会发不管你多厉害，那里总有一些比你强大的人在很久以前就遇到了和你同样的问题，并且给出了解决方案。<br>Nvidia和ATI的开发者中心<br>creators.xna.com XNA官方网站<br>www.gamasutra.com 与GameDev类似<br>www.beyond3d.com 这里的除了讨论软件以外，还能看到对硬件构架的分析<br>www.ziggyware.com 最好的XNA教程网站<br>www.gameres.com 国内唯一比较专业的游戏编程网站，可惜和GameDev相比就显得太寒碜了<br><a href="http://imgtec.eetrend.com/" target="_blank" rel="noopener">http://imgtec.eetrend.com/</a><br>www.alanzucconi.com/category/shader/<br><a href="http://shaderbits.com/blog/tiling-within-subuv-or-volume-textures" target="_blank" rel="noopener">http://shaderbits.com/blog/tiling-within-subuv-or-volume-textures</a><br><a href="http://www.iquilezles.org/www/index.htm" target="_blank" rel="noopener">http://www.iquilezles.org/www/index.htm</a><br><a href="http://www.opengpu.org/forum.php?mod=forumdisplay&amp;fid=21" target="_blank" rel="noopener">http://www.opengpu.org/forum.php?mod=forumdisplay&amp;fid=21</a><br><a href="https://www.gamedev.net/" target="_blank" rel="noopener">https://www.gamedev.net/</a><br><a href="http://www.flipcode.com/archives/Light_Mapping_Theory_and_Implementation.shtml" target="_blank" rel="noopener">http://www.flipcode.com/archives/Light_Mapping_Theory_and_Implementation.shtml</a><br><a href="http://www.realtimerendering.com/" target="_blank" rel="noopener">http://www.realtimerendering.com/</a><br><a href="http://kesen.realtimerendering.com/" target="_blank" rel="noopener">http://kesen.realtimerendering.com/</a></game></ai></artificial></programming></3d></3d></level></real-time></game></game></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1730,18 +2015,18 @@ float z = -D3DXVec3Dot(&amp;_look, &amp;_pos);
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

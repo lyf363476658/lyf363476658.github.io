@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -166,6 +166,148 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/03/24/AssetBundlesIntro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/24/AssetBundlesIntro/" class="post-title-link" itemprop="url">AssetBundles</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-24 10:01:00" itemprop="dateCreated datePublished" datetime="2019-03-24T10:01:00+08:00">2019-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/03/24/AssetBundlesIntro/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/24/AssetBundlesIntro/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="AssetBundles"><a href="#AssetBundles" class="headerlink" title="AssetBundles"></a>AssetBundles</h1><p>AssetBundle是一个包含模型，纹理，预制，音频剪辑，甚至整个场景的可以在运行中加载的档案文件。AssetBundles可以表达彼此之间的依赖关系；例如，AssetBundle A中的Matrial可以引用AssetBundle B中的纹理。为了通过网络进行有效传递，可以根据用例需求使用内置算法选择压缩AssetBundle。<br>AssetBundles可用于：可下载的内容更新（DLC）、降低初始安装包大小、针对用户平台进行最优资源加载，以及降低运行时内存压力。</p>
+<h2 id="压缩格式-BuildAssetBundleOptions"><a href="#压缩格式-BuildAssetBundleOptions" class="headerlink" title="压缩格式(BuildAssetBundleOptions)"></a>压缩格式(BuildAssetBundleOptions)</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None</td>
+<td>无需任何特殊选项即可构建assetBundle</td>
+</tr>
+<tr>
+<td>UncompressedAssetBundle</td>
+<td>创建ab包时不压缩数据</td>
+</tr>
+<tr>
+<td>DisableWriteTypeTree</td>
+<td>不再ab中包含类型信息</td>
+</tr>
+<tr>
+<td>DeterministicAssetBundle</td>
+<td>使用存储在asset中的id的hash构建ab</td>
+</tr>
+<tr>
+<td>ForceRebuildAssetBundle</td>
+<td>强制rebuild ab</td>
+</tr>
+<tr>
+<td>IgnoreTypeTreeChanges</td>
+<td>执行增量构建检查时忽略类型树的改变</td>
+</tr>
+<tr>
+<td>AppendHashToAssetBundleName</td>
+<td>将hash附加到assetBundle名称</td>
+</tr>
+<tr>
+<td>ChunkBasedCompression</td>
+<td>创建AssetBundle时使用基于块LZ4压缩</td>
+</tr>
+<tr>
+<td>StricMode</td>
+<td>如果在其中报告任何错误，则不允许构建成功</td>
+</tr>
+<tr>
+<td>DryRunBuild</td>
+<td>只编译</td>
+</tr>
+<tr>
+<td>DisableLoadAssetByFileName</td>
+<td>禁用掉通过文件名加载ab</td>
+</tr>
+<tr>
+<td>DisableLoadAssetByFileNameWithExtension</td>
+<td>禁用掉通过文件名后缀加载ab</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Unity5的BuildAssetBundleOptions有CollectionDependencies但是在Unity2018.3中已经废弃了，原因是2018.3默认收集资源的依赖资源。<br>这个特性十分的方便，我们只需要将所有东西都做成prefab，将prefab作为资源指定给AssetBundle，由Unity自己去收集所用到的资源就好了。但实际项目中仅仅如此是不够的，原因在复用的资源上。<br>如果多个prefab使用了同一个资源，会出现什么问题呢？我们来试验一下。</p>
+<p>而image下面的Dependencies是空的，也就是它没有任何依赖了。</p>
+<p>然后此时我在将资源也打包，此时的Dependencies就出来了，但是路径是绝对路径。<br>这其实就是AssetBundle的链式结构和增量打包了。一个小的部分改变了，它将会改变的只有总的AssetBundle.manifest，还有直接依赖它本身的manifest。其他不依赖的部分是不需要重新打包的。<br>还有一点需要注意的地方是，除了manifest文件以外，还有一个没有后缀名称的AssetBundle文件。这个文件其实才是包含了所有依赖关系的总的依赖关系的配置文件，刚才我们能用txt打开的manifest文件，都只是用来做本地依赖关系和增量打包的时候用的。我们加载AssetBundle的时候，完全不需要加载那么manifest文件的，只需要那个没有后缀名称的AssetBundle文件（具体名字和你导出的文件夹有关）就行了。它代表的是该项目的所有AssetBundle依赖关系。<br>所以，刚才我们看到的manifest里面用的都是本地绝对路劲，那是针对你本地打包时用的，和加载无关。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1283,94 +1425,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/03/12/Light-Reflect/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/12/Light-Reflect/" class="post-title-link" itemprop="url">Light Reflect</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-03-12 15:33:16" itemprop="dateCreated datePublished" datetime="2019-03-12T15:33:16+08:00">2019-03-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:37" itemprop="dateModified" datetime="2021-06-17T10:39:37+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unity-Shader/" itemprop="url" rel="index"><span itemprop="name">Unity Shader</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/03/12/Light-Reflect/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/03/12/Light-Reflect/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>假设我们有一个发着光的太阳，太阳底下有一个“理想镜面”，如下图：<br><img src="/2019/03/12/Light-Reflect/1.png"><br>这时候我们抽象成数学图来进行计算，如下图：<br><img src="/2019/03/12/Light-Reflect/2.png"><br>这幅图可以看出，我们计算反射光线OB，则转换成了计算OP，这里OP是AO在法向量N上的投影，接下来我们推导投影向量的计算，如下图：<br><img src="/2019/03/12/Light-Reflect/3.png"><br>我们根据点积计算出$cos\theta$，然后通过$OA’ = |OA| \cdot cos\theta \cdot n$(n是单位法向量)就能得到，向量的投影公式。<br>这个时候我们在回过头来推导$OB = AO + 2OP$的结果，如下图：<br><img src="/2019/03/12/Light-Reflect/4.png"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1440,18 +1494,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

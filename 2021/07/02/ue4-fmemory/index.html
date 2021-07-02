@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="liyanfeng">
 <meta property="og:description" content="起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。 FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。UE4的window平台直接用的是GenericPlatformMemory，IOS中间有一层包装，但是最后也是走的是GenericPlatformMemory，Andro">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-07-02T03:59:27.637Z">
+<meta property="og:updated_time" content="2021-07-02T06:02:22.877Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UE4的内存分配">
 <meta name="twitter:description" content="起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。 FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。UE4的window平台直接用的是GenericPlatformMemory，IOS中间有一层包装，但是最后也是走的是GenericPlatformMemory，Andro">
@@ -200,7 +200,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-07-02 10:00:23 / 修改时间：11:59:27" itemprop="dateCreated datePublished" datetime="2021-07-02T10:00:23+08:00">2021-07-02</time>
+              <time title="创建时间：2021-07-02 10:00:23 / 修改时间：14:02:22" itemprop="dateCreated datePublished" datetime="2021-07-02T10:00:23+08:00">2021-07-02</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -240,6 +240,7 @@
         <p>起因，看spine，看到了string，想起了stringID，然后看里面直接裸memory，在想FMemory和memory有什么区别，以及适用情况。</p>
 <p>FMemory内部是区分平台的，但是我没看到GameCore内部区分平台。<br>UE4的window平台直接用的是<code>GenericPlatformMemory</code>，IOS中间有一层包装，但是最后也是走的是<code>GenericPlatformMemory</code>，Android也是，所以其实也还好？</p>
 <p>好吧，我们还是从头开始看吧。</p>
+<a id="more"></a>
 <h1 id="FMemory"><a href="#FMemory" class="headerlink" title="FMemory"></a>FMemory</h1><p>这个第一个接口是<code>FMemory::GCreateMalloc</code>这里面主要调的是<code>FMemory_GCreateMalloc_ThreadUnsafe</code>，在这里面我们逐步分析。</p>
 <p>第一步先取统计接口<code>FPlatformMemory::GetStats()</code> ，但是这里有个非MAC的判定，不知道为啥。</p>
 <p>然后就是取<code>GMalloc</code>这里是通过一些模式和命令行在加上架构去分析的，太偏底层的不太熟悉了，有熟悉的大佬可以在下方留言提醒。</p>
@@ -284,7 +285,10 @@
     <a href="/2021/07/02/spine-ue4/" rel="prev" title="Spine UE4">
       <i class="fa fa-chevron-left"></i> Spine UE4
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/02/ue5/" rel="next" title="Unreal Engine 5">
+      Unreal Engine 5 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -358,18 +362,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

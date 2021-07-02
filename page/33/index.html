@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -166,6 +166,87 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/11/init-server/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/11/init-server/" class="post-title-link" itemprop="url">初始化云服务器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-11 00:31:02" itemprop="dateCreated datePublished" datetime="2017-10-11T00:31:02+08:00">2017-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/10/11/init-server/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/10/11/init-server/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="搭建git服务器"><a href="#搭建git服务器" class="headerlink" title="搭建git服务器"></a>搭建git服务器</h1><p>yum install -y git<br>adduser git //创建用户git<br>git clone git@10.173.32.7:/home/git/sample.git //克隆远程仓库</p>
+<h1 id="clone-git仓库"><a href="#clone-git仓库" class="headerlink" title="clone git仓库"></a>clone git仓库</h1><h1 id="上传代码"><a href="#上传代码" class="headerlink" title="上传代码"></a>上传代码</h1><p>git commit -am “<message>“, 将所有修改，但未进stage的改动加入stage,并记录commit信息（某种程度上相当于git add 和 git commit -m的组合,前提是被改动文件已经是tracked)<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ./ -type d -name <span class="string">"del_dir"</span> -exec rm -r &#123;&#125; \;</span><br></pre></td></tr></table></figure></message></p>
+<p>注意中间的空格</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1500,169 +1581,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/09/24/UGUIvsNGUI/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/09/24/UGUIvsNGUI/" class="post-title-link" itemprop="url">UGUI vs NGUI</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-09-24 10:56:00" itemprop="dateCreated datePublished" datetime="2017-09-24T10:56:00+08:00">2017-09-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/09/24/UGUIvsNGUI/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/09/24/UGUIvsNGUI/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Tables</th>
-<th>NGUI</th>
-<th>UGUI</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>锚点</td>
-<td>Anchor</td>
-<td>RectTransform Anchor</td>
-</tr>
-<tr>
-<td>图片</td>
-<td>Sprite</td>
-<td>Image</td>
-</tr>
-<tr>
-<td>文字</td>
-<td>Label</td>
-<td>Text</td>
-</tr>
-<tr>
-<td>根节点</td>
-<td>UIRoot</td>
-<td>Canvas</td>
-</tr>
-<tr>
-<td>UI面板</td>
-<td>Panel</td>
-<td>Canvas</td>
-</tr>
-<tr>
-<td>UI容器</td>
-<td>Lets you essentially lower the heightmap resolution used for rendering.</td>
-</tr>
-<tr>
-<td>heightmapPixelError</td>
-<td>An approximation of how many pixels the terrain will pop in the worst case when switching lod.</td>
-</tr>
-<tr>
-<td>lightmapindex</td>
-<td>The index of the lightmap applied to this renderer.</td>
-</tr>
-<tr>
-<td>terrainData</td>
-<td>The Terrain Data that stres htightmaps,terrain textures,detail meshes and trees.</td>
-</tr>
-<tr>
-<td>treeBillboardDistance</td>
-<td>Distance from the camera where trees will be rendered as billboards only.</td>
-</tr>
-<tr>
-<td>terrCrossFadeLength</td>
-<td>Total distance delta that trees will use to transition from billboard orientation to to mesh orientation.</td>
-</tr>
-<tr>
-<td>treeDistance</td>
-<td>The maximum distance at which trees are rendered.</td>
-</tr>
-<tr>
-<td>treeMaximumFullLODCount</td>
-<td>Maximum number of trees rendered at full LOD.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="NGUI"><a href="#NGUI" class="headerlink" title="NGUI"></a>NGUI</h1><img src="/2017/09/24/UGUIvsNGUI/1.jpg">
-<p>上图是UIWidget，UIGeometry和UIDrawCall的关系图<br>UIPanel用来收集和管理它下面所有的widget的组件。通过widget的geometry创建实际的draw call。没有panel所有东西都不能被渲染出来。可以把UIPanel当作Renderer。</p>
-<p>每一个UIWidget都有一个UIGeometry，但是并不都有一个UIDrawCall，而是要通过Batch合并达到减少DrawCall的数量。<br>所有Panel都有一个Depth值，会影响所有它包含的widget。Panel的depth权重要高于widget的depth权重，但是低于render queue。</p>
-<p>当勾选static的时候，该panel下面所有的widget都不会被移动，这样可以提高性能。此时，NGUI会忽略所有的position/rotation/scale改变。所以在运行时移动widget不会有效。</p>
-<h3 id="UIDrawCall"><a href="#UIDrawCall" class="headerlink" title="UIDrawCall"></a>UIDrawCall</h3><p>1.成员变量<br>a) List<uidrawcall> mActiveList和mInactiveList，mActiveList保持当前激活的UIDrawCall，mInactiveList主要是用于回收UIDrawCall.Destroy()的UIDrawCall，以达到循环利用避免内存的反复申请和释放，减少GC的次数。<br>b) Material mMaterial和mDynamicMat，mMaterial是图集的Material，mDynamicMat是实际采用的Material，因为UIPanel的Clipping有AlphaClip和SoftClip这两个是要通过切换Shader实现的，所以需要对应动态创建一个Material，这个就是mDynamicMat的存在。<br>c) bool mRebuildMat和isDirty，这两者表示UIDrawCall所处的状态，当改变UIDrawCall的Material和Shader，mRebuildMat就变成true，就会引起RebuildMaterial()的调用。isDirty若为true，表示UIDrawCall要进行重写“填充”，调用Set函数。</uidrawcall></p>
-<p>负责将uv、顶点、color等信息输入到mesh中，继而绘制图形。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">UpdateGeometry</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mFilter == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        mFilter = gameObject.AddComponent&lt;MeshFilter&gt;();</span><br><span class="line">        mMesh = <span class="keyword">new</span> Mesh();</span><br><span class="line">        mTriangles = (verts.size &gt;&gt; <span class="number">2</span>);</span><br><span class="line">        mMesh.verticess = verts.buffer;</span><br><span class="line">        mMesh.uv = uvs.buffer;</span><br><span class="line">        mFilter.mesh = mMesh;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (mRenderer == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        mRenderer = gameObject.AddComponent&lt;MeshRenderer&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    UpdateMaterial();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以上所有的buffer都是用BetterList来存储的。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">UpdateMaterial</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mDynamicMat == <span class="literal">null</span> || mRebuildMat || mClipCount != panel.clipCount)</span><br><span class="line">    &#123;</span><br><span class="line">        RebuildMaterial();</span><br><span class="line">        mRebuildMat = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (mSharedMat != mDynamicMat)</span><br><span class="line">    &#123;</span><br><span class="line">        mSharedMaterials = <span class="keyword">new</span> Material[]&#123;mDynamicMat&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RebuildMaterial</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    CreateMaterial();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>优化DrawCall<br>使用相同material的连续UIWidget(UILbale,UISprite)共用一个UIDrawCall。对UIWidget.list进行排序，使得相同的material的UIWidget在UIWidget.list相连，而UIWidget.list是根据UIWidget的depth进行排序。（但是这样不会改变渲染顺序吗？）<br>1) 修改UIWidget(UILabel,UISprite)的depth，限定好UIWidget.list的排序<br>2) 重写UIWidget的CompareFunc方法。<br>夹层问题</p>
-<h3 id="UIRoot"><a href="#UIRoot" class="headerlink" title="UIRoot"></a>UIRoot</h3><p>UIRoot的作用是缩放UI</p>
-<p>PixelPerfect        保持原分辨率<br>FiexedSize          根据比例缩放<br>FixedSizeOnMobile   PC保持原分辨率，Mobile缩放</p>
-<h3 id="UICamera"><a href="#UICamera" class="headerlink" title="UICamera"></a>UICamera</h3><p> 带有这个组件渲染出来的物体可以接受NGUI事件</p>
-<h3 id="UIPanel"><a href="#UIPanel" class="headerlink" title="UIPanel"></a>UIPanel</h3><p>Panel的集合，一个Panel中包含多个Widget，负责更新会决定何时绘制Widget。</p>
-<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">public</span> List&lt;UIPanel&gt; list = <span class="keyword">new</span> List&lt;UIPanel&gt;();</span><br><span class="line"><span class="keyword">public</span> RenderQueue renderQueue = RenderQueue.Automatic; <span class="comment">//渲染次序类型</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> startingRenderQueue = <span class="number">3000</span>;</span><br><span class="line"><span class="keyword">public</span> List&lt;UIWidget&gt; widgets = <span class="keyword">new</span> List&lt;UIWidget&gt;();</span><br><span class="line"><span class="keyword">public</span> List&lt;UIDrawCall&gt; drawcalls = <span class="keyword">new</span> List&lt;UIDrawCall&gt;();</span><br><span class="line"><span class="keyword">int</span> mDepth = <span class="number">0</span>; <span class="comment">// 深度</span></span><br><span class="line"><span class="keyword">int</span> mSortingOrder; <span class="comment">// 队列排序值</span></span><br><span class="line"><span class="keyword">bool</span> mRebuild = <span class="literal">false</span>;<span class="comment">//如果为true，需要重构所有的Drawcall，Panel中的OnEnable、RemoveWidget、AddWidget等和改变depth会将该值设置为true。</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LateUpdate</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (mUpdateFrame != Time.frameCount)</span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<img src="/2017/09/24/UGUIvsNGUI/2.jpg" title="LateUpdate调用图">
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1732,18 +1650,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

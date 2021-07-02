@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -166,6 +166,143 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/23/jx3m/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/23/jx3m/" class="post-title-link" itemprop="url">剑网3口袋版笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-23 10:40:02" itemprop="dateCreated datePublished" datetime="2019-05-23T10:40:02+08:00">2019-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JX3M/" itemprop="url" rel="index"><span itemprop="name">JX3M</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2019/05/23/jx3m/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/23/jx3m/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Unity版本2018.3<br>2D场景，3D模型，确实有点惊喜，场景里面的东西看到的基本都是用片做的。那么定位就应该偏向格斗了，可能是帧同步吧。</p>
+<p>以下基本是静态分析结果。</p>
+<h1 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h1><p>start场景挂了两个节点一个是Start在上面下挂了一个GameStart脚本，作为启动脚本，另一个是Camera没什么必要。<br>GameStart在Start函数调用RuntimeCoroutineTracker.InvokeStart(this, HelperUtil.Steper(30, Initialize(), Sleep));封装协程的目的是抓帧用的。HelperUtil.Steper间隔执行。<br>在Initialize中初始化逻辑，其中yield return Lifecycle.GameModuleMgr.InitCoroutine(0, RefreshProgress);加载游戏模块。<br>在到GameModule的InitCoroutine中执行Init。说实在的OOP这一套看代码看的确实很烦。然后看一下GameMoudle有哪些</p>
+<ul>
+<li>AccountModule</li>
+<li>AchievementManager</li>
+<li>AngleFilterDataModule</li>
+<li>AngleFilterManager</li>
+<li>ArenaModule</li>
+<li>BarrageManager</li>
+<li>BattlegroundModule</li>
+<li>BrokenManager</li>
+<li>CameraManagerController</li>
+<li>CameraMotionPathManager</li>
+<li>ChallengeModule</li>
+<li>CharacterVoceManager</li>
+<li>CharManager</li>
+<li>SceneLoad</li>
+<li>MidasManager</li>
+<li>PVEModule</li>
+<li>Lua</li>
+</ul>
+<p>好了由于太多了就不一一列举了。虽然都是Module但是会涵盖具体玩法和一些公共组件。让人看起来很迷，甚至认为有的代码真的会用到的感觉吗。这里我们重点分析Lua。<br>在Lua.OnInit中，调用luasvr = new LuaSvr();这里面会生成一个LuaSvrProxy这个GameObject，然后在它的Update中处理time等的tick事件。加载了一个调用DoFile(UIDef.LuaScriptPath);其中UIDef.LuaScriptPath = “Lua/PreLoadList.lua”;这块进行了预加载Lua脚本。</p>
+<h1 id="Lua"><a href="#Lua" class="headerlink" title="Lua"></a>Lua</h1><p>lua使用的slua。首先我不是引战，我只是想大家有自己清晰的认识slua到底好不好。好了，这里是ulua的官网，大家可以去看一下。<a href="http://www.ulua.org/cstolua.html" target="_blank" rel="noopener">http://www.ulua.org/cstolua.html</a><br>我们看一个addMember函数<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">addMember</span>(<span class="params">IntPtr l, <span class="keyword">string</span> name, LuaCSFunction <span class="keyword">get</span>, LuaCSFunction <span class="keyword">set</span>, <span class="keyword">bool</span> instance</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    checkMethodValid(<span class="keyword">get</span>);</span><br><span class="line">    checkMethodValid(<span class="keyword">set</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> t = instance ? <span class="number">-2</span> : <span class="number">-3</span>;</span><br><span class="line"></span><br><span class="line">    LuaDll.lua_createtable(l, <span class="number">2</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">get</span> == <span class="literal">null</span>)</span><br><span class="line">        LuaDLL.lua_pushnil(l);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        pushValue(l, <span class="keyword">get</span>);</span><br><span class="line">    LuaDll.lua_rawseti(l, <span class="number">-2</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">set</span> == <span class="literal">null</span>)</span><br><span class="line">        LuaDLL.lua_pushnil(l);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        pushValue(l, <span class="keyword">set</span>);</span><br><span class="line">    LuaDLL.lua_rawseti(l, <span class="number">-2</span>, <span class="number">2</span>); <span class="comment">// t[n]=v,n是2，v是-2出的值，lua是栈存储结构，栈索引值越小，说明越早压栈</span></span><br><span class="line"></span><br><span class="line">    LuaDll.lua_setfield(l, t, name); <span class="comment">// t[name]=v</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其他注册方式类似。<br>然后slua对于用户感觉是透明的，然后每个注册之后都要返回两个参数，大部分来说。生成的cs文件完全是调用另一个文件的函数。<br>这种加一层的包装真好的好吗，难道用户不需要知道里面的东西吗？<br>（PS：个人感受，slua这种warp的方式真的好难受），好吧，自动化的注册确实跟不要钱一样。</p>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><p>这里的模块是自定义的，而不是根据配置读取的，其实也无可厚非，只不过会增加了一些代码量，这里的代码量仅仅指模块名称。比如UILoadHelper.SpawdPrefabFromPool，在这里UILoadHelper被我们习惯称为模块。</p>
+<h1 id="AssetBundle"><a href="#AssetBundle" class="headerlink" title="AssetBundle"></a>AssetBundle</h1><p>好吧，这块真的是异常痛苦的，以至于我F12了好半天，才看到一个UnityEngine.AssetBundle.LoadFromFile(path);在ResourcesHook.cs中有两个接口<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> UnityEngine.<span class="function">AssetBundle <span class="title">LoadFromFile</span>(<span class="params"><span class="keyword">string</span> path</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ResourceLoadProfiler.Begin();</span><br><span class="line">    UnityEngine.AssetBundle ret = UnityEngine.AssetBundle.LoadFromFile(path);</span><br><span class="line">    ResourceLoadProfiler.End(<span class="string">"AssetBundle.LoadFromFile"</span>, path, <span class="literal">null</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> AssetBundleCreateRequest <span class="title">LoadFromFileAsync</span>(<span class="params"><span class="keyword">string</span> path</span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    AssetBundleCreateRequest ret = UnityEngine.AssetBundle.LoadFromFileAsync(path);</span><br><span class="line">    ResourceLoadProfiler.AddAsyncRequest(ret, <span class="string">"AssetBundle.LoadFromAsync"</span>, path, <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h1><p>开发模式属于MV模式。</p>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p>NGUI + slua<br>UI脚本目录 Assets/StreamingAssets/Lua<br>数据控制逻辑在LogicData目录下</p>
+<h3 id="Common"><a href="#Common" class="headerlink" title="Common"></a>Common</h3><h4 id="Timer-lua"><a href="#Timer-lua" class="headerlink" title="Timer.lua"></a>Timer.lua</h4><h3 id="Helper"><a href="#Helper" class="headerlink" title="Helper"></a>Helper</h3><h4 id="UIHelper-lua"><a href="#UIHelper-lua" class="headerlink" title="UIHelper.lua"></a>UIHelper.lua</h4><h5 id="AddTimer"><a href="#AddTimer" class="headerlink" title="AddTimer"></a>AddTimer</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">UIHelper.AddTimer</span><span class="params">(script, nTime, func)</span></span></span><br><span class="line">    <span class="keyword">local</span> nid = Timer:Add(nTime, func)</span><br><span class="line">    script._tbUnscaledTime = script._tbUnscaledTimer <span class="keyword">or</span> &#123;&#125;</span><br><span class="line">    script._tbUnscaledTime[nId] = func</span><br><span class="line">    <span class="keyword">return</span> nId</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 按钮注册事件</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">UIHelper.BindUIEvent</span><span class="params">(go, szEvent, func, tbParam, nIntervals)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> go <span class="keyword">or</span> <span class="keyword">not</span> szEvent <span class="keyword">or</span> <span class="keyword">not</span> func <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">local</span> listenter = UIEventLister.Get(go.gameObject)</span><br><span class="line">    <span class="keyword">if</span> tbParam ~= <span class="literal">nil</span> <span class="keyword">and</span> <span class="built_in">type</span>(tbParam) == <span class="string">"table"</span> <span class="keyword">then</span></span><br><span class="line">        listener.paramter = tbParam</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">if</span> nInterval ~= <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">        UIClickIntervalsController.Instance:RegisterInterval(go.gameObject, nIntervals)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">if</span> szEvent == UI_EVENT.onClick <span class="keyword">then</span></span><br><span class="line">        listener.onClick = func</span><br><span class="line">    <span class="keyword">elseif</span> <span class="keyword">then</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">elseif</span> <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">elseif</span> <span class="keyword">then</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        LOG.ERROR(<span class="string">"未知的按钮事件类型&#123;0&#125;"</span>, szEvent)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="UILoadHelper-lua"><a href="#UILoadHelper-lua" class="headerlink" title="UILoadHelper.lua"></a>UILoadHelper.lua</h4><h5 id="LoadPrefabHandleAsync"><a href="#LoadPrefabHandleAsync" class="headerlink" title="LoadPrefabHandleAsync"></a>LoadPrefabHandleAsync</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">-- 异步加载预制体接口</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">UILoadHelper.LoadPrefabHandleAsync</span><span class="params">(script, nID, parent, szRename, nPostNameID, ...)</span></span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> script <span class="keyword">or</span> <span class="keyword">not</span> nID <span class="keyword">or</span> <span class="keyword">not</span> parent <span class="keyword">then</span></span><br><span class="line">        LOG.ERROR(<span class="string">"UILoadHelper.LoadPrefabHandleAsync param exception"</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    nPostNameID = nPostNameID <span class="keyword">or</span> <span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">local</span> handle = Lua2CS.LoadPrefabHandleAsync(nID, parent, transform, szRename, nPostNameID, ...)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> handle <span class="keyword">then</span></span><br><span class="line">        LOG.ERROR(<span class="string">"UILoadHelper.LoadPrefabHandleAsync Don't Get handle"</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> script.tbPrefabHandle <span class="keyword">then</span></span><br><span class="line">        script.tbPrefabHandle = &#123;&#125;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    script.tbPrefabHandle[handle.nHandleId] = handle</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> handle</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h5 id="LoadImg-img-nID-bMakePerfect-—-加载图片-UISprite-UITexture"><a href="#LoadImg-img-nID-bMakePerfect-—-加载图片-UISprite-UITexture" class="headerlink" title="LoadImg(img, nID, bMakePerfect)—- 加载图片(UISprite, UITexture)"></a>LoadImg(img, nID, bMakePerfect)—- 加载图片(UISprite, UITexture)</h5><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">UILoadHelper.LoadImg</span><span class="params">(img, nID, bMakePerfect)</span></span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> img <span class="keyword">or</span> <span class="keyword">not</span> nID <span class="keyword">then</span> LOG.ERROR(<span class="string">"UILoadHelper.LoadImg 传入空参数"</span>) <span class="keyword">return</span> <span class="keyword">end</span></span><br><span class="line">    bMakePerfect = bMakePerfect <span class="keyword">or</span> <span class="literal">false</span></span><br><span class="line">    Lua2CS.LoadImg(img, nID, UIImgUsageType.MainTexture, <span class="literal">true</span>, bMakePerfect)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h4 id="UINavigateHelper-lua"><a href="#UINavigateHelper-lua" class="headerlink" title="UINavigateHelper.lua"></a>UINavigateHelper.lua</h4><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--- 打开新界面（异步）</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">UINavigateHelper.NavigateViewAsync</span><span class="params">(nViewID,...)</span></span></span><br><span class="line">    <span class="keyword">if</span> UIViewOpenSequenceManager.AddView(nViewID, <span class="literal">false</span>, <span class="literal">true</span>, ...) <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">local</span> shell = UINavigationManager.Instance:NavigateView(nViewID, <span class="literal">false</span>, <span class="literal">true</span>, ...)</span><br><span class="line"></span><br><span class="line">    <span class="comment">-- 注册异步消息管理</span></span><br><span class="line">    <span class="keyword">if</span> shell <span class="keyword">and</span> <span class="keyword">not</span> shell.IsViewLoad <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">local</span> <span class="built_in">config</span> = UIAsyncMsgTab[nViewID]</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">config</span> <span class="keyword">then</span></span><br><span class="line">            <span class="keyword">local</span> msgAsyncHolder = UIAsyncMsgHelper.RegisterMsgAysnc(<span class="built_in">config</span>)</span><br><span class="line">            shell.AsyncMsg = msgAsyncHolder</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">return</span> shell</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="表格文件"><a href="#表格文件" class="headerlink" title="表格文件"></a>表格文件</h2><p>表格路径：Assets/JX3Game/Source/File/UI<br>转换成lua文件方法：<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">MenuItem(<span class="meta-string">"Tools/Excel to Lua/Export"</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ExcelToLua</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Lua.ExcelToLua();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ExcelToLua</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        System.Diagnostics.Process pro = <span class="keyword">new</span> System.Diagnostics.Process();</span><br><span class="line">        pro.StartInfo.WorkingDirectory = Application.dataPath + <span class="string">"/JX3Game/Source/File/ToLuaTool/"</span>;</span><br><span class="line">        pro.StartInfo.FileName = Application.dataPath + <span class="string">"/JX3Game/Source/File/ToLuaTool/run.bat"</span>;</span><br><span class="line">        pro.StartInfo.UseShellExecute = <span class="literal">true</span>;</span><br><span class="line">        pro.Start();</span><br><span class="line">        pro.WaitForExit();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span>(System.Exception)</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>注意：如果你看源码的时候发现生成的文件工程中的文件不一致，比如我看UICardTab.lua的时候，就发现缺少第一句注释，然后我尝试生成了以下，注释就加上了。<br>原理：其实是把表格文件转成lua文件了，寻仙的时候在在线转的，这里是离线转的。<br>对比：比如 UIAchieveLabelTab.xls（其实是一个txt文件，这块让人刚开始有点雾水）大小是12KB，而生成的UIAchieveLabelTab.lua却占105KB。缺点是会让包体增大，那么带来一系列的坏处就是加载这块的问题。而如果在线转的问题是在转的这块要做好优化。个人更喜欢在线转。事实上常见的也是在线转。</p>
+<h2 id="UIPrefab绑定Lua"><a href="#UIPrefab绑定Lua" class="headerlink" title="UIPrefab绑定Lua"></a>UIPrefab绑定Lua</h2><img src="/2019/05/23/jx3m/2.jpg" title="反人类设计的选择器">
+<p>这个东西很坑的，一般来说我们的选择器都是把所有节点罗列出来，然后供你选择，而这里的是要你输入文件名然后进行匹配。。。是节省性能吗？<br>交互做好的UI，然后我们这边绑上LuaBind脚本，好吧，要注意，序列化这件事情，即没有用的变量就不要绑定了。Unity序列化给人感觉还是不太友好，尤其是Prefab的序列化。<br>绑定完之后点击生成头部检测函数，如下图：</p>
+<img src="/2019/05/23/jx3m/1.jpg">
+<p>点击生成头部检测可以将绑定的变量输出到控制台上，然后我们将输入的日志自己拷贝粘贴到lua文件中。<br>好吧，这里我可以说好坑的吗，我们做了那么多自动化的工具，为什么这里却是要自己把日志手动粘贴到Lua文件中的呢？<br>然后还有刷新按钮，当我们点击刷新的时候，会重新检测文件中绑定数据，这个时候才可以进行删除操作。好吧，这样的目的是为了防止安全，但是这些反人类设计真的要吐槽。<br>继续吐槽，绑定变量数组不能在数组元素中插入吗？</p>
+<p>Lua脚本是如何生成的呢？</p>
+<blockquote>
+<p>我们注意到在Editor目录下有一个LuaTemplate.lua模板文件。<br>该文件通过LuaFileCreator.cs中的<br><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">MenuItem(<span class="meta-string">"Assets/Create/Lua Script"</span>, false, 80)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateNewLua</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ProjectWindowUtil.StartNameEditingIfProjectWindowExists(<span class="number">0</span>, ScriptableObject.CreateInstance&lt;CreateScriptAsset&gt;(), GetSelectedPathOrFallback() + <span class="string">"/New Lua.lua"</span>, <span class="literal">null</span>, <span class="string">"Assets/Editor/LuaTemplate.lua"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这里开发的同学应该要注意，生成的模板文件如果我们不需要的时候，需要把它干掉！类似的做法在C#的MonoBehaviour脚本也适用。</p>
+<h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><p>字体使用的动态字体。表现效果好，但是CPU，内存占用大。不过这个也在情理之中，而且也是很常见的做法。</p>
+<h2 id="图集"><a href="#图集" class="headerlink" title="图集"></a>图集</h2><p>图集可能不是使用Texturepacker，但是都是2的幂次方，应该是要根据不同设备进行压缩的。在编辑器下观察，应该都是带alpha通道的，那么这块其实是可以优化的。比如将rgb和r通道分离。之前潘多拉就是这样的做法，这样其实和etc2的差别不是很大，但是和RGB32的差别还是肉眼可见的。<br><img src="/2019/05/23/jx3m/LockOpen.png"><br>好吧，浪费还是蛮严重的。</p>
+<h2 id="艺术字"><a href="#艺术字" class="headerlink" title="艺术字"></a>艺术字</h2><p>看着像是按照静态字体的方式制作的。</p>
+<h2 id="相机"><a href="#相机" class="headerlink" title="相机"></a>相机</h2><p>相机有一个UIMainCamera和一个FrontCamera，这里有个坑的地方就是在编辑器和模拟器上当前视图是使用的FrontCamera渲染，后置视图使用UIMainCamera并添加高斯模糊。<br>所以要注意在任何时候的相机操作。</p>
+<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><h2 id="调试器"><a href="#调试器" class="headerlink" title="调试器"></a>调试器</h2><p>这里有很多调试器，都值得一试，它可能会帮助你修复难以解决的问题。<br>在Tools下面有RemoteDebugger.HierarchyPanel，打开面板，点击Query，然后所有的对象可以陈列在面板上，而且你可以对他进行修改，除了name和transform。<br>name是禁止修改的，但是transform怀疑是bug，导致无法修改。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1715,101 +1852,6 @@ u=xvector x yvector
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2019/05/12/fresnelreflection/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/12/fresnelreflection/" class="post-title-link" itemprop="url">菲涅尔反射</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2019-05-12 16:36:36" itemprop="dateCreated datePublished" datetime="2019-05-12T16:36:36+08:00">2019-05-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Graphics/" itemprop="url" rel="index"><span itemprop="name">Graphics</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2019/05/12/fresnelreflection/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2019/05/12/fresnelreflection/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在实时渲染中，经常会使用<strong>菲涅耳反射（Fresnel reflection）</strong>来根据视角方向控制反射程度。菲涅耳反射描述了一种光学现象，即当光线照射到物体表面上时，一部分发生反射，一部分进入物体内部，发生折射或散射。被反射的光和入射光之间存在一定的比率关系，这个比率关系可以通过菲涅耳等式进行计算。一个经常使用的例子是，当你站在湖边，直接低头看脚边的水面时，你会发现水几乎是透明的，你可以直接看到水底的小鱼和石子；但是，当你抬头看远处的水面时，会发现几乎看不到水下的情景，而只能看到水面反射的环境。这就是所谓的菲涅耳效果。事实上，不仅仅是水、玻璃这样的反光物体具有菲涅耳效果，几乎任何物体都或多或少包含了菲涅耳效果，这是基于物理的渲染中非常重要的一项高光反射计算因子。<br>那么，如何计算菲涅耳反射呢？这就需要使用菲涅耳等式。真实世界的菲涅耳等式是非常复杂的，但在实时渲染中，通常会使用一些近似公式来计算。其中一个著名的近似公式就是Schlick 菲涅耳近似等式：</p>
-<font size="4" color="red">
-$F_{Schlick}(v,n) = F_{0}+(1-F_{0})(1-v \cdot n)^5$
-</font>
-
-<p>其中，$F_{0}$是一个反射系数，用于控制菲涅耳反射的强度， v 是视角方向， n 是表面法线。另一个应用比较广泛的等式是Empricial菲涅耳近似等式：</p>
-<p><font size="4" color="red"><br>$F_{Empricial}(v,n) = max(0,min(1,bias+scale x (1-v \cdot n)^power))$
-</font><br>其中，bias、scale和power是控制项。<br>使用上面的菲涅尔近似等式，可以在边界处模拟反射光强和折射光强/漫反射光强之间的变化。在许多车漆、水面等材质的渲染中，会经常用到菲涅尔反射来模拟更加真实的反射。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1879,18 +1921,18 @@ $F_{Schlick}(v,n) = F_{0}+(1-F_{0})(1-v \cdot n)^5$
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

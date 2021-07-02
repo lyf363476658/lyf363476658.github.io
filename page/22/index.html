@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -166,6 +166,89 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/07/05/presentandsync/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/05/presentandsync/" class="post-title-link" itemprop="url">presentandsync</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-07-05 11:25:56" itemprop="dateCreated datePublished" datetime="2018-07-05T11:25:56+08:00">2018-07-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/07/05/presentandsync/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/07/05/presentandsync/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="WaitForTargetFPS"><a href="#WaitForTargetFPS" class="headerlink" title="WaitForTargetFPS"></a>WaitForTargetFPS</h1><p>该参数一般出现在CPU开销过低，且通过设定了目标帧率地情况下(Application.targetFrameRate)。当上一帧产生一个WaitForTargetFPS地空闲等待消耗时，以维持目标帧率。</p>
+<p>解析：该项在Unity引擎地主循环中其实是最早执行地，即引擎实际上是根据上一帧地CPU耗时，在当前帧通过增补WaitForTargetFPS的方式来将运行FPS维持到目标值。比如，目标帧率为30帧/秒，上一帧耗时15ms，那么当前帧中WaitForTargetFPS将会是18（33-15）ms，但是这一帧中其他耗时为28ms，那么在Profiler中这一帧的总耗时就变成了46（18+28<br>）ms。<br>因此，由该值造成了Profiler开销较高的现象，其实是耗时的“假象”，在优化过程中，你对它可以“视而不见”。</p>
+<h1 id="Gfx-WaitForPresend-amp-amp-Graphics-PresentAndSync"><a href="#Gfx-WaitForPresend-amp-amp-Graphics-PresentAndSync" class="headerlink" title="Gfx.WaitForPresend &amp;&amp; Graphics.PresentAndSync"></a>Gfx.WaitForPresend &amp;&amp; Graphics.PresentAndSync</h1><p>这两个参数在Profiler中经常出现CPU占用较高的情况，且仅在发布版本中可以看到。究其原因，其实是CPU和GPU之间垂直同步（VSync）导致的，之所以会有两种参数，主要是与项目是否开启多线程渲染有关。当项目开启多线程渲染时，你看到的是Gfx.WaitForPresent；当项目未开启多线程渲染时，看到的则是Graphics.PresentAndSync。</p>
+<p>Graphics.PresentAndSync是指主线程进行Present时的等待时间和等待垂直同步的时间。</p>
+<p>Gfx.WaitForPresent其字面意思同样也是进行Present时需要等待的时间，但这里其实省略了很多的内容，其真实的意思应该是为了在渲染子线程（Rendering Thread）中进行Presend，当前主线程（MainThread）需要等待的时间。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -1266,105 +1349,6 @@ float4(a,b,c,d).xxy 等价于 float4(a,a,b)
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2018/05/14/d3d11/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/14/d3d11/" class="post-title-link" itemprop="url">Direct3D 11</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2018-05-14 08:50:27" itemprop="dateCreated datePublished" datetime="2018-05-14T08:50:27+08:00">2018-05-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2018/05/14/d3d11/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2018/05/14/d3d11/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>点积(dot product)计算结果是标量值；也叫标量积(scalar product)。等于两个向量对应分量的乘积之和。</li>
-</ol>
-<p>$\mathbf{u \cdot v} = u_xv_x+u_yv_y+u_zv_z$</p>
-<h2 id="4-1-准备工作"><a href="#4-1-准备工作" class="headerlink" title="4.1 准备工作"></a>4.1 准备工作</h2><h3 id="4-1-4-交换链和页面翻转"><a href="#4-1-4-交换链和页面翻转" class="headerlink" title="4.1.4 交换链和页面翻转"></a>4.1.4 交换链和页面翻转</h3><p>为了避免在动画中出现闪烁，最好的做法是在一个离屏（off-screen）纹理中执行所有的动画帧绘制工作，这个离屏纹理成为后台缓存区(back buffer)。当我们在后台缓冲区中完成给定帧的绘制工作后，便可以将后台缓冲区作为一个作为一个完整的帧显示在屏幕上；使用这种方法，用户不会感觉到帧的绘制过程，只会看到完整的帧。从理论上讲，将一帧显示到屏幕上所消耗的时间小于屏幕的垂直刷新时间。硬件会自动维护两个内置的纹理缓冲区来实现这一功能，这两个缓冲区分别成为前台缓冲区(front buffer)和后台缓冲区。前台缓冲区存储了当前显示在屏幕上的图像数据，而动画的下一帧会在后台缓冲区中执行绘制。当后台缓冲区的绘制工作完成之后，前后两个缓冲区的做哟个会发生翻转；后台缓冲区会变为前台huan’ch</p>
-<h3 id="4-1-5-深度缓冲区"><a href="#4-1-5-深度缓冲区" class="headerlink" title="4.1.5 深度缓冲区"></a>4.1.5 深度缓冲区</h3><p><strong>深度缓冲区(depth buffer)</strong>是一个不包含图像数据的纹理对象。在一定程度上，深度信息可以被认为是一种特殊的像素。常见的深度值范围在0.0到1.0之间，其中0.0表示离观察者最近的物体，1.0表示离观察者最远的物体。深度缓冲区中的每个元素与后台缓冲区中的每个像素一一对那个（即，后台缓冲区的第ij个元素对应于深度缓冲区第ij个元素）。所以，当后台缓冲区的分辨率为1280x1024时，在深度缓冲区中有1280x1024个深度元素。</p>
-<h3 id="4-1-6-纹理资源视图"><a href="#4-1-6-纹理资源视图" class="headerlink" title="4.1.6 纹理资源视图"></a>4.1.6 纹理资源视图</h3><p>纹理可以被绑定到<strong>渲染管线（rendering pipeline）</strong>的不同<strong>阶段(stage)</strong>;例如，比较常见的情况是将纹理作为渲染目标（即，Direct3D渲染到纹理）或着色器资源（即，在着色器中对纹理进行采样）。当创建用于这两种目的的纹理资源时，应使用绑定标记值：<br>    D3D11_BIND_RENDER_TARGET|D3D10_BIND_SHADER_RESOURCE<br>指定纹理所要绑定的两个管线阶段。其实，资源不能被直接绑定到一个管线阶段；我们只能把与资源关联的资源试图绑定到不同的管线阶段。无论以哪种方式使用纹理，Direct3D始终要求我们在初始化时为纹理创建相关的<strong>资源视图(resource view)</strong>。这样有助于提供运行效率，正如SDK文档指出的那样：“运行时环境与驱动程序可以在视图创建执行相应的验证和映射，减少绑定时的类型检查”。所以，当把纹理作为一个渲染目标和着色器资源时，我们要为它创建两种试图：<strong>渲染目标试图 (ID3D11RenderTargetView)</strong>和<strong>着色器资源视图 (ID3D11ShaderResourceView)</strong>。资源视图主要有两个功能：（1）告诉Direct3D如何使用资源（即，指定资源所要绑定的管线阶段）；</p>
-<h3 id="4-1-7-多重采样"><a href="#4-1-7-多重采样" class="headerlink" title="4.1.7 多重采样"></a>4.1.7 多重采样</h3><p>因为计算机显示器上的像素分辨率有限，所以当我们绘制一条任意直线时，该直线很难精确地显示在屏幕上。<br>当无法提高显示器的分辨率，缩小像素尺寸，也可以有效地缓解这一问题，使阶梯效应明显降低。<br>当无法提高显示器分辨率或分辨率不够高时，我们可以使用<strong>抗锯齿 (antialiasing)技术</strong>。其中的一种技术叫做<strong>超级采样（supersampling）</strong>，它把后台缓冲和深度缓冲的大小提高到屏幕分辨率的4倍。</p>
-<h3 id="4-1-8-Direct3D中的多重采样"><a href="#4-1-8-Direct3D中的多重采样" class="headerlink" title="4.1.8 Direct3D中的多重采样"></a>4.1.8 Direct3D中的多重采样</h3><h2 id="4-2-对Direct3D进行初始化"><a href="#4-2-对Direct3D进行初始化" class="headerlink" title="4.2 对Direct3D进行初始化"></a>4.2 对Direct3D进行初始化</h2><ol>
-<li>ID3D11Device接口用于检测显示适配器功能和分配资源。</li>
-<li>ID3D11DeviceContext接口用于设置管线状态、将资源绑定到图形管线和生成渲染命令。</li>
-</ol>
-<h3 id="4-2-2-检测4X多重采样质量支持"><a href="#4-2-2-检测4X多重采样质量支持" class="headerlink" title="4.2.2 检测4X多重采样质量支持"></a>4.2.2 检测4X多重采样质量支持</h3><p>创建了设备后，我们就可以检查4X多重采样质量等级了。所有支持Direct3D 11的设备都支持所有渲染目标格式的4X MSAA（支持的质量等级可能并不相同）。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">UINT m4xMsaaQuality;</span><br><span class="line">HR(md3dDevice-&gt;CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8AB_UNORM, <span class="number">4</span>, &amp;m4xMassQuality));</span><br><span class="line">assert(m4xMsaaQuality&gt;<span class="number">0</span>);</span><br></pre></td></tr></table></figure></p>
-<p>因为4X MSAA总是被支持的，所以返回的质量等级总是大于0。</p>
-<h3 id="4-2-3-描述交换链"><a href="#4-2-3-描述交换链" class="headerlink" title="4.2.3 描述交换链"></a>4.2.3 描述交换链</h3><p>下一步是创建交换链，首先需要填充一个DXGI_SWAP_CHAIN_DESC结构体来描述我们将要创建的交换链的特性。该结构体的定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">DXGI_SWAP_CHAIN_DESC</span>&#123;</span></span><br><span class="line">    DXGI_MODE_DESC BufferDesc;</span><br><span class="line">    DXGI_SAMPLE_DESC SampleDesc;</span><br><span class="line">    DXGI_USAGE BufferUsage;</span><br><span class="line">    UINT BufferCount;</span><br><span class="line">    HWND OutputWindow;</span><br><span class="line">    BOOL Windowed;</span><br><span class="line">    DXGI_SWAP_EFFECT SwapEffect;</span><br><span class="line">    UINT Flags;</span><br><span class="line">&#125;DXGI_SWAP_CHAIN_DESC;</span><br></pre></td></tr></table></figure></p>
-<p><strong>DXGI_MODE_DESC</strong>类型是另一个结构体，其定义如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">DXGI_MODE_DESC</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    UINT Width;					<span class="comment">// 后台缓冲区宽度</span></span><br><span class="line">    UINT Height;				<span class="comment">// 后台缓冲区高度</span></span><br><span class="line">    DXGI_RATIONAL RefreshRate; 	<span class="comment">// 显示刷新率</span></span><br><span class="line">    DXGI_MODE_SCANLINE_ORDER ScanlineOrdering; <span class="comment">// display scanline mode</span></span><br><span class="line">    DXGI_MODE_SCALING Scaling; <span class="comment">// display scaling mode </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><strong>注意：</strong>在下面的数据成员描述中，我们只覆盖了一些常用的标记值和选项，它们对于初学者来说非常重要。对于其他标志值和选项的描述，请参阅SDK文档。</p>
-<ol>
-<li><strong>BufferDesc:</strong>该结构体描述了我们所要创建的后台缓冲区的属性。我们主要关注的属性有：宽度、高度和像素骼时；其他属性的详情请参阅SDK文档。</li>
-<li><strong>SampleDesc:</strong></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1434,18 +1418,18 @@ float4(a,b,c,d).xxy 等价于 float4(a,a,b)
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

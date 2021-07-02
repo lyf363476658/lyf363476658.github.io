@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|EB Garamond:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Console:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -166,6 +166,88 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/28/poll/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liyanfeng">
+      <meta itemprop="description" content>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liyanfeng">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/10/28/poll/" class="post-title-link" itemprop="url">poll</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-28 21:41:35" itemprop="dateCreated datePublished" datetime="2017-10-28T21:41:35+08:00">2017-10-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
+              </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2017/10/28/poll/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2017/10/28/poll/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Poll就是监控文件是否可读的一种机制，作用与select一样。<br>应用程序的调用如下：</p>
+<pre><code>int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+</code></pre><p>Poll机制会判断fds中的文件是否可读，如果可读则立即返回，返回的就是可读fd的数量，如果不可读，那么进程就会休眠。</p>
+<h1 id="内核实现流程："><a href="#内核实现流程：" class="headerlink" title="内核实现流程："></a>内核实现流程：</h1><p>当应用程序调用poll函数的时候，系统会调用sys_poll函数，该函数最终调用do_poll函数，do_poll函数中有一个死循环，在里面又会利用</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -912,99 +994,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://zentia.github.io/2017/10/24/server-install/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liyanfeng">
-      <meta itemprop="description" content>
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liyanfeng">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/10/24/server-install/" class="post-title-link" itemprop="url">服务器安装说明</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-10-24 12:53:24" itemprop="dateCreated datePublished" datetime="2017-10-24T12:53:24+08:00">2017-10-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-17 10:39:38" itemprop="dateModified" datetime="2021-06-17T10:39:38+08:00">2021-06-17</time>
-              </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/10/24/server-install/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/10/24/server-install/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li>解压服务器执行文件xx_svr_binfull_XXXX.tgz到指定文件夹。</li>
-<li>解压配置文件xx_svr_cfgfull_XXXX.tgz到相同的文件夹。</li>
-<li>解压配置文件xx_svr_resfull_XXXX.tgz到相同的文件夹。</li>
-<li>将我们提供的key文件修改文件名为auth-info.key放在XCAAFS和XCLS文件夹下</li>
-<li>XGMS目录下创建filecache目录，并给予执行服务器帐号写权限。</li>
-<li>XLBA目录下创建siglog目录，并给予执行服务器帐号写权限。</li>
-<li>确认pid文件目录/tmp有写权限，确认/data日志目录有写权限。</li>
-<li>创建数据库，执行SQL下ca.sh，命令为：<br>./ca.sh 版本后缀 地址<br>如：<br>./ca.sh sy xxsy.cxebfhyvgemb.us-east-2.rds.amazonaws.com</li>
-<li>修改配置文件cmncfg.txt，主要修改如下：<br>SVRGRPID    大区ID，如果需要在一个集群建立多个大区，则大区ID不可重复<br>VER_EXT        版本后缀，同一台机器配置多组大区的时候必须不同<br>ONEOUTERIP    对外IP，客户端主要从此IP连接服务器<br>ONEINNERIP    服务器组内部IP，服务器间通信通过此IP<br>MYSQLIP        数据库IP<br>GDB_PORT    数据库端口<br>DB_USER        数据库帐号<br>DB_PASSWORD    数据库密码<br>PORTSHIFT    同一台机器上启动多组服务器必须不同<br>SHMSHIFT    同上<br>注：如分开多台服务器架设还需要修改指定服务器地址</li>
-<li>按照《服务器搭建和日常维护》文档第2节修改共享内存限制和tcp相关配置。</li>
-<li>runGlog.sh启动日志服务器，一共15个进程。</li>
-<li>执行run.sh启动服务器组。</li>
-</ol>
-<p>共有IP:18.219.246.109<br>私有IP:172.31.29.118</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1074,18 +1063,18 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">333</span>
+          <span class="site-state-item-count">334</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">98</span>
+        <span class="site-state-item-count">99</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
